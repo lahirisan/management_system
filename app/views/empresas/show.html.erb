@@ -1,0 +1,85 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Nombre empresa:</b>
+  <%= @empresa.nombre_empresa %>
+</p>
+
+<p>
+  <b>Fecha inscripcion:</b>
+  <%= @empresa.fecha_inscripcion %>
+</p>
+
+<p>
+  <b>Direccion empresa:</b>
+  <%= @empresa.direccion_empresa %>
+</p>
+
+<p>
+  <b>Id estado:</b>
+  <%= @empresa.id_estado %>
+</p>
+
+<p>
+  <b>Id ciudad:</b>
+  <%= @empresa.id_ciudad %>
+</p>
+
+<p>
+  <b>Rif:</b>
+  <%= @empresa.rif %>
+</p>
+
+<p>
+  <b>Id status:</b>
+  <%= @empresa.id_status %>
+</p>
+
+<p>
+  <b>Id tipo usuario:</b>
+  <%= @empresa.id_tipo_usuario %>
+</p>
+
+<p>
+  <b>Nombre comercial:</b>
+  <%= @empresa.nombre_comercial %>
+</p>
+
+<p>
+  <b>Id clasificacion:</b>
+  <%= @empresa.id_clasificacion %>
+</p>
+
+<p>
+  <b>Categoria:</b>
+  <%= @empresa.categoria %>
+</p>
+
+<p>
+  <b>Division:</b>
+  <%= @empresa.division %>
+</p>
+
+<p>
+  <b>Grupo:</b>
+  <%= @empresa.grupo %>
+</p>
+
+<p>
+  <b>Clase:</b>
+  <%= @empresa.clase %>
+</p>
+
+<p>
+  <b>Rep legal:</b>
+  <%= @empresa.rep_legal %>
+</p>
+
+<p>
+  <b>Cargo rep legal:</b>
+  <%= @empresa.cargo_rep_legal %>
+</p>
+
+
+<%= link_to 'Edit', edit_empresa_path(@empresa) %> |
+<%= link_to 'Back', empresas_path %>

@@ -1,0 +1,37 @@
+%section.contexto
+    %label.contexto Empresas > Listado
+    %hr.contexto{:size => "1"}
+
+%section#areaTrabajo.areaTrabajo
+    %table#data_table_empresas.display{:"data-source" => "/empresas.json"}
+        %thead
+            %tr
+                %th Prefijo
+                %th Nombre Empresa
+                %th Fecha Inscripción
+                %th Dirección empresa
+                %th Estado
+                %th Ciudad
+                %th RIF
+                %th Estatus
+                %th Id tipo Usuario
+                %th Nombre Comercial
+                %th Id Clasificación
+                %th Categoría
+                %th División
+                %th Grupo
+                %th Clase
+                %th Rep legal
+                %th Cargo rep legal
+                %th
+                %th
+                %th
+        %tbody
+        %tfoot
+            =render 'footer'
+    %br/
+    %br/
+    = link_to 'New Empresa', new_empresa_path
+    = link_to 'Exportar Excel', '/empresas.xlsx'
+    = link_to 'Exportar CSV', '/empresas.csv'
+    = link_to 'Exportar PDF', '/empresas.pdf'

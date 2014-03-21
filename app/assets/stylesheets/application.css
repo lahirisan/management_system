@@ -1,0 +1,220 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require_tree .
+
+ */
+
+ body{
+		margin: 0px;
+	}
+	div.banner{
+		/*border-style: solid;
+		border-width: 1px;*/
+		width: 100%;
+		min-width: 900px;
+		background-color: #003d79;/**/
+		position: fixed;
+		top: 0px;
+		height: 75px;
+		z-index: 10;
+		
+		
+	}
+	div.footer{
+		width: 100%;
+		height: 45px;
+		font-family: arial,sans-serif;
+		font-size: 10px;
+		color: #919194;
+		text-align: center;
+		vertical-align: bottom;
+		border-top-style: solid;
+		border-top-width: 1px;
+				border-top-color: #bbbdc0;
+		position: absolute;
+		bottom: 0px;
+	}
+	
+	img.logo-der{
+		
+		width: 650px;
+		position: absolute;
+		right: 0px;
+
+	}
+	img.logo-izq{
+		
+		position: absolute;
+		left: 0px;
+	}	
+
+	.menu{
+	/*border-style: solid;
+	border-width: 1px;*/
+	width: 170px;
+	height: 100%;
+	position: absolute;
+	top: 150px;
+}
+div.submenu{
+	font-family: arial,sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #545454;
+	/*margin-right: 0px;*/
+    margin-left: 10px;
+    margin-bottom: 20px;
+    /*margin-top: 0px;*/
+}
+div.opcion{
+	font-family: arial,sans-serif;
+	font-size: 12px;
+	color: #949393;
+	margin-left: 10px;
+	/*margin-right: 0px;*/		    
+    margin-bottom: 10px;
+    /*margin-top: 0px;*/
+
+}
+a.link{
+	font-family: arial,sans-serif;
+	font-size: 12px;
+	color:#5986e0; 
+	text-decoration: none;
+}
+a.link:active  {color:#66ccff;}
+
+a.opcion{
+	color:#949393;
+	text-decoration: none;
+}
+a.opcion:link    {color:#949393;}
+a.opcion:visited {color:#949393;}
+a.opcion:hover   {color:#666666;}
+a.opcion:active  {color:black;}
+div.opcion:hover{background-color: #f6f5f5;color:#666666;}	
+
+hr.separador{			
+	color: #dedddd;
+	margin-left: 10px;
+	margin-bottom: 20px;
+    margin-top: 20px;
+    border-style: solid;
+}
+
+hr.contexto{
+	color: #dedddd;
+	border-style: solid;
+	margin-left: 10px;
+	margin-bottom: 20px;
+    margin-top: 20px;		    
+}
+label.contexto{
+	font-family: arial,sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: #545454;
+	position: absolute;
+	left: 10px;
+	
+}
+section.contexto{
+	/*border-style: solid;
+	border-width: 1px;*/
+	width: 85%;
+	height: 30px;
+	position: absolute;
+	top: 150px;
+	left: 180px;
+}
+section.identificador{
+	/*border-style: solid;
+	border-width: 1px;*/
+	position: absolute;
+	top: 29px;
+	right: 20px;
+	text-align:right;
+
+}
+section.areaTrabajo{
+	/*border-style: solid;
+	border-width: 1px;*/
+	width: 84%;
+	height: 100%;
+	position: absolute;
+	top: 200px;
+	left: 190px;
+}
+
+section.formulario{
+	/*border-style: solid;
+	border-width: 1px;*/
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 50px;
+}
+
+label.usuario{
+	/*border-style: solid;
+	border-width: 1px;*/
+	font-family: arial,sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #545454;
+	position: relative;
+}
+label.rol{
+	/*border-style: solid;
+	border-width: 1px;*/
+	font-family: arial,sans-serif;
+	font-size: 12px;
+	color: #949393;
+	
+}
+label.actor{
+	font-family: arial,sans-serif;
+	font-size: 12px;
+	color: #949393;
+	position: relative;
+}
+section.detallePerfil{
+		font-family: arial,sans-serif;
+		border-right-style: solid;
+		border-left-style: solid;
+		border-bottom-style: solid;
+		border-top-style: solid;
+		border-right-width: 1px;
+		border-left-width: 1px;
+		border-bottom-width: 1px;
+		border-top-width: 1px;
+		border-right-color: black;
+		border-left-color: black;
+		border-bottom-color: black;
+		border-top-color: black;
+		background-color: white;
+		padding-right: 5px;
+	    padding-left: 5px;
+	    padding-bottom: 5px;
+	    padding-top: 5px;
+		width: 350px;
+		height: 150px;
+
+		-webkit-box-shadow: 0px 0px 10px #333333;
+	    -moz-box-shadow: 0px 0px 10px #333333;
+	    box-shadow: 3px 3px 15px #333333;
+	    position: absolute;
+	    z-index: 3;
+	    opacity: 0.9;
+		-moz-opacity:0.9;
+		filter:alpha(opacity=9);
+	}

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  descripcion: MyString
+  sub_estatus: MyString
+  id_motivo_retiro: 1
+  habilitado: 1
+  tipo: MyString
+
+two:
+  descripcion: MyString
+  sub_estatus: MyString
+  id_motivo_retiro: 1
+  habilitado: 1
+  tipo: MyString

@@ -1,0 +1,47 @@
+!!!
+%html
+	%head
+		%title GS1 Venezuela - Administrativo
+		= stylesheet_link_tag    "application", :media => "all"
+		= javascript_include_tag "application"
+		= csrf_meta_tags
+	%body
+		%div.banner
+			=image_tag 'GS1-Header-1.png', :class => "logo-izq"
+			=image_tag 'GS1-Header-3.png', :class => "logo-der"
+
+		/ %section#identificador.identificador{:onclick => "displayDetallePerfil(event)"}
+		/ 	%label.usuario
+		/ 		Usuario
+		/ 	%label.actor
+		/ 		Actor
+		/ 	%label.rol
+		/ 		Role
+
+		/ %section#detallePerfil.detallePerfil{:onmouseout => "noDisplayDetallePerfil()", :onmouseover => "displayDetallePerfil(event)", :style => "display:none;"}
+		/ 	.tituloFormulario Detalle del usuario
+		/ 	=image_tag 'default_photo.png'
+		/ 	%div
+		/ 		%label.usuario
+		/ 			Usuario
+		/ 	%div
+		/ 		%label.actor
+		/ 			Actor
+		/ 	.botonera
+		/ 		%a.link{:href => "#{}"} Editar perfil
+		/ 		%a.link{:href => "#{}"} Cerrar session
+
+		%section#menu.menu	
+			.submenu Administración
+			%a.opcion{:href => "#"}
+				.opcion Empresas
+			%a.opcion{:href => "#"}
+				.opcion Productos
+			%a.opcion{:href => "#"}
+				.opcion Servicios
+			%a.opcion{:href => "#"}
+				.opcion GLN
+			%a.opcion{:href => "#"}
+				.opcion Usuarios
+		= yield
+		

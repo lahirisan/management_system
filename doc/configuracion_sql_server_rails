@@ -1,0 +1,51 @@
+Investigar ORM OJO  => Active Record
+
+en el terminal instal
+
+Confiuracion de Ubuntu con Servidor SQL SErver 2008
+https://github.com/rails-sqlserver/activerecord-sqlserver-adapter/wiki/Platform-Installation---Ubuntu
+
+sudo apt-get install freetds-dev freetds-bin tdsodbc
+
+https://github.com/rails-sqlserver/activerecord-sqlserver-adapter/wiki/Using-TinyTds
+
+gem install tiny_tds
+gem install activerecord-sqlserver-adapter
+
+agregar al gem file
+
+gem 'tiny_tds'
+gem 'activerecord-sqlserver-adapter'
+
+bundle install
+
+
+Tipos de datos usado para generar los scaffold
+
+http://stackoverflow.com/questions/4685009/rails-3-datatypes
+
+# Se agrega  Gema para generear la vistas HAML
+http://haml.info
+
+
+
+- Se agrega gema para utilizar datatables
+gem 'jquery-datatables-rails', github: 'rweng/jquery-datatables-rails'
+gem 'jquery-ui-rails'  # Los estilode de los datatables
+gem 'ajax-datatables-rails' # Ajax para los datatatbles
+
+Documentacion
+https://datatables.net/
+
+gema para manejar el Excel
+gem 'axlsx_rails'  # para manejar Excel
+
+
+se agrega al gem gilfe
+gem 'prawn'
+gem "prawnto_2", :require => "prawnto"   
+
+
+
+
+

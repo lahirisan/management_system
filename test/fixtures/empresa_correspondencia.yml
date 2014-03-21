@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  rep_tecnico: MyString
+  cargo_rep_tecnico: MyString
+  edificio: MyString
+  calle: MyString
+  urbanizacion: MyString
+  id_estado: 1
+  id_ciudad: 1
+  id_municipio: 1
+  cod_postal: 1
+  punto_referencia: MyString
+  id_parroquia: 1
+
+two:
+  rep_tecnico: MyString
+  cargo_rep_tecnico: MyString
+  edificio: MyString
+  calle: MyString
+  urbanizacion: MyString
+  id_estado: 1
+  id_ciudad: 1
+  id_municipio: 1
+  cod_postal: 1
+  punto_referencia: MyString
+  id_parroquia: 1

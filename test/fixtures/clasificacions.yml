@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  categoria: MyString
+  division: 1
+  grupo: 1
+  clase: 1
+  descripcion: MyString
+  habilitado: false
+
+two:
+  categoria: MyString
+  division: 1
+  grupo: 1
+  clase: 1
+  descripcion: MyString
+  habilitado: false
