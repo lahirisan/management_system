@@ -33,8 +33,8 @@ class EmpresasController < ApplicationController
     @ultimo = Empresa.find(:first, :conditions => ["prefijo < 999999999"], :order => "prefijo DESC") # EL ultimo prefijo antes de 999999999
     @empresa = Empresa.new
     @empresa.build_correspondencia   #Para que maneje el model de correspondencia
-    @tipo_usuario = Usuario.all
     
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @empresa }
@@ -45,7 +45,7 @@ class EmpresasController < ApplicationController
   def edit
     @empresa = Empresa.find(params[:id])
     @empresa.build_correspondencia  if @empresa.correspondencia.nil? # Si no tiene coorespondecia se crea el objeto
-    
+
   end
 
   # POST /empresas

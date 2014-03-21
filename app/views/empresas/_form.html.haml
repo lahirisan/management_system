@@ -71,7 +71,7 @@
           %td
             Clasificación
           %td
-            =f.collection_select :id_clasificacion, Clasificacion.all, :id, :descripcion, {}, { :style => "width:300px;"}
+            =f.collection_select :id_clasificacion, Clasificacion.all, :id, :descripcion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:300px;"}
         %tr
           %td
             Categoría 
@@ -103,7 +103,7 @@
           %td
             Tipo Usuario
           %td
-            = f.text_field :id_tipo_usuario
+            = f.collection_select :id_tipo_usuario, TipoUsuarioEmpresa.all, :id_tipo_usu_empresa, :descripcion, {:prompt => "-Tipo Usuario-"}
         %tr
           %td
             Representante Legal
@@ -115,62 +115,67 @@
           %td
             = f.text_field :cargo_rep_legal
         
+      %br/
+      %label.contexto
+        Registrar Empresa  > Datos de Correspondencia
+      %hr.contexto{:size => "1"}  
         =f.fields_for :correspondencia do |fa|
-          %tr
-            %td
-              Representante Técnico
-            %td
-              = fa.text_field :rep_tecnico
-          %tr
-            %td
-              Cargo Representante Técnico
-            %td
-              = fa.text_field :cargo_rep_tecnico
-          %tr
-            %td
-              Edificio
-            %td
-              = fa.text_field :edificio
-          %tr
-            %td
-              Calle
-            %td
-              = fa.text_field :calle
-          %tr
-            %td
-              Urbanización
-            %td
-              = fa.text_field :urbanizacion
-          %tr
-            %td
-              Estado
-            %td
-              =fa.collection_select :id_estado, Estado.all, :id, :nombre, {:prompt => '-Seleccione Estado-'}
-          %tr
-            %td
-              Ciudad
-            %td
-              =fa.collection_select :id_ciudad,  Ciudad.all, :id, :nombre, {:prompt => '-Seleccione Estado-'}
-          %tr
-            %td
-              Municipio
-            %td
-              =fa.text_field :id_municipio
-          %tr
-            %td
-              Parroquia
-            %td
-              =fa.text_field :id_parroquia
-          %tr
-            %td
-              Código Postal
-            %td
-              =fa.text_field :cod_postal
-          %tr
-            %td
-              Punto de Referencia
-            %td
-              =fa.text_field :punto_referencia
+          %table
+            %tr
+              %td
+                Representante Técnico
+              %td
+                = fa.text_field :rep_tecnico
+            %tr
+              %td
+                Cargo Representante Técnico
+              %td
+                = fa.text_field :cargo_rep_tecnico
+            %tr
+              %td
+                Edificio
+              %td
+                = fa.text_field :edificio
+            %tr
+              %td
+                Calle
+              %td
+                = fa.text_field :calle
+            %tr
+              %td
+                Urbanización
+              %td
+                = fa.text_field :urbanizacion
+            %tr
+              %td
+                Estado
+              %td
+                =fa.collection_select :id_estado, Estado.all, :id, :nombre, {:prompt => '-Seleccione Estado-'}
+            %tr
+              %td
+                Ciudad
+              %td
+                =fa.collection_select :id_ciudad,  Ciudad.all, :id, :nombre, {:prompt => '-Seleccione Estado-'}
+            %tr
+              %td
+                Municipio
+              %td
+                =fa.text_field :id_municipio
+            %tr
+              %td
+                Parroquia
+              %td
+                =fa.text_field :id_parroquia
+            %tr
+              %td
+                Código Postal
+              %td
+                =fa.text_field :cod_postal
+            %tr
+              %td
+                Punto de Referencia
+              %td
+                =fa.text_field :punto_referencia
       
       = f.submit "Crear Empresa"
 
