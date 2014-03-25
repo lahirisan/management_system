@@ -13,7 +13,15 @@
           %h2= pluralize(@empresa.errors.count, "error")
           %ul
             -@empresa.errors.full_messages.each do |msg|
-              %li= msg 
+              -if msg == 'Id estado No puede estar en blanco'
+                %li='Debe selecionar una opción para el Estado'
+              -elsif msg == 'Id ciudad No puede estar en blanco'
+                %li='Debe selecionar una opción para la Ciudad'
+              -else
+                %li=msg
+
+              
+              
       %table
         %tr
           %td
@@ -33,7 +41,11 @@
           %td
             Fecha Inscripción
           %td
-            =f.text_field :fecha_inscripcion 
+            -if @empresa.new_record?
+              =f.text_field :fecha_inscripcion 
+            -else
+              =f.text_field :fecha_inscripcion, :value => "#{@empresa.fecha_inscripcion.strftime("%Y-%m-%d")}" 
+
         %tr
           %td
             Dirección Empresa
@@ -76,22 +88,22 @@
           %td
             Categoría 
           %td
-            = f.text_field :categoria, :disabled => true
+            = f.text_field :categoria
         %tr
           %td
             División
           %td
-            = f.text_field :division ,  :disabled => true
+            = f.text_field :division 
         %tr
           %td
             Grupo
           %td
-            = f.text_field :grupo , :disabled => true
+            = f.text_field :grupo 
         %tr
           %td
             Clase
           %td
-            = f.text_field :clase, :disabled => true
+            = f.text_field :clase
 
       %br/
       %label.contexto
