@@ -1,5 +1,5 @@
 %section.contexto
-    %label.contexto Empresas > Activar Empresas
+    %label.contexto Empresas > Retirar Empresas
     %hr.contexto{:size => "1"}
 %p#notice.ui-state-highlight.ui-corner-all
     -if (notice)
@@ -7,7 +7,7 @@
         -notice = nil
 %section#areaTrabajo.areaTrabajo
     =form_tag update_multiple_empresas_path, :method => "put" do
-        %table#data_table_empresas_activacion.display{:"data-source" => "/empresas.json?activacion=true"}
+        %table#data_table_empresas_retirar.display{:"data-source" => "/empresas.json?retirar=true"}
             %thead
                 %tr
                     %th Selección
@@ -19,22 +19,19 @@
                     %th Ciudad
                     %th RIF
                     %th Estatus
-                    %th Id tipo Usuario
-                    %th Nombre Comercial
-                    %th Id Clasificación
-                    %th Categoría
-                    %th División
-                    %th Grupo
-                    %th Clase
-                    %th Rep legal
-                    %th Cargo rep legal
+                    %th Clasificación
+                    %th Rep Legal
+                    %th Sub-estatus
+                    %th Motivo Ret
+
+                    
                     
             %tbody
             %tfoot
-                =render 'footer_activacion'
+                =render 'footer_retirar'
         %br/
         %br/
-        =hidden_field_tag "activacion", "true"
-        = submit_tag 'Validar'
+        =hidden_field_tag "retiro", "true"
+        = submit_tag 'Retirar'
         = link_to 'Regresar', '/empresas'
     

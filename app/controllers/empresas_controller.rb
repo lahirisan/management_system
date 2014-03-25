@@ -3,23 +3,27 @@ class EmpresasController < ApplicationController
   # GET /empresas.json
   def index
     @empresas = Empresa.includes(:estado, :ciudad, :estatus)
-    # OJO: La llamada JSON y los parametro se establecen en el datatable 
+    
+    # OJO: La llamada JSON y los parametro se establecen en el datatable desde el template.html.haml
       
     respond_to do |format|
       format.html{       
         
-        if params[:activacion]
-          render :template =>'/empresas/activacion.html.haml' 
-        else
-          
-          render :template =>'/empresas/index.html.haml'
-        end
+                  if params[:activacion]
+                    render :template =>'/empresas/activacion.html.haml' 
+                  elsif params[:retirar]
+                    render :template =>'/empresas/retirar_empresa.html.haml' 
+                  else
+                    render :template =>'/empresas/index.html.haml'
+                  end
 
       } # index.html.erb
       
       format.json { 
                     if (params[:activacion] == 'true')
                       render json: (ActivacionEmpresasDatatable.new(view_context))
+                    elsif (params[:retirar] == 'true')
+                      render json: (RetirarEmpresasDatatable.new(view_context))
                     else
                       render json: (EmpresasDatatable.new(view_context))
                     end
