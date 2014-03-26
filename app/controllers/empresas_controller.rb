@@ -114,7 +114,26 @@ class EmpresasController < ApplicationController
   end
 
   def update_multiple
+   
+    if params[:retiro]
+    # En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
+      
+      for retirar_empresas in (0..params[:activar_empresa].size-1)
+        empresa_seleccionada = params[:activar_empresa][retirar_empresas]
+        retirar_datos = params[:"#{empresa_seleccionada}"]
+        retirar_datos.split('_')[0] # retirar_datos.split('_')[0] Prefijo de la empresa retirar_datos.split('_')[1] id sub_estatus retirar_datos.split('_')[2] id motivo_retiro
+        id_estatus = Estatus.find(:first, :conditions => ["id_motivo_retiro = ? and id_subestatus = ?", retirar_datos.split('_')[2].to_i, retirar_datos.split('_')[1].to_i])
+        empresa = Empresa.find(:first, :conditions => ["prefijo = ?", empresa_seleccionada.to_i])
+        empresa.id_estatus = empresa
+        empresa.save
+
+      end
     
+    end
+
+    
+    
+
     if params[:activacion] #Parametro que indica Validar Empresa       
       validar_empresas(params[:activar_empresa])
     end
