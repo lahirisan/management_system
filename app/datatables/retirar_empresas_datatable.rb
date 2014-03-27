@@ -1,5 +1,5 @@
 class RetirarEmpresasDatatable < AjaxDatatablesRails
-  delegate :params, :h, :link_to, :check_box_tag, :try, :select_tag, :options_from_collection_for_select,  to: :@view
+  delegate :params, :h,  :link_to, :check_box_tag, :try, :select_tag, :options_from_collection_for_select,  to: :@view
 
    def initialize(view)
     @view = view
@@ -26,7 +26,7 @@ private
       fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
 
         [ 
-        check_box_tag("activar_empresa[]", "#{empresa.id}", false, :class=>"retirar_empresa"),
+        check_box_tag("retirar_empresas[]", "#{empresa.id}", false, :class=>"retirar_empresa"),
         empresa.prefijo,
         empresa.nombre_empresa,
         fecha,
@@ -37,10 +37,10 @@ private
         empresa.estatus.descripcion,
         empresa.clasificacion.try(:descripcion),
         empresa.rep_legal,
-        select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"), :id => "#{empresa.prefijo}sub_estatus"),
-        select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"), :id => "#{empresa.prefijo}motivo_ret"),
+        select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_subestatus)), :id => "#{empresa.prefijo}sub_estatus"),
+        select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_motivo_retiro)), :id => "#{empresa.prefijo}motivo_ret"),
       ]
-
+  
     end
 
   end
@@ -52,7 +52,7 @@ private
   def fetch_empresas
     
    
-    empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion).order("#{sort_column} #{sort_direction}")
+    empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, :empresas_retiradas).order("#{sort_column} #{sort_direction}")
    
     
     empresas = empresas.page(page).per_page(per_page)
