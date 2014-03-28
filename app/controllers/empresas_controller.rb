@@ -114,9 +114,12 @@ class EmpresasController < ApplicationController
   end
 
   def update_multiple
-   
+
+    
     Empresa.validar_empresas(params[:activar_empresa]) if params[:activacion] #Parametro que indica Validar Empresa       
     Empresa.retirar_empresas(params) if params[:retiro]
+    #Empresa.retirar_empresas_masivo(params) if params[:retiro_masivo]
+
 
     respond_to do |format|
           format.html { 

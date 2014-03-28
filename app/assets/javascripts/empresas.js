@@ -89,23 +89,6 @@
             }
         })
         
-        // Validacion- Si No estan seleccionados todos los check_box retirar_empresa se apaga el checkBox selecccionar todods, en caso contrario se prende
-        
-        $('.retirar_empresa').live('click', function() {
-
-              if (($('.retirar_empresa').size()) == ($(".retirar_empresa:checked").length))
-              {
-                  $('#retiro_masivo').prop('checked', true);
-              }
-              else
-              {
-                  $('#retiro_masivo').prop('checked', false);
-              }
-
-            // Por cada empresa seleccionda se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
-            $('#datos_empresas_retirar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
-        });
-
         // Verificacion que valida el estado del checkbox seleccionar todos cuando se hace la paginación (AJAX)
         
         jQuery.ajaxSetup({
@@ -124,6 +107,33 @@
           success: function() {}
         });
 
+        // cuando  se hace submit del formulario se capturan los valores que tienen los combos de las empresas seleccionadas
+        $('#formulario_retirar_empresa').submit(function( event ) { 
+
+            // Se valida que se haya seleccionado 
+            $(".retirar_empresa:checked").length)
+            {
+                
+            }
+
+            
+            if ($('#retiro_masivo').is(':checked')) // retiro masivo
+            {
+               
+                $('.retirar_empresa:checked').each(function() {
+                    // Por cada empresa seleccionda se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
+                    $('#datos_empresas_retirar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
+                });   
+            }
+            else
+            {
+                $('.retirar_empresa:checked').each(function() {
+                    // Por cada empresa seleccionda se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
+                    $('#datos_empresas_retirar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
+                });
+            }
+
+        });
 
     })   
 
