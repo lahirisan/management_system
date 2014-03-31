@@ -33,8 +33,23 @@
 
 		%section#menu.menu	
 			.submenu Administración
-			%a.opcion{:href => "#"}
+			%a.opcion{:href => "/empresas"}
 				.opcion Empresas
+				.opcion
+					%ul
+						%li 
+							%a.opcion{:href => "/empresas?activacion=true"}
+								.opcion Activar Empresa
+				.opcion
+					%ul
+						%li 
+							%a.opcion{:href => "/empresas?retirar=true"}
+								.opcion Retirar Empresa
+				.opcion
+					%ul
+						%li 
+							%a.opcion{:href => "/empresas?eliminar=true"}
+								.opcion Eliminar Empresa
 			%a.opcion{:href => "#"}
 				.opcion Productos
 			%a.opcion{:href => "#"}

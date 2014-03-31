@@ -31,7 +31,7 @@ class Empresa < ActiveRecord::Base
   end
 
   def self.retirar_empresas(parametros)
-    
+    raise "retirar_empresa".to_yaml
     #En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
     # OJO: Esto se peude optimizar actualizando masivamente // RailCast 198
 
@@ -64,6 +64,71 @@ class Empresa < ActiveRecord::Base
 
   def self.retirar_empresas_masivo(parametros)
     
+    raise "retirar_empresa_masivo".to_yaml
+
+    for retirar_empresas in (0..parametros[:retirar_empresas].size-1)
+        empresa_seleccionada = parametros[:retirar_empresas][retirar_empresas]
+        retirar_datos = parametros[:"#{empresa_seleccionada}"]
+        retirar_datos.split('_')[0] # retirar_datos.split('_')[0] Prefijo de la empresa retirar_datos.split('_')[1] id sub_estatus retirar_datos.split('_')[2] id motivo_retiro
+        
+        # Si al empresa existe se edita, sino se crea el registro
+        empresa_retirar = EmpresasRetiradas.find(:first, :conditions => ["prefijo = ?",retirar_datos.split('_')[0]])
+        empresa_retirar =  EmpresasRetiradas.new if  empresa_retirar.nil?
+
+        empresa_retirar.prefijo = retirar_datos.split('_')[0]
+        fecha_retiro = Time.now
+        empresa_retirar.fecha_retiro = fecha_retiro
+        empresa_retirar.id_motivo_retiro = parametros[:motivo_retiro].to_i
+        empresa_retirar.id_subestatus = parametros[:sub_estatus].to_i
+        empresa_retirar.save
+
+        # Se cambia el estatus de la empresa
+        empresa = Empresa.find(retirar_datos.split('_')[0])
+        # El estatus de retirada
+        estatus_retirada = Estatus.find(:first, :conditions => ["descripcion like ? and alcance like ?", 'Retirada', 'Empresa'])
+        empresa.id_estatus = estatus_retirada.id
+        empresa.save
+
+      end
+  end
+
+  def self.eliminar_empresas(parametros)
+    
+    raise "elimianr_empresa".to_yaml
+    #En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
+    # OJO: Esto se peude optimizar actualizando masivamente // RailCast 198
+
+      for retirar_empresas in (0..parametros[:retirar_empresas].size-1)
+        empresa_seleccionada = parametros[:retirar_empresas][retirar_empresas]
+        retirar_datos = parametros[:"#{empresa_seleccionada}"]
+        retirar_datos.split('_')[0] # retirar_datos.split('_')[0] Prefijo de la empresa retirar_datos.split('_')[1] id sub_estatus retirar_datos.split('_')[2] id motivo_retiro
+        
+        # Si al empresa existe se edita, sino se crea el registro
+        empresa_retirar = EmpresasRetiradas.find(:first, :conditions => ["prefijo = ?",retirar_datos.split('_')[0]])
+        empresa_retirar =  EmpresasRetiradas.new if  empresa_retirar.nil?
+
+        empresa_retirar.prefijo = retirar_datos.split('_')[0]
+        fecha_retiro = Time.now
+        empresa_retirar.fecha_retiro = fecha_retiro
+        empresa_retirar.id_motivo_retiro = retirar_datos.split('_')[2]
+        empresa_retirar.id_subestatus = retirar_datos.split('_')[1]
+        empresa_retirar.save
+
+        # Se cambia el estatus de la empresa
+        empresa = Empresa.find(retirar_datos.split('_')[0])
+        # El estatus de retirada
+        estatus_retirada = Estatus.find(:first, :conditions => ["descripcion like ? and alcance like ?", 'Retirada', 'Empresa'])
+        empresa.id_estatus = estatus_retirada.id
+        empresa.save
+
+      end
+  end
+
+
+  def self.eliminar_empresas_masivo(parametros)
+    
+    raise "eliminar_empresa_masivo".to_yaml
+
     for retirar_empresas in (0..parametros[:retirar_empresas].size-1)
         empresa_seleccionada = parametros[:retirar_empresas][retirar_empresas]
         retirar_datos = parametros[:"#{empresa_seleccionada}"]

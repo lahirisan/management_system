@@ -4,3 +4,4 @@
 	text-align:center;
 	float:right;
 }
+.loader{position:fixed; top: 50%;  left: 50%; z-index:30;} 

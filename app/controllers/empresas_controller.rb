@@ -12,7 +12,9 @@ class EmpresasController < ApplicationController
                   if params[:activacion]
                     render :template =>'/empresas/activacion.html.haml' 
                   elsif params[:retirar]
-                    render :template =>'/empresas/retirar_empresa.html.haml' 
+                    render :template =>'/empresas/retirar_empresa.html.haml'
+                  elsif params[:eliminar]
+                    render :template =>'/empresas/eliminar_empresa.html.haml'  
                   else
                     render :template =>'/empresas/index.html.haml'
                   end
@@ -24,6 +26,8 @@ class EmpresasController < ApplicationController
                       render json: (ActivacionEmpresasDatatable.new(view_context))
                     elsif (params[:retirar] == 'true')
                       render json: (RetirarEmpresasDatatable.new(view_context))
+                    elsif (params[:eliminar] == 'true')
+                      render json: (EliminarEmpresasDatatable.new(view_context))
                     else
                       render json: (EmpresasDatatable.new(view_context))
                     end
@@ -116,9 +120,18 @@ class EmpresasController < ApplicationController
   def update_multiple
 
     
+
     Empresa.validar_empresas(params[:activar_empresa]) if params[:activacion] #Parametro que indica Validar Empresa       
-    Empresa.retirar_empresas(params) if params[:retiro]
-    #Empresa.retirar_empresas_masivo(params) if params[:retiro_masivo]
+    
+    if params[:retiro_masivo]
+      Empresa.retirar_empresas_masivo(params) 
+    elsif params[:retiro]
+      Empresa.retirar_empresas(params)
+    elsif params[:eliminar]
+      Empresa.eliminar_empresas(params)
+    elsif params[:eliminar_masivo]
+      Empresa.eliminar_empresas_masivo(params)
+    end
 
 
     respond_to do |format|
