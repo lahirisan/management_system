@@ -119,25 +119,29 @@ class EmpresasController < ApplicationController
 
   def update_multiple
 
-    
-
     Empresa.validar_empresas(params[:activar_empresa]) if params[:activacion] #Parametro que indica Validar Empresa       
     
-    if params[:retiro_masivo]
-      Empresa.retirar_empresas_masivo(params) 
-    elsif params[:retiro]
-      Empresa.retirar_empresas(params)
-    elsif params[:eliminar]
-      Empresa.eliminar_empresas(params)
-    elsif params[:eliminar_masivo]
-      Empresa.eliminar_empresas_masivo(params)
+    if params[:retiro]
+      if params[:retiro_masivo] # vienen los 2 parametros
+        Empresa.retirar_empresas_masivo(params) 
+      else # solo el parametro retirar
+        Empresa.retirar_empresas(params)
+      end
     end
 
+    if params[:eliminar]
+      if params[:eliminar_masivo] # eliminar masivo
+        Empresa.eliminar_empresas_masivo(params)
+      else
+        Empresa.eliminar_empresas(params) # eliminar los seleccionados
+      end
+    end
 
     respond_to do |format|
           format.html { 
           redirect_to '/empresas?activacion=true', notice: "Los Prefijos #{params[:activar_empresa].collect{|prefijo| prefijo}} fueron activados satisfactoriamente"  if params[:activacion]
           redirect_to '/empresas?retirar=true', notice: "Los Prefijos #{params[:retirar_empresas].collect{|prefijo| prefijo}} fueron activados satisfactoriamente"  if params[:retiro]
+          redirect_to '/empresas?eliminar=true', notice: "Los Prefijos #{params[:eliminar_empresas].collect{|prefijo| prefijo}} fueron activados satisfactoriamente"  if params[:eliminar]
           }
     end
   end

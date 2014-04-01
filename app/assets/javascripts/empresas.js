@@ -101,7 +101,7 @@
         jQuery.ajaxSetup({
             
             beforeSend: function() { // muestra el GIF que indica se está cargando el AJAX
-               // $('.loader').show();
+                $('.loader').show();
             },
             complete: function(){
 
@@ -114,7 +114,7 @@
                 {
                     $('#retiro_masivo').prop('checked', false);
                 }
-                //$('.loader').hide(); // oculta el GIF que indica se está cargando el AJAX
+                $('.loader').hide(); // oculta el GIF que indica se está cargando el AJAX
             },
           success: function() {
              //$('.loader').hide(); // oculta el GIF que indica se está cargando el AJAX

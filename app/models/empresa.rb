@@ -9,11 +9,12 @@ class Empresa < ActiveRecord::Base
   belongs_to :estatus, :foreign_key =>  "id_estatus"
   belongs_to :clasificacion, :foreign_key => "id_clasificacion"
   has_one  :empresas_retiradas,  :foreign_key => "prefijo"
+  has_one  :empresa_elim_detalle,  :foreign_key => "prefijo"
+
   
   validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo,   :presence => {:message => "No puede estar en blanco"}
   validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{8})-([0-9]{1})$/, on: :create, :message => "El Formato del RIF es invalido"} # Validacion al crear
   #validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{8})-([0-9]{1})$/, on: :update, :message => "El Formato del RIF es invalido"} # Validacion al editar
-
 
   def self.to_csv # Se genera el CSV de Empresas
 
@@ -31,7 +32,7 @@ class Empresa < ActiveRecord::Base
   end
 
   def self.retirar_empresas(parametros)
-    raise "retirar_empresa".to_yaml
+    
     #En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
     # OJO: Esto se peude optimizar actualizando masivamente // RailCast 198
 
@@ -64,8 +65,6 @@ class Empresa < ActiveRecord::Base
 
   def self.retirar_empresas_masivo(parametros)
     
-    raise "retirar_empresa_masivo".to_yaml
-
     for retirar_empresas in (0..parametros[:retirar_empresas].size-1)
         empresa_seleccionada = parametros[:retirar_empresas][retirar_empresas]
         retirar_datos = parametros[:"#{empresa_seleccionada}"]
@@ -94,32 +93,47 @@ class Empresa < ActiveRecord::Base
 
   def self.eliminar_empresas(parametros)
     
-    raise "elimianr_empresa".to_yaml
     #En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
-    # OJO: Esto se peude optimizar actualizando masivamente // RailCast 198
+    # OJO: Esto se peude optimizar actualizando masivamente // RailsCast 198
 
-      for retirar_empresas in (0..parametros[:retirar_empresas].size-1)
-        empresa_seleccionada = parametros[:retirar_empresas][retirar_empresas]
-        retirar_datos = parametros[:"#{empresa_seleccionada}"]
-        retirar_datos.split('_')[0] # retirar_datos.split('_')[0] Prefijo de la empresa retirar_datos.split('_')[1] id sub_estatus retirar_datos.split('_')[2] id motivo_retiro
+      for eliminar_empresas in (0..parametros[:eliminar_empresas].size-1)
+        empresa_seleccionada = parametros[:eliminar_empresas][eliminar_empresas]
+        eliminar_datos = parametros[:"#{empresa_seleccionada}"]
+        eliminar_datos.split('_')[0] # eliminar_datos.split('_')[0] Prefijo de la empresa eliminar_datos.split('_')[1] id sub_estatus eliminar_datos.split('_')[2] id motivo_retiro
         
-        # Si al empresa existe se edita, sino se crea el registro
-        empresa_retirar = EmpresasRetiradas.find(:first, :conditions => ["prefijo = ?",retirar_datos.split('_')[0]])
-        empresa_retirar =  EmpresasRetiradas.new if  empresa_retirar.nil?
+        # Se busca la empresa para obtener todos sus datos
+        empresa_eliminar = Empresa.find(:first, :conditions => ["prefijo = ?",eliminar_datos.split('_')[0]])
+        estatus = Estatus.find(:first, :conditions => ["descripcion like ? ", "Eliminada"])
+        empresa_eliminar.id_estatus = estatus.id # Se cambia el estatus de la empresa a retirada
+        empresa_eliminar.save
 
-        empresa_retirar.prefijo = retirar_datos.split('_')[0]
-        fecha_retiro = Time.now
-        empresa_retirar.fecha_retiro = fecha_retiro
-        empresa_retirar.id_motivo_retiro = retirar_datos.split('_')[2]
-        empresa_retirar.id_subestatus = retirar_datos.split('_')[1]
-        empresa_retirar.save
+        empresa_eliminada =  EmpresaEliminada.new  # Se crear el registro de la empresa_eliminada
+        empresa_eliminada.prefijo = empresa_eliminar.prefijo
+        empresa_eliminada.nombre_empresa = empresa_eliminar.nombre_empresa
+        empresa_eliminada.fecha_inscripcion = empresa_eliminar.fecha_inscripcion
+        empresa_eliminada.id_estado = empresa_eliminar.id_estado 
+        empresa_eliminada.id_ciudad = empresa_eliminar.id_ciudad
+        empresa_eliminada.rif = empresa_eliminar.rif
+        empresa_eliminada.id_estatus = empresa_eliminar.id_estatus  
+        empresa_eliminada.id_tipo_usuario = empresa_eliminar.id_tipo_usuario
+        empresa_eliminada.nombre_comercial = empresa_eliminar.try(:nombre_comercial)
+        empresa_eliminada.id_clasificacion = empresa_eliminar.try(:id_clasificacion)
+        empresa_eliminada.categoria = empresa_eliminar.try(:categoria)
+        empresa_eliminada.division = empresa_eliminar.try(:division)
+        empresa_eliminada.grupo = empresa_eliminar.try(:grupo)
+        empresa_eliminada.clase = empresa_eliminar.try(:clase)
+        empresa_eliminada.rep_legal = empresa_eliminar.try(:rep_legal)
+        empresa_eliminada.cargo_rep_legal = empresa_eliminar.try(:cargo_rep_legal)
+        empresa_eliminada.save
 
-        # Se cambia el estatus de la empresa
-        empresa = Empresa.find(retirar_datos.split('_')[0])
-        # El estatus de retirada
-        estatus_retirada = Estatus.find(:first, :conditions => ["descripcion like ? and alcance like ?", 'Retirada', 'Empresa'])
-        empresa.id_estatus = estatus_retirada.id
-        empresa.save
+        empresa_eliminada_detalle = EmpresaElimDetalle.new
+        empresa_eliminada_detalle.prefijo = empresa_eliminada.prefijo
+        empresa_eliminada_detalle.fecha_eliminacion = Time.now
+        empresa_eliminada_detalle.id_motivo_retiro = parametros[:motivo_retiro].to_i
+        empresa_eliminada_detalle.id_subestatus = parametros[:sub_estatus].to_i
+        empresa_eliminada_detalle.save
+
+        
 
       end
   end
@@ -127,30 +141,42 @@ class Empresa < ActiveRecord::Base
 
   def self.eliminar_empresas_masivo(parametros)
     
-    raise "eliminar_empresa_masivo".to_yaml
-
-    for retirar_empresas in (0..parametros[:retirar_empresas].size-1)
-        empresa_seleccionada = parametros[:retirar_empresas][retirar_empresas]
-        retirar_datos = parametros[:"#{empresa_seleccionada}"]
-        retirar_datos.split('_')[0] # retirar_datos.split('_')[0] Prefijo de la empresa retirar_datos.split('_')[1] id sub_estatus retirar_datos.split('_')[2] id motivo_retiro
+      for eliminar_empresas in (0..parametros[:eliminar_empresas].size-1)
+        empresa_seleccionada = parametros[:eliminar_empresas][eliminar_empresas]
+        eliminar_datos = parametros[:"#{empresa_seleccionada}"]
+        eliminar_datos.split('_')[0] # eliminar_datos.split('_')[0] Prefijo de la empresa eliminar_datos.split('_')[1] id sub_estatus eliminar_datos.split('_')[2] id motivo_retiro
         
-        # Si al empresa existe se edita, sino se crea el registro
-        empresa_retirar = EmpresasRetiradas.find(:first, :conditions => ["prefijo = ?",retirar_datos.split('_')[0]])
-        empresa_retirar =  EmpresasRetiradas.new if  empresa_retirar.nil?
+        # Se busca la empresa para obtener todos sus datos
+        empresa_eliminar = Empresa.find(:first, :conditions => ["prefijo = ?",eliminar_datos.split('_')[0]])
+        estatus = Estatus.find(:first, :conditions => ["descripcion like ? ", "Eliminada"])
+        empresa_eliminar.id_estatus = estatus.id # Se cambia el estatus de la empresa a retirada
+        empresa_eliminar.save
 
-        empresa_retirar.prefijo = retirar_datos.split('_')[0]
-        fecha_retiro = Time.now
-        empresa_retirar.fecha_retiro = fecha_retiro
-        empresa_retirar.id_motivo_retiro = parametros[:motivo_retiro].to_i
-        empresa_retirar.id_subestatus = parametros[:sub_estatus].to_i
-        empresa_retirar.save
+        empresa_eliminada =  EmpresaEliminada.new  # Se crear el registro de la empresa_eliminada
+        empresa_eliminada.prefijo = empresa_eliminar.prefijo
+        empresa_eliminada.nombre_empresa = empresa_eliminar.nombre_empresa
+        empresa_eliminada.fecha_inscripcion = empresa_eliminar.fecha_inscripcion
+        empresa_eliminada.id_estado = empresa_eliminar.id_estado 
+        empresa_eliminada.id_ciudad = empresa_eliminar.id_ciudad
+        empresa_eliminada.rif = empresa_eliminar.rif
+        empresa_eliminada.id_estatus = empresa_eliminar.id_estatus  
+        empresa_eliminada.id_tipo_usuario = empresa_eliminar.id_tipo_usuario
+        empresa_eliminada.nombre_comercial = empresa_eliminar.try(:nombre_comercial)
+        empresa_eliminada.id_clasificacion = empresa_eliminar.try(:id_clasificacion)
+        empresa_eliminada.categoria = empresa_eliminar.try(:categoria)
+        empresa_eliminada.division = empresa_eliminar.try(:division)
+        empresa_eliminada.grupo = empresa_eliminar.try(:grupo)
+        empresa_eliminada.clase = empresa_eliminar.try(:clase)
+        empresa_eliminada.rep_legal = empresa_eliminar.try(:rep_legal)
+        empresa_eliminada.cargo_rep_legal = empresa_eliminar.try(:cargo_rep_legal)
+        empresa_eliminada.save
 
-        # Se cambia el estatus de la empresa
-        empresa = Empresa.find(retirar_datos.split('_')[0])
-        # El estatus de retirada
-        estatus_retirada = Estatus.find(:first, :conditions => ["descripcion like ? and alcance like ?", 'Retirada', 'Empresa'])
-        empresa.id_estatus = estatus_retirada.id
-        empresa.save
+        empresa_eliminada_detalle = EmpresaElimDetalle.new
+        empresa_eliminada_detalle.prefijo = empresa_eliminada.prefijo
+        empresa_eliminada_detalle.fecha_eliminacion = Time.now
+        empresa_eliminada_detalle.id_motivo_retiro = eliminar_datos.split('_')[2]
+        empresa_eliminada_detalle.id_subestatus = eliminar_datos.split('_')[1]
+        empresa_eliminada_detalle.save
 
       end
   end

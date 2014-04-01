@@ -1,0 +1,52 @@
+%section.contexto
+    %label.contexto Empresas > Eliminar Empresas
+    %hr.contexto{:size => "1"}
+%p#notice.ui-state-highlight.ui-corner-all
+%section#areaTrabajo.areaTrabajo
+    =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_eliminar_empresa" do
+        %table.margen_inferior{:border => 1}
+            %tr
+                %td
+                    Eliminar Masivamente
+                %td
+                    Sub-Estatus
+                %td
+                    Motivo Retiro
+            %tr
+                %td
+                    =check_box_tag "eliminar_masivo"
+                %td
+                    =select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
+                %td
+                    =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
+       
+        %table#data_table_empresas_retirar.display{:"data-source" => "/empresas.json?eliminar=true"}
+            %thead
+                %tr
+                    %th Selección
+                    %th Prefijo
+                    %th Nombre Empresa
+                    %th Fecha Inscripción
+                    %th Dirección empresa
+                    %th Estado
+                    %th Ciudad
+                    %th RIF
+                    %th Estatus
+                    %th Clasificación
+                    %th Rep Legal
+                    %th Sub-estatus
+                    %th Motivo Ret
+
+                    
+                    
+            %tbody
+            %tfoot
+                =render 'footer_retirar'
+        %br/
+        %br/
+        #datos_empresas_eliminar
+        
+        =hidden_field_tag "eliminar", "true"
+        = submit_tag 'Eliminar'
+        = link_to 'Regresar', '/empresas'
+    
