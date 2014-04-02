@@ -8,9 +8,8 @@ class Empresa < ActiveRecord::Base
   belongs_to :ciudad, :foreign_key =>  "id_ciudad"  
   belongs_to :estatus, :foreign_key =>  "id_estatus"
   belongs_to :clasificacion, :foreign_key => "id_clasificacion"
-  has_one  :empresas_retiradas,  :foreign_key => "prefijo"
-  has_one  :empresa_elim_detalle,  :foreign_key => "prefijo"
-
+  has_one  :empresas_retiradas,  :foreign_key => "prefijo" , :dependent => :destroy   # Define una asociacion 1 a 1 con empresas_retiradas, eliminacion en cascada
+  has_many :productos_empresa, :foreign_key => "prefijo" # Define una asociaicion 1 a N con productos_empresa
   
   validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo,   :presence => {:message => "No puede estar en blanco"}
   validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{8})-([0-9]{1})$/, on: :create, :message => "El Formato del RIF es invalido"} # Validacion al crear
@@ -34,7 +33,7 @@ class Empresa < ActiveRecord::Base
   def self.retirar_empresas(parametros)
     
     #En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
-    # OJO: Esto se peude optimizar actualizando masivamente // RailCast 198
+    # OJO: Esto se puede optimizar actualizando masivamente // RailCast 198
 
       for retirar_empresas in (0..parametros[:retirar_empresas].size-1)
         empresa_seleccionada = parametros[:retirar_empresas][retirar_empresas]
@@ -103,10 +102,8 @@ class Empresa < ActiveRecord::Base
         
         # Se busca la empresa para obtener todos sus datos
         empresa_eliminar = Empresa.find(:first, :conditions => ["prefijo = ?",eliminar_datos.split('_')[0]])
-        estatus = Estatus.find(:first, :conditions => ["descripcion like ? ", "Eliminada"])
-        empresa_eliminar.id_estatus = estatus.id # Se cambia el estatus de la empresa a retirada
-        empresa_eliminar.save
-
+        estatus = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ? ", "Eliminada", 'Empresa'])
+        
         empresa_eliminada =  EmpresaEliminada.new  # Se crear el registro de la empresa_eliminada
         empresa_eliminada.prefijo = empresa_eliminar.prefijo
         empresa_eliminada.nombre_empresa = empresa_eliminar.nombre_empresa
@@ -124,20 +121,22 @@ class Empresa < ActiveRecord::Base
         empresa_eliminada.clase = empresa_eliminar.try(:clase)
         empresa_eliminada.rep_legal = empresa_eliminar.try(:rep_legal)
         empresa_eliminada.cargo_rep_legal = empresa_eliminar.try(:cargo_rep_legal)
+        empresa_eliminada.id_motivo_retiro = eliminar_datos.split('_')[2]
+        empresa_eliminada.id_subestatus = eliminar_datos.split('_')[1]
         empresa_eliminada.save
 
         empresa_eliminada_detalle = EmpresaElimDetalle.new
         empresa_eliminada_detalle.prefijo = empresa_eliminada.prefijo
         empresa_eliminada_detalle.fecha_eliminacion = Time.now
-        empresa_eliminada_detalle.id_motivo_retiro = parametros[:motivo_retiro].to_i
-        empresa_eliminada_detalle.id_subestatus = parametros[:sub_estatus].to_i
         empresa_eliminada_detalle.save
 
+        # Los productos asociados
+        estatus = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Eliminado', 'Producto'])
+        empresa_eliminar.productos_empresa.collect{|producto_empresa| producto_eliminado = ProductoEliminado.new; producto_eliminado.gtin = producto_empresa.producto.gtin; producto_eliminado.descripcion = producto_empresa.producto.descripcion; producto_eliminado.marca = producto_empresa.producto.marca; producto_eliminado.gpc = producto_empresa.producto.gpc; producto_eliminado.id_estatus = estatus.id; producto_eliminado.codigo_prod = producto_empresa.producto.codigo_prod; producto_eliminado.fecha_creacion = Time.now; producto_eliminado.id_tipo_gtin = producto_empresa.producto.id_tipo_gtin; producto_eliminado.save; producto_elim_detalle = ProductoElimDetalle.new; producto_elim_detalle.gtin = producto_empresa.producto.gtin; producto_elim_detalle.fecha_eliminacion = Time.now; producto_elim_detalle.save}
+        empresa_eliminar.destroy # Se elimina empresa y sus productos asociados
         
-
       end
   end
-
 
   def self.eliminar_empresas_masivo(parametros)
     
@@ -174,6 +173,9 @@ class Empresa < ActiveRecord::Base
         empresa_eliminada_detalle = EmpresaElimDetalle.new
         empresa_eliminada_detalle.prefijo = empresa_eliminada.prefijo
         empresa_eliminada_detalle.fecha_eliminacion = Time.now
+        
+        empresa_eliminada_detalle.id_motivo_retiro = parametros[:motivo_retiro].to_i
+        empresa_eliminada_detalle.id_subestatus = parametros[:sub_estatus].to_i
         empresa_eliminada_detalle.id_motivo_retiro = eliminar_datos.split('_')[2]
         empresa_eliminada_detalle.id_subestatus = eliminar_datos.split('_')[1]
         empresa_eliminada_detalle.save

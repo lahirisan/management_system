@@ -14,7 +14,9 @@ class EmpresasController < ApplicationController
                   elsif params[:retirar]
                     render :template =>'/empresas/retirar_empresa.html.haml'
                   elsif params[:eliminar]
-                    render :template =>'/empresas/eliminar_empresa.html.haml'  
+                    render :template =>'/empresas/eliminar_empresa.html.haml'
+                  elsif params[:eliminadas]
+                    render :template =>'/empresas/empresas_eliminadas.html.haml'  
                   else
                     render :template =>'/empresas/index.html.haml'
                   end
@@ -28,6 +30,8 @@ class EmpresasController < ApplicationController
                       render json: (RetirarEmpresasDatatable.new(view_context))
                     elsif (params[:eliminar] == 'true')
                       render json: (EliminarEmpresasDatatable.new(view_context))
+                    elsif (params[:eliminadas] == 'true')
+                      render json: (EmpresasEliminadasDatatable.new(view_context))
                     else
                       render json: (EmpresasDatatable.new(view_context))
                     end
