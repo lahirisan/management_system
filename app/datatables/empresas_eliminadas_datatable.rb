@@ -26,7 +26,7 @@ private
       fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
 
         [ 
-        check_box_tag("retirar_empresas[]", "#{empresa.id}", false, :class=>"retirar_empresa"),
+        check_box_tag("reactivar_empresas[]", "#{empresa.id}", false, :class=>"retirar_empresa"),
         empresa.prefijo,
         empresa.nombre_empresa,
         fecha,

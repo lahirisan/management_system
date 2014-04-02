@@ -1,5 +1,5 @@
 %section.contexto
-    %label.contexto Empresas > Retirar Empresas
+    %label.contexto Empresas > Empresas Eliminadas
     %hr.contexto{:size => "1"}
 %p#notice.ui-state-highlight.ui-corner-all
     -if (notice)
@@ -10,18 +10,10 @@
         %table.margen_inferior{:border => 1}
             %tr
                 %td
-                    Activación Masivo
-                %td
-                    Sub-Estatus
-                %td
-                    Motivo Retiro
+                    Activación Masiva
             %tr
                 %td
-                    =check_box_tag "retiro_masivo"
-                %td
-                    =select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
-                %td
-                    =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
+                    =check_box_tag "activacion_masiva"
        
         %table#data_table_empresas_retirar.display{:"data-source" => "/empresas.json?eliminadas=true"}
             %thead
@@ -38,10 +30,8 @@
                     %th Clasificación
                     %th Rep Legal
                     %th Sub-estatus
-                    %th Motivo Ret
+                    %th Motivo Eliminación
 
-                    
-                    
             %tbody
             %tfoot
                 =render 'footer_retirar'
@@ -49,7 +39,7 @@
         %br/
         #datos_empresas_retirar
         
-        =hidden_field_tag "retiro", "true"
-        = submit_tag 'Retirar'
-        = link_to 'Regresar', '/empresas'
+        =hidden_field_tag "reactiva", "true"
+        = submit_tag 'Activar'
+        
     

@@ -141,6 +141,8 @@ class EmpresasController < ApplicationController
       end
     end
 
+    Empresa.reactivar_empresa(params) if params[:reactivar]
+
     respond_to do |format|
           format.html { 
           redirect_to '/empresas?activacion=true', notice: "Los Prefijos #{params[:activar_empresa].collect{|prefijo| prefijo}} fueron activados satisfactoriamente"  if params[:activacion]
