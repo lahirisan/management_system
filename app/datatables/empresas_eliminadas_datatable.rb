@@ -37,8 +37,8 @@ private
         empresa.estatus.descripcion,
         empresa.clasificacion.try(:descripcion),
         empresa.rep_legal,
-        select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion", empresa.sub_estatus.id), :id => "#{empresa.prefijo}sub_estatus"),
-        select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion", empresa.motivo_retiro.id), :id => "#{empresa.prefijo}motivo_ret"),
+        empresa.sub_estatus.descripcion,
+        empresa.motivo_retiro.descripcion
       ]
   
     end

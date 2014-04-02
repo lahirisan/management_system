@@ -111,7 +111,7 @@ class Empresa < ActiveRecord::Base
         empresa_eliminada.id_estado = empresa_eliminar.id_estado 
         empresa_eliminada.id_ciudad = empresa_eliminar.id_ciudad
         empresa_eliminada.rif = empresa_eliminar.rif
-        empresa_eliminada.id_estatus = empresa_eliminar.id_estatus  
+        empresa_eliminada.id_estatus = estatus_empresa.id  
         empresa_eliminada.id_tipo_usuario = empresa_eliminar.id_tipo_usuario
         empresa_eliminada.nombre_comercial = empresa_eliminar.try(:nombre_comercial)
         empresa_eliminada.id_clasificacion = empresa_eliminar.try(:id_clasificacion)
@@ -131,8 +131,8 @@ class Empresa < ActiveRecord::Base
         empresa_eliminada_detalle.save
 
         # Los productos asociados
-        estatus = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Eliminado', 'Producto'])
-        empresa_eliminar.productos_empresa.collect{|producto_empresa| producto_eliminado = ProductoEliminado.new; producto_eliminado.gtin = producto_empresa.producto.gtin; producto_eliminado.descripcion = producto_empresa.producto.descripcion; producto_eliminado.marca = producto_empresa.producto.marca; producto_eliminado.gpc = producto_empresa.producto.gpc; producto_eliminado.id_estatus = estatus.id; producto_eliminado.codigo_prod = producto_empresa.producto.codigo_prod; producto_eliminado.fecha_creacion = Time.now; producto_eliminado.id_tipo_gtin = producto_empresa.producto.id_tipo_gtin; producto_eliminado.save; producto_elim_detalle = ProductoElimDetalle.new; producto_elim_detalle.gtin = producto_empresa.producto.gtin; producto_elim_detalle.fecha_eliminacion = Time.now; producto_elim_detalle.save}
+        estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Eliminado', 'Producto'])
+        empresa_eliminar.productos_empresa.collect{|producto_empresa| producto_eliminado = ProductoEliminado.new; producto_eliminado.gtin = producto_empresa.producto.gtin; producto_eliminado.descripcion = producto_empresa.producto.descripcion; producto_eliminado.marca = producto_empresa.producto.marca; producto_eliminado.gpc = producto_empresa.producto.gpc; producto_eliminado.id_estatus = estatus_producto.id; producto_eliminado.codigo_prod = producto_empresa.producto.codigo_prod; producto_eliminado.fecha_creacion = Time.now; producto_eliminado.id_tipo_gtin = producto_empresa.producto.id_tipo_gtin; producto_eliminado.save; producto_elim_detalle = ProductoElimDetalle.new; producto_elim_detalle.gtin = producto_empresa.producto.gtin; producto_elim_detalle.fecha_eliminacion = Time.now; producto_elim_detalle.save}
         empresa_eliminar.destroy # Se elimina empresa y sus productos asociados
         
       end
