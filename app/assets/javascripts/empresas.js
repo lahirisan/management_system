@@ -75,7 +75,7 @@
         });
         
         // Retiro masivo seleccionar / deseleccionar todos
-        $('#retiro_masivo').live('change', function() {  
+        $('#retiro_masivo, #activacion_masiva').live('change', function() {  
             if ($(this).is(':checked'))
             {
                 $('.retirar_empresa').prop('checked', true);
@@ -84,10 +84,10 @@
             {
                 $('.retirar_empresa').prop('checked', false);
             }
-        })
+        });
 
         // Eliminar masivo seleccionar / deseleccionar todos
-        $('#eliminar_masivo').live('change', function() {  
+        $('#eliminar_masivo').live('change', function() {
             if ($(this).is(':checked'))
             {
                 $('.eliminar_empresa').prop('checked', true);
@@ -95,9 +95,11 @@
             else 
             {
                 $('.eliminar_empresa').prop('checked', false);
-            }
-        })
-        
+            }  
+            
+        });
+
+      
         jQuery.ajaxSetup({
             
             beforeSend: function() { // muestra el GIF que indica se está cargando el AJAX
@@ -144,8 +146,8 @@
                 });
             }
 
-            confirm('¿ Estimado usuario, está seguro de RETIRAR la(s) empresa(s) seleccionada(s) ?');
-
+            if (!confirm('¿ Estimado usuario, está seguro de RETIRAR la(s) empresa(s) seleccionada(s) ?'))
+                return false;
         });
 
         // Formulario eliminar empresa
@@ -173,11 +175,20 @@
                 });
             }
 
-            confirm('¿ Estimado usuario, está seguro de ELIMINAR la(s) empresa(s) seleccionada(s) ?');
-
+            if (!confirm('¿ Estimado usuario, está seguro de ELIMINAR la(s) empresa(s) seleccionada(s) ?'))
+                return false;
         });
 
-
+        $('#formulario_eliminadas').submit(function( event ) { 
+            
+            // Se valida que se haya seleccionado alguna empresa para retirar
+            if ($(".retirar_empresas:checked").length == 0)
+            {
+                alert("Estimado usuario, no ha seleccionado ninguna empresa para REACTIVAR. Por favor verifique.");
+                return false;
+            }
+           
+        });
 
     })   
 

@@ -26,7 +26,7 @@ private
       fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
 
         [ 
-        check_box_tag("eliminar_empresas[]", "#{empresa.id}", false, :class=>"eliminar_empresa"),
+        check_box_tag("eliminar_empresas[]", "#{empresa.id}", false, :class => "eliminar_empresa"),
         empresa.prefijo,
         empresa.nombre_empresa,
         fecha,
@@ -52,7 +52,7 @@ private
   def fetch_empresas
     
    
-    empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, :empresas_retiradas).order("#{sort_column} #{sort_direction}")
+    empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, :empresas_retiradas).where("(estatus.descripcion like ?  or estatus.descripcion like ?) and alcance like ?", 'Retirada','Activa','Empresa').order("#{sort_column} #{sort_direction}")
    
     
     empresas = empresas.page(page).per_page(per_page)
