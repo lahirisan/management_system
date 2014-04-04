@@ -7,8 +7,7 @@ class EmpresasController < ApplicationController
     # OJO: La llamada JSON y los parametro se establecen en el datatable desde el template.html.haml
       
     respond_to do |format|
-      format.html{       
-        
+      format.html{
                   if params[:activacion]
                     render :template =>'/empresas/activacion.html.haml' 
                   elsif params[:retirar]
@@ -16,11 +15,12 @@ class EmpresasController < ApplicationController
                   elsif params[:eliminar]
                     render :template =>'/empresas/eliminar_empresa.html.haml'
                   elsif params[:eliminadas]
-                    render :template =>'/empresas/empresas_eliminadas.html.haml'  
+                    render :template =>'/empresas/empresas_eliminadas.html.haml'
+                  elsif params[:retiradas]
+                    render :template =>'/empresas/empresas_retiradas.html.haml'  
                   else
                     render :template =>'/empresas/index.html.haml'
                   end
-
       } # index.html.erb
       
       format.json { 
@@ -32,6 +32,8 @@ class EmpresasController < ApplicationController
                       render json: (EliminarEmpresasDatatable.new(view_context))
                     elsif (params[:eliminadas] == 'true')
                       render json: (EmpresasEliminadasDatatable.new(view_context))
+                    elsif (params[:retiradas] == 'true')
+                      render json: (EmpresasRetiradasDatatable.new(view_context))
                     else
                       render json: (EmpresasDatatable.new(view_context))
                     end
@@ -123,17 +125,32 @@ class EmpresasController < ApplicationController
 
   def update_multiple
 
+   
+
     Empresa.validar_empresas(params[:activar_empresa]) if params[:activacion] #Parametro que indica Validar Empresa       
     Empresa.retirar_empresas(params) if params[:retiro]
     Empresa.eliminar_empresas(params) if params[:eliminar]
-    Empresa.reactivar_empresas(params) if params[:reactivar]
+    
+    if params[:reactivar]
+      if params[:retiradas]
+        Empresa.reactivar_empresas_retiradas(params) 
+      else
+        Empresa.reactivar_empresas_eliminadas(params) 
+      end
+    end
 
     respond_to do |format|
           format.html { 
           redirect_to '/empresas?activacion=true', notice: "Los Prefijos #{params[:activar_empresa].collect{|prefijo| prefijo}} fueron activados satisfactoriamente"  if params[:activacion]
           redirect_to '/empresas?retirar=true', notice: "Los Prefijos #{params[:retirar_empresas].collect{|prefijo| prefijo}} fueron activados satisfactoriamente"  if params[:retiro]
           redirect_to '/empresas?eliminar=true', notice: "Los Prefijos #{params[:eliminar_empresas].collect{|prefijo| prefijo}} fueron activados satisfactoriamente"  if params[:eliminar]
-          redirect_to '/empresas', notice: "Los Prefijos #{params[:reactivar_empresas].collect{|prefijo| prefijo}} fueron activados satisfactoriamente"  if params[:reactivar]          
+          if params[:reactivar]
+            if params[:retiradas]
+              redirect_to '/empresas?retiradas=true', notice: "Los Prefijos #{params[:reactivar_empresas].collect{|prefijo| prefijo}} fueron activados satisfactoriamente"
+            else
+              redirect_to '/empresas?eliminadas=true', notice: "Los Prefijos #{params[:reactivar_empresas].collect{|prefijo| prefijo}} fueron activados satisfactoriamente"
+            end
+          end 
           }
     end
   end

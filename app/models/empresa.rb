@@ -1,5 +1,7 @@
 class Empresa < ActiveRecord::Base
   self.table_name = "empresa"  # El nombre de la tabla que se esta mapeando
+  set_primary_key "prefijo" # Se establece la clave primaria
+  
   has_one :correspondencia, :foreign_key => "prefijo"
   accepts_nested_attributes_for :correspondencia, :allow_destroy => true # Maneja el modelo correspondencia en el formulario de empresa
   attr_accessible :cargo_rep_legal, :categoria, :clase, :direccion_empresa, :division, :fecha_inscripcion, :grupo, :id_ciudad, :id_clasificacion, :id_estado, :id_estatus, :id_tipo_usuario, :nombre_comercial, :nombre_empresa, :rep_legal, :rif, :prefijo,  :correspondencia_attributes # Los atributos de correspondecia
@@ -33,34 +35,29 @@ class Empresa < ActiveRecord::Base
   def self.retirar_empresas(parametros)
     
     #En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
-    # OJO: Esto se puede optimizar actualizando masivamente // RailCast 198
+    # OJO: Esto se puede optimizar actualizando masivamente // Refrencia RailCast 198
 
       for retirar_empresas in (0..parametros[:retirar_empresas].size-1)
         empresa_seleccionada = parametros[:retirar_empresas][retirar_empresas]
         retirar_datos = parametros[:"#{empresa_seleccionada}"]
         retirar_datos.split('_')[0] # retirar_datos.split('_')[0] Prefijo de la empresa retirar_datos.split('_')[1] id sub_estatus retirar_datos.split('_')[2] id motivo_retiro
-        
-        # Si al empresa existe se edita, sino se crea el registro
-        empresa_retirar = EmpresasRetiradas.find(:first, :conditions => ["prefijo = ?",retirar_datos.split('_')[0]])
-        empresa_retirar =  EmpresasRetiradas.new if  empresa_retirar.nil?
-
+        empresa_retirar =  EmpresasRetiradas.new 
         empresa_retirar.prefijo = retirar_datos.split('_')[0]
         fecha_retiro = Time.now
         empresa_retirar.fecha_retiro = fecha_retiro
         empresa_retirar.id_motivo_retiro = retirar_datos.split('_')[2]
         empresa_retirar.id_subestatus = retirar_datos.split('_')[1]
         empresa_retirar.save
-
-        # Se cambia el estatus de la empresa
-        empresa = Empresa.find(retirar_datos.split('_')[0])
-        # El estatus de retirada
+        
+        empresa = Empresa.find(retirar_datos.split('_')[0]) # La clave primaria es es prefijo
+        # El estatus de retirada Se cambia el estatus de la empresa
         estatus_retirada = Estatus.find(:first, :conditions => ["descripcion like ? and alcance like ?", 'Retirada', 'Empresa'])
         empresa.id_estatus = estatus_retirada.id
         empresa.save
 
         estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Retirado', 'Producto'])
-        #Los productos se agrega a productos eliminados
-        empresa_retirar.productos_empresa.collect{|producto_empresa| producto = Producto.find(:first, :conditions => ["gtin like ?", productos_empresa.gtin]); producto_retirado = ProductoRetirado.new; producto_retirado.gtin = producto.gtin; producto_retirado.fecha_retiro = Time.now; producto_retirado.save; producto.id_estatus = estatus_producto.id; producto.save}
+        #Los productos se agrega a productos retirados 
+        empresa.productos_empresa.collect{|producto_empresa| producto = Producto.find(:first, :conditions => ["gtin like ?", producto_empresa.gtin]); producto_retirado = ProductosRetirados.new; producto_retirado.gtin = producto.gtin; producto_retirado.fecha_retiro = Time.now; producto_retirado.save; producto.id_estatus = estatus_producto.id; producto.save}
         
       end
   end
@@ -117,9 +114,8 @@ class Empresa < ActiveRecord::Base
 
       end
   end
-
   
-  def self.reactivar_empresas(parametros)
+  def self.reactivar_empresas_eliminadas(parametros)
     
     estatus_empresa = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activa', 'Empresa'])
     
@@ -173,8 +169,17 @@ class Empresa < ActiveRecord::Base
       end
     
     end
-      
 
+  end
+
+  def self.reactivar_empresas_retiradas(parametros)
+    
+    estatus_empresa = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activa', 'Empresa'])
+    estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activo', 'Producto'])
+
+    empresas_retiradas = Empresa.find(parametros[:reactivar_empresas]) # Se busca la empresa
+    empresas_retiradas.collect{|empresa| empresa.id_estatus = estatus_empresa.id; empresa.save; empresa_retirada = EmpresasRetiradas.find(:first, :conditions => ["prefijo like ?", empresa.prefijo]); empresa_retirada.destroy; empresa.productos_empresa.collect{|producto_empresa| producto = Producto.find(producto_empresa.gtin); producto.id_estatus = estatus_producto.id; producto_retirado = ProductosRetirados.find(:first, :conditions =>["gtin like ?",producto_empresa.gtin]); producto_retirado.destroy;}} 
+ 
   end
 
 end

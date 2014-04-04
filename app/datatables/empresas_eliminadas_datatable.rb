@@ -50,10 +50,8 @@ private
   end
 
   def fetch_empresas
-    
    
     empresas = EmpresaEliminada.includes(:estado, :ciudad, :estatus, :clasificacion).order("#{sort_column} #{sort_direction}")
-   
     
     empresas = empresas.page(page).per_page(per_page)
     

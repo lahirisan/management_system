@@ -61,11 +61,11 @@ private
       empresas = empresas.where("empresa.nombre_empresa like :search or empresa.fecha_inscripcion like :search or empresa.direccion_empresa like :search or estados.nombre like :search or ciudad.nombre like :search or empresa.rif like :search or estatus.descripcion like :search or empresa.id_tipo_usuario like :search or empresa.nombre_comercial like :search or empresa.id_clasificacion like :search or empresa.categoria like :search or empresa.division like :search or empresa.grupo like :search or empresa.clase like :search or empresa.rep_legal like :search or empresa.cargo_rep_legal like :search", search: "%#{params[:sSearch]}%")
     end
     
-    if params[:sSearch_1].present? # Filtro de busqueda por nombre de la empresa
+    if params[:sSearch_1].present? # Filtro de busqueda por prefijo
        empresas = empresas.where("empresa.prefijo like :search1", search1: "%#{params[:sSearch_1]}%" )
       
     end
-    if params[:sSearch_2].present? # Filtro fecha_inscripcion
+    if params[:sSearch_2].present? # Filtro nombre empresa
       empresas = empresas.where("empresa.nombre_empresa like :search2", search2: "%#{params[:sSearch_2]}%" )
     end
     if params[:sSearch_3].present?

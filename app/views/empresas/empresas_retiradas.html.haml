@@ -1,29 +1,21 @@
 %section.contexto
-    %label.contexto Empresas > Retirar Empresas
+    %label.contexto Empresas > Empresas Retiradas
     %hr.contexto{:size => "1"}
 %p#notice.ui-state-highlight.ui-corner-all
     -if (notice)
         =notice
         -notice = nil
 %section#areaTrabajo.areaTrabajo
-    =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retirar_empresa" do
+    =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retiradas" do
         %table.margen_inferior{:border => 1}
             %tr
                 %td
-                    Retiro Masivo
-                %td
-                    Sub-Estatus
-                %td
-                    Motivo Retiro
+                    Activación Masiva
             %tr
                 %td
-                    =check_box_tag "retiro_masivo"
-                %td
-                    =select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
-                %td
-                    =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
+                    =check_box_tag "activacion_masiva"
        
-        %table#data_table_empresas_retirar.display{:"data-source" => "/empresas.json?retirar=true"}
+        %table#data_table_empresas_retirar.display{:"data-source" => "/empresas.json?retiradas=true"}
             %thead
                 %tr
                     %th Selección
@@ -38,10 +30,8 @@
                     %th Clasificación
                     %th Rep Legal
                     %th Sub-estatus
-                    %th Motivo Ret
+                    %th Motivo Eliminación
 
-                    
-                    
             %tbody
             %tfoot
                 =render 'footer_retirar'
@@ -49,6 +39,8 @@
         %br/
         #datos_empresas_retirar
         
-        =hidden_field_tag "retiro", "true"
-        = submit_tag 'Retirar'
+        =hidden_field_tag "reactivar", "true"
+        =hidden_field_tag "retiradas", "true"
+        = submit_tag 'Reactivar'
+        
     

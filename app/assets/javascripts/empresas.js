@@ -74,7 +74,7 @@
 
         });
         
-        // Retiro masivo seleccionar / deseleccionar todos
+        // Retiro masivo, activacion seleccionar / deseleccionar todos
         $('#retiro_masivo, #activacion_masiva').live('change', function() {  
             if ($(this).is(':checked'))
             {
@@ -83,6 +83,16 @@
             else 
             {
                 $('.retirar_empresa').prop('checked', false);
+            }
+
+            // empresas retiradas
+            if ($(this).is(':checked'))
+            {
+                $('.empresa_retirada').prop('checked', true);
+            }
+            else 
+            {
+                $('.empresa_retirada').prop('checked', false);
             }
         });
 
@@ -182,7 +192,7 @@
         $('#formulario_eliminadas').submit(function( event ) { 
             
             // Se valida que se haya seleccionado alguna empresa para retirar
-            if ($(".retirar_empresas:checked").length == 0)
+            if ($(".retirar_empresa:checked").length == 0)
             {
                 alert("Estimado usuario, no ha seleccionado ninguna empresa para REACTIVAR. Por favor verifique.");
                 return false;

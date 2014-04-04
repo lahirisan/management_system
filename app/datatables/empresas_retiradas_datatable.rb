@@ -1,4 +1,4 @@
-class EliminarEmpresasDatatable < AjaxDatatablesRails
+class EmpresasRetiradasDatatable < AjaxDatatablesRails
   delegate :params, :h,  :link_to, :check_box_tag, :try, :select_tag, :options_from_collection_for_select,  to: :@view
 
    def initialize(view)
@@ -24,9 +24,11 @@ private
       
       fecha = ""
       fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
+      sub_estatus = empresa.empresas_retiradas.try(:sub_estatus).try(:descripcion).nil? ? 'No Tiene' : empresa.empresas_retiradas.try(:sub_estatus).try(:descripcion)
+      motivo_retiro = empresa.empresas_retiradas.try(:motivo_retiro).try(:descripcion).nil? ? 'No Tiene' : empresa.empresas_retiradas.try(:motivo_retiro).try(:descripcion)
 
         [ 
-        check_box_tag("eliminar_empresas[]", "#{empresa.id}", false, :class => "eliminar_empresa"),
+        check_box_tag("reactivar_empresas[]", "#{empresa.id}", false, :class=>"empresa_retirada"),
         empresa.prefijo,
         empresa.nombre_empresa,
         fecha,
@@ -37,8 +39,8 @@ private
         empresa.estatus.descripcion,
         empresa.clasificacion.try(:descripcion),
         empresa.rep_legal,
-        select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"), :id => "#{empresa.prefijo}sub_estatus"),
-        select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"), :id => "#{empresa.prefijo}motivo_ret"),
+        sub_estatus,
+        motivo_retiro
       ]
   
     end
@@ -51,21 +53,18 @@ private
 
   def fetch_empresas
     
-   
-    empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, :empresas_retiradas).where("estatus.descripcion like ? and alcance like ?", 'Retirada','Empresa').order("#{sort_column} #{sort_direction}")
-   
-    
+    empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, :empresas_retiradas).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("#{sort_column} #{sort_direction}")
     empresas = empresas.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general
       empresas = empresas.where("empresa.nombre_empresa like :search or empresa.fecha_inscripcion like :search or empresa.direccion_empresa like :search or estados.nombre like :search or ciudad.nombre like :search or empresa.rif like :search or estatus.descripcion like :search or empresa.id_tipo_usuario like :search or empresa.nombre_comercial like :search or empresa.id_clasificacion like :search or empresa.categoria like :search or empresa.division like :search or empresa.grupo like :search or empresa.clase like :search or empresa.rep_legal like :search or empresa.cargo_rep_legal like :search", search: "%#{params[:sSearch]}%")
     end
     
-    if params[:sSearch_1].present? # Filtro de busqueda por nombre de la empresa
+    if params[:sSearch_1].present? # Filtro de busqueda por prefijo
        empresas = empresas.where("empresa.prefijo like :search1", search1: "%#{params[:sSearch_1]}%" )
       
     end
-    if params[:sSearch_2].present? # Filtro fecha_inscripcion
+    if params[:sSearch_2].present? # Filtro nombre empresa
       empresas = empresas.where("empresa.nombre_empresa like :search2", search2: "%#{params[:sSearch_2]}%" )
     end
     if params[:sSearch_3].present?
