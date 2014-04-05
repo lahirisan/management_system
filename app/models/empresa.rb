@@ -12,6 +12,8 @@ class Empresa < ActiveRecord::Base
   belongs_to :clasificacion, :foreign_key => "id_clasificacion"
   has_one  :empresas_retiradas,  :foreign_key => "prefijo" , :dependent => :destroy   # Define una asociacion 1 a 1 con empresas_retiradas, eliminacion en cascada
   has_many :productos_empresa, :foreign_key => "prefijo" # Define una asociaicion 1 a N con productos_empresa
+  has_many :producto, :through => :productos_empresa, :foreign_key => "prefijo" # Define una asociaicion 1 a N con productos_empresa
+
   
   validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo,   :presence => {:message => "No puede estar en blanco"}
   validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{8})-([0-9]{1})$/, on: :create, :message => "El Formato del RIF es invalido"} # Validacion al crear

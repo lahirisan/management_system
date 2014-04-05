@@ -1,4 +1,7 @@
 GS1::Application.routes.draw do
+  resources :productos
+
+
   resources :empresas do
     collection do
       put 'update_multiple', :action => 'update_multiple', :as => 'update_multiple' 
