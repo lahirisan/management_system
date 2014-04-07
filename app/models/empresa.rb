@@ -130,62 +130,62 @@ class Empresa < ActiveRecord::Base
       end
   end
   
-  def self.reactivar_empresas_eliminadas(parametros)
+  # def self.reactivar_empresas_eliminadas(parametros)
     
-    estatus_empresa = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activa', 'Empresa'])
+  #   estatus_empresa = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activa', 'Empresa'])
     
-    # reactivacion de las empresasa
-    for eliminada in (0..parametros[:reactivar_empresas].size-1)
-      empresa_reactivada = Empresa.new
-      empresa_eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo like ?",parametros[:reactivar_empresas][eliminada]])
-      empresa_reactivada.prefijo = empresa_eliminada.prefijo
-      empresa_reactivada.nombre_empresa = empresa_eliminada.nombre_empresa
-      empresa_reactivada.fecha_inscripcion = empresa_eliminada.fecha_inscripcion
-      empresa_reactivada.direccion_empresa = empresa_eliminada.direccion_empresa.nil? ? 'No Tiene' : empresa_eliminada.direccion_empresa
-      empresa_reactivada.id_estado = empresa_eliminada.id_estado 
-      empresa_reactivada.id_ciudad = empresa_eliminada.id_ciudad
-      empresa_reactivada.rif = empresa_eliminada.rif.strip # Elimina espacios en blanco
-      empresa_reactivada.id_estatus = estatus_empresa.id
-      empresa_reactivada.id_tipo_usuario = empresa_eliminada.id_tipo_usuario
-      empresa_reactivada.nombre_comercial = empresa_eliminada.try(:nombre_comercial)
-      empresa_reactivada.id_clasificacion = empresa_eliminada.try(:id_clasificacion)
-      empresa_reactivada.categoria = empresa_eliminada.try(:categoria)
-      empresa_reactivada.division = empresa_eliminada.try(:division)
-      empresa_reactivada.grupo = empresa_eliminada.try(:grupo)
-      empresa_reactivada.clase = empresa_eliminada.try(:clase)
-      empresa_reactivada.rep_legal = empresa_eliminada.try(:rep_legal)
-      empresa_reactivada.cargo_rep_legal = empresa_eliminada.try(:cargo_rep_legal)
-      empresa_reactivada.save
-      empresa_eliminada.destroy      
-    end
+  #   # reactivacion de las empresasa
+  #   for eliminada in (0..parametros[:reactivar_empresas].size-1)
+  #     empresa_reactivada = Empresa.new
+  #     empresa_eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo like ?",parametros[:reactivar_empresas][eliminada]])
+  #     empresa_reactivada.prefijo = empresa_eliminada.prefijo
+  #     empresa_reactivada.nombre_empresa = empresa_eliminada.nombre_empresa
+  #     empresa_reactivada.fecha_inscripcion = empresa_eliminada.fecha_inscripcion
+  #     empresa_reactivada.direccion_empresa = empresa_eliminada.direccion_empresa.nil? ? 'No Tiene' : empresa_eliminada.direccion_empresa
+  #     empresa_reactivada.id_estado = empresa_eliminada.id_estado 
+  #     empresa_reactivada.id_ciudad = empresa_eliminada.id_ciudad
+  #     empresa_reactivada.rif = empresa_eliminada.rif.strip # Elimina espacios en blanco
+  #     empresa_reactivada.id_estatus = estatus_empresa.id
+  #     empresa_reactivada.id_tipo_usuario = empresa_eliminada.id_tipo_usuario
+  #     empresa_reactivada.nombre_comercial = empresa_eliminada.try(:nombre_comercial)
+  #     empresa_reactivada.id_clasificacion = empresa_eliminada.try(:id_clasificacion)
+  #     empresa_reactivada.categoria = empresa_eliminada.try(:categoria)
+  #     empresa_reactivada.division = empresa_eliminada.try(:division)
+  #     empresa_reactivada.grupo = empresa_eliminada.try(:grupo)
+  #     empresa_reactivada.clase = empresa_eliminada.try(:clase)
+  #     empresa_reactivada.rep_legal = empresa_eliminada.try(:rep_legal)
+  #     empresa_reactivada.cargo_rep_legal = empresa_eliminada.try(:cargo_rep_legal)
+  #     empresa_reactivada.save
+  #     empresa_eliminada.destroy      
+  #   end
 
     
-    #reactivacion de los productos
-    estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activo', 'Producto'])
-    # Se buscan los productos de las empresas
+  #   #reactivacion de los productos
+  #   estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activo', 'Producto'])
+  #   # Se buscan los productos de las empresas
     
-    for eliminada in (0..parametros[:reactivar_empresas].size-1)
-      productos_empresas = ProductosEmpresa.find(:all, :conditions => ["prefijo like ?", parametros[:reactivar_empresas][eliminada]])
+  #   for eliminada in (0..parametros[:reactivar_empresas].size-1)
+  #     productos_empresas = ProductosEmpresa.find(:all, :conditions => ["prefijo like ?", parametros[:reactivar_empresas][eliminada]])
 
-      for producto in (0.. productos_empresas.size-1)
-        producto_eliminado = ProductoEliminado.find(:first, :conditions => ["gtin like ?",productos_empresas[producto].gtin])
-        producto_activado = Producto.new
-        producto_activado.gtin = producto_eliminado.gtin
-        producto_activado.descripcion = producto_eliminado.descripcion
-        producto_activado.marca = producto_eliminado.try(:marca)
-        producto_activado.gpc = producto_eliminado.try(:gpc)
-        producto_activado.id_estatus = estatus_producto.id
-        producto_activado.codigo_prod = producto_eliminado.try(:codigo_prod)
-        producto_activado.fecha_creacion = producto_eliminado.try(:fecha_creacion)
-        producto_activado.id_tipo_gtin = producto_eliminado.try(:id_tipo_gtin)
-        producto_activado.save
-        producto_eliminado.destroy
+  #     for producto in (0.. productos_empresas.size-1)
+  #       producto_eliminado = ProductoEliminado.find(:first, :conditions => ["gtin like ?",productos_empresas[producto].gtin])
+  #       producto_activado = Producto.new
+  #       producto_activado.gtin = producto_eliminado.gtin
+  #       producto_activado.descripcion = producto_eliminado.descripcion
+  #       producto_activado.marca = producto_eliminado.try(:marca)
+  #       producto_activado.gpc = producto_eliminado.try(:gpc)
+  #       producto_activado.id_estatus = estatus_producto.id
+  #       producto_activado.codigo_prod = producto_eliminado.try(:codigo_prod)
+  #       producto_activado.fecha_creacion = producto_eliminado.try(:fecha_creacion)
+  #       producto_activado.id_tipo_gtin = producto_eliminado.try(:id_tipo_gtin)
+  #       producto_activado.save
+  #       producto_eliminado.destroy
 
-      end
+  #     end
     
-    end
+  #   end
 
-  end
+  # end
 
   def self.reactivar_empresas_retiradas(parametros)
     
