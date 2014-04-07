@@ -109,23 +109,11 @@
       %label.contexto
         Registrar Empresa  > Datos de Contacto
       %hr.contexto{:size => "1"}
-
+      // OJO este es el caso en que la empresa estra creado, se esta editando empresa
       %table
         %tr
           %td
-            Tipo Usuario
-          %td
-            = f.collection_select :id_tipo_usuario, TipoUsuarioEmpresa.all, :id_tipo_usu_empresa, :descripcion, {:prompt => "-Tipo Usuario-"}
-        %tr
-          %td
-            Representante Legal
-          %td
-            =f.text_field :rep_legal
-        %tr
-          %td
-            Cargo Rep. Legal
-          %td
-            = f.text_field :cargo_rep_legal
+            =link_to "Datos de Contacto", "/empresas/#{@empresa.prefijo}/datos_contactos"
         
       %br/
       %label.contexto
