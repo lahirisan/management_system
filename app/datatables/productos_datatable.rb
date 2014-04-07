@@ -30,10 +30,8 @@ private
         producto.gpc,
         producto.try(:estatus).try(:descripcion),
         producto.codigo_prod,
-        producto.fecha_creacion,
-        link_to("Ver", producto),
-        link_to("Editar", edit_producto_path(producto)),
-        link_to('Eliminar', producto, method: :delete, data: { confirm: 'Esta seguro ELIMINAR?' })
+        producto.fecha_creacion
+       
       ]
       
       
@@ -48,7 +46,7 @@ private
 
   def fetch_productos
    
-    productos = Producto.includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("#{sort_column} #{sort_direction}")
+    productos = Producto.includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin)
     productos = productos.page(page).per_page(per_page)
     
     # if params[:sSearch].present? # Filtro de busqueda general

@@ -2,7 +2,7 @@ class EmpresasController < ApplicationController
   # GET /empresas
   # GET /empresas.json
   def index
-    @empresas = Empresa.includes(:estado, :ciudad, :estatus)
+    @empresas = Empresa.includes(:estado, :ciudad, :estatus).limit(100)
     
     # OJO: La llamada JSON y los parametro se establecen en el datatable desde el template.html.haml
       
@@ -43,7 +43,7 @@ class EmpresasController < ApplicationController
        }
       
       format.csv{ send_data @empresas.to_csv}
-      format.pdf {}  # Generar PDF
+      format.pdf { @empresas = Empresa.includes(:estado, :ciudad, :estatus).limit(100)}  # Generar PDF
 
     end
 

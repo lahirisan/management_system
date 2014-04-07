@@ -7,13 +7,13 @@
         -notice = nil
 %section#areaTrabajo.areaTrabajo
     =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_eliminadas" do
-        %table.margen_inferior{:border => 1}
-            %tr
-                %td
-                    Activación Masiva
-            %tr
-                %td
-                    =check_box_tag "activacion_masiva"
+        / %table.margen_inferior{:border => 1}
+        /     %tr
+        /         %td
+        /             Activación Masiva
+        /     %tr
+        /         %td
+        /             =check_box_tag "activacion_masiva"
        
         %table#data_table_empresas_retirar.display{:"data-source" => "/empresas.json?eliminadas=true"}
             %thead
@@ -40,6 +40,6 @@
         #datos_empresas_retirar
         
         =hidden_field_tag "reactivar", "true"
-        = submit_tag 'Reactivar'
+        /= submit_tag 'Reactivar'
         
     
