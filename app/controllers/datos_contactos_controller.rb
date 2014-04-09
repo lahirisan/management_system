@@ -3,7 +3,8 @@ class DatosContactosController < ApplicationController
   # GET /datos_contactos.json
   def index
 
-    @datos_contactos = DatosContacto.find(:all, :conditions => ["prefijo =?", params[:id]])
+    @datos_contactos = DatosContacto.find(:all, :conditions => ["prefijo =?", params[:empresa_id]])
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @datos_contactos }
@@ -24,8 +25,9 @@ class DatosContactosController < ApplicationController
   # GET /datos_contactos/new
   # GET /datos_contactos/new.json
   def new
-    @datos_contacto = DatosContacto.new
-
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
+    @datos_contacto = @empresa.datos_contacto.build  ## Crea  el formulario para los datos_contacto
+    
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @datos_contacto }
@@ -34,21 +36,23 @@ class DatosContactosController < ApplicationController
 
   # GET /datos_contactos/1/edit
   def edit
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
     @datos_contacto = DatosContacto.find(params[:id])
   end
 
   # POST /datos_contactos
   # POST /datos_contactos.json
   def create
+
+    @empresa = Empresa.find(:first, :conditions =>["prefijo = ?", params[:empresa_id]])
+    @datos_contacto = @empresa.datos_contacto.build(params[:datos_contacto])
     @datos_contacto = DatosContacto.new(params[:datos_contacto])
 
     respond_to do |format|
       if @datos_contacto.save
-        format.html { redirect_to @datos_contacto, notice: 'Datos contacto was successfully created.' }
-        format.json { render json: @datos_contacto, status: :created, location: @datos_contacto }
+        format.html { redirect_to "/empresas/#{params[:empresa_id]}/datos_contactos", notice: 'Datos contacto asociados fueron asociados a la Empresa con Prefijo' + "#{params[:empresa_id]}" }        
       else
         format.html { render action: "new" }
-        format.json { render json: @datos_contacto.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -56,11 +60,12 @@ class DatosContactosController < ApplicationController
   # PUT /datos_contactos/1
   # PUT /datos_contactos/1.json
   def update
+    
     @datos_contacto = DatosContacto.find(params[:id])
 
     respond_to do |format|
       if @datos_contacto.update_attributes(params[:datos_contacto])
-        format.html { redirect_to @datos_contacto, notice: 'Datos contacto was successfully updated.' }
+        format.html { redirect_to "/empresas/#{params[:empresa_id]}/datos_contactos", notice: 'Datos contacto was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

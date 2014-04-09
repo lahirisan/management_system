@@ -109,12 +109,34 @@
       %label.contexto
         Registrar Empresa  > Datos de Contacto
       %hr.contexto{:size => "1"}
-      // OJO este es el caso en que la empresa estra creado, se esta editando empresa
-      %table
-        %tr
-          %td
-            =link_to "Datos de Contacto", "/empresas/#{@empresa.prefijo}/datos_contactos"
+      
+      // Si la empresa es nueva un formulario para crear un contacto
+      -if @empresa.new_record?
+        =f.fields_for :empresa_contacto do |fc|
+          %table
+            %tr
+              %td
+                Tipo Contacto
+              %td
+                = fc.select(:tipo, options_for_select(['email', 'fax', 'opcional', 'principal', 'secundario']))
+            %tr
+              %td
+                Nombre Contacto
+              %td
+                =fc.text_field :contactao
+            %tr
+              %td
+                Cargo Contacto
+              %td
+                =fc.text_field :cargo_contacto      
+      -else
+        %table
+          %tr
+            %td
+              =link_to 'Datos de Contacto', "/empresas/#{@empresa.prefijo}/datos_contactos"
         
+      
+
       %br/
       %label.contexto
         Registrar Empresa  > Datos de Correspondencia

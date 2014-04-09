@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Prefijo:
+  = @datos_contacto.prefijo
+%p
+  %b Contacto:
+  = @datos_contacto.contacto
+%p
+  %b Tipo:
+  = @datos_contacto.tipo
+%p
+  %b Nombre contacto:
+  = @datos_contacto.nombre_contacto
+%p
+  %b Cargo contacto:
+  = @datos_contacto.cargo_contacto
+
+= link_to 'Edit', edit_datos_contacto_path(@datos_contacto)
+\|
+= link_to 'Back', datos_contactos_path
