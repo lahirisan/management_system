@@ -21,7 +21,7 @@
         %td= datos_contacto.nombre_contacto
         %td= datos_contacto.cargo_contacto
         %td= link_to 'Editar', "/empresas/#{params[:empresa_id]}/datos_contactos/#{datos_contacto.id}/edit"
-        %td= link_to 'Eliminar', "/empresas/#{params[:empresa_id]}/datos_contactos/#{datos_contacto.id}", :method => :delete, :data => { :confirm => 'Seguro ELIMINAR este contacto?'} 
+        %td= link_to 'Eliminar', "/empresas/#{params[:empresa_id]}/datos_contactos/#{datos_contacto.id}", {:method => :delete, :data => { :confirm => 'Seguro ELIMINAR este contacto?'}} 
               
   %br/
   %br/

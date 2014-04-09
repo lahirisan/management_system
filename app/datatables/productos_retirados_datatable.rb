@@ -1,4 +1,4 @@
-class ProductosDatatable < AjaxDatatablesRails
+class ProductosRetiradosDatatable < AjaxDatatablesRails
   delegate :params, :h, :link_to,  to: :@view
 
    def initialize(view)
@@ -48,7 +48,7 @@ private
 
   def fetch_productos
    
-    productos = Producto.includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin)
+    productos = Producto.where("estatus.descripcion like ? and estatus.alcance like ?", 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin)
     productos = productos.page(page).per_page(per_page)
     
     # if params[:sSearch].present? # Filtro de busqueda general

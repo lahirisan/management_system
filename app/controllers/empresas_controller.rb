@@ -4,8 +4,9 @@ class EmpresasController < ApplicationController
   def index
     @empresas = Empresa.includes(:estado, :ciudad, :estatus).limit(100)
     
+
     # OJO: La llamada JSON y los parametro se establecen en el datatable desde el template.html.haml
-      
+   
     respond_to do |format|
       format.html{
                   if params[:activacion]
@@ -24,6 +25,8 @@ class EmpresasController < ApplicationController
       } # index.html.erb
       
       format.json { 
+                    
+
                     if (params[:activacion] == 'true')
                       render json: (ActivacionEmpresasDatatable.new(view_context))
                     elsif (params[:retirar] == 'true')
@@ -67,6 +70,7 @@ class EmpresasController < ApplicationController
     @ultimo = Empresa.find(:first, :conditions => ["prefijo < 999999999"], :order => "prefijo DESC") # EL ultimo prefijo antes de 999999999
     @empresa = Empresa.new
     @empresa.build_correspondencia   #Para que maneje el modelo de correspondencia
+    @empresa.datos_contacto.build   #Para que manejar los datos de la tabla empresa_contactos, mapeado por el modelo DatosContacto
     
 
     respond_to do |format|
@@ -124,8 +128,6 @@ class EmpresasController < ApplicationController
   end
 
   def update_multiple
-
-   
 
     Empresa.validar_empresas(params[:activar_empresa]) if params[:activacion] #Parametro que indica Validar Empresa       
     Empresa.retirar_empresas(params) if params[:retiro]

@@ -2,12 +2,26 @@ class ProductosController < ApplicationController
   # GET /productos
   # GET /productos.json
   def index
-    
+
     respond_to do |format|
-      format.html # index.html.erb
+      format.html {
+                    if params[:retirar]
+                      render :template =>'/productos/retirar_productos.html.haml'
+                    elsif params[:retirados]
+                      render :template =>'/productos/productos_retirados.html.haml'
+                    else
+                      render :template =>'/productos/index.html.haml'
+                    end
+                  }
       format.json { 
-      	render json: (ProductosDatatable.new(view_context))
-      }
+                  	if params[:retirar]
+                      render json: (RetirarProductosDatatable.new(view_context))
+                    elsif params[:retirados]
+                      render json: (ProductosRetiradosDatatable.new(view_context))
+                    else
+                      render json: (ProductosDatatable.new(view_context))
+                    end
+                  }
       
     end
   end
@@ -68,6 +82,16 @@ class ProductosController < ApplicationController
         format.html { render action: "edit" }
         format.json { render json: @producto.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def update_multiple
+    
+    Producto.retirar(params[:retirar_productos]) if params[:retirar]
+    Producto.eliminar(params[:eliminar_productos]) if params[:eliminar]
+    
+    respond_to do |format|
+      format.html { redirect_to '/productos?retirar=true', notice: "Los GTIN #{params[:retirar_productos]} fueron retirados satisfactoriamente." }
     end
   end
 

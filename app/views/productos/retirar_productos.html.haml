@@ -1,0 +1,29 @@
+%section.contexto
+    %label.contexto Productos > Retirar Productos
+    %hr.contexto{:size => "1"}
+
+%section#areaTrabajo.areaTrabajo
+    =form_tag update_multiple_productos_path, :method => "put", :id => "formulario_retirar_productos" do
+
+        %table#data_table_productos.display{:"data-source" => "/productos.json?retirar=true"}
+            %thead
+                %tr
+                    %th
+                    %th Empresa
+                    %th Tipo GTIN    
+                    %th GTIN
+                    %th Descripción
+                    %th Marca
+                    %th GPC
+                    %th Estatus
+                    %th Código Prod
+                    %th Fecha Creación
+                   
+            %tbody
+            %tfoot
+        
+        %br/
+        %br/
+        =hidden_field_tag "retirar"
+        =submit_tag "retirar"
+        

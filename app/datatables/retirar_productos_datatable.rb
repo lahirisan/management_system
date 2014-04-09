@@ -1,4 +1,4 @@
-class ProductosDatatable < AjaxDatatablesRails
+class RetirarProductosDatatable < AjaxDatatablesRails
   delegate :params, :h, :link_to,  to: :@view
 
    def initialize(view)
@@ -24,6 +24,7 @@ private
         fecha = ""
         fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
         [ 
+        check_box_tag("retirar_productos[]", "#{producto.gtin}", false, :class=>"retirar_producto"),
         producto.try(:productos_empresa).try(:empresa).try(:nombre_empresa),
         producto.try(:tipo_gtin).try(:tipo),
         producto.gtin,

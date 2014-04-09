@@ -63,6 +63,17 @@
 
 			%a.opcion{:href => "/productos"}
 				.opcion Productos
+				.opcion
+					%ul
+						%li 
+							%a.opcion{:href => "/productos?retirar=true"}
+								.opcion Retirar Productos
+				.opcion
+					%ul
+						%li 
+							%a.opcion{:href => "/productos?retirados=true"}
+								.opcion Productos Retirados
+
 			%a.opcion{:href => "#"}
 				.opcion Servicios
 			%a.opcion{:href => "#"}

@@ -14,6 +14,7 @@ class DatosContactosController < ApplicationController
   # GET /datos_contactos/1
   # GET /datos_contactos/1.json
   def show
+    
     @datos_contacto = DatosContacto.find(params[:id])
 
     respond_to do |format|
@@ -75,14 +76,14 @@ class DatosContactosController < ApplicationController
   end
 
   # DELETE /datos_contactos/1
-  # DELETE /datos_contactos/1.json
+  
   def destroy
+    
     @datos_contacto = DatosContacto.find(params[:id])
     @datos_contacto.destroy
 
     respond_to do |format|
-      format.html { redirect_to datos_contactos_url }
-      format.json { head :no_content }
+      format.html { redirect_to "/empresas/#{params[:empresa_id]}/datos_contactos" }
     end
   end
 end
