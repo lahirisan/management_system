@@ -9,6 +9,10 @@ class ProductosController < ApplicationController
                       render :template =>'/productos/retirar_productos.html.haml'
                     elsif params[:retirados]
                       render :template =>'/productos/productos_retirados.html.haml'
+                    elsif params[:eliminar]
+                      render :template =>'/productos/eliminar_productos.html.haml'
+                    elsif params[:eliminados]
+                      render :template =>'/productos/productos_eliminados.html.haml'
                     else
                       render :template =>'/productos/index.html.haml'
                     end
@@ -18,6 +22,10 @@ class ProductosController < ApplicationController
                       render json: (RetirarProductosDatatable.new(view_context))
                     elsif params[:retirados]
                       render json: (ProductosRetiradosDatatable.new(view_context))
+                    elsif params[:eliminar]
+                      render json: (EliminarProductosDatatable.new(view_context))
+                    elsif params[:eliminados]
+                      render json: (ProductosEliminadosDatatable.new(view_context))
                     else
                       render json: (ProductosDatatable.new(view_context))
                     end

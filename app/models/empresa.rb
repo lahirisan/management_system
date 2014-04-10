@@ -63,7 +63,7 @@ class Empresa < ActiveRecord::Base
         empresa.id_estatus = estatus_retirada.id
         empresa.save
 
-        retirar_productos(empresa.productos_empresa) # Procedimiento definido en application controller
+        
         
       end
   end

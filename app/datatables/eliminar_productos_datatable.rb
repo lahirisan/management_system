@@ -1,4 +1,4 @@
-class RetirarProductosDatatable < AjaxDatatablesRails
+class EliminarProductosDatatable < AjaxDatatablesRails
   delegate :params, :h, :link_to,  to: :@view
 
    def initialize(view)
@@ -24,7 +24,7 @@ private
         fecha = ""
         fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
         [ 
-        check_box_tag("retirar_productos[]", "#{producto.gtin}", false, :class=>"retirar_producto"),
+        check_box_tag("eliminar_productos[]", "#{producto.gtin}", false, :class=>"eliminar_producto"),
         producto.try(:productos_empresa).try(:empresa).try(:nombre_empresa),
         producto.try(:tipo_gtin).try(:tipo),
         producto.gtin,
@@ -34,10 +34,7 @@ private
         producto.try(:estatus).try(:descripcion),
         producto.codigo_prod,
         fecha
-       
       ]
-      
-      
 
     end
 
@@ -49,7 +46,7 @@ private
 
   def fetch_productos
    
-    productos = Producto.where("estatus.descripcion like ? and estatus.alcance like ?",'Activo', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin)
+    productos = Producto.where("estatus.descripcion like ? and estatus.alcance  like ?", 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin)
     productos = productos.page(page).per_page(per_page)
     
     # if params[:sSearch].present? # Filtro de busqueda general

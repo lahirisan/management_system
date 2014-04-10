@@ -73,12 +73,18 @@
 						%li 
 							%a.opcion{:href => "/productos?retirados=true"}
 								.opcion Productos Retirados
+				.opcion
+					%ul
+						%li 
+							%a.opcion{:href => "/productos?eliminar=true"}
+								.opcion Eliminar Productos
+				.opcion
+					%ul
+						%li 
+							%a.opcion{:href => "/productos?eliminados=true"}
+								.opcion Productos Eliminados
 
-			%a.opcion{:href => "#"}
-				.opcion Servicios
-			%a.opcion{:href => "#"}
-				.opcion GLN
-			%a.opcion{:href => "#"}
-				.opcion Usuarios
+
+			
 		= yield
 		

@@ -41,10 +41,8 @@ private
         empresa.grupo,
         empresa.clase,
         empresa.rep_legal,
-        empresa.cargo_rep_legal,
-        link_to("Ver", empresa),
-        link_to("Editar", edit_empresa_path(empresa)),
-        link_to('Eliminar', empresa, method: :delete, data: { confirm: 'Esta seguro?' })
+        empresa.cargo_rep_legal,        
+        link_to("Editar", edit_empresa_path(empresa))
       ]
       
       
