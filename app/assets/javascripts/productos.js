@@ -62,6 +62,20 @@
         });
 
         // Retiro masivo seleccionar / deseleccionar todos
+        $('#eliminar_masivo_productos').live('change', function() {
+            
+            if ($(this).is(':checked'))
+            {
+                $('.eliminar_producto').prop('checked', true);
+            }
+            else 
+            {
+                $('.eliminar_producto').prop('checked', false);
+            }  
+            
+        });
+
+        // ELiminar masivo seleccionar / deseleccionar todos
         $('#retiro_masivo_productos').live('change', function() {
             
             if ($(this).is(':checked'))

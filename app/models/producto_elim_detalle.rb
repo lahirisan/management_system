@@ -1,5 +1,7 @@
 class ProductoElimDetalle < ActiveRecord::Base
-  attr_accessible :fecha_eliminacion, :gtin, :id_usuario
+  attr_accessible :fecha_eliminacion, :gtin, :id_usuario, :id_motivo_retiro, :id_subestatus
   self.table_name = 'producto_elim_detalle'
   belongs_to :producto_eliminado, :foreign_key => "gtin"
+  belongs_to :motivo_retiro
+  belongs_to :sub_estatus
 end

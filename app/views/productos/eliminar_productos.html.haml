@@ -4,7 +4,22 @@
 
 %section#areaTrabajo.areaTrabajo
     =form_tag update_multiple_productos_path, :method => "put", :id => "formulario_eliminar_productos" do
-
+        %table.margen_inferior{:border => 1}
+            %tr
+                %td
+                    Retiro Masivo
+                %td
+                    SubEstatus
+                %td
+                    Motivo Retiro
+            %tr
+                %td
+                    =check_box_tag "eliminar_masivo_productos"
+                %td
+                    =select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
+                %td
+                    =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
+                    
         %table#data_table_productos.display{:"data-source" => "/productos.json?eliminar=true"}
             %thead
                 %tr
@@ -18,6 +33,8 @@
                     %th Estatus
                     %th Código Prod
                     %th Fecha Creación
+                    %th Sub Estatus
+                    %th Motivo Retiro
                    
             %tbody
             %tfoot
