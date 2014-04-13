@@ -95,7 +95,7 @@ class ProductosController < ApplicationController
 
   def update_multiple
     
-    Producto.retirar(params[:retirar_productos]) if params[:retirar]
+    Producto.retirar(params) if params[:retirar]
     Producto.eliminar(params[:eliminar_productos]) if params[:eliminar]
     
     respond_to do |format|

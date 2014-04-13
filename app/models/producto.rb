@@ -4,14 +4,28 @@ class Producto < ActiveRecord::Base
   belongs_to :productos_empresa, :primary_key => "gtin",  :foreign_key => "gtin" # busca los productos en productos_empresa a traves de gtin no del campo  id
   belongs_to :estatus, :foreign_key => "id_estatus"
   belongs_to :tipo_gtin, :foreign_key => "id_tipo_gtin"
+  has_one    :productos_retirados, :foreign_key => "gtin"
 
-  def self.retirar(productos)
+  def self.retirar(parametros)
 
   	# Se busca el estatus retirado
     estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Retirado', 'Producto'])
     
-    #Los productos pasan a estatus retirado y se agregan a la tabla productos_retirados 
-    productos.collect{|producto| producto = Producto.find(:first, :conditions => ["gtin like ?", producto]); producto_retirado = ProductosRetirados.new; producto_retirado.gtin = producto.gtin; producto_retirado.fecha_retiro = Time.now; producto_retirado.save; producto.id_estatus = estatus_producto.id; producto.save}
+    for retirar_producto in (0..parametros[:retirar_productos].size-1)
+      producto_seleccionado = parametros[:retirar_productos][retirar_producto]
+      retirar_datos = parametros[:"#{producto_seleccionado}"]
+      gtin = retirar_datos.split('_')[0] # retirar_datos.split('_')[0] GTIN del producto retirar_datos.split('_')[1] id sub_estatus retirar_datos.split('_')[2] id motivo_retiro
+      producto = Producto.find(:first, :conditions => ["gtin like ?", gtin])
+      producto.id_estatus = estatus_producto.id 
+      producto.save
+      producto_retirado = ProductosRetirados.new 
+      producto_retirado.gtin = producto.gtin
+      producto_retirado.fecha_retiro = Time.now
+      producto_retirado.id_motivo_retiro = retirar_datos.split('_')[2]
+      producto_retirado.id_subestatus = retirar_datos.split('_')[1]
+      producto_retirado.save 
+      
+    end
   
   end
 
