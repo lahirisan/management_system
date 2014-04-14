@@ -3,6 +3,7 @@
     %hr.contexto{:size => "1"}
 
 %section#areaTrabajo.areaTrabajo
+    %p#notice= notice
     %table#data_table_productos.display{:"data-source" => "/productos.json"}
         %thead
             %tr
@@ -16,10 +17,11 @@
                 %th Estatus
                 %th Código Prod
                 %th Fecha Creación
+                %th
                
         %tbody
         %tfoot
-            /=render 'footer'
+            =render 'footer'
     %br/
     %br/
     = link_to 'Crear Producto', new_producto_path

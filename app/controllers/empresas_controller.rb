@@ -90,12 +90,14 @@ class EmpresasController < ApplicationController
   # POST /empresas.json
   def create
     
+   
+
     @ultimo = Empresa.find(:first, :conditions => ["prefijo < 999999999"], :order => "prefijo DESC")
     hora = Time.now # Para fijar la hora en que se crea la empresa
     params[:empresa][:fecha_inscripcion] += " #{hora.hour}:#{hora.min}:#{hora.sec}"
     @empresa = Empresa.new(params[:empresa])
 
-    @empresa.id_estatus = 6 # Cuado se crea una empresa su estatas en No Validada estatus.id = 5
+    @empresa.id_estatus = 1 # Cuado se crea una empresa su estatas en No Validada estatus.id = 5
     
     respond_to do |format|
 

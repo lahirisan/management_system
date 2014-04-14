@@ -6,6 +6,7 @@ class Producto < ActiveRecord::Base
   belongs_to :tipo_gtin, :foreign_key => "id_tipo_gtin"
   has_one    :productos_retirados, :foreign_key => "gtin"
 
+
   def self.retirar(parametros)
 
   	# Se busca el estatus retirado
@@ -29,30 +30,38 @@ class Producto < ActiveRecord::Base
   
   end
 
-  def self.eliminar(productos)
+  def self.eliminar(parametros)
   	
   	estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Eliminado', 'Producto'])
     
-    #Los productos se agrega a productos eliminados
-    productos.collect{|producto_seleccionado|
-    producto = Producto.find(:first, :conditions => ["gtin like ?", producto_seleccionado]) 
-  	producto_eliminado = ProductoEliminado.new;
-    producto_eliminado.gtin = producto.gtin; 
-  	producto_eliminado.descripcion = producto.descripcion; 
-  	producto_eliminado.marca = producto.marca; 
-  	producto_eliminado.gpc = producto.gpc; 
-  	producto_eliminado.id_estatus = estatus_producto.id; 
-  	producto_eliminado.codigo_prod = producto.codigo_prod; 
-  	producto_eliminado.fecha_creacion = Time.now; 
-  	producto_eliminado.id_tipo_gtin =producto.id_tipo_gtin; 
-  	producto_eliminado.save; 
-    producto_elim_detalle = ProductoElimDetalle.new; 
-  	producto_elim_detalle.gtin = producto.gtin; 
-  	producto_elim_detalle.fecha_eliminacion = Time.now; 
-  	producto_elim_detalle.save}
+    #Los productos se agrega a productos eliminados y productos_elim_detalle, se eliminan de productos
 
-  	# Se elimina los productos de la empresa
-  	productos.collect{|producto| producto = Producto.find(:first, :conditions => ["gtin like ?", producto]); producto.destroy}
+    for eliminar_producto in (0..parametros[:eliminar_productos].size-1)
+
+      producto_seleccionado = parametros[:eliminar_productos][eliminar_producto]
+      eliminar_datos = parametros[:"#{producto_seleccionado}"]
+      gtin = eliminar_datos.split('_')[0]
+      producto = Producto.find(:first, :conditions => ["gtin like ?", gtin]) 
+    	producto_eliminado = ProductoEliminado.new;
+      producto_eliminado.gtin = producto.gtin; 
+    	producto_eliminado.descripcion = producto.descripcion; 
+    	producto_eliminado.marca = producto.marca; 
+    	producto_eliminado.gpc = producto.gpc; 
+    	producto_eliminado.id_estatus = estatus_producto.id; 
+    	producto_eliminado.codigo_prod = producto.codigo_prod; 
+    	producto_eliminado.fecha_creacion = Time.now; 
+    	producto_eliminado.id_tipo_gtin =producto.id_tipo_gtin; 
+    	producto_eliminado.save; 
+      producto_elim_detalle = ProductoElimDetalle.new; 
+    	producto_elim_detalle.gtin = producto.gtin; 
+    	producto_elim_detalle.fecha_eliminacion = Time.now;
+      producto_elim_detalle.id_subestatus = eliminar_datos.split('_')[1]
+      producto_elim_detalle.id_motivo_retiro = eliminar_datos.split('_')[2] 
+    	producto_elim_detalle.save
+      producto.destroy
+      
+    end
+
   	
   end
 

@@ -82,7 +82,8 @@ class ProductosController < ApplicationController
   # PUT /productos/1.json
   def update
     
-    
+   
+
     @producto = Producto.find(:first, :conditions => ["gtin like ?", params[:id]])
 
     respond_to do |format|
@@ -95,9 +96,9 @@ class ProductosController < ApplicationController
   end
 
   def update_multiple
-    
+
     Producto.retirar(params) if params[:retirar]
-    Producto.eliminar(params[:eliminar_productos]) if params[:eliminar]
+    Producto.eliminar(params) if params[:eliminar]
     
     respond_to do |format|
       format.html { redirect_to '/productos?retirar=true', notice: "Los GTIN #{params[:retirar_productos]} fueron retirados satisfactoriamente." }

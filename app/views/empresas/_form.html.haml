@@ -45,7 +45,6 @@
               =f.text_field :fecha_inscripcion 
             -else
               =f.text_field :fecha_inscripcion, :value => "#{@empresa.fecha_inscripcion.strftime("%Y-%m-%d")}" 
-
         %tr
           %td
             Dirección Empresa

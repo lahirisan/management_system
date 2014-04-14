@@ -1,34 +1,65 @@
-= form_for @producto do |f|
-  - if @producto.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@producto.errors.count, "error")} prohibited this producto from being saved:"
-      %ul
-        - @producto.errors.full_messages.each do |msg|
-          %li= msg
+%section.contexto
+  %label.contexto 
+    -if @producto.new_record?
+      Registar Producto 
+    -else
+      Editar Producto
+  %hr.contexto{:size => "1"}
 
-  .field
-    = f.label :gtin
-    = f.text_field :gtin
-  .field
-    = f.label :descripcion
-    = f.text_area :descripcion
-  .field
-    = f.label :marca
-    = f.text_area :marca
-  .field
-    = f.label :gpc
-    = f.number_field :gpc
-  .field
-    = f.label :id_estatus
-    = f.number_field :id_estatus
-  .field
-    = f.label :codigo_prod
-    = f.number_field :codigo_prod
-  .field
-    = f.label :fecha_creacion
-    = f.datetime_select :fecha_creacion
-  .field
-    = f.label :id_tipo_gtin
-    = f.number_field :id_tipo_gtin
-  .actions
-    = f.submit 'Save'
+  %section.formulario
+
+  = form_for @producto do |f|
+    - if @producto.errors.any?
+      #error_explanation
+        %h2= "#{pluralize(@producto.errors.count, "error")} prohibited this producto from being saved:"
+        %ul
+          - @producto.errors.full_messages.each do |msg|
+            %li= msg
+
+    %table
+      %tr
+        %td
+          GTIN
+        %td
+          = @producto.gtin
+      %tr
+        %td
+          Descripción
+        %td
+          = f.text_field :descripcion
+      %tr
+        %td
+          Marca
+        %td
+          = f.text_field :marca
+      %tr
+        %td
+          GPC
+        %td
+          =f.text_field :gpc
+      %tr
+        %td
+          Estatus
+        %td
+          /= f.collection_select :id_estatus, Estatus.find(:all, :conditions => ["(descripcion like ? or descripcion like ?) and alcance = ?", 'Activo', 'Retirado', 'Producto']), :id, :descripcion
+          =@producto.estatus.descripcion
+   
+      %tr
+        %td
+          Código Producto
+        %td
+          = f.text_field :codigo_prod
+      %tr
+        %td
+          Fecha Creación
+        %td
+          /= f.datetime_select :fecha_creacion
+          =@producto.fecha_creacion.strftime("%Y-%m-%d")
+      %tr
+        %td
+          Tipo GTIN
+        %td
+          /= f.collection_select :id_tipo_gtin, TipoGtin.all, :id, :tipo
+          =@producto.tipo_gtin.tipo
+    .actions
+      = f.submit 'Guardar'

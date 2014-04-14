@@ -1,5 +1,5 @@
 %section.contexto
-    %label.contexto Productos > ELiminar Productos
+    %label.contexto Productos > Eliminar Productos
     %hr.contexto{:size => "1"}
 
 %section#areaTrabajo.areaTrabajo
@@ -7,7 +7,7 @@
         %table.margen_inferior{:border => 1}
             %tr
                 %td
-                    Retiro Masivo
+                    ELiminar Masivo
                 %td
                     SubEstatus
                 %td
@@ -20,7 +20,7 @@
                 %td
                     =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
                     
-        %table#data_table_productos.display{:"data-source" => "/productos.json?eliminar=true"}
+        %table#data_table_eliminar_productos.display{:"data-source" => "/productos.json?eliminar=true"}
             %thead
                 %tr
                     %th
@@ -38,9 +38,11 @@
                    
             %tbody
             %tfoot
+                =render 'footer_eliminar_productos'
         
         %br/
         %br/
+        #datos_productos_eliminar_productos
         =hidden_field_tag "eliminar"
         =submit_tag "eliminar"
         

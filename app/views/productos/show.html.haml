@@ -1,30 +1,44 @@
-%p#notice= notice
+%section.contexto
+  %label.contexto 
+    -if @producto.new_record?
+      Registar Producto 
+    -else
+      Editar Producto
+  %hr.contexto{:size => "1"}
 
-%p
-  %b Gtin:
-  = @producto.gtin
-%p
-  %b Descripcion:
-  = @producto.descripcion
-%p
-  %b Marca:
-  = @producto.marca
-%p
-  %b Gpc:
-  = @producto.gpc
-%p
-  %b Id estatus:
-  = @producto.id_estatus
-%p
-  %b Codigo prod:
-  = @producto.codigo_prod
-%p
-  %b Fecha creacion:
-  = @producto.fecha_creacion
-%p
-  %b Id tipo gtin:
-  = @producto.id_tipo_gtin
+  %section.formulario
 
-= link_to 'Edit', edit_producto_path(@producto)
-\|
-= link_to 'Back', productos_path
+  %p#notice= notice
+
+  %table
+    %tr
+      %td
+        
+  %p
+    %b Gtin:
+    = @producto.gtin
+  %p
+    %b Descripcion:
+    = @producto.descripcion
+  %p
+    %b Marca:
+    = @producto.marca
+  %p
+    %b Gpc:
+    = @producto.gpc
+  %p
+    %b Id estatus:
+    = @producto.id_estatus
+  %p
+    %b Codigo prod:
+    = @producto.codigo_prod
+  %p
+    %b Fecha creacion:
+    = @producto.fecha_creacion
+  %p
+    %b Id tipo gtin:
+    = @producto.id_tipo_gtin
+
+  = link_to 'Editar', edit_producto_path(@producto)
+  \|
+  = link_to 'Productos', productos_path
