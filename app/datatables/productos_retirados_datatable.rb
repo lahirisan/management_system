@@ -32,8 +32,10 @@ private
         producto.gpc,
         producto.try(:estatus).try(:descripcion),
         producto.codigo_prod,
-        fecha
-       
+        fecha,
+        producto.try(:productos_retirados).try(:sub_estatus).try(:descripcion),
+        producto.try(:productos_retirados).try(:motivo_retiro).try(:descripcion),
+        producto.try(:productos_retirados).fecha_retiro.strftime("%Y-%m-%d")
       ]
       
       

@@ -61,6 +61,34 @@
            
         });
 
+        // Retiro masivo seleccionar / deseleccionar todos
+        $('#eliminar_masivo_productos').live('change', function() {
+            
+            if ($(this).is(':checked'))
+            {
+                $('.eliminar_producto').prop('checked', true);
+            }
+            else 
+            {
+                $('.eliminar_producto').prop('checked', false);
+            }  
+            
+        });
+
+        // ELiminar masivo seleccionar / deseleccionar todos
+        $('#retiro_masivo_productos').live('change', function() {
+            
+            if ($(this).is(':checked'))
+            {
+                $('.retirar_producto').prop('checked', true);
+            }
+            else 
+            {
+                $('.retirar_producto').prop('checked', false);
+            }  
+            
+        });
+
         $('#formulario_retirar_productos').submit(function( event ) { 
             
             // Se valida que se haya seleccionado alguna empresa para retirar
@@ -68,6 +96,21 @@
             {
                 alert("Estimado usuario, no ha seleccionado ninguna empresa para RETIRAR. Por favor verifique.");
                 return false;
+            }
+
+            if ($('#retiro_masivo_productos').is(':checked')) // retiro masivo
+            {  
+                $('.retirar_producto:checked').each(function() {
+                    // Por cada producto seleccionado se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
+                    $('#datos_productos_retirar_productos').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
+                });   
+            }
+            else // múltiple selecccion de empresas a retirar
+            {
+                $('.retirar_producto:checked').each(function() {
+                    // Por cada producto selecciondo se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
+                    $('#datos_productos_retirar_productos').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
+                });
             }
            
         });
