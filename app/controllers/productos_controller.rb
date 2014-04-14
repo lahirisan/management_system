@@ -58,7 +58,8 @@ class ProductosController < ApplicationController
 
   # GET /productos/1/edit
   def edit
-    @producto = Producto.find(params[:id])
+    @producto = Producto.find(:first, :conditions => ["gtin like ?", params[:id]])
+
   end
 
   # POST /productos
@@ -68,7 +69,7 @@ class ProductosController < ApplicationController
 
     respond_to do |format|
       if @producto.save
-        format.html { redirect_to @producto, notice: 'Producto was successfully created.' }
+        format.html { redirect_to @producto, notice: "EL GTIN #{params[:id]} fue actualizado satisfactoriamente" }
         format.json { render json: @producto, status: :created, location: @producto }
       else
         format.html { render action: "new" }
@@ -80,15 +81,15 @@ class ProductosController < ApplicationController
   # PUT /productos/1
   # PUT /productos/1.json
   def update
-    @producto = Producto.find(params[:id])
+    
+    
+    @producto = Producto.find(:first, :conditions => ["gtin like ?", params[:id]])
 
     respond_to do |format|
       if @producto.update_attributes(params[:producto])
-        format.html { redirect_to @producto, notice: 'Producto was successfully updated.' }
-        format.json { head :no_content }
+        format.html { redirect_to productos_path, notice: "EL GTIN #{params[:id]} fue actualizado satisfactoriamente" }
       else
         format.html { render action: "edit" }
-        format.json { render json: @producto.errors, status: :unprocessable_entity }
       end
     end
   end
