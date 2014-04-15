@@ -65,4 +65,25 @@ class Producto < ActiveRecord::Base
   	
   end
 
+  def self.crear_gtin(tipo_gtin)
+    
+    tipo_gtin = TipoGtin.find(tipo_gtin)
+    
+    case tipo_gtin.tipo
+      
+      when "GTIN-8"
+        ultimo_gtin8_asignado = Producto.find(:first, :conditions => ["id_tipo_gtin = ?", tipo_gtin], :order => "fecha_creacion desc")
+        secuencia_gtin8 = ((ultimo_gtin8_asignado.gtin.to_i / 10) + 1)  # N-1 digitos primeros digitos del último gtin8 asignado
+        digito_verificacion = calcular_digito_verificacion(secuencia_gtin8, "GTIN8")
+        gtin8_generado = (secuencia_gtin8 * 10) + digito_verificacion
+
+    end
+
+
+  end
+
+  def self.calcular_digito_verificacion(secuencia,tipo_gtin)
+    
+  end
+
 end

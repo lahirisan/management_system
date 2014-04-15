@@ -49,6 +49,7 @@ class ProductosController < ApplicationController
   # GET /productos/new.json
   def new
     @producto = Producto.new
+    @gtin = "nada"
 
     respond_to do |format|
       format.html # new.html.erb
@@ -65,6 +66,10 @@ class ProductosController < ApplicationController
   # POST /productos
   # POST /productos.json
   def create
+
+    
+    Producto.crear_gtin(params[:producto][:id_tipo_gtin])
+
     @producto = Producto.new(params[:producto])
 
     respond_to do |format|
@@ -82,9 +87,7 @@ class ProductosController < ApplicationController
   # PUT /productos/1.json
   def update
     
-   
-
-    @producto = Producto.find(:first, :conditions => ["gtin like ?", params[:id]])
+      @producto = Producto.find(:first, :conditions => ["gtin like ?", params[:id]])
 
     respond_to do |format|
       if @producto.update_attributes(params[:producto])
