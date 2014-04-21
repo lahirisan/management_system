@@ -33,15 +33,7 @@ private
         empresa.ciudad.nombre,
         empresa.rif,
         empresa.estatus.descripcion,
-        empresa.id_tipo_usuario,
-        empresa.nombre_comercial,
-        empresa.id_clasificacion,
-        empresa.categoria,
-        empresa.division,
-        empresa.grupo,
-        empresa.clase,
-        empresa.rep_legal,
-        empresa.cargo_rep_legal,        
+        link_to("Productos", empresa_productos_path(empresa)),            
         link_to("Editar", edit_empresa_path(empresa))
       ]
       

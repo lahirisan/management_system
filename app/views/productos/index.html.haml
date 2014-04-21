@@ -4,7 +4,7 @@
 
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
-    %table#data_table_productos.display{:"data-source" => "/productos.json"}
+    %table#data_table_productos.display{:"data-source" => "/productos.json?prefijo=#{@prefijo}"}
         %thead
             %tr
                
@@ -18,13 +18,14 @@
                 %th Código Prod
                 %th Fecha Creación
                 %th
+                %th
                
         %tbody
         %tfoot
             =render 'footer'
     %br/
     %br/
-    = link_to 'Crear Producto', new_producto_path
+    = link_to 'Crear Producto', new_empresa_producto_path
 
     .loader_prueba
         /=image_tag "loader.gif", :class => "loader" 

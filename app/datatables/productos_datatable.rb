@@ -21,23 +21,42 @@ private
 
     productos.map do |producto|
       
-        fecha = ""
-        fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
+      fecha = ""
+      fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
+      
+      if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3)
         [ 
-        producto.try(:productos_empresa).try(:empresa).try(:nombre_empresa),
-        producto.try(:tipo_gtin).try(:tipo),
-        producto.gtin,
-        producto.descripcion,
-        producto.marca,
-        producto.gpc,
-        producto.try(:estatus).try(:descripcion),
-        producto.codigo_prod,
-        fecha,
-        link_to("Editar", edit_producto_path(producto.gtin))       
-      ]
-      
-      
+          producto.try(:productos_empresa).try(:empresa).try(:nombre_empresa),
+          producto.try(:tipo_gtin).try(:tipo),
+          producto.gtin,
+          producto.descripcion,
+          producto.marca,
+          producto.gpc,
+          producto.try(:estatus).try(:descripcion),
+          producto.codigo_prod,
+          fecha,
+          link_to("Editar", "/empresas/#{params[:prefijo]}/productos/#{producto.gtin}/edit"),
+          link_to("Crear GTIN 14", "/empresas/#{params[:prefijo]}/productos/new?gtin=#{producto.gtin}")
+        ]
 
+      else
+
+        [ 
+          producto.try(:productos_empresa).try(:empresa).try(:nombre_empresa),
+          producto.try(:tipo_gtin).try(:tipo),
+          producto.gtin,
+          producto.descripcion,
+          producto.marca,
+          producto.gpc,
+          producto.try(:estatus).try(:descripcion),
+          producto.codigo_prod,
+          fecha,
+          link_to("Editar", "/empresas/#{params[:prefijo]}/productos/#{producto.gtin}/edit"),
+          ""
+        ]
+
+      end
+      
     end
 
   end
@@ -47,8 +66,15 @@ private
   end
 
   def fetch_productos
-   
-    productos = Producto.includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("#{sort_column} #{sort_direction}")
+    
+    if params[:prefijo].nil? # TOdos los productos
+
+      productos = Producto.includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin)
+    else # Los productos de una empresa
+      productos = Producto.where("productos_empresa.prefijo = ?", params[:prefijo]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin) 
+    end
+    
+
     productos = productos.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general

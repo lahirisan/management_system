@@ -17,14 +17,14 @@
             %li= msg
 
     %table
-      %tr
-        %td
-          GTIN
-        %td
-          -if @producto.new_record?
-            =f.text_field :gtin
-          -else
-            = @producto.gtin
+      / %tr
+      /   %td
+      /     GTIN
+      /   %td
+      /     -if @producto.new_record?
+      /       =f.text_field :gtin
+      /     -else
+      /       = @producto.gtin
       %tr
         %td
           Descripción
@@ -44,6 +44,7 @@
         %td
           Estatus
         %td
+        
           = f.collection_select :id_estatus, Estatus.find(:all, :conditions => ["(descripcion like ? or descripcion like ?) and alcance = ?", 'Activo', 'Retirado', 'Producto']), :id, :descripcion
           
    
@@ -52,17 +53,14 @@
           Código Producto
         %td
           = f.text_field :codigo_prod
-      %tr
-        %td
-          Fecha Creación
-        %td
-          /= f.datetime_select :fecha_creacion
-          /=@producto.fecha_creacion.strftime("%Y-%m-%d")
+     
       %tr
         %td
           Tipo GTIN
         %td
-          = f.collection_select :id_tipo_gtin, TipoGtin.all, :id, :tipo
+          = f.collection_select :id_tipo_gtin, TipoGtin.all, :id, :tipo_gtin_base, @base ? {:selected => "#{@base.id}"} : {}
+    =hidden_field_tag "prefijo", "#{@prefijo}"
+    =hidden_field_tag "gtin", "#{@gtin}"
           
     .actions
       = f.submit 'Guardar'

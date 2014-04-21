@@ -2,7 +2,8 @@ class ProductosController < ApplicationController
   # GET /productos
   # GET /productos.json
   def index
-
+    
+    @prefijo = params[:empresa_id]
     respond_to do |format|
       format.html {
                     if params[:retirar]
@@ -27,7 +28,7 @@ class ProductosController < ApplicationController
                     elsif params[:eliminados]
                       render json: (ProductosEliminadosDatatable.new(view_context))
                     else
-                      render json: (ProductosDatatable.new(view_context))
+                      render json: ProductosDatatable.new(view_context) 
                     end
                   }
       
@@ -48,8 +49,17 @@ class ProductosController < ApplicationController
   # GET /productos/new
   # GET /productos/new.json
   def new
+    
+
+    @prefijo = params[:empresa_id]
     @producto = Producto.new
-    @gtin = "nada"
+    @gtin = params[:gtin]
+
+    @producto_ = Producto.find(:first, :conditions => ["gtin like ?", params[:gtin]]) if params[:gtin]
+    
+    @base = TipoGtin.find(:first, :conditions =>["tipo like ? and base like ?", "GTIN-14", @producto_.tipo_gtin.tipo]) if @producto_
+
+    
 
     respond_to do |format|
       format.html # new.html.erb
@@ -59,6 +69,7 @@ class ProductosController < ApplicationController
 
   # GET /productos/1/edit
   def edit
+    @prefijo = params[:empresa_id]
     @producto = Producto.find(:first, :conditions => ["gtin like ?", params[:id]])
 
   end
@@ -66,19 +77,17 @@ class ProductosController < ApplicationController
   # POST /productos
   # POST /productos.json
   def create
-
     
-    Producto.crear_gtin(params[:producto][:id_tipo_gtin])
-
+    params[:producto][:gtin] = Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:prefijo], params[:gtin])
+    params[:producto][:fecha_creacion] = Time.now
+    
     @producto = Producto.new(params[:producto])
 
     respond_to do |format|
       if @producto.save
-        format.html { redirect_to @producto, notice: "EL GTIN #{params[:id]} fue actualizado satisfactoriamente" }
-        format.json { render json: @producto, status: :created, location: @producto }
+        format.html { redirect_to "/empresas/#{params[:prefijo]}/productos", notice: "EL #{@producto.tipo_gtin.tipo} #{@producto.gtin} fue creado satisfactoriamente." }        
       else
-        format.html { render action: "new" }
-        format.json { render json: @producto.errors, status: :unprocessable_entity }
+        format.html { render action: "new" }        
       end
     end
   end
@@ -87,11 +96,11 @@ class ProductosController < ApplicationController
   # PUT /productos/1.json
   def update
     
-      @producto = Producto.find(:first, :conditions => ["gtin like ?", params[:id]])
+    @producto = Producto.find(:first, :conditions => ["gtin like ?", params[:id]])
 
     respond_to do |format|
       if @producto.update_attributes(params[:producto])
-        format.html { redirect_to productos_path, notice: "EL GTIN #{params[:id]} fue actualizado satisfactoriamente" }
+        format.html { redirect_to "/empresas/#{params[:prefijo]}/productos", notice: "EL GTIN #{@producto.gtin} fue actualizado satisfactoriamente." }
       else
         format.html { render action: "edit" }
       end

@@ -6,8 +6,16 @@ GS1::Application.routes.draw do
     end
   end
 
-  resources :empresas do  #/empresas/1/datos_contactos
-    resources :datos_contactos
+  resources :empresas do  
+    
+    resources :productos do #/empresas/1/productos
+
+      collection do
+        put 'update_multiple', :action => 'update_multiple', :as => 'update_multiple'  # la ruta update_multiple para productos
+      end
+    end
+
+    resources :datos_contactos   #/empresas/1/datos_contactos
     
     collection do
       put 'update_multiple', :action => 'update_multiple', :as => 'update_multiple' # La ruta update_multiple para empresas
