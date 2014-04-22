@@ -67,12 +67,8 @@ private
 
   def fetch_productos
     
-    if params[:prefijo].nil? # TOdos los productos
-
-      productos = Producto.includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin)
-    else # Los productos de una empresa
-      productos = Producto.where("productos_empresa.prefijo = ?", params[:prefijo]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin) 
-    end
+    productos = Producto.where("productos_empresa.prefijo = ?", params[:prefijo]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin) 
+    
     
 
     productos = productos.page(page).per_page(per_page)

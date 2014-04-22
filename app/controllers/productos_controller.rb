@@ -2,8 +2,9 @@ class ProductosController < ApplicationController
   # GET /productos
   # GET /productos.json
   def index
-    
+
     @prefijo = params[:empresa_id]
+
     respond_to do |format|
       format.html {
                     if params[:retirar]
@@ -85,7 +86,7 @@ class ProductosController < ApplicationController
 
     respond_to do |format|
       if @producto.save
-        format.html { redirect_to "/empresas/#{params[:prefijo]}/productos", notice: "EL #{@producto.tipo_gtin.tipo} #{@producto.gtin} fue creado satisfactoriamente." }        
+        format.html { redirect_to "/empresas/#{params[:prefijo]}/productos", notice: "EL #{@producto.tipo_gtin.tipo} #{@producto.gtin} fue creado." }        
       else
         format.html { render action: "new" }        
       end
@@ -100,7 +101,7 @@ class ProductosController < ApplicationController
 
     respond_to do |format|
       if @producto.update_attributes(params[:producto])
-        format.html { redirect_to "/empresas/#{params[:prefijo]}/productos", notice: "EL GTIN #{@producto.gtin} fue actualizado satisfactoriamente." }
+        format.html { redirect_to "/empresas/#{params[:prefijo]}/productos", notice: "EL GTIN #{@producto.gtin} fue actualizado." }
       else
         format.html { render action: "edit" }
       end
@@ -109,11 +110,21 @@ class ProductosController < ApplicationController
 
   def update_multiple
 
-    Producto.retirar(params) if params[:retirar]
-    Producto.eliminar(params) if params[:eliminar]
+    
+    if params[:retirar]
+      Producto.retirar(params) 
+      accion = "fueron retirados."
+      string_gtin = ""
+      params[:retirar_productos].collect{|gtin| string_gtin += gtin + " "} 
+    elsif params[:eliminar]
+      Producto.eliminar(params)
+      accion = "fueron eliminados."
+      string_gtin = ""
+      params[:eliminar_productos].collect{|gtin| string_gtin += gtin + " "} 
+    end
     
     respond_to do |format|
-      format.html { redirect_to '/productos?retirar=true', notice: "Los GTIN #{params[:retirar_productos]} fueron retirados satisfactoriamente." }
+      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?retirar=true", notice: "Los GTIN #{string_gtin} #{accion}" }
     end
   end
 

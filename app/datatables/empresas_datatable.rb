@@ -32,9 +32,9 @@ private
         empresa.estado.nombre,
         empresa.ciudad.nombre,
         empresa.rif,
-        empresa.estatus.descripcion,
-        link_to("Productos", empresa_productos_path(empresa)),            
-        link_to("Editar", edit_empresa_path(empresa))
+        empresa.estatus.descripcion,        
+        link_to("Editar", edit_empresa_path(empresa)),
+        link_to("Productos", empresa_productos_path(empresa))          
       ]
       
       

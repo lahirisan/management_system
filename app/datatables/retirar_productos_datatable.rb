@@ -50,8 +50,8 @@ private
   end
 
   def fetch_productos
-   
-    productos = Producto.where("estatus.descripcion like ? and estatus.alcance like ?",'Activo', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro}).order("#{sort_column} #{sort_direction}")
+
+    productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:prefijo], 'Activo', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
     productos = productos.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general

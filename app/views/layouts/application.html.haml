@@ -33,7 +33,7 @@
 
 		%section#menu.menu	
 			.submenu Administración
-			%a.opcion{:href => "/empresas"}
+			%a.opcion{:href => "/empresas", :title => "Listado general de Empresas"}
 				.opcion Empresas
 				.opcion
 					%ul
@@ -61,28 +61,30 @@
 							%a.opcion{:href => "/empresas?eliminadas=true"}
 								.opcion Empresas Eliminadas
 
-			%a.opcion{:href => "/productos"}
-				.opcion Productos
-				.opcion
-					%ul
-						%li 
-							%a.opcion{:href => "/productos?retirar=true"}
-								.opcion Retirar Productos
-				.opcion
-					%ul
-						%li 
-							%a.opcion{:href => "/productos?retirados=true"}
-								.opcion Productos Retirados
-				.opcion
-					%ul
-						%li 
-							%a.opcion{:href => "/productos?eliminar=true"}
-								.opcion Eliminar Productos
-				.opcion
-					%ul
-						%li 
-							%a.opcion{:href => "/productos?eliminados=true"}
-								.opcion Productos Eliminados
+			-if params[:controller] == 'productos'
+
+				%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos", :title => "Listado de productos para la empresa seleccionada"}
+					.opcion Productos
+					.opcion
+						%ul
+							%li 
+								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?retirar=true", :title => "Retirar uno o más productos"}
+									.opcion Retirar Productos
+					.opcion
+						%ul
+							%li 
+								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?retirados=true", :title => "Listado de los productos retirados"}
+									.opcion Productos Retirados
+					.opcion
+						%ul
+							%li 
+								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminar=true", :title => "ELiminar productos"}
+									.opcion Eliminar Productos
+					.opcion
+						%ul
+							%li 
+								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminados=true", :title => "Listado de los productos eliminados"}
+									.opcion Productos Eliminados
 
 
 			
