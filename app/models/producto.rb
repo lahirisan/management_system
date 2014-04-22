@@ -65,17 +65,21 @@ class Producto < ActiveRecord::Base
   	
   end
 
-  def self.crear_gtin(tipo_gtin, prefijo, gtin)
+  def self.crear_gtin(tipo_gtin, prefijo, gtin) # El gtin solo se pasa en el caso de la creacion de GTIN tipo 14
     
     tipo_gtin = TipoGtin.find(tipo_gtin)    
 
     if tipo_gtin.tipo == "GTIN-8"             
      
       ultimo_gtin_asignado = Producto.find(:first, :conditions => ["producto.id_tipo_gtin = ?", tipo_gtin], :order => "producto.fecha_creacion desc")
-      gtin_valido_generado = ((ultimo_gtin_asignado.gtin.to_i / 10) + 1)  # N-1 digitos primeros digitos del último gtin8 asignado
-    
-      digito_verificacion = calcular_digito_verificacion(gtin_valido_generado, "GTIN-8", gtin_valido_generado.to_s.size)
-      gtin_generado = gtin_valido_generado.to_s + digito_verificacion.to_s
+      secuencia = ultimo_gtin_asignado.gtin[3..6]  # N-1 digitos primeros digitos del último gtin8 asignado
+      
+      secuencia = (secuencia.to_i + 1)
+      secuencia_siguiente = completar_secuencia(secuencia) # Se completa con ceros a la izquierda si la secuecnia es menor 5 digitos
+      secuencia_completa = "759" + secuencia_siguiente 
+      digito_verificacion = calcular_digito_verificacion(secuencia_completa.to_i, "GTIN-8")
+      gtin_generado =  secuencia_completa.to_s + digito_verificacion.to_s # 759 + secuencia + verificacion
+
     
     elsif tipo_gtin.tipo == "GTIN-13"
     
@@ -84,30 +88,10 @@ class Producto < ActiveRecord::Base
       prefijo_empresa = prefijo
       secuencia = ultimo_gtin_asignado.gtin[7..11] # la secuencia
       secuencia = secuencia.to_i + 1
-
-      if secuencia.to_s.size == 1
-        secuencia = "0000" + secuencia.to_s 
-      elsif secuencia.to_s.size == 2
-        secuencia = "000" + secuencia.to_s 
-      elsif secuencia.to_s.size == 3
-        secuencia = "00" + secuencia.to_s
-      elsif secuencia.to_s.size == 4
-        secuencia = "0" + secuencia.to_s  
-      end
-     
-      if prefijo_empresa.to_s.size == 5
-        gtin_valido = prefijo.to_s + "00" + secuencia.to_s 
-      elsif prefijo_empresa.to_s.size == 6
-        gtin_valido = prefijo.to_s + "0" + secuencia.to_s 
-      elsif prefijo_empresa.to_s.size == 7
-        gtin_valido = prefijo.to_s +  secuencia.to_s 
-      end
-
-
-      digito_verificacion = calcular_digito_verificacion(gtin_valido.to_i, "GTIN-13", gtin_generado.to_s.size)
-      
+      secuencia_completa = completar_secuencia(secuencia)
+      gtin_valido = completar_prefijo(secuencia_completa, prefijo)
+      digito_verificacion = calcular_digito_verificacion(gtin_valido.to_i, "GTIN-13")
       gtin_generado = gtin_valido.to_s + digito_verificacion.to_s
-    
 
     elsif tipo_gtin.tipo == "GTIN-14"
       
@@ -116,14 +100,14 @@ class Producto < ActiveRecord::Base
         productos = Producto.find(:all, :conditions => ["producto.id_tipo_gtin = ? and producto.gtin like ? and productos_empresa.prefijo = ?",tipo_gtin.id, "%#{gtin[0..11]}%", prefijo], :joins => :productos_empresa)
         numeracion_producto = productos.nil? ? 1 : (productos.size + 1)
         gtin_valido_generado = productos.nil? ? (numeracion_producto.to_s + gtin[0..11]) : (numeracion_producto.to_s + gtin[0..11])
-        digito_verificacion = calcular_digito_verificacion(gtin_valido_generado.to_i, "GTIN-14", 13) 
+        digito_verificacion = calcular_digito_verificacion(gtin_valido_generado.to_i, "GTIN-14") 
         gtin_generado = gtin_valido_generado.to_s + digito_verificacion.to_s
 
       elsif tipo_gtin.base == "GTIN-8"
         productos = Producto.find(:all, :conditions => ["producto.id_tipo_gtin = ? and producto.gtin like ?",tipo_gtin.id, "%#{gtin[0..6]}%"])
         numeracion_producto = productos.nil? ? 1 : (productos.size + 1)
         gtin_valido_generado = productos.nil? ? (numeracion_producto.to_s + "00000" + gtin[0..6]) : (numeracion_producto.to_s + "00000" + gtin[0..6])
-        digito_verificacion = calcular_digito_verificacion(gtin_valido_generado.to_i, "GTIN-14", 13)
+        digito_verificacion = calcular_digito_verificacion(gtin_valido_generado.to_i, "GTIN-14")
         gtin_generado = gtin_valido_generado.to_s + digito_verificacion.to_s 
       end
 
@@ -135,7 +119,7 @@ class Producto < ActiveRecord::Base
 
   end
 
-  def self.calcular_digito_verificacion(dividendo,tipo_gtin, digitos)
+  def self.calcular_digito_verificacion(dividendo,tipo_gtin)
 
     rango = 6..0 if tipo_gtin == "GTIN-8"
     rango = 11..0 if tipo_gtin == "GTIN-13"
@@ -146,21 +130,12 @@ class Producto < ActiveRecord::Base
     (rango.first).downto(rango.last).each{ |iteracion| 
       digito = (dividendo / (10 ** iteracion));
       dividendo = (dividendo % (10 ** iteracion));
-      
-      if (tipo_gtin == "GTIN-8") or (tipo_gtin == "GTIN-14") 
-
+     
         acumulado += ((iteracion % 2)  == 0) ? (digito * 3) : digito
-
-      elsif tipo_gtin == "GTIN-13"
-       
-        acumulado += ((iteracion % 2)  == 0) ? (digito * 3) : digito
-       
-      end
       
     }
     
     # SI el acumulado es multiplo de 10 se retorna 0
-
     verificacion = ((acumulado % 10) == 0) ? 0 : (((acumulado / 10) +1) * 10) - acumulado  # decena superior - acumulado
     return verificacion 
 
@@ -173,6 +148,34 @@ class Producto < ActiveRecord::Base
     producto_empresa.gtin = gtin
     producto_empresa.prefijo = prefijo
     producto_empresa.save
+
+  end
+
+  def self.completar_secuencia(secuencia)
+     
+     if secuencia.to_s.size == 1
+        secuencia = "000" + secuencia.to_s 
+      elsif secuencia.to_s.size == 2
+        secuencia = "00" + secuencia.to_s 
+      elsif secuencia.to_s.size == 3
+        secuencia = "0" + secuencia.to_s
+      end
+
+    return secuencia
+
+  end
+
+  def self.completar_prefijo(secuencia, prefijo)
+
+    if prefijo_empresa.to_s.size == 5
+      gtin = prefijo.to_s + "00" + secuencia.to_s 
+    elsif prefijo_empresa.to_s.size == 6
+      gtin = prefijo.to_s + "0" + secuencia.to_s 
+    elsif prefijo_empresa.to_s.size == 7
+      gtin = prefijo.to_s +  secuencia.to_s 
+    end
+
+    return gtin
 
   end
 
