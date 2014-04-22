@@ -187,11 +187,34 @@ class Producto < ActiveRecord::Base
     elsif prefijo_empresa.to_s.size == 7
       gtin = prefijo_empresa.to_s +  secuencia.to_s 
     end
-
     return gtin
 
   end
 
-  
+  def self.import(file, tipo_gtin, prefijo)
+
+    spreadsheet = open_spreadsheet(file)
+
+    (2..spreadsheet.last_row).each do |fila|
+      gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil)
+      producto = new
+      producto.gtin = gtin.to_s
+      producto.descripcion = spreadsheet.row(fila)[1]
+      producto.marca = spreadsheet.row(fila)[0]
+      producto.id_estatus = 3
+      producto.fecha_creacion = Time.now
+      producto.id_tipo_gtin = tipo_gtin.to_i
+      producto.save
+    end
+  end
+
+  def self.open_spreadsheet(file)
+    case File.extname(file.original_filename)
+      when ".csv" then Roo::Csv.new(file.path, nil, :ignore)
+      when ".xls" then Roo::Excel.new(file.path, nil, :ignore)
+      when ".xlsx" then Roo::Excelx.new(file.path, nil, :ignore)
+      else raise "Solo se permite importar archivo con extension '.xlsx', '.xls' : #{file.original_filename}"
+    end
+  end
 
 end

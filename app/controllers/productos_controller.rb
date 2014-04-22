@@ -128,6 +128,12 @@ class ProductosController < ApplicationController
     end
   end
 
+  def import
+    
+    Producto.import(params[:file], params[:tipo_gtin], params[:empresa_id])
+    redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "Los Productos fueron importados."
+  end
+
   # DELETE /productos/1
   # DELETE /productos/1.json
   def destroy
