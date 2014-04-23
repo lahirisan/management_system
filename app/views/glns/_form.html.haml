@@ -1,0 +1,86 @@
+%section.contexto
+  %label.contexto 
+    -if @gln.new_record?
+      Registar GLN
+    -else
+      Editar GLN
+  %hr.contexto{:size => "1"}
+
+  %section.formulario
+    = form_for @gln do |f|
+      - if @gln.errors.any?
+        #error_explanation
+          %h2= "#{pluralize(@gln.errors.count, "error")} prohibited this gln from being saved:"
+          %ul
+            - @gln.errors.full_messages.each do |msg|
+              %li= msg
+
+      .field
+        %table
+          %tr
+            %td
+              GLN
+            %td
+              = f.text_field :gln
+          %tr
+            %td
+              Tipo GLN
+            %td
+              = f.text_field :tipo_gln
+          %tr
+            %td
+              Código Localización
+            %td
+              = f.text_field :codigo_localizacion
+          %tr
+            %td
+              Descripción
+            %td
+              = f.text_field :descripcion
+          %tr
+            %td
+              País
+            %td
+              = f.text_field :id_pais
+          %tr
+            %td
+              Estado
+            %td
+              = f.text_field :id_estado
+          %tr
+            %td
+              Municipio
+            %td
+              = f.text_field :id_municipio
+          %tr
+            %td
+              Ciudad
+            %td
+              = f.text_field :id_ciudad
+          %tr
+            %td
+              Edificio
+            %td
+              = f.text_field :edificio
+          %tr
+            %td
+              Calle
+            %td
+              = f.text_field :calle
+          %tr
+            %td
+              Urbanización
+            %td
+              = f.text_field :urbanizacion
+          %tr
+            %td
+              Punto Ref
+            %td
+              = f.text_field :punto_referencia
+          %tr
+            %td
+              Código Postal
+            %td
+              = f.text_field :cod_postal
+      .actions
+        = f.submit 'Guardar'

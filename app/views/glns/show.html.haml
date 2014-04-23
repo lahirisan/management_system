@@ -1,0 +1,51 @@
+%p#notice= notice
+
+%p
+  %b Gln:
+  = @gln.gln
+%p
+  %b Tipo gln:
+  = @gln.tipo_gln
+%p
+  %b Codigo localizacion:
+  = @gln.codigo_localizacion
+%p
+  %b Descripcion:
+  = @gln.descripcion
+%p
+  %b Id estatus:
+  = @gln.id_estatus
+%p
+  %b Facha asignacion:
+  = @gln.facha_asignacion
+%p
+  %b Id pais:
+  = @gln.id_pais
+%p
+  %b Id estado:
+  = @gln.id_estado
+%p
+  %b Id municipio:
+  = @gln.id_municipio
+%p
+  %b Id ciudad:
+  = @gln.id_ciudad
+%p
+  %b Edificio:
+  = @gln.edificio
+%p
+  %b Calle:
+  = @gln.calle
+%p
+  %b Urbanizacion:
+  = @gln.urbanizacion
+%p
+  %b Punto referencia:
+  = @gln.punto_referencia
+%p
+  %b Cod postal:
+  = @gln.cod_postal
+
+= link_to 'Edit', edit_gln_path(@gln)
+\|
+= link_to 'Back', glns_path

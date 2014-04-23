@@ -2,9 +2,8 @@ class ProductosController < ApplicationController
   # GET /productos
   # GET /productos.json
   def index
-
+    
     @prefijo = params[:empresa_id]
-
     respond_to do |format|
       format.html {
                     if params[:retirar]

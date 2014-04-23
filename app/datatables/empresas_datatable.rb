@@ -34,7 +34,8 @@ private
         empresa.rif,
         empresa.estatus.descripcion,        
         link_to("Editar", edit_empresa_path(empresa)),
-        link_to("Productos", empresa_productos_path(empresa))          
+        link_to("Productos", empresa_productos_path(empresa)),
+        link_to("GLN", empresa_glns_path(empresa))          
       ]
       
       
