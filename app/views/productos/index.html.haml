@@ -29,12 +29,15 @@
     %br/
     %br/
 
+    
     =form_tag "/empresas/#{@prefijo}/productos/import" , multipart: true do
         %table
             %tr
                 %td
                     =file_field_tag :file
-                %td
+               
+        %table    
+
             %tr
                 %td
                     Tipo GTIN
@@ -43,6 +46,7 @@
             %tr
                 %td
                     =submit_tag "Importar"
+                %td
 
     .loader_prueba
         /=image_tag "loader.gif", :class => "loader" 
