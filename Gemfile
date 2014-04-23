@@ -41,7 +41,9 @@ gem 'jquery-rails'
 gem 'axlsx_rails'
 
 gem 'prawn'
-gem "prawnto_2", :require => "prawnto"   
+gem "prawnto_2", :require => "prawnto"
+
+gem "roo" # Gema para importar archivos Excel
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
