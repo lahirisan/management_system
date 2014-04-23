@@ -25,28 +25,34 @@
             =render 'footer'
     %br/
     %br/
+
     = link_to 'Crear Producto', new_empresa_producto_path
-    %br/
-    %br/
-
     
-    =form_tag "/empresas/#{@prefijo}/productos/import" , multipart: true do
-        %table
-            %tr
-                %td
-                    =file_field_tag :file
-               
-        %table    
+    %a#boton_importar.ui-state-default.ui-corner-all{:href => "#"}
+        %span.ui-icon.ui-icon-transferthick-e-w
+        Importar Producto
 
-            %tr
-                %td
-                    Tipo GTIN
-                %td
-                    =select_tag "tipo_gtin", options_from_collection_for_select(TipoGtin.find(:all, :conditions => ["id in (?)", [1,3]]), "id", "tipo"), prompt: "- Seleccione -"
-            %tr
-                %td
-                    =submit_tag "Importar"
-                %td
+    /=link_to "Importar Producto", "#", :id => "boton_importar"
+
+    #importar_producto
+
+        =form_tag "/empresas/#{@prefijo}/productos/import" , multipart: true do
+            %table
+                %tr
+                    %td
+                        =file_field_tag :file
+                   
+            %table    
+
+                %tr
+                    %td
+                        Tipo GTIN
+                    %td
+                        =select_tag "tipo_gtin", options_from_collection_for_select(TipoGtin.find(:all, :conditions => ["id in (?)", [1,3]]), "id", "tipo"), prompt: "- Seleccione -"
+                %tr
+                    %td
+                        =submit_tag "Importar"
+                    %td
 
     .loader_prueba
         /=image_tag "loader.gif", :class => "loader" 

@@ -133,6 +133,23 @@
            
         });
 
+        // Efectos del boton importar
+        $('#boton_importar').hover(
+          function() { $(this).addClass('ui-state-hover'); },
+          function() { $(this).removeClass('ui-state-hover');}
+        );
+
+        // Dialogo importar productos oculto por defecto
+        $('#importar_producto').dialog({
+          autoOpen: false,
+          width: 500
+        });
+
+        // Botón para abrir el dialogo
+        $('#boton_importar').click(function(w){
+            w.preventDefault(); // Deshabilita el hipervinculo el boton importar
+            $('#importar_producto').dialog('open');
+        });
 
     })   
 
