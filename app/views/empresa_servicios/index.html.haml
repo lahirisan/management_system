@@ -1,0 +1,27 @@
+%section.contexto
+  %label.contexto
+    =@etiqueta
+  %hr.contexto{:size => "1"}
+
+%section#areaTrabajo.areaTrabajo
+  %p#notice= notice
+  %table#data_table_empresa_servicios.display{:"data-source" => "/empresa_servicios.json?prefijo=#{params[:empresa_id]}"}
+    %thead
+      %tr
+        %th Prefijo
+        %th ID Servicio
+        %th Fecha Contratación
+        %th Fecha Finalización
+        %th Nombre Contacto
+        %th Cargo Contacto
+        %th Teléfono
+        %th Correo
+        %th 
+        %th 
+
+    %tbody
+    %tfoot
+
+  %br
+  %br
+  = link_to 'Crear Servicio', "/empresas/#{params[:empresa_id]}/empresa_servicios/new"
