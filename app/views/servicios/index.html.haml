@@ -1,0 +1,25 @@
+%section.contexto
+  %label.contexto Servicios > Listado
+  %hr.contexto{:size => "1"}
+
+%section#areaTrabajo.areaTrabajo
+  %table#data_table_servicios.display{:"data-source" => "/servicios.json?prefijo=#{params[:empresa_id]}"}
+    %thead
+      %tr
+        %th Prefijo
+        %th ID Servicio
+        %th Fecha Contratación
+        %th Fecha Finalización
+        %th Nombre Contacto
+        %th Cargo Contacto
+        %th Teléfono
+        %th Correo
+        %th 
+        %th 
+
+    %tbody
+    %tfoot
+
+  %br
+  %br
+  = link_to 'Crear Servicio', "/empresas/#{params[:empresa_id]}/servicios/new"
