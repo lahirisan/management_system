@@ -30,8 +30,8 @@ private
           empresa_servicio.cargo_contacto,
           empresa_servicio.telefono,
           empresa_servicio.email,
-          link_to("Editar", "/empresas/#{params[:prefijo]}/empresa_servicios/#{empresa_servicio.id}/edit"),
-          link_to('Eliminar', "#{empresa_servicio.id}", :confirm => 'seguro desea ELIMINAR este Servicio ?', :method => :delete) 
+          link_to("Editar", "/empresas/#{params[:prefijo]}/empresa_servicios/#{empresa_servicio.id}/edit")
+          
         ]
       
     end
@@ -44,7 +44,7 @@ private
 
   def fetch_empresa_servicios
 
-    empresa_servicios = EmpresaServicios.where("prefijo = ?", params[:prefijo]).includes(:servicio)
+    empresa_servicios = EmpresaServicio.where("prefijo = ?", params[:prefijo]).includes(:servicio)
     empresa_servicios = empresa_servicios.page(page).per_page(per_page)
     
     # if params[:sSearch].present? # Filtro de busqueda general

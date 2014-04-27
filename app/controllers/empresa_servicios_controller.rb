@@ -4,10 +4,25 @@ class EmpresaServiciosController < ApplicationController
   def index
     
     respond_to do |format|
-      format.html # index.html.erb
-       format.json {
+      format.html {
+                    if params[:eliminar]
+                      render :template =>'/empresa_servicios/eliminar_servicios.html.haml'
+                    elsif params[:eliminados]
+                      render :template =>'/empresa_servicios/servicios_eliminados.html.haml'
+                    else
+                      render :template =>'/empresa_servicios/index.html.haml'
+                    end
 
-        render json: (EmpresaServiciosDatatable.new(view_context)) }
+      }
+       format.json {
+                    if params[:eliminar]
+                      render json: (EliminarEmpresaServiciosDatatable.new(view_context))
+                    elsif params[:eliminados]
+                      render json: (EmpresaServiciosEliminadosDatatable.new(view_context))
+                    else
+                      render json: (EmpresaServiciosDatatable.new(view_context)) 
+                    end
+                  }
     end
   end
 
@@ -86,12 +101,11 @@ class EmpresaServiciosController < ApplicationController
   # DELETE /empresa_servicios/1
   # DELETE /empresa_servicios/1.json
   def destroy
-    @empresa_servicio = EmpresaServicio.find(params[:id])
-    @empresa_servicio.destroy
 
+    EmpresaServicio.eliminar(params) if params[:eliminar]
+    
     respond_to do |format|
-      format.html { redirect_to empresa_servicios_url }
-      format.json { head :no_content }
+      format.html { redirect_to "/empresas/#{params[:empresa_id]}/empresa_servicios", notice: "Los servicios seleccionados fueron eliminados."}
     end
   end
 end
