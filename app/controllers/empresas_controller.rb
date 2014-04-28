@@ -46,7 +46,7 @@ class EmpresasController < ApplicationController
        }
       
       format.csv{ send_data @empresas.to_csv}
-      format.pdf { @empresas = Empresa.includes(:estado, :ciudad, :estatus).limit(100)}  # Generar PDF
+      format.pdf { }  # Generar PDF
 
     end
 
