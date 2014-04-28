@@ -11,7 +11,7 @@
 
       -if @empresa.errors.any? 
         #error_explanation
-          %h2= pluralize(@empresa.errors.count, "error")
+          %h2= pluralize(@empresa.errors.count, "errore")
           %ul
             // Customización de los mensajes de error para el formulario empresa
             -@empresa.errors.full_messages.each do |msg|
@@ -28,7 +28,7 @@
             Prefijo
           %td
             -if @empresa.new_record?
-              =f.text_field :prefijo , :value => "#{@ultimo.prefijo + 1}"
+              =f.text_field :prefijo , :value => "#{@ultimo.prefijo + 1}", :readonly => :true
             -else
               =f.text_field :prefijo 
 
@@ -41,10 +41,7 @@
           %td
             Fecha Inscripción
           %td
-            -if @empresa.new_record?
-              =f.text_field :fecha_inscripcion 
-            -else
-              =f.text_field :fecha_inscripcion, :value => "#{@empresa.fecha_inscripcion.strftime("%Y-%m-%d")}" 
+            =f.text_field :fecha_inscripcion 
         %tr
           %td
             Dirección Empresa
@@ -87,22 +84,22 @@
           %td
             Categoría 
           %td
-            = f.text_field :categoria
+            = f.text_field :categoria, :readonly => :true
         %tr
           %td
             División
           %td
-            = f.text_field :division 
+            = f.text_field :division , :readonly => :true
         %tr
           %td
             Grupo
           %td
-            = f.text_field :grupo 
+            = f.text_field :grupo , :readonly => :true
         %tr
           %td
             Clase
           %td
-            = f.text_field :clase
+            = f.text_field :clase, :readonly => :true
 
       %br/
       %label.contexto
@@ -120,9 +117,14 @@
                 = fc.select(:tipo, options_for_select(['email', 'fax', 'opcional', 'principal', 'secundario']))
             %tr
               %td
-                Nombre Contacto
+                Contacto
               %td
                 =fc.text_field :contacto
+            %tr
+              %td
+                Nombre Contacto
+              %td
+                =fc.text_field :nombre_contacto 
             %tr
               %td
                 Cargo Contacto
