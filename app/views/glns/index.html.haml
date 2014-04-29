@@ -1,0 +1,33 @@
+%section.contexto
+  %label.contexto GLN > Listado
+  %hr.contexto{:size => "1"}
+
+%section#areaTrabajo.areaTrabajo
+  %p#notice= notice
+
+  %table#data_table_glns.display{:"data-source" => "/glns.json?prefijo=#{params[:empresa_id]}"}
+    %thead
+      %tr
+        %th GLN
+        %th Tipo GLN
+        %th Código localización
+        %th Descripción
+        %th Estatus
+        %th Fecha asignación
+        %th Pais
+        %th Estado
+        %th Municipio
+        %th Ciudad
+        %th Edificio
+        %th Calle
+        %th Urbanización
+        %th Punto ref
+        %th Cod postal
+        %th
+        %th
+    %tbody
+    %tfoot
+      =render "footer"
+  %br
+  %br
+  = link_to 'New Gln', new_gln_path

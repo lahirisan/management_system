@@ -15,13 +15,15 @@
                 %th Estatus
                 %th 
                 %th Productos
+                %th Servicios
+                %th GLN
                
         %tbody
         %tfoot
             =render 'footer'
     %br/
     %br/
-    = link_to 'New Empresa', new_empresa_path
+    = link_to 'Crear Empresa', new_empresa_path
     = link_to 'Exportar Excel', '/empresas.xlsx'
     = link_to 'Exportar CSV', '/empresas.csv'
     = link_to 'Exportar PDF', '/empresas.pdf'

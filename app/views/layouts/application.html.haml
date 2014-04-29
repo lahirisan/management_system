@@ -86,6 +86,21 @@
 								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminados=true", :title => "Listado de los productos eliminados"}
 									.opcion Productos Eliminados
 
+			-if params[:controller] == 'empresa_servicios'
+
+				%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios", :title => "Listado de Servicios para la empresa seleccionada"}
+					.opcion Servicios
+					.opcion
+						%ul
+							%li 
+								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios?eliminar=true", :title => "ELiminar Servicios"}
+									.opcion Eliminar Servicios
+					.opcion
+						%ul
+							%li 
+								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios?eliminados=true", :title => "Listado de los Servicios eliminados"}
+									.opcion Servicios Eliminados
+
 
 			
 		= yield

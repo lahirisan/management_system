@@ -1,5 +1,8 @@
 GS1::Application.routes.draw do
   
+
+  resources :glns
+  resources :empresa_servicios
   resources :productos do
     collection do
       put 'update_multiple', :action => 'update_multiple', :as => 'update_multiple'  # la ruta update_multiple para productos
@@ -7,7 +10,8 @@ GS1::Application.routes.draw do
   end
 
   resources :empresas do  
-    
+
+    resources :empresa_servicios
     resources :productos do #/empresas/1/productos
 
       collection do
@@ -15,6 +19,8 @@ GS1::Application.routes.draw do
         post 'import', :action => 'import', :as => 'import'  # Ruta para importar archivos
       end
     end
+
+    resources :glns
 
     resources :datos_contactos   #/empresas/1/datos_contactos
     

@@ -1,4 +1,6 @@
 Prawn::Document.generate("empresas.pdf", :page_size=> "EXECUTIVE",:page_layout => :landscape) do
+	
+	@empresas = Empresa.includes(:estado, :ciudad, :estatus).limit(100)
 	empresas = Array.new
   	@empresas.each do |empresa|
     fecha = ""

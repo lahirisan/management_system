@@ -1,0 +1,30 @@
+%p#notice= notice
+
+%p
+  %b Prefijo:
+  = @empresa_servicio.prefijo
+%p
+  %b Id servicio:
+  = @empresa_servicio.id_servicio
+%p
+  %b Fecha contratacion:
+  = @empresa_servicio.fecha_contratacion
+%p
+  %b Fecha finalizacion:
+  = @empresa_servicio.fecha_finalizacion
+%p
+  %b Nombre contacto:
+  = @empresa_servicio.nombre_contacto
+%p
+  %b Cargo contacto:
+  = @empresa_servicio.cargo_contacto
+%p
+  %b Telefono:
+  = @empresa_servicio.telefono
+%p
+  %b Email:
+  = @empresa_servicio.email
+
+= link_to 'Edit', edit_empresa_servicio_path(@empresa_servicio)
+\|
+= link_to 'Back', empresa_servicios_path

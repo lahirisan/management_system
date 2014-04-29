@@ -17,7 +17,8 @@ class Empresa < ActiveRecord::Base
   belongs_to :clasificacion, :foreign_key => "id_clasificacion"
   has_one  :empresas_retiradas,  :foreign_key => "prefijo" , :dependent => :destroy   # Define una asociacion 1 a 1 con empresas_retiradas, eliminacion en cascada
   has_many :productos_empresa, :foreign_key => "prefijo" # Define una asociaicion 1 a N con productos_empresa
-  has_many :producto, :through => :productos_empresa, :foreign_key => "prefijo" # Define una asociaicion 1 a N con productos_empresa
+  has_many :producto, :through => :productos_empresa, :foreign_key => "prefijo", :dependent => :destroy# Define una asociaicion 1 a N con productos_empresa
+  has_many :empresa_servicio, :foreign_key => "prefijo", :dependent => :destroy
   
 
   
@@ -107,10 +108,12 @@ class Empresa < ActiveRecord::Base
         empresa_eliminada_detalle = EmpresaElimDetalle.new
         empresa_eliminada_detalle.prefijo = empresa_eliminada.prefijo
         empresa_eliminada_detalle.fecha_eliminacion = Time.now
+        empresa_eliminada_detalle.id = empresa_eliminada.prefijo
         empresa_eliminada_detalle.save
 
         
         estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Eliminado', 'Producto'])
+        
         #Los productos se agrega a productos eliminados
         empresa_eliminar.productos_empresa.collect{|producto_empresa| 
           producto_eliminado = ProductoEliminado.new; 
@@ -126,70 +129,16 @@ class Empresa < ActiveRecord::Base
           producto_elim_detalle.gtin = producto_empresa.producto.gtin; 
           producto_elim_detalle.fecha_eliminacion = Time.now; 
           producto_elim_detalle.save}
-        # Se elimina los productos de la empresa
+        # # Se elimina los productos de la empresa
         empresa_eliminar.productos_empresa.collect{|productos_empresa| producto = Producto.find(:first, :conditions => ["gtin like ?", productos_empresa.gtin]); producto.destroy}
-        # Se elimina lña empresa
+        
+        # Se elimina los servicios de la empresa
+        empresa_eliminar.empresa_servicio.collect{|servicio| EmpresaServicio.servicio_eliminado(servicio,1,1)}
         empresa_eliminar.destroy
 
       end
   end
   
-  # def self.reactivar_empresas_eliminadas(parametros)
-    
-  #   estatus_empresa = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activa', 'Empresa'])
-    
-  #   # reactivacion de las empresasa
-  #   for eliminada in (0..parametros[:reactivar_empresas].size-1)
-  #     empresa_reactivada = Empresa.new
-  #     empresa_eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo like ?",parametros[:reactivar_empresas][eliminada]])
-  #     empresa_reactivada.prefijo = empresa_eliminada.prefijo
-  #     empresa_reactivada.nombre_empresa = empresa_eliminada.nombre_empresa
-  #     empresa_reactivada.fecha_inscripcion = empresa_eliminada.fecha_inscripcion
-  #     empresa_reactivada.direccion_empresa = empresa_eliminada.direccion_empresa.nil? ? 'No Tiene' : empresa_eliminada.direccion_empresa
-  #     empresa_reactivada.id_estado = empresa_eliminada.id_estado 
-  #     empresa_reactivada.id_ciudad = empresa_eliminada.id_ciudad
-  #     empresa_reactivada.rif = empresa_eliminada.rif.strip # Elimina espacios en blanco
-  #     empresa_reactivada.id_estatus = estatus_empresa.id
-  #     empresa_reactivada.id_tipo_usuario = empresa_eliminada.id_tipo_usuario
-  #     empresa_reactivada.nombre_comercial = empresa_eliminada.try(:nombre_comercial)
-  #     empresa_reactivada.id_clasificacion = empresa_eliminada.try(:id_clasificacion)
-  #     empresa_reactivada.categoria = empresa_eliminada.try(:categoria)
-  #     empresa_reactivada.division = empresa_eliminada.try(:division)
-  #     empresa_reactivada.grupo = empresa_eliminada.try(:grupo)
-  #     empresa_reactivada.clase = empresa_eliminada.try(:clase)
-  #     empresa_reactivada.rep_legal = empresa_eliminada.try(:rep_legal)
-  #     empresa_reactivada.cargo_rep_legal = empresa_eliminada.try(:cargo_rep_legal)
-  #     empresa_reactivada.save
-  #     empresa_eliminada.destroy      
-  #   end
-
-    
-  #   #reactivacion de los productos
-  #   estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activo', 'Producto'])
-  #   # Se buscan los productos de las empresas
-    
-  #   for eliminada in (0..parametros[:reactivar_empresas].size-1)
-  #     productos_empresas = ProductosEmpresa.find(:all, :conditions => ["prefijo like ?", parametros[:reactivar_empresas][eliminada]])
-
-  #     for producto in (0.. productos_empresas.size-1)
-  #       producto_eliminado = ProductoEliminado.find(:first, :conditions => ["gtin like ?",productos_empresas[producto].gtin])
-  #       producto_activado = Producto.new
-  #       producto_activado.gtin = producto_eliminado.gtin
-  #       producto_activado.descripcion = producto_eliminado.descripcion
-  #       producto_activado.marca = producto_eliminado.try(:marca)
-  #       producto_activado.gpc = producto_eliminado.try(:gpc)
-  #       producto_activado.id_estatus = estatus_producto.id
-  #       producto_activado.codigo_prod = producto_eliminado.try(:codigo_prod)
-  #       producto_activado.fecha_creacion = producto_eliminado.try(:fecha_creacion)
-  #       producto_activado.id_tipo_gtin = producto_eliminado.try(:id_tipo_gtin)
-  #       producto_activado.save
-  #       producto_eliminado.destroy
-
-  #     end
-    
-  #   end
-
-  # end
 
   def self.reactivar_empresas_retiradas(parametros)
     
