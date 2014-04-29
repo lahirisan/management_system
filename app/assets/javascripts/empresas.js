@@ -29,11 +29,11 @@
             sDom: 'T<"clear">lfrtip',
             sAjaxSource: $('#data_table_empresas_retirar').data('source')
         }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
-
-       
         
-        // Datepicker para la fecha de creacion de la empresa
-        $("#empresa_fecha_inscripcion").datepicker();
+        if (window.location.pathname.split('/')[2] == 'new')
+        {
+            $("#empresa_fecha_inscripcion").datepicker();
+        }
 
         // Actualizar la ciudad dependiendo del estado seleccionado - Datos Basicos
         $( "#empresa_id_estado").change(function() {
@@ -109,11 +109,13 @@
             
         });
 
+        $('.loader').hide();
+
       
         jQuery.ajaxSetup({
             
             beforeSend: function() { // muestra el GIF que indica se está cargando el AJAX
-                $('.loader').show();
+               $('.loader').show();
             },
             complete: function(){
 
@@ -129,7 +131,7 @@
                 $('.loader').hide(); // oculta el GIF que indica se está cargando el AJAX
             },
           success: function() {
-             //$('.loader').hide(); // oculta el GIF que indica se está cargando el AJAX
+            
           }
         });
         // cuando  se hace submit del formulario se capturan los valores que tienen los combos de las empresas seleccionadas
@@ -200,5 +202,32 @@
            
         });
 
+        // Validacion  formato del email en apartado datos de contacto
+        $('#formulario_crear_empresa').submit(function( event ) {
+
+            
+            if ($( "#empresa_datos_contacto_attributes_0_tipo option:selected" ).text() == 'email')
+            {
+                expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+                if ( !expr.test($('empresa_datos_contacto_attributtes_0_contacto').val()) )
+                {
+                    alert("Datos de Contacto: EL formato de la dirección de correo " + $('#empresa_datos_contacto_attributes_0_contacto').val() + " es incorrecta.");
+                    return false;
+                }
+            }
+
+        });
+
+        // estilos de los botones exportar
+        $('.exportar_excel, .exportar_csv, .exportar_pdf').hover(
+     
+          function() { $(this).addClass('ui-state-hover'); },
+          function() { $(this).removeClass('ui-state-hover');
+        });
+
+        // Se le da espacio a la parte superiori del datatable entre los botones y el datatatable
+        $('.dataTables_wrapper').css('margin-top', '30px');
+
+       
     })   
 

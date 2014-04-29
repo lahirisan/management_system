@@ -38,27 +38,32 @@
 				.opcion
 					%ul
 						%li 
-							%a.opcion{:href => "/empresas?activacion=true"}
+							%a.opcion{:href => "/empresas/new", :title => "Opción para Crear Empresa"}
+								.opcion Registrar
+				.opcion
+					%ul
+						%li 
+							%a.opcion{:href => "/empresas?activacion=true", :title => "Opción para Activar Empresas creadas"}
 								.opcion Activar Empresa
 				.opcion
 					%ul
 						%li 
-							%a.opcion{:href => "/empresas?retirar=true"}
+							%a.opcion{:href => "/empresas?retirar=true", :title => "Opción para Retirar Empresa"}
 								.opcion Retirar Empresa
 				.opcion
 					%ul
 						%li 
-							%a.opcion{:href => "/empresas?eliminar=true"}
+							%a.opcion{:href => "/empresas?eliminar=true", :title => "Oción para Eliminar Empresa"}
 								.opcion Eliminar Empresa
 				.opcion
 					%ul
 						%li 
-							%a.opcion{:href => "/empresas?retiradas=true"}
+							%a.opcion{:href => "/empresas?retiradas=true", :title => "Opción para Listar Empresas Retiradas"}
 								.opcion Empresas Retiradas
 				.opcion
 					%ul
 						%li 
-							%a.opcion{:href => "/empresas?eliminadas=true"}
+							%a.opcion{:href => "/empresas?eliminadas=true", :title => "Opción para Listar Empresas ELiminadas"}
 								.opcion Empresas Eliminadas
 
 			-if params[:controller] == 'productos'

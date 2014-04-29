@@ -32,7 +32,8 @@ private
         empresa.estado.nombre,
         empresa.ciudad.nombre,
         empresa.rif,
-        empresa.estatus.descripcion,        
+        empresa.estatus.descripcion,
+        link_to("Ver Detalle", empresa_path(empresa)),        
         link_to("Editar Empresa", edit_empresa_path(empresa)),
         link_to("Productos", empresa_productos_path(empresa)),
         link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios"),
@@ -49,7 +50,7 @@ private
 
   def fetch_empresas
    
-    empresas = Empresa.includes(:estado, :ciudad, :estatus).order("#{sort_column} #{sort_direction}")
+    empresas = Empresa.includes(:estado, :ciudad, :estatus).order("empresa.prefijo DESC") # Se cableando el direccionamiento
     empresas = empresas.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general

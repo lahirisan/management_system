@@ -7,7 +7,7 @@
   %hr.contexto{:size => "1"}
 
   %section.formulario
-    = form_for(@empresa) do |f|
+    = form_for(@empresa, :html => {:id => "formulario_crear_empresa"}) do |f|
 
       -if @empresa.errors.any? 
         #error_explanation
@@ -30,7 +30,7 @@
             -if @empresa.new_record?
               =f.text_field :prefijo , :value => "#{@ultimo.prefijo + 1}", :readonly => :true
             -else
-              =f.text_field :prefijo 
+              =f.text_field :prefijo, :readonly => :true 
 
         %tr
           %td
@@ -41,7 +41,8 @@
           %td
             Fecha Inscripción
           %td
-            =f.text_field :fecha_inscripcion 
+            = @empresa.new_record? ? f.text_field(:fecha_inscripcion) : f.text_field(:fecha_inscripcion, :readonly => :true, :value => "#{@empresa.fecha_inscripcion.strftime("%Y-%m-%d")}")
+            
         %tr
           %td
             Dirección Empresa
@@ -79,7 +80,7 @@
           %td
             Clasificación
           %td
-            =f.collection_select :id_clasificacion, Clasificacion.all, :id, :descripcion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:300px;"}
+            =@empresa.new_record? ? f.collection_select(:id_clasificacion, Clasificacion.all, :id, :descripcion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:300px;"}) : f.text_field(:id_clasificacion, :value => "#{@empresa.try(:clasificacion).try(:descripcion)}")
         %tr
           %td
             Categoría 
@@ -114,7 +115,7 @@
               %td
                 Tipo Contacto
               %td
-                = fc.select(:tipo, options_for_select(['email', 'fax', 'opcional', 'principal', 'secundario']))
+                = fc.select(:tipo, options_for_select(['email', 'fax', 'opcional', 'principal', 'secundario']),{:prompt => "- Seleccione -"})
             %tr
               %td
                 Contacto
