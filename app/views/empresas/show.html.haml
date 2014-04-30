@@ -1,0 +1,96 @@
+:css
+  a#dialog_link{ font: 62.5% "Trebuchet MS", sans-serif; }
+  #dialog{ font: 62.5% "Trebuchet MS", sans-serif; }
+  
+  #dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
+  
+%section.contexto
+  %label.contexto Administración > Actores > Mostrar Actor
+  %hr.contexto{:size => "1"}
+
+%section#areaTrabajo.areaTrabajo{:style => "font: 82.5% 'Trebuchet MS', sans-serif"}
+  %p#notice= notice
+  %table
+    %tr
+      %td
+        Nombre Empresa
+      %td
+        = @empresa.nombre_empresa
+    %tr
+      %td
+        Fecha Inscripción
+      %td
+        = @empresa.fecha_inscripcion
+    %tr
+      %td
+        Dirección de la empresa
+      %td
+        = @empresa.direccion_empresa
+    %tr
+      %td
+        Estado
+      %td
+        =@empresa.estado.nombre
+    %tr
+      %td
+        Ciudad
+      %td
+        = @empresa.ciudad.nombre
+    %tr
+      %td
+        RIF
+      %td
+        = @empresa.rif
+    %tr
+      %td
+        Estatus
+      %td
+        =@emprea.try(:estatus).try(:descripcion)
+    %tr
+      %td
+        ID Tipo de Usuario
+      %td
+        = @empresa.id_tipo_usuario
+    %tr
+      %td
+        Nombre Comercial
+      %td
+        = @empresa.nombre_comercial
+    %tr
+      %td
+        Clasificación
+      %td
+      = @empresa.id_clasificacion
+    %tr
+      %td
+        Categoría
+      %td
+        = @empresa.categoria
+    %tr
+      %td
+        División
+      %td
+        = @empresa.division
+    %tr
+      %td
+        Grupo
+      %td
+        = @empresa.grupo
+    %tr
+      %td
+        Clase
+      %td
+        = @empresa.clase
+    %tr
+      %td
+        Rep Legal
+      %td
+        = @empresa.rep_legal
+    %tr
+      %td
+        Cargo Rep Legal
+      %td
+        = @empresa.cargo_rep_legal
+
+  = link_to 'Back', empresas_path
+
