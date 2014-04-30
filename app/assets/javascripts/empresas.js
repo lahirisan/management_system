@@ -3,6 +3,7 @@
         // Datatable que maneja el listado de empresas
         $("#data_table_empresas").dataTable({
             sPaginationType: "full_numbers",
+            aaSorting: [[ 0, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
@@ -23,6 +24,7 @@
         // Datatable que maneja el listado para retirar empresas
         $("#data_table_empresas_retirar").dataTable({
             sPaginationType: "full_numbers",
+            aaSorting: [[ 0, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
@@ -143,9 +145,26 @@
                 alert("Estimado usuario, no ha seleccionado ninguna empresa para RETIRAR. Por favor verifique.");
                 return false;
             }
+            
+            var seleccion_invalida;
             if ($('#retiro_masivo').is(':checked')) // retiro masivo
             {  
                 $('.retirar_empresa:checked').each(function() {
+                    
+                    if ($("#"+$(this).val()+"sub_estatus").val() == 1)
+                    {
+                        alert('Debe seleccionar un Sub Estatus para la empresa con prefijo' + $(this).val());
+                        seleccion_invalida = true;
+                        return false;
+                    }
+
+                    if ($("#"+$(this).val()+"motivo_ret").val() == 1)
+                    {
+                        alert('Debe seleccionar un Motivo Retiro para la empresa con prefijo' + $(this).val());
+                        seleccion_invalida = true;
+                        return false;
+                    }
+
                     // Por cada empresa seleccionda se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
                     $('#datos_empresas_retirar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
                 });   
@@ -153,11 +172,30 @@
             else // múltiple selecccion de empresas a retirar
             {
                 $('.retirar_empresa:checked').each(function() {
+                   
+                    if ($("#"+$(this).val()+"sub_estatus").val() == 1)
+                    {
+                        alert('Debe seleccionar un Sub Estatus para la empresa con prefijo ' + $(this).val());
+                        seleccion_invalida = true;
+                        return false;
+                    }
+
+                    if ($("#"+$(this).val()+"motivo_ret").val() == 1)
+                    {
+                        alert('Debe seleccionar un Motivo Retiro para la empresa con prefijo ' + $(this).val());
+                        seleccion_invalida = true;
+                        return false;
+                    }
+
                     // Por cada empresa seleccionda se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
                     $('#datos_empresas_retirar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
                 });
             }
 
+            if (seleccion_invalida)
+                return false;
+
+           
             if (!confirm('¿ Estimado usuario, está seguro de RETIRAR la(s) empresa(s) seleccionada(s) ?'))
                 return false;
         });
@@ -191,10 +229,10 @@
                 return false;
         });
 
-        $('#formulario_eliminadas').submit(function( event ) { 
+        $('#formulario_retiradas').submit(function( event ) { 
             
             // Se valida que se haya seleccionado alguna empresa para retirar
-            if ($(".retirar_empresa:checked").length == 0)
+            if ($(".empresa_retirada:checked").length == 0)
             {
                 alert("Estimado usuario, no ha seleccionado ninguna empresa para REACTIVAR. Por favor verifique.");
                 return false;
@@ -219,7 +257,7 @@
         });
 
         // estilos de los botones exportar
-        $('.exportar_excel, .exportar_csv, .exportar_pdf').hover(
+        $('.exportar_excel, .exportar_csv, .exportar_pdf, .regresar, .retirar, .reactivar, .eliminar').hover(
      
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');

@@ -55,8 +55,8 @@ class EmpresasController < ApplicationController
   # GET /empresas/1
   # GET /empresas/1.json
   def show
-    @empresa = Empresa.find(params[:id])
 
+    @empresa = Empresa.find(params[:id])
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @empresa }
@@ -137,17 +137,23 @@ class EmpresasController < ApplicationController
         Empresa.reactivar_empresas_eliminadas(params) 
       end
     end
+    
+    @procesadas = ""
+    params[:activar_empresas].collect{|prefijo| @procesadas += prefijo } if params[:activar_empresas]
+    params[:retirar_empresas].collect{|prefijo| @procesadas += prefijo } if params[:retirar_empresas]
+    params[:eliminar_empresas].collect{|prefijo| @procesadas += prefijo } if params[:eliminar_empresas]
+    params[:reactivar_empresas].collect{|prefijo| @procesadas += prefijo } if params[:reactivar_empresas]
 
     respond_to do |format|
           format.html { 
-          redirect_to '/empresas?activacion=true', notice: "Los Prefijos #{params[:activar_empresa].collect{|prefijo| prefijo}} fueron activados satisfactoriamente"  if params[:activacion]
-          redirect_to '/empresas?retirar=true', notice: "Los Prefijos #{params[:retirar_empresas].collect{|prefijo| prefijo}} fueron activados satisfactoriamente"  if params[:retiro]
-          redirect_to '/empresas?eliminar=true', notice: "Los Prefijos #{params[:eliminar_empresas].collect{|prefijo| prefijo}} fueron activados satisfactoriamente"  if params[:eliminar]
+          redirect_to '/empresas?activacion=true', notice: "Los Prefijos #{@procesadas} fueron activados."  if params[:activacion]
+          redirect_to '/empresas?retiradas=true', notice: "Los Prefijos #{@procesadas} fueron retirados."  if params[:retiro]
+          redirect_to '/empresas?eliminar=true', notice: "Los Prefijos #{@procesadas} fueron eliminados"  if params[:eliminar]
           if params[:reactivar]
             if params[:retiradas]
-              redirect_to '/empresas?retiradas=true', notice: "Los Prefijos #{params[:reactivar_empresas].collect{|prefijo| prefijo}} fueron activados satisfactoriamente"
+              redirect_to '/empresas?retiradas=true', notice: "Los Prefijos #{@procesadas} fueron activados satisfactoriamente"
             else
-              redirect_to '/empresas?eliminadas=true', notice: "Los Prefijos #{params[:reactivar_empresas].collect{|prefijo| prefijo}} fueron activados satisfactoriamente"
+              redirect_to '/empresas?eliminadas=true', notice: "Los Prefijos #{@procesadas} fueron activados satisfactoriamente"
             end
           end 
           }

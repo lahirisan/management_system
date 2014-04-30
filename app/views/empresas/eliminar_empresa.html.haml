@@ -4,6 +4,9 @@
 %p#notice.ui-state-highlight.ui-corner-all
 %section#areaTrabajo.areaTrabajo
     =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_eliminar_empresa" do
+        %button#submit.ui-state-default.ui-corner-all.eliminar{:type => "submit"}
+            %span.ui-icon.ui-icon-circle-close
+            Eliminar
         %table.margen_inferior{:border => 1}
             %tr
                 %td
@@ -47,6 +50,9 @@
         #datos_empresas_eliminar
         
         =hidden_field_tag "eliminar", "true"
-        = submit_tag 'Eliminar'
+        %button#submit.ui-state-default.ui-corner-all.eliminar{:type => "submit"}
+            %span.ui-icon.ui-icon-circle-close
+            Eliminar
+        
         
     

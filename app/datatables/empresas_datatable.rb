@@ -50,7 +50,7 @@ private
 
   def fetch_empresas
    
-    empresas = Empresa.includes(:estado, :ciudad, :estatus).order("empresa.prefijo DESC") # Se cableando el direccionamiento
+    empresas = Empresa.includes(:estado, :ciudad, :estatus).order("#{sort_column} #{sort_direction}") 
     empresas = empresas.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general
@@ -126,7 +126,7 @@ private
   end
 
   def sort_direction
-    params[:sSortDir_0] == "desc" ? "desc" : "asc"
+    params[:sSortDir_0] == "asc" ? "asc" : "desc"
   end
 
   

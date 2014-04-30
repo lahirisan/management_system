@@ -35,10 +35,9 @@ private
         empresa.ciudad.nombre,
         empresa.rif,
         empresa.estatus.descripcion,
-        empresa.clasificacion.try(:descripcion),
-        empresa.rep_legal,
         select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_subestatus)), :id => "#{empresa.prefijo}sub_estatus"),
         select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_motivo_retiro)), :id => "#{empresa.prefijo}motivo_ret"),
+        link_to("Ver Detalle", empresa_path(empresa, :retirar => true))       
       ]
   
     end

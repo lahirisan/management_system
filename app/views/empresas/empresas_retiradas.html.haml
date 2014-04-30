@@ -1,12 +1,12 @@
 %section.contexto
     %label.contexto Empresas > Empresas Retiradas
     %hr.contexto{:size => "1"}
-%p#notice.ui-state-highlight.ui-corner-all
-    -if (notice)
-        =notice
-        -notice = nil
 %section#areaTrabajo.areaTrabajo
+    %p#notice= notice
     =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retiradas" do
+        %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
+            %span.ui-icon.ui-icon-arrowrefresh-1-n
+            Reactivar
         %table.margen_inferior{:border => 1}
             %tr
                 %td
@@ -41,6 +41,9 @@
         
         =hidden_field_tag "reactivar", "true"
         =hidden_field_tag "retiradas", "true"
-        = submit_tag 'Reactivar'
+        %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
+            %span.ui-icon.ui-icon-arrowrefresh-1-n
+            Reactivar
+        
         
     

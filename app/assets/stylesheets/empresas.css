@@ -10,4 +10,12 @@
 .exportar_csv span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 .exportar_pdf {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 70.5% "Trebuchet MS", sans-serif}
 .exportar_pdf span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+.regresar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif}
+.regresar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+.retirar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif}
+.retirar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+.reactivar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif}
+.reactivar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+.eliminar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif}
+.eliminar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 .loader{position:fixed; top: 50%;  left: 50%; z-index:30;} 

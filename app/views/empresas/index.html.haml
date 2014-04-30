@@ -24,15 +24,17 @@
                 %th Ciudad
                 %th RIF
                 %th Estatus
-                %th
-                %th 
+                %th Detalle Empresa
+                %th Editar Empresa
                 %th Productos
                 %th Servicios
                 %th GLN
                
-        %tbody
         %tfoot
             =render 'footer'
+            
+        %tbody
+        
     %br/
     %br/
     %a.ui-state-default.ui-corner-all.exportar_excel{:href => "/empresas.xlsx"}
