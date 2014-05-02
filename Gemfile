@@ -28,13 +28,14 @@ group :assets do
 
   # para utilizar datatables
   
-  # gem 'jquery-datatables-rails', github: 'rweng/jquery-datatables-rails'
-   gem 'ajax-datatables-rails'
+   gem 'jquery-datatables-rails', github: 'rweng/jquery-datatables-rails'
+   
   # gem 'jquery-ui-rails'
 
   gem 'uglifier', '>= 1.0.3'
 end
 
+gem 'ajax-datatables-rails'
 gem 'jquery-rails'
 
 # gema para manejar el Excel
