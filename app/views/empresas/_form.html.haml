@@ -28,9 +28,9 @@
             Prefijo
           %td
             -if @empresa.new_record?
-              =f.text_field :prefijo , :value => "#{@ultimo.prefijo + 1}", :readonly => :true
+              =f.text_field :prefijo , :value => "#{@ultimo.prefijo + 1}", :readonly => :true, :class => 'campo_readonly'
             -else
-              =f.text_field :prefijo, :readonly => :true 
+              =f.text_field :prefijo, :readonly => :true, :class => 'campo_readonly'
 
         %tr
           %td
@@ -41,7 +41,7 @@
           %td
             Fecha Inscripción
           %td
-            = @empresa.new_record? ? f.text_field(:fecha_inscripcion) : f.text_field(:fecha_inscripcion, :readonly => :true, :value => "#{@empresa.fecha_inscripcion.strftime("%Y-%m-%d")}")
+            = @empresa.new_record? ? f.text_field(:fecha_inscripcion) : f.text_field(:fecha_inscripcion, :readonly => :true, :value => "#{@empresa.fecha_inscripcion.strftime("%Y-%m-%d")}", :class => 'campo_readonly')
             
         %tr
           %td
@@ -85,22 +85,22 @@
           %td
             Categoría 
           %td
-            = f.text_field :categoria, :readonly => :true
+            = f.text_field :categoria, :readonly => :true, :class => 'campo_readonly'
         %tr
           %td
             División
           %td
-            = f.text_field :division , :readonly => :true
+            = f.text_field :division , :readonly => :true, :class => 'campo_readonly'
         %tr
           %td
             Grupo
           %td
-            = f.text_field :grupo , :readonly => :true
+            = f.text_field :grupo , :readonly => :true, :class => 'campo_readonly'
         %tr
           %td
             Clase
           %td
-            = f.text_field :clase, :readonly => :true
+            = f.text_field :clase, :readonly => :true, :class => 'campo_readonly'
 
       %br/
       %label.contexto

@@ -19,3 +19,4 @@
 .eliminar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif}
 .eliminar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 .loader{position:fixed; top: 50%;  left: 50%; z-index:30;} 
+.campo_readonly{ background-color : #d1d1d1; }
