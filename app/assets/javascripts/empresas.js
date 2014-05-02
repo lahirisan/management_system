@@ -243,11 +243,12 @@
         // Validacion  formato del email en apartado datos de contacto
         $('#formulario_crear_empresa').submit(function( event ) {
 
-            
             if ($( "#empresa_datos_contacto_attributes_0_tipo option:selected" ).text() == 'email')
             {
+               
+               
                 expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-                if ( !expr.test($('empresa_datos_contacto_attributtes_0_contacto').val()) )
+                if ( !expr.test($('#empresa_datos_contacto_attributes_0_contacto').val()) )
                 {
                     alert("Datos de Contacto: EL formato de la dirección de correo " + $('#empresa_datos_contacto_attributes_0_contacto').val() + " es incorrecta.");
                     return false;

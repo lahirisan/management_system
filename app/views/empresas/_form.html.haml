@@ -16,11 +16,19 @@
             // Customización de los mensajes de error para el formulario empresa
             -@empresa.errors.full_messages.each do |msg|
               -if msg == 'Id estado No puede estar en blanco'
-                %li='Debe selecionar una opción para el Estado'
+                %li='Debe selecionar una opción para el Estado.'
               -elsif msg == 'Id ciudad No puede estar en blanco'
-                %li='Debe selecionar una opción para la Ciudad'
+                %li='Debe selecionar una opción para la Ciudad.'
+              -elsif msg == 'Id clasificacion No puede estar en blanco'
+                %li='Debe seleccionar una Clasificación.'
+              -elsif msg == 'Datos contacto contacto No puede estar en blanco'
+                %li='El campo Contacto no puede estar en blanco.'
+              -elsif msg == 'Datos contacto nombre contacto No puede estar en blanco'
+                %li='El campo Nombre Contacto no puede estar en blanco.'
+              -elsif msg == 'Datos contacto cargo contacto No puede estar en blanco'
+                %li='El campo Cargo Contacto no puede estar en blanco.'
               -else
-                %li=msg
+                %li=msg + '.'
               
       %table
         %tr
@@ -115,7 +123,7 @@
               %td
                 Tipo Contacto
               %td
-                = fc.select(:tipo, options_for_select(['email', 'fax', 'opcional', 'principal', 'secundario']),{:prompt => "- Seleccione -"})
+                =@empresa.new_record? ? fc.text_field(:tipo, :value => 'principal', :readonly => :true, :class => "campo_readonly") : fc.select(:tipo, options_for_select(['email', 'fax', 'opcional', 'principal', 'secundario']),{:prompt => "- Seleccione -"})
             %tr
               %td
                 Contacto

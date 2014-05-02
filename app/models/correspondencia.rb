@@ -4,6 +4,7 @@ class Correspondencia < ActiveRecord::Base
    belongs_to :empresa, :foreign_key => "prefijo"
    belongs_to :estado, :foreign_key => "id_estado"
    belongs_to :ciudad, :foreign_key => "id_ciudad"
-   #belongs_to :municipio, :foreign_key => "id_municipio"
-   #belongs_to :parroquia, :foreign_key => "id_parroquia"
+
+   validates :rep_tecnico, :cargo_rep_tecnico, :edificio, :calle, :urbanizacion, :id_estado, :id_ciudad, :id_municipio , :cod_postal, :punto_referencia, :id_parroquia,  :presence => {:message => "No puede estar en blanco"}
+  
 end
