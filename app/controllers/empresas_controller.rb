@@ -90,7 +90,7 @@ class EmpresasController < ApplicationController
   # POST /empresas.json
   def create
 
-    @ultimo = Empresa.find(:first, :conditions => ["prefijo < 999999999"], :order => "prefijo DESC")
+    @ultimo = Empresa.find(:first, :conditions => ["prefijo < 7600000"], :order => "prefijo DESC")
     params[:empresa][:id_estatus] = Estatus.empresa_inactiva()
     @empresa = Empresa.new(params[:empresa])
 
