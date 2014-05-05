@@ -14,6 +14,7 @@
          // Datatable que maneja el listado de empresas activacion
         $("#data_table_empresas_activacion").dataTable({
             sPaginationType: "full_numbers",
+            aaSorting: [[ 3, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
@@ -24,7 +25,7 @@
         // Datatable que maneja el listado para retirar empresas
         $("#data_table_empresas_retirar").dataTable({
             sPaginationType: "full_numbers",
-            aaSorting: [[ 0, "desc" ]],
+            aaSorting: [[ 3, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
@@ -77,7 +78,7 @@
         });
         
         // Retiro masivo, activacion seleccionar / deseleccionar todos
-        $('#retiro_masivo, #activacion_masiva').live('change', function() {  
+        $('#retiro_masivo').live('change', function() {  
             if ($(this).is(':checked'))
             {
                 $('.retirar_empresa').prop('checked', true);
@@ -86,16 +87,7 @@
             {
                 $('.retirar_empresa').prop('checked', false);
             }
-
-            // empresas retiradas
-            if ($(this).is(':checked'))
-            {
-                $('.empresa_retirada').prop('checked', true);
-            }
-            else 
-            {
-                $('.empresa_retirada').prop('checked', false);
-            }
+           
         });
 
         // Eliminar masivo seleccionar / deseleccionar todos
@@ -112,8 +104,6 @@
         });
 
         $('.loader').hide();
-
-      
         jQuery.ajaxSetup({
             
             beforeSend: function() { // muestra el GIF que indica se está cargando el AJAX
@@ -234,9 +224,27 @@
             // Se valida que se haya seleccionado alguna empresa para retirar
             if ($(".empresa_retirada:checked").length == 0)
             {
-                alert("Estimado usuario, no ha seleccionado ninguna empresa para REACTIVAR. Por favor verifique.");
+                alert("Estimado usuario, no ha seleccionado ninguna empresa para ELIMINAR. Por favor verifique.");
                 return false;
             }
+
+            if ($('#eliminar_masivo').is(':checked')) // Eliminacion masiva
+            {  
+                $('.empresa_retirada:checked').each(function() {
+                    // Por cada empresa seleccionda se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
+                    $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
+                });   
+            }
+            else // múltiple selecccion de empresas a eliminar
+            {
+                $('.empresa_retirada:checked').each(function() {
+                    // Por cada empresa seleccionda se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
+                    $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
+                });
+            }
+
+            if (!confirm('¿ Estimado usuario, está seguro de ELIMINAR la(s) empresa(s) seleccionada(s) ?'))
+                return false;
            
         });
 
@@ -270,7 +278,7 @@
         $('.exportar_excel').live('click', function(e) {
            
            $('#parametros_excel').html(
-            '<input name="nombre_empresa" type="text" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">');
+            '<input name="nombre_empresa" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">');
         });
 
     })   

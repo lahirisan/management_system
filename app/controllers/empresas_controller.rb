@@ -2,13 +2,12 @@ class EmpresasController < ApplicationController
   # GET /empresas
   # GET /empresas.json
   def index
-    @empresas = Empresa.includes(:estado, :ciudad, :estatus).limit(100)
-    
-
+    @empresas = Empresa.includes(:estado, :ciudad, :estatus, :tipo_usuario_empresa, :clasificacion)
     # OJO: La llamada JSON y los parametro se establecen en el datatable desde el template.html.haml
    
     respond_to do |format|
       format.html{
+                  
                   if params[:activacion]
                     render :template =>'/empresas/activacion.html.haml' 
                   elsif params[:retirar]
@@ -22,6 +21,7 @@ class EmpresasController < ApplicationController
                   else
                     render :template =>'/empresas/index.html.haml'
                   end
+
       } # index.html.erb
       
       format.json { 
@@ -43,7 +43,10 @@ class EmpresasController < ApplicationController
                   }
 
       format.xlsx{ 
-        raise params.to_yaml
+       
+        @empresas = @empresas.where("nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%") if (params[:nombre_empresa] != '')
+        @empresas = @empresas.where("fecha_incripcion like :search", search: "%#{params[:fecha_inscripcion]}%") if (params[:fecha_inscripcion] != '')
+        
        }
       
       format.csv{ send_data @empresas.to_csv}
@@ -130,14 +133,9 @@ class EmpresasController < ApplicationController
     Empresa.validar_empresas(params[:activar_empresa]) if params[:activacion] #Parametro que indica Validar Empresa       
     Empresa.retirar_empresas(params) if params[:retiro]
     Empresa.eliminar_empresas(params) if params[:eliminar]
+    Empresa.reactivar_empresas_eliminadas(params) if params[:reactivar]
+     
     
-    if params[:reactivar]
-      if params[:retiradas]
-        Empresa.reactivar_empresas_retiradas(params) 
-      else
-        Empresa.reactivar_empresas_eliminadas(params) 
-      end
-    end
     
     @procesadas = ""
     params[:activar_empresas].collect{|prefijo| @procesadas += prefijo } if params[:activar_empresas]
@@ -150,14 +148,8 @@ class EmpresasController < ApplicationController
           redirect_to '/empresas?activacion=true', notice: "Los Prefijos #{@procesadas} fueron activados."  if params[:activacion]
           redirect_to '/empresas?retiradas=true', notice: "Los Prefijos #{@procesadas} fueron retirados."  if params[:retiro]
           redirect_to '/empresas?eliminar=true', notice: "Los Prefijos #{@procesadas} fueron eliminados"  if params[:eliminar]
-          if params[:reactivar]
-            if params[:retiradas]
-              redirect_to '/empresas?retiradas=true', notice: "Los Prefijos #{@procesadas} fueron activados satisfactoriamente"
-            else
-              redirect_to '/empresas?eliminadas=true', notice: "Los Prefijos #{@procesadas} fueron activados satisfactoriamente"
-            end
-          end 
-          }
+          redirect_to '/empresas?eliminadas=true', notice: "Los Prefijos #{@procesadas} fueron reactivados satisfactoriamente" if params[:reactivar]
+        }
     end
   end
 

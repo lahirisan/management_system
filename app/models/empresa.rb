@@ -21,9 +21,8 @@ class Empresa < ActiveRecord::Base
   has_many :empresa_servicio, :foreign_key => "prefijo", :dependent => :destroy
   belongs_to :tipo_usuario_empresa, :foreign_key => "id_tipo_usuario"
   
-  validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo, :nombre_comercial , :id_clasificacion,  :presence => {:message => "No puede estar en blanco"}
+  validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo, :nombre_comercial , :id_clasificacion,  :presence => {:message => "No puede estar en blanco"}, :on => :create
   validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{8})-([0-9]{1})$/, on: :create, :message => "El Formato del RIF es invalido"} # Validacion al crear
-  #validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{8})-([0-9]{1})$/, on: :update, :message => "El Formato del RIF es invalido"} # Validacion al editar
 
   validates :rif, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado. Por favor verifique."}
 
@@ -59,19 +58,17 @@ class Empresa < ActiveRecord::Base
         empresa_retirar.id_subestatus = retirar_datos.split('_')[1]
         empresa_retirar.save
         
-        empresa = Empresa.find(retirar_datos.split('_')[0]) # La clave primaria es es prefijo
+        empresa = Empresa.find(:first, :conditions => ["prefijo = ?", retirar_datos.split('_')[0]]) # La clave primaria es es prefijo
         # El estatus de retirada Se cambia el estatus de la empresa
         estatus_retirada = Estatus.find(:first, :conditions => ["descripcion like ? and alcance like ?", 'Retirada', 'Empresa'])
         empresa.id_estatus = estatus_retirada.id
         empresa.save
-
-        
-        
       end
   end
 
   def self.eliminar_empresas(parametros)
     
+    raise parametros.to_yaml
     #En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
     # OJO: Esto se peude optimizar actualizando masivamente // RailsCast 198
 
@@ -146,8 +143,18 @@ class Empresa < ActiveRecord::Base
     estatus_empresa = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activa', 'Empresa'])
     estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activo', 'Producto'])
 
-    empresas_retiradas = Empresa.find(:all, :conditions => ["prefijo = ?", parametros[:reactivar_empresas]]) # Se buscan la(s) empresa(s)
-    empresas_retiradas.collect{|empresa| empresa.id_estatus = estatus_empresa.id; empresa.save; empresa_retirada = EmpresasRetiradas.find(:first, :conditions => ["prefijo = ?", empresa.prefijo]); empresa_retirada.destroy; empresa.productos_empresa.collect{|producto_empresa| producto = Producto.find(producto_empresa.gtin); producto.id_estatus = estatus_producto.id;producto.save; producto_retirado = ProductosRetirados.find(:first, :conditions =>["gtin like ?",producto_empresa.gtin]); producto_retirado.destroy;}} 
+
+    empresas_retiradas = Empresa.find(:all, :conditions => ["prefijo in (?)", parametros[:reactivar_empresas].collect{|empresa| empresa}]) # Se buscan la(s) empresa(s)
+    empresas_retiradas.collect{|empresa| 
+      empresa.id_estatus = estatus_empresa.id; 
+      empresa.save; 
+      empresa_retirada = EmpresasRetiradas.find(:first, :conditions => ["prefijo = ?", empresa.prefijo]); 
+      empresa_retirada.destroy; 
+      empresa.productos_empresa.collect{|producto_empresa| producto = Producto.find(producto_empresa.gtin); 
+        producto.id_estatus = estatus_producto.id;producto.save; 
+        producto_retirado = ProductosRetirados.find(:first, :conditions =>["gtin like ?",producto_empresa.gtin]); 
+        producto_retirado.destroy;}
+      } 
  
   end
 

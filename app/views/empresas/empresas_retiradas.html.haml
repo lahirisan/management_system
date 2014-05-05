@@ -6,14 +6,14 @@
     =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retiradas" do
         %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
             %span.ui-icon.ui-icon-arrowrefresh-1-n
-            Reactivar
+            Eliminar
         %table.margen_inferior{:border => 1}
             %tr
                 %td
-                    Activación Masiva
+                    ELiminación Masiva
             %tr
                 %td
-                    =check_box_tag "activacion_masiva"
+                    =check_box_tag "eliminar_masivo"
        
         %table#data_table_empresas_retirar.display{:"data-source" => "/empresas.json?retiradas=true"}
             %thead
@@ -27,8 +27,6 @@
                     %th Ciudad
                     %th RIF
                     %th Estatus
-                    %th Clasificación
-                    %th Rep Legal
                     %th Sub-estatus
                     %th Motivo Eliminación
 
@@ -37,13 +35,11 @@
                 =render 'footer_retirar'
         %br/
         %br/
-        #datos_empresas_retirar
-        
-        =hidden_field_tag "reactivar", "true"
-        =hidden_field_tag "retiradas", "true"
+        #datos_empresas_eliminar
+        =hidden_field_tag "eliminar", "true"
         %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
             %span.ui-icon.ui-icon-arrowrefresh-1-n
-            Reactivar
+            Eliminar
         
         
     

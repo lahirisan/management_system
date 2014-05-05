@@ -28,7 +28,7 @@ private
       motivo_retiro = empresa.empresas_retiradas.try(:motivo_retiro).try(:descripcion).nil? ? 'No Tiene' : empresa.empresas_retiradas.try(:motivo_retiro).try(:descripcion)
 
         [ 
-        check_box_tag("reactivar_empresas[]", "#{empresa.id}", false, :class=>"empresa_retirada"),
+        check_box_tag("eliminar_empresas[]", "#{empresa.id}", false, :class=>"eliminar_empresa"),
         empresa.prefijo,
         empresa.nombre_empresa,
         fecha,
@@ -37,10 +37,8 @@ private
         empresa.ciudad.nombre,
         empresa.rif,
         empresa.estatus.descripcion,
-        empresa.clasificacion.try(:descripcion),
-        empresa.rep_legal,
-        sub_estatus,
-        motivo_retiro
+        select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_subestatus)), :id => "#{empresa.prefijo}sub_estatus"),
+        select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_motivo_retiro)), :id => "#{empresa.prefijo}motivo_ret"),
       ]
   
     end
