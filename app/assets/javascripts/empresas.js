@@ -267,6 +267,11 @@
         // Se le da espacio a la parte superiori del datatable entre los botones y el datatatable
         $('.dataTables_wrapper').css('margin-top', '30px');
 
-       
+        $('.exportar_excel').live('click', function(e) {
+           
+           $('#parametros_excel').html(
+            '<input name="nombre_empresa" type="text" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">');
+        });
+
     })   
 

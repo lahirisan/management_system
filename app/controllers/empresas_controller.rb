@@ -42,7 +42,8 @@ class EmpresasController < ApplicationController
                     end
                   }
 
-      format.xlsx{ # render index.xlsx.alxsx 
+      format.xlsx{ 
+        raise params.to_yaml
        }
       
       format.csv{ send_data @empresas.to_csv}

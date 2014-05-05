@@ -34,18 +34,21 @@
             =render 'footer'
             
         %tbody
-        
+    
     %br/
     %br/
-    %a.ui-state-default.ui-corner-all.exportar_excel{:href => "/empresas.xlsx"}
-        %span.ui-icon.ui-icon-arrowreturnthick-1-s
-        Exportar Excel
-    %a.ui-state-default.ui-corner-all.exportar_csv{:href => "/empresas.csv"}
-        %span.ui-icon.ui-icon-arrowreturnthick-1-s
-        Exportar CSV
-    %a.ui-state-default.ui-corner-all.exportar_pdf{:href => "/empresas.pdf"}
-        %span.ui-icon.ui-icon-arrowreturnthick-1-s
-        Exportar PDF
+    %form{action: "/empresas.xlsx", method: "get"}
+        #parametros_excel
+        %button#submit.ui-state-default.ui-corner-all.exportar_excel{:type => "submit"}
+            %span.ui-icon.ui-icon-arrowreturnthick-1-s
+            Exportar Excel
+   
+    / %a.ui-state-default.ui-corner-all.exportar_csv{:href => "/empresas.csv"}
+    /     %span.ui-icon.ui-icon-arrowreturnthick-1-s
+    /     Exportar CSV
+    / %a.ui-state-default.ui-corner-all.exportar_pdf{:href => "/empresas.pdf"}
+    /     %span.ui-icon.ui-icon-arrowreturnthick-1-s
+    /     Exportar PDF
     
     .loader_prueba
         =image_tag "loader.gif", :class => "loader" 
