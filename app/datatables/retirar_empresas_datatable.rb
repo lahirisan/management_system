@@ -25,7 +25,7 @@ private
       fecha = ""
       fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
 
-        [ 
+      [ 
         check_box_tag("retirar_empresas[]", "#{empresa.id}", false, :class=>"retirar_empresa"),
         empresa.prefijo,
         empresa.nombre_empresa,
@@ -37,7 +37,10 @@ private
         empresa.estatus.descripcion,
         select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_subestatus)), :id => "#{empresa.prefijo}sub_estatus"),
         select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_motivo_retiro)), :id => "#{empresa.prefijo}motivo_ret"),
-        link_to("Ver Detalle", empresa_path(empresa, :retirar => true))       
+        link_to("Ver Detalle", empresa_path(empresa, :retirar => true)),
+        link_to("Productos", empresa_productos_path(empresa)),
+        link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios"),
+        link_to("GLN", empresa_glns_path(empresa))
       ]
   
     end

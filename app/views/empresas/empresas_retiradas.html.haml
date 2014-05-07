@@ -5,15 +5,23 @@
     %p#notice= notice
     =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retiradas" do
         %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
-            %span.ui-icon.ui-icon-arrowrefresh-1-n
+            %span.ui-icon.ui-icon-circle-minus
             Eliminar
         %table.margen_inferior{:border => 1}
             %tr
                 %td
-                    ELiminación Masiva
+                    ELiminar Masivo
+                %td
+                    Sub-Estatus
+                %td
+                    Motivo Retiro
             %tr
                 %td
                     =check_box_tag "eliminar_masivo"
+                %td
+                    =select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
+                %td
+                    =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
        
         %table#data_table_empresas_retirar.display{:"data-source" => "/empresas.json?retiradas=true"}
             %thead
@@ -29,6 +37,10 @@
                     %th Estatus
                     %th Sub-estatus
                     %th Motivo Eliminación
+                    %th Detalle
+                    %th Productos
+                    %th Servicios
+                    %th GLN
 
             %tbody
             %tfoot
@@ -38,7 +50,7 @@
         #datos_empresas_eliminar
         =hidden_field_tag "eliminar", "true"
         %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
-            %span.ui-icon.ui-icon-arrowrefresh-1-n
+            %span.ui-icon.ui-icon-circle-minus
             Eliminar
         
         

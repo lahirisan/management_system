@@ -59,16 +59,21 @@ class Empresa < ActiveRecord::Base
         empresa_retirar.save
         
         empresa = Empresa.find(:first, :conditions => ["prefijo = ?", retirar_datos.split('_')[0]]) # La clave primaria es es prefijo
-        # El estatus de retirada Se cambia el estatus de la empresa
+        # # El estatus de retirada Se cambia el estatus de la empresa
         estatus_retirada = Estatus.find(:first, :conditions => ["descripcion like ? and alcance like ?", 'Retirada', 'Empresa'])
         empresa.id_estatus = estatus_retirada.id
         empresa.save
+
+        # Se retiran todo los productos de la empresa
+        Producto.retirar_productos_empresa(empresa.prefijo, retirar_datos.split('_')[2], retirar_datos.split('_')[1])
+
+
       end
   end
 
   def self.eliminar_empresas(parametros)
     
-    raise parametros.to_yaml
+    
     #En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
     # OJO: Esto se peude optimizar actualizando masivamente // RailsCast 198
 
@@ -114,47 +119,77 @@ class Empresa < ActiveRecord::Base
         
         #Los productos se agrega a productos eliminados
         empresa_eliminar.productos_empresa.collect{|producto_empresa| 
-          producto_eliminado = ProductoEliminado.new; 
-          producto_eliminado.gtin = producto_empresa.producto.gtin; 
-          producto_eliminado.descripcion = producto_empresa.producto.descripcion; 
-          producto_eliminado.marca = producto_empresa.producto.marca; 
-          producto_eliminado.gpc = producto_empresa.producto.gpc; 
-          producto_eliminado.id_estatus = estatus_producto.id; 
-          producto_eliminado.codigo_prod = producto_empresa.producto.codigo_prod; 
-          producto_eliminado.fecha_creacion = Time.now; 
-          producto_eliminado.id_tipo_gtin = producto_empresa.producto.id_tipo_gtin; 
-          producto_eliminado.save; producto_elim_detalle = ProductoElimDetalle.new; 
-          producto_elim_detalle.gtin = producto_empresa.producto.gtin; 
-          producto_elim_detalle.fecha_eliminacion = Time.now; 
-          producto_elim_detalle.save}
-        # # Se elimina los productos de la empresa
+        producto_eliminado = ProductoEliminado.new; 
+        producto_eliminado.gtin = producto_empresa.producto.gtin; 
+        producto_eliminado.descripcion = producto_empresa.producto.descripcion; 
+        producto_eliminado.marca = producto_empresa.producto.marca; 
+        producto_eliminado.gpc = producto_empresa.producto.gpc; 
+        producto_eliminado.id_estatus = estatus_producto.id; 
+        producto_eliminado.codigo_prod = producto_empresa.producto.codigo_prod; 
+        producto_eliminado.fecha_creacion = Time.now; 
+        producto_eliminado.id_tipo_gtin = producto_empresa.producto.id_tipo_gtin; 
+        producto_eliminado.save; producto_elim_detalle = ProductoElimDetalle.new; 
+        producto_elim_detalle.gtin = producto_empresa.producto.gtin; 
+        producto_elim_detalle.fecha_eliminacion = Time.now;
+        producto_elim_detalle.id_motivo_retiro =  eliminar_datos.split('_')[2];
+        producto_elim_detalle.id_subestatus =  eliminar_datos.split('_')[1];
+
+        producto_elim_detalle.save}
+        
+        # Se elimina los productos de la empresa
         empresa_eliminar.productos_empresa.collect{|productos_empresa| producto = Producto.find(:first, :conditions => ["gtin like ?", productos_empresa.gtin]); producto.destroy}
         
         # Se elimina los servicios de la empresa
-        empresa_eliminar.empresa_servicio.collect{|servicio| EmpresaServicio.servicio_eliminado(servicio,1,1)}
+        #empresa_eliminar.empresa_servicio.collect{|servicio| EmpresaServicio.servicio_eliminado(servicio,1,1)}
         empresa_eliminar.destroy
 
       end
   end
   
 
-  def self.reactivar_empresas_retiradas(parametros)
+  def self.reactivar_empresas_eliminadas(parametros)
     
     estatus_empresa = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activa', 'Empresa'])
     estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activo', 'Producto'])
 
 
-    empresas_retiradas = Empresa.find(:all, :conditions => ["prefijo in (?)", parametros[:reactivar_empresas].collect{|empresa| empresa}]) # Se buscan la(s) empresa(s)
-    empresas_retiradas.collect{|empresa| 
+      parametros[:reactivar_empresas].collect{|prefijo| eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", prefijo]);
+        empresa =  Empresa.new  # Se crear el registro de la Empresa
+        empresa.prefijo = eliminada.prefijo;
+        empresa.nombre_empresa = eliminada.nombre_empresa;
+        empresa.fecha_inscripcion = eliminada.fecha_inscripcion;
+        empresa.direccion_empresa = eliminada.direccion_empresa;
+        empresa.id_estado = eliminada.id_estado;
+        empresa.id_ciudad = eliminada.id_ciudad;
+        empresa.rif = eliminada.rif.strip;
+        empresa.id_estatus = estatus_empresa.id  ;
+        empresa.id_tipo_usuario = eliminada.id_tipo_usuario;
+        empresa.nombre_comercial = eliminada.try(:nombre_comercial);
+        empresa.id_clasificacion = eliminada.try(:id_clasificacion);
+        empresa.categoria = eliminada.try(:categoria);
+        empresa.division = eliminada.try(:division);
+        empresa.grupo = eliminada.try(:grupo);
+        empresa.clase = eliminada.try(:clase);
+        empresa.rep_legal = eliminada.try(:rep_legal);
+        empresa.cargo_rep_legal = eliminada.try(:cargo_rep_legal);
+        empresa.save;
+
+        # Los productos
+        
+      }
+      
+      raise empresas_eliminadas.to_yaml
+      empresas_eliminadas.collect{|empresa| 
+      
       empresa.id_estatus = estatus_empresa.id; 
       empresa.save; 
       empresa_retirada = EmpresasRetiradas.find(:first, :conditions => ["prefijo = ?", empresa.prefijo]); 
       empresa_retirada.destroy; 
       empresa.productos_empresa.collect{|producto_empresa| producto = Producto.find(producto_empresa.gtin); 
-        producto.id_estatus = estatus_producto.id;producto.save; 
-        producto_retirado = ProductosRetirados.find(:first, :conditions =>["gtin like ?",producto_empresa.gtin]); 
-        producto_retirado.destroy;}
-      } 
+      producto.id_estatus = estatus_producto.id;producto.save; 
+      producto_retirado = ProductosRetirados.find(:first, :conditions =>["gtin like ?",producto_empresa.gtin]); 
+      producto_retirado.destroy;}
+    } 
  
   end
 

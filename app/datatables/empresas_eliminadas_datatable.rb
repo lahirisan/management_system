@@ -35,10 +35,12 @@ private
         empresa.ciudad.nombre,
         empresa.rif,
         empresa.estatus.descripcion,
-        empresa.clasificacion.try(:descripcion),
-        empresa.rep_legal,
         empresa.sub_estatus.descripcion,
-        empresa.motivo_retiro.descripcion
+        empresa.motivo_retiro.descripcion,
+        link_to("Ver Detalle", empresa_path(empresa, :eliminados => true)),
+        link_to("Productos", empresa_productos_path(empresa, :eliminados => true)),
+        link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios?eliminados=true"),
+        link_to("GLN", empresa_glns_path(empresa, :eliminados => true))
       ]
   
     end

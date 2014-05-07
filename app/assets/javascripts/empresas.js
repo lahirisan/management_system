@@ -192,7 +192,7 @@
 
         // Formulario eliminar empresa
 
-        $('#formulario_eliminar_empresa').submit(function( event ) { 
+        $('#formulario_eliminar_empresa, #formulario_retiradas').submit(function( event ) { 
             
             // Se valida que se haya seleccionado alguna empresa para retirar
             if ($(".eliminar_empresa:checked").length == 0)
@@ -200,53 +200,56 @@
                 alert("Estimado usuario, no ha seleccionado ninguna empresa para ELIMINAR. Por favor verifique.");
                 return false;
             }
-            if ($('#eliminar_masivo').is(':checked')) // Eliminacion masiva
-            {  
-                $('.eliminar_empresa:checked').each(function() {
-                    // Por cada empresa seleccionda se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
-                    $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
-                });   
-            }
-            else // múltiple selecccion de empresas a eliminar
-            {
-                $('.eliminar_empresa:checked').each(function() {
-                    // Por cada empresa seleccionda se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
-                    $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
-                });
-            }
-
-            if (!confirm('¿ Estimado usuario, está seguro de ELIMINAR la(s) empresa(s) seleccionada(s) ?'))
-                return false;
-        });
-
-        $('#formulario_retiradas').submit(function( event ) { 
             
-            // Se valida que se haya seleccionado alguna empresa para retirar
-            if ($(".empresa_retirada:checked").length == 0)
-            {
-                alert("Estimado usuario, no ha seleccionado ninguna empresa para ELIMINAR. Por favor verifique.");
-                return false;
-            }
-
             if ($('#eliminar_masivo').is(':checked')) // Eliminacion masiva
             {  
-                $('.empresa_retirada:checked').each(function() {
+                $('.eliminar_empresa:checked').each(function() {
+                    
+                    
                     // Por cada empresa seleccionda se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
                     $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
                 });   
             }
             else // múltiple selecccion de empresas a eliminar
             {
-                $('.empresa_retirada:checked').each(function() {
+                $('.eliminar_empresa:checked').each(function() {
                     // Por cada empresa seleccionda se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
-                    $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
+                    $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"_sub_estatus").val()+'_'+$("#"+$(this).val()+"_motivo_ret").val()+ '">');
                 });
             }
 
             if (!confirm('¿ Estimado usuario, está seguro de ELIMINAR la(s) empresa(s) seleccionada(s) ?'))
                 return false;
-           
         });
+
+        // $('#formulario_retiradas').submit(function( event ) { 
+            
+        //     // Se valida que se haya seleccionado alguna empresa para retirar
+        //     if ($(".eliminar_empresa:checked").length == 0)
+        //     {
+        //         alert("Estimado usuario, no ha seleccionado ninguna empresa para ELIMINAR. Por favor verifique.");
+        //         return false;
+        //     }
+
+        //     if ($('#eliminar_masivo').is(':checked')) // Eliminacion masiva
+        //     {  
+        //         $('.eliminar_empresa:checked').each(function() {
+        //             // Por cada empresa seleccionda se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
+        //             $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
+        //         });   
+        //     }
+        //     else // múltiple selecccion de empresas a eliminar
+        //     {
+        //         $('.:checked').each(function() {
+        //             // Por cada empresa seleccionda se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
+        //             $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
+        //         });
+        //     }
+
+        //     if (!confirm('¿ Estimado usuario, está seguro de ELIMINAR la(s) empresa(s) seleccionada(s) ?'))
+        //         return false;
+           
+        // });
 
         // Validacion  formato del email en apartado datos de contacto
         $('#formulario_crear_empresa').submit(function( event ) {

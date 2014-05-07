@@ -60,7 +60,7 @@ class EmpresasController < ApplicationController
   # GET /empresas/1.json
   def show
 
-    @empresa = Empresa.find(params[:id])
+    (params[:eliminados]) ? (@empresa = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:id]])) : (@empresa = Empresa.find(params[:id]))
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @empresa }
@@ -133,9 +133,9 @@ class EmpresasController < ApplicationController
     Empresa.validar_empresas(params[:activar_empresa]) if params[:activacion] #Parametro que indica Validar Empresa       
     Empresa.retirar_empresas(params) if params[:retiro]
     Empresa.eliminar_empresas(params) if params[:eliminar]
+    
     Empresa.reactivar_empresas_eliminadas(params) if params[:reactivar]
      
-    
     
     @procesadas = ""
     params[:activar_empresas].collect{|prefijo| @procesadas += prefijo } if params[:activar_empresas]

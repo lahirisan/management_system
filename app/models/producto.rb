@@ -7,7 +7,7 @@ class Producto < ActiveRecord::Base
   has_one    :productos_retirados, :foreign_key => "gtin", :dependent => :destroy 
 
 
-  def self.retirar(parametros)
+  def self.retirar(parametros) # Retira productos seleccionadaos individualmete
 
   	# Se busca el estatus retirado
     estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Retirado', 'Producto'])
@@ -28,6 +28,26 @@ class Producto < ActiveRecord::Base
       
     end
   
+  end
+
+  def self.retirar_productos_empresa(prefijo, motivo_retiro, sub_estatus) # Retira todos los producctos de una empresa dado su prefijo
+    
+    estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Retirado', 'Producto'])
+    empresa = Empresa.find(:first, :conditions => ["prefijo = ?", prefijo])
+    empresa.producto.collect{|producto|
+      producto_ = Producto.find(:first, :conditions => ["gtin like ?", producto.gtin]);
+      producto_.id_estatus = estatus_producto.id;
+      producto_.save;
+      producto_retirado = ProductosRetirados.new; 
+      producto_retirado.gtin = producto_.gtin;
+      producto_retirado.fecha_retiro = Time.now;
+      producto_retirado.id_motivo_retiro = motivo_retiro;
+      producto_retirado.id_subestatus = sub_estatus;
+      producto_retirado.save 
+
+    }
+    
+
   end
 
   def self.eliminar(parametros)
