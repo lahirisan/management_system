@@ -274,8 +274,7 @@
             else // múltiple selecccion de empresas a eliminar
             {
 
-                alert('aqui');
-                return false;
+               
                 $('.eliminar_empresa:checked').each(function() {
 
                     if ($("#"+$(this).val()+"sub_estatus").val() == 1)

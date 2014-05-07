@@ -76,6 +76,9 @@ class Empresa < ActiveRecord::Base
     
     #En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
     # OJO: Esto se peude optimizar actualizando masivamente // RailsCast 198
+        
+
+        
 
       for eliminar_empresas in (0..parametros[:eliminar_empresas].size-1)
         empresa_seleccionada = parametros[:eliminar_empresas][eliminar_empresas]
