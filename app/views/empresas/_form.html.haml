@@ -88,7 +88,7 @@
           %td
             Clasificación
           %td
-            =@empresa.new_record? ? f.collection_select(:id_clasificacion, Clasificacion.all, :id, :descripcion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:300px;"}) : f.text_field(:id_clasificacion, :value => "#{@empresa.try(:clasificacion).try(:descripcion)}")
+            =@empresa.new_record? ? f.collection_select(:id_clasificacion, Clasificacion.all, :id, :descripcion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:300px;"}) : f.text_field(:id_clasificacion, :value => "#{@empresa.try(:clasificacion).try(:descripcion)}", :readonly => :true)
         %tr
           %td
             Categoría 
@@ -188,16 +188,16 @@
                 Ciudad
               %td
                 =fa.collection_select :id_ciudad,  Ciudad.all, :id, :nombre, {:prompt => '-Seleccione Estado-'}
-            %tr
-              %td
-                Municipio
-              %td
-                =fa.text_field :id_municipio
-            %tr
-              %td
-                Parroquia
-              %td
-                =fa.text_field :id_parroquia
+            / %tr
+            /   %td
+            /     Municipio
+            /   %td
+            /     =fa.text_field :id_municipio
+            / %tr
+            /   %td
+            /     Parroquia
+            /   %td
+            /     =fa.text_field :id_parroquia
             %tr
               %td
                 Código Postal

@@ -99,14 +99,10 @@ class EmpresasController < ApplicationController
     @empresa = Empresa.new(params[:empresa])
 
     respond_to do |format|
-
       if @empresa.save
-          
-        format.html { redirect_to '/empresas', notice: "Empresa con prefijo #{@empresa.prefijo} creada satisfactoriamente." }
-        format.json { render json: @empresa, status: :created, location: @empresa }
+        format.html { redirect_to '/empresas?activacion=true', notice: "Empresa con prefijo #{@empresa.prefijo} creada satisfactoriamente." }
       else
         format.html { render action: "new" }
-        format.json { render json: @empresa.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -130,25 +126,24 @@ class EmpresasController < ApplicationController
 
   def update_multiple
 
-    Empresa.validar_empresas(params[:activar_empresa]) if params[:activacion] #Parametro que indica Validar Empresa       
+    Empresa.validar_empresas(params[:activar_empresas]) if params[:activar_empresas] #Parametro que indica Validar Empresa       
     Empresa.retirar_empresas(params) if params[:retiro]
     Empresa.eliminar_empresas(params) if params[:eliminar]
-    
     Empresa.reactivar_empresas_eliminadas(params) if params[:reactivar]
      
     
     @procesadas = ""
-    params[:activar_empresas].collect{|prefijo| @procesadas += prefijo } if params[:activar_empresas]
-    params[:retirar_empresas].collect{|prefijo| @procesadas += prefijo } if params[:retirar_empresas]
-    params[:eliminar_empresas].collect{|prefijo| @procesadas += prefijo } if params[:eliminar_empresas]
-    params[:reactivar_empresas].collect{|prefijo| @procesadas += prefijo } if params[:reactivar_empresas]
+    params[:activar_empresas].collect{|prefijo| @procesadas += prefijo + " " } if params[:activar_empresas]
+    params[:retirar_empresas].collect{|prefijo| @procesadas += prefijo + " "} if params[:retirar_empresas]
+    params[:eliminar_empresas].collect{|prefijo| @procesadas += prefijo + " "} if params[:eliminar_empresas]
+    params[:reactivar_empresas].collect{|prefijo| @procesadas += prefijo + " "} if params[:reactivar_empresas]
 
     respond_to do |format|
           format.html { 
-          redirect_to '/empresas?activacion=true', notice: "Los Prefijos #{@procesadas} fueron activados."  if params[:activacion]
+          redirect_to '/empresas', notice: "Los Prefijos #{@procesadas} fueron activados."  if params[:activar_empresas]
           redirect_to '/empresas?retiradas=true', notice: "Los Prefijos #{@procesadas} fueron retirados."  if params[:retiro]
-          redirect_to '/empresas?eliminar=true', notice: "Los Prefijos #{@procesadas} fueron eliminados"  if params[:eliminar]
-          redirect_to '/empresas?eliminadas=true', notice: "Los Prefijos #{@procesadas} fueron reactivados satisfactoriamente" if params[:reactivar]
+          redirect_to '/empresas?eliminadas=true', notice: "Los Prefijos #{@procesadas} fueron eliminados"  if params[:eliminar_empresas]
+          redirect_to '/empresas', notice: "Los Prefijos #{@procesadas} fueron reactivados satisfactoriamente" if params[:reactivar]  # Empresasa eliminadas que se reactivan
         }
     end
   end

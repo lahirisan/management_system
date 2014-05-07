@@ -23,6 +23,8 @@ private
       
         fecha = ""
         fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
+        fecha_retiro = "" 
+        fecha_retiro = producto.productos_retirados.fecha_retiro if (producto.try(:productos_retirados).fecha_retiro)
         [ 
         producto.try(:productos_empresa).try(:empresa).try(:nombre_empresa),
         producto.try(:tipo_gtin).try(:tipo),
@@ -35,7 +37,7 @@ private
         fecha,
         producto.try(:productos_retirados).try(:sub_estatus).try(:descripcion),
         producto.try(:productos_retirados).try(:motivo_retiro).try(:descripcion),
-        producto.try(:productos_retirados).fecha_retiro.strftime("%Y-%m-%d")
+        fecha_retiro.strftime("%Y-%m-%d")
       ]
       
       

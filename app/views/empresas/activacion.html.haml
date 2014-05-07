@@ -1,12 +1,12 @@
 %section.contexto
     %label.contexto Empresas > Activar Empresas
     %hr.contexto{:size => "1"}
-%p#notice.ui-state-highlight.ui-corner-all
-    -if (notice)
-        =notice
-        -notice = nil
 %section#areaTrabajo.areaTrabajo
-    =form_tag update_multiple_empresas_path, :method => "put" do
+    %p#notice= notice
+    =form_tag update_multiple_empresas_path, :method => "put", :id => "activar_empresa" do
+        %button#submit.ui-state-default.ui-corner-all.activar_empresa{:type => "submit", :title => "Activar empresas seleccionadas"}
+            %span.ui-icon.ui-icon-circle-check
+            Activar Empresa
         %table#data_table_empresas_activacion.display{:"data-source" => "/empresas.json?activacion=true"}
             %thead
                 %tr
@@ -19,22 +19,13 @@
                     %th Ciudad
                     %th RIF
                     %th Estatus
-                    %th Id tipo Usuario
-                    %th Nombre Comercial
-                    %th Id Clasificación
-                    %th Categoría
-                    %th División
-                    %th Grupo
-                    %th Clase
-                    %th Rep legal
-                    %th Cargo rep legal
-                    
             %tbody
             %tfoot
                 =render 'footer_activacion'
         %br/
         %br/
         =hidden_field_tag "activacion", "true"
-        = submit_tag 'Validar'
-        = link_to 'Regresar', '/empresas'
-    
+        %button#submit.ui-state-default.ui-corner-all.activar_empresa{:type => "submit", :title => "Activar empresas seleccionadas"}
+            %span.ui-icon.ui-icon-circle-check
+            Activar Empresa
+      

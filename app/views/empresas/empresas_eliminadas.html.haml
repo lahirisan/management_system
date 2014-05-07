@@ -1,39 +1,37 @@
 %section.contexto
     %label.contexto Empresas > Empresas Eliminadas
     %hr.contexto{:size => "1"}
-%p#notice.ui-state-highlight.ui-corner-all
-    -if (notice)
-        =notice
-        -notice = nil
 %section#areaTrabajo.areaTrabajo
+    %p#notice= notice
     =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_eliminadas" do
-       
-        %table#data_table_empresas_retirar.display{:"data-source" => "/empresas.json?eliminadas=true"}
+        %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit", :title => "Reactivar empresas seleccionadas"}
+            %span.ui-icon.ui-icon-circle-check
+            Reactivar Empresa
+        %table#data_table_empresas_eliminadas.display{:"data-source" => "/empresas.json?eliminadas=true"}
             %thead
                 %tr
                     %th Selección
                     %th Prefijo
                     %th Nombre Empresa
                     %th Fecha Inscripción
-                    %th Dirección empresa
-                    %th Estado
                     %th Ciudad
                     %th RIF
-                    %th Estatus
+                    %th Fecha Eliminación
                     %th Sub-estatus
                     %th Motivo Eliminación
                     %th Detalle
                     %th Productos
                     %th Servicios
                     %th GLN
-
             %tbody
             %tfoot
-                =render 'footer_retirar'
+                =render 'footer_eliminadas'
         %br/
         %br/
         
         =hidden_field_tag "reactivar", "true"
-        = submit_tag 'Reactivar'
+        %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit", :title => "Reactivar empresas seleccionadas"}
+            %span.ui-icon.ui-icon-circle-check
+            Reactivar Empresa
         
     

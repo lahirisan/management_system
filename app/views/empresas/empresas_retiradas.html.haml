@@ -23,28 +23,26 @@
                 %td
                     =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
        
-        %table#data_table_empresas_retirar.display{:"data-source" => "/empresas.json?retiradas=true"}
+        %table#data_table_empresas_retiradas.display{:"data-source" => "/empresas.json?retiradas=true"}
             %thead
                 %tr
                     %th Selección
                     %th Prefijo
                     %th Nombre Empresa
                     %th Fecha Inscripción
-                    %th Dirección empresa
-                    %th Estado
                     %th Ciudad
                     %th RIF
-                    %th Estatus
+                    %th Fecha Retiro
                     %th Sub-estatus
-                    %th Motivo Eliminación
-                    %th Detalle
+                    %th Motivo Retiro
+                    %th Empresa Detalle
                     %th Productos
                     %th Servicios
                     %th GLN
 
             %tbody
             %tfoot
-                =render 'footer_retirar'
+                =render 'footer_retiradas'
         %br/
         %br/
         #datos_empresas_eliminar

@@ -6,7 +6,7 @@
     %form{action: "/empresas.xlsx", method: "get"}
         #parametros_excel
         %button#submit.ui-state-default.ui-corner-all.exportar_excel{:type => "submit"}
-            %span.ui-icon.ui-icon-arrowreturnthick-1-s
+            %span.ui-icon.ui-icon-disk
             Exportar Excel
     
     
@@ -17,7 +17,6 @@
                 %th Prefijo
                 %th Nombre Empresa
                 %th Fecha Inscripción
-                %th Dirección empresa
                 %th Estado
                 %th Ciudad
                 %th RIF
@@ -38,7 +37,7 @@
     %form{action: "/empresas.xlsx", method: "get"}
         #parametros_excel
         %button#submit.ui-state-default.ui-corner-all.exportar_excel{:type => "submit"}
-            %span.ui-icon.ui-icon-arrowreturnthick-1-s
+            %span.ui-icon.ui-icon-disk
             Exportar Excel
    
     / %a.ui-state-default.ui-corner-all.exportar_csv{:href => "/empresas.csv"}

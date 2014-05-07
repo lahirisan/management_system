@@ -32,15 +32,13 @@ private
         empresa.prefijo,
         empresa.nombre_empresa,
         fecha,
-        empresa.direccion_empresa,
-        empresa.estado.nombre,
         empresa.ciudad.nombre,
         empresa.rif,
-        empresa.estatus.descripcion,
+        empresa.empresas_retiradas.fecha_retiro.strftime("%Y-%m-%d"),
         select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_subestatus)), :id => "#{empresa.prefijo}_sub_estatus"),
         select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_motivo_retiro)), :id => "#{empresa.prefijo}_motivo_ret"),
         link_to("Ver Detalle", empresa_path(empresa, :retirar => true)),
-        link_to("Productos", empresa_productos_path(empresa)),
+        link_to("Productos", empresa_productos_path(empresa, :retirados => "true")),
         link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios"),
         link_to("GLN", empresa_glns_path(empresa))
       ]
@@ -55,11 +53,11 @@ private
 
   def fetch_empresas
     
-    empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, :empresas_retiradas).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("#{sort_column} #{sort_direction}")
+    empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, {:empresas_retiradas => :sub_estatus},{:empresas_retiradas => :motivo_retiro}).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("#{sort_column} #{sort_direction}")
     empresas = empresas.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general
-      empresas = empresas.where("empresa.nombre_empresa like :search or empresa.fecha_inscripcion like :search or empresa.direccion_empresa like :search or estados.nombre like :search or ciudad.nombre like :search or empresa.rif like :search or estatus.descripcion like :search or empresa.id_tipo_usuario like :search or empresa.nombre_comercial like :search or empresa.id_clasificacion like :search or empresa.categoria like :search or empresa.division like :search or empresa.grupo like :search or empresa.clase like :search or empresa.rep_legal like :search or empresa.cargo_rep_legal like :search", search: "%#{params[:sSearch]}%")
+      empresas = empresas.where("empresa.nombre_empresa like :search or empresa.fecha_inscripcion like :search or ciudad.nombre like :search or empresa.rif like :search", search: "%#{params[:sSearch]}%")
     end
     
     if params[:sSearch_1].present? # Filtro de busqueda por prefijo
@@ -73,47 +71,21 @@ private
       empresas = empresas.where("empresa.fecha_inscripcion like :search3", search3: "%#{params[:sSearch_3]}%" )
     end
     if params[:sSearch_4].present?
-      empresas = empresas.where("empresa.direccion_empresa like :search4", search4: "%#{params[:sSearch_4]}%" )
+      empresas = empresas.where("ciudad.nombre like :search4", search4: "%#{params[:sSearch_4]}%" )
     end
     if params[:sSearch_5].present?
-      empresas = empresas.where("estados.nombre like :search5", search5: "%#{params[:sSearch_5]}%" )
+      empresas = empresas.where("empresa.rif like :search5", search5: "%#{params[:sSearch_5]}%" )
     end
     if params[:sSearch_6].present?
-      empresas = empresas.where("ciudad.nombre like :search6", search6: "%#{params[:sSearch_6]}%" )
+       empresas = empresas.where("empresas_retiradas.fecha_retiro like :search6", search6: "%#{params[:sSearch_6]}%" )
     end
     if params[:sSearch_7].present?
-      empresas = empresas.where("empresa.rif like :search7", search7: "%#{params[:sSearch_7]}%" )
+       empresas = empresas.where("sub_estatus.descripcion like :search7", search7: "%#{params[:sSearch_7]}%" )
     end
     if params[:sSearch_8].present?
-      empresas = empresas.where("estatus.descripcion like :search8", search8: "%#{params[:sSearch_8]}%" )
+       empresas = empresas.where("motivo_retiro.descripcion like :search8", search8: "%#{params[:sSearch_8]}%" )
     end
-    if params[:sSearch_9].present?
-      empresas = empresas.where("empresa.id_tipo_usuario like :search9", search9: "%#{params[:sSearch_9]}%" )
-    end
-    if params[:sSearch_10].present?
-      empresas = empresas.where("empresa.nombre_comercial like :search10", search10: "%#{params[:sSearch_10]}%" )
-    end
-    if params[:sSearch_11].present?
-      empresas = empresas.where("empresa.id_clasificacion like :search11", search11: "%#{params[:sSearch_11]}%" )
-    end
-    if params[:sSearch_12].present?
-      empresas = empresas.where("empresa.categoria like :search12", search12: "%#{params[:sSearch_12]}%" )
-    end
-    if params[:sSearch_13].present?
-      empresas = empresas.where("empresa.division like :search13", search13: "%#{params[:sSearch_13]}%" )
-    end
-    if params[:sSearch_14].present?
-      empresas = empresas.where("empresa.grupo like :search14", search14: "%#{params[:sSearch_14]}%" )
-    end
-    if params[:sSearch_15].present? 
-      empresas = empresas.where("empresa.clase like :search15", search15: "%#{params[:sSearch_15]}%" )
-    end
-    if params[:sSearch_16].present?
-      empresas = empresas.where("empresa.rep_legal like :search16", search16: "%#{params[:sSearch_16]}%" )
-    end
-    if params[:sSearch_17].present?
-      empresas = empresas.where("empresa.cargo_rep_legal like :search17", search17: "%#{params[:sSearch_17]}%" )
-    end
+   
     empresas
   end
 
@@ -127,12 +99,12 @@ private
 
   def sort_column
 
-     columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_inscripcion empresa.direccion_empresa estados.nombre ciudad.nombre empresa.rif  estatus.descripcion empresa.id_tipo_usuario empresa.nombre_comercial empresa.id_clasificacion empresa.categoria empresa.division empresa.grupo empresa.clase empresa.rep_legal empresa.cargo_rep_legal]
+     columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_inscripcion  ciudad.nombre empresa.rif empresas_retiradas.fecha_retiro sub_estatus.descripcion motivo_retiro.descripcion]
      columns[params[:iSortCol_0].to_i]
   end
 
   def sort_direction
-    params[:sSortDir_0] == "desc" ? "desc" : "asc"
+    params[:sSortDir_0] == "asc" ? "asc" : "desc"
   end
 
   

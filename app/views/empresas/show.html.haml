@@ -9,12 +9,7 @@
   %hr.contexto{:size => "1"}
 
 %section#areaTrabajo.areaTrabajo{:style => "font: 82.5% 'Trebuchet MS', sans-serif"}
-  / %a.ui-state-default.ui-corner-all.regresar{:href => "/empresas"}
-  /   %span.ui-icon.ui-icon-arrowreturnthick-1-w
-  /   Regresar
-  / %br
-  / %br
-  
+ 
   %table
     %tr
       %td
@@ -99,7 +94,7 @@
       %td
         Clasificación
       %td
-      = @empresa.try(:clasificacion).try(:descripcion)
+        = @empresa.try(:clasificacion).try(:descripcion)
     %tr
       %td
         Categoría
