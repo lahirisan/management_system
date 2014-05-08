@@ -292,7 +292,7 @@
                     }
                    
                     // Por cada empresa seleccionda se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
-                    $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"_sub_estatus").val()+'_'+$("#"+$(this).val()+"_motivo_ret").val()+ '">');
+                    $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
                 });
             }
 
@@ -305,7 +305,7 @@
 
         $('#formulario_eliminadas').submit(function( event ) { 
 
-            if ($(".reactivar_empresas:checked").length == 0)
+            if ($(".reactivar_empresa:checked").length == 0)
             {
                 alert("Estimado usuario, no ha seleccionado ninguna empresa para REACTIVAR. Por favor verifique.");
                 return false;
@@ -313,21 +313,7 @@
 
         });
 
-        // Validacion  formato del email en apartado datos de contacto
-        $('#formulario_crear_empresa').submit(function( event ) {
-
-            if ($( "#empresa_datos_contacto_attributes_0_tipo option:selected" ).text() == 'email')
-            {  
-                expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-                if ( !expr.test($('#empresa_datos_contacto_attributes_0_contacto').val()) )
-                {
-                    alert("Datos de Contacto: EL formato de la dirección de correo " + $('#empresa_datos_contacto_attributes_0_contacto').val() + " es incorrecta.");
-                    return false;
-                }
-            }
-
-        });
-
+        
         // estilos de los botones exportar
         $('.exportar_excel, .exportar_csv, .exportar_pdf, .regresar, .retirar, .reactivar, .eliminar, .activar_empresa, .reactivar').hover(
      

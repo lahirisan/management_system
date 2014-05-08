@@ -61,6 +61,9 @@ class EmpresasController < ApplicationController
   def show
 
     (params[:eliminados]) ? (@empresa = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:id]])) : (@empresa = Empresa.find(params[:id]))
+    @contacto = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
+    @correspondencia = (params[:eliminados]) ? @empresa.correspondencia_eliminada : @empresa.correspondencia
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @empresa }

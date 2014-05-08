@@ -4,7 +4,7 @@ class DatosContactosController < ApplicationController
   def index
 
     @datos_contactos = DatosContacto.find(:all, :conditions => ["prefijo =?", params[:empresa_id]])
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @datos_contactos }

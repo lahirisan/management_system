@@ -6,6 +6,8 @@ class Producto < ActiveRecord::Base
   belongs_to :tipo_gtin, :foreign_key => "id_tipo_gtin"
   has_one    :productos_retirados, :foreign_key => "gtin", :dependent => :destroy 
 
+  validates :descripcion, :marca, :gpc, :id_estatus, :codigo_prod, :fecha_creacion, :id_tipo_gtin, :presence => {:message => "No puede estar en blanco"}, :on => :create
+
 
   def self.retirar(parametros) # Retira productos seleccionadaos individualmete
 

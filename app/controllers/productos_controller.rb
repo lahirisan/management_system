@@ -80,6 +80,8 @@ class ProductosController < ApplicationController
     
     params[:producto][:gtin] = Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:prefijo], params[:gtin])
     params[:producto][:fecha_creacion] = Time.now
+    estatus = Estatus.find(:first, :conditions => ["(descripcion = ?) and (alcance = ?)", "Activo", "Producto"])
+    params[:producto][:id_estatus] = estatus.id
     
     @producto = Producto.new(params[:producto])
 

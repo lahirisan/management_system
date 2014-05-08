@@ -4,12 +4,12 @@ class Empresa < ActiveRecord::Base
   
   # La Asociacion tienen  que ir primero si se utiliza accepts_nested_attributes
 
-  has_one :correspondencia, :foreign_key => "prefijo"
+  has_one :correspondencia, :foreign_key => "prefijo", :dependent => :destroy # elimina en cascada
   has_many :datos_contacto, :foreign_key => "prefijo", :dependent => :destroy # elimina en cascada las correspondencia de la empresa si se elimina la empresa de manera de evitar data inconsistente
 
   accepts_nested_attributes_for :correspondencia, :allow_destroy => true # Maneja el modelo correspondencia en el formulario de empresa  
   accepts_nested_attributes_for :datos_contacto, :allow_destroy => true # Maneja el modelo correspondencia en el formulario de empresa  
-  attr_accessible :cargo_rep_legal, :categoria, :clase, :direccion_empresa, :division, :fecha_inscripcion, :grupo, :id_ciudad, :id_clasificacion, :id_estado, :id_estatus, :id_tipo_usuario, :nombre_comercial, :nombre_empresa, :rep_legal, :rif, :prefijo,  :correspondencia_attributes, :datos_contacto_attributes 
+  attr_accessible :cargo_rep_legal, :categoria, :clase, :direccion_empresa, :division, :fecha_inscripcion, :grupo, :id_ciudad, :id_clasificacion, :id_estado, :id_estatus, :id_tipo_usuario, :nombre_comercial, :nombre_empresa, :rep_legal, :rif, :prefijo,  :correspondencia_attributes, :datos_contacto_attributes
   
   belongs_to :estado, :foreign_key =>  "id_estado"  # Se establece la clave foranea por la cual va a buscar la asociacion
   belongs_to :ciudad, :foreign_key =>  "id_ciudad"  
@@ -73,12 +73,8 @@ class Empresa < ActiveRecord::Base
 
   def self.eliminar_empresas(parametros)
     
-    
     #En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
     # OJO: Esto se peude optimizar actualizando masivamente // RailsCast 198
-        
-
-        
 
       for eliminar_empresas in (0..parametros[:eliminar_empresas].size-1)
         empresa_seleccionada = parametros[:eliminar_empresas][eliminar_empresas]
@@ -110,6 +106,9 @@ class Empresa < ActiveRecord::Base
         empresa_eliminada.id_motivo_retiro = eliminar_datos.split('_')[2]
         empresa_eliminada.id_subestatus = eliminar_datos.split('_')[1]
         empresa_eliminada.save
+
+        crear_datos_contacto_eliminada(empresa_eliminar) if empresa_eliminar.datos_contacto.any? # Los datos de empresa.correspondencia
+        crear_correspondencia_eliminada(empresa_eliminar) if (empresa_eliminar.correspondencia) # Correspondencia
 
         empresa_eliminada_detalle = EmpresaElimDetalle.new
         empresa_eliminada_detalle.prefijo = empresa_eliminada.prefijo
@@ -156,44 +155,136 @@ class Empresa < ActiveRecord::Base
     estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activo', 'Producto'])
 
 
-      parametros[:reactivar_empresas].collect{|prefijo| eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", prefijo]);
-        empresa =  Empresa.new  # Se crear el registro de la Empresa
-        empresa.prefijo = eliminada.prefijo;
-        empresa.nombre_empresa = eliminada.nombre_empresa;
-        empresa.fecha_inscripcion = eliminada.fecha_inscripcion;
-        empresa.direccion_empresa = eliminada.direccion_empresa;
-        empresa.id_estado = eliminada.id_estado;
-        empresa.id_ciudad = eliminada.id_ciudad;
-        empresa.rif = eliminada.rif.strip;
-        empresa.id_estatus = estatus_empresa.id  ;
-        empresa.id_tipo_usuario = eliminada.id_tipo_usuario;
-        empresa.nombre_comercial = eliminada.try(:nombre_comercial);
-        empresa.id_clasificacion = eliminada.try(:id_clasificacion);
-        empresa.categoria = eliminada.try(:categoria);
-        empresa.division = eliminada.try(:division);
-        empresa.grupo = eliminada.try(:grupo);
-        empresa.clase = eliminada.try(:clase);
-        empresa.rep_legal = eliminada.try(:rep_legal);
-        empresa.cargo_rep_legal = eliminada.try(:cargo_rep_legal);
-        empresa.save;
-
-        # Los productos
-        
-      }
+    parametros[:reactivar_empresas].collect{|prefijo| eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", prefijo]);
       
-      raise empresas_eliminadas.to_yaml
-      empresas_eliminadas.collect{|empresa| 
-      
-      empresa.id_estatus = estatus_empresa.id; 
+      empresa =  Empresa.new  # Se crear el registro de la Empresa
+      empresa.prefijo = eliminada.prefijo;
+      empresa.nombre_empresa = eliminada.nombre_empresa;
+      empresa.fecha_inscripcion = eliminada.fecha_inscripcion;
+      empresa.direccion_empresa = eliminada.direccion_empresa;
+      empresa.id_estado = eliminada.id_estado;
+      empresa.id_ciudad = eliminada.id_ciudad;
+      empresa.rif = eliminada.rif.strip;
+      empresa.id_estatus = estatus_empresa.id  ;
+      empresa.id_tipo_usuario = eliminada.id_tipo_usuario;
+      empresa.nombre_comercial = eliminada.nombre_comercial ? eliminada.nombre_comercial : "No tiene";
+      empresa.id_clasificacion = eliminada.id_clasificacion ? eliminada.id_clasificacion : 531;
+      empresa.categoria = eliminada.categoria ? eliminada.categoria : "No tiene";
+      empresa.division = eliminada.division ? eliminada.division : 0;
+      empresa.grupo = eliminada.grupo ? eliminada.grupo : 0;
+      empresa.clase = eliminada.clase ? eliminada.clase : 0;
+      empresa.rep_legal = eliminada.rep_legal ? eliminada.rep_legal : "No tiene";
+      empresa.cargo_rep_legal = eliminada.cargo_rep_legal ? eliminada.cargo_rep_legal : "No tiene";
       empresa.save; 
-      empresa_retirada = EmpresasRetiradas.find(:first, :conditions => ["prefijo = ?", empresa.prefijo]); 
-      empresa_retirada.destroy; 
-      empresa.productos_empresa.collect{|producto_empresa| producto = Producto.find(producto_empresa.gtin); 
-      producto.id_estatus = estatus_producto.id;producto.save; 
-      producto_retirado = ProductosRetirados.find(:first, :conditions =>["gtin like ?",producto_empresa.gtin]); 
-      producto_retirado.destroy;}
+
+      crear_datos_contacto(eliminada.empresa_contacto_eliminada) if (eliminada.empresa_contacto_eliminada.any?);
+      crear_correspondencia(eliminada.correspondencia_eliminada) if (eliminada.correspondencia_eliminada);
+      
+      crear_producto(eliminada.productos_empresa) if eliminada.productos_empresa.any?;
+      eliminada.destroy;
+
     } 
- 
+
+     
+  end
+
+
+  def self.crear_correspondencia_eliminada(empresa)
+      
+      correspondencia_eliminada = CorrespondenciaEliminada.new;
+      correspondencia_eliminada.prefijo = empresa.correspondencia.prefijo;
+      correspondencia_eliminada.rep_tecnico = empresa.correspondencia.rep_tecnico;
+      correspondencia_eliminada.cargo_rep_tecnico = empresa.correspondencia.cargo_rep_tecnico;
+      correspondencia_eliminada.edificio = empresa.correspondencia.edificio;
+      correspondencia_eliminada.calle = empresa.correspondencia.calle;
+      correspondencia_eliminada.urbanizacion = empresa.correspondencia.urbanizacion;
+      correspondencia_eliminada.cargo_rep_tecnico = empresa.correspondencia.cargo_rep_tecnico;
+      correspondencia_eliminada.id_estado = empresa.correspondencia.id_estado;
+      correspondencia_eliminada.id_municipio = empresa.correspondencia.id_municipio;
+      correspondencia_eliminada.cod_postal = empresa.correspondencia.cod_postal;
+      correspondencia_eliminada.punto_referencia = empresa.correspondencia.punto_referencia;
+      correspondencia_eliminada.id_parroquia= empresa.correspondencia.id_parroquia;
+      correspondencia_eliminada.save;
+
+      # Se elimina la correspondencia
+      correspondecia = Correspondencia.find(:first, :conditions => ["prefijo = ?", empresa.correspondencia.prefijo])
+      correspondencia.destroy
+
+
+  end
+
+
+  def self.crear_datos_contacto_eliminada(empresa)
+
+    empresa.datos_contacto.collect{|contacto|
+
+      contacto_eliminado = EmpresaContactoEliminada.new;
+      contacto_eliminado.prefijo = contacto.prefijo;
+      contacto_eliminado.contacto = contacto.contacto;
+      contacto_eliminado.prefijo = contacto.prefijo;
+      contacto_eliminado.tipo = contacto.tipo;
+      contacto_eliminado.nombre_contacto = contacto.nombre_contacto;
+      contacto_eliminado.cargo_contacto = contacto.cargo_contacto;
+      contacto_eliminado.save;
+      contacto.destroy;
+    }
+
+  end
+
+
+  def self.crear_datos_contacto(contactos_eliminado)
+
+    contactos_eliminado.collect{|contacto| 
+      nuevo_contacto = DatosContacto.new;
+      nuevo_contacto.prefijo = contacto.prefijo;
+      nuevo_contacto.contacto = contacto.contacto;
+      nuevo_contacto.tipo = contacto.tipo;
+      nuevo_contacto.nombre_contacto = contacto.nombre_contacto ? contacto.nombre_contacto : "No tiene";
+      nuevo_contacto.cargo_contacto = contacto.cargo_contacto ? contacto.cargo_contacto : "No tiene";
+      nuevo_contacto.save;
+      contacto.destroy;
+    }
+
+  end
+
+  def self.crear_correspondencia(correspondencia_eliminada)
+
+    correspondencia = Correspondencia.new
+    correspondencia.prefijo = correspondencia_eliminada.prefijo
+    correspondencia.rep_tecnico = (correspondencia_eliminada.rep_tecnico) ? correspondencia_eliminada.rep_tecnico : "No Tiene"
+    correspondencia.cargo_rep_tecnico = (correspondencia_eliminada.cargo_rep_tecnico) ? correspondencia_eliminada.cargo_rep_tecnico : "No Tiene"
+    correspondencia.edificio = (correspondencia_eliminada.edificio) ? correspondencia_eliminada.edificio : "No Tiene"
+    correspondencia.urbanizacion = (correspondencia_eliminada.urbanizacion) ? correspondencia_eliminada.urbanizacion : "No Tiene"
+    correspondencia.calle = (correspondencia_eliminada.calle) ? correspondencia_eliminada.calle : "No Tiene"
+    correspondencia.id_estado = (correspondencia_eliminada.id_estado) ? correspondencia_eliminada.id_estado : 99
+    correspondencia.id_ciudad = (correspondencia_eliminada.id_ciudad) ? correspondencia_eliminada.id_ciudad : 999
+    correspondencia.cod_postal = (correspondencia_eliminada.cod_postal) ? correspondencia_eliminada.cod_postal : "No Tiene"
+    correspondencia.punto_referencia = (correspondencia_eliminada.punto_referencia) ? correspondencia_eliminada.punto_referencia : "No Tiene"
+    correspondencia.save
+    correspondencia_eliminada.destroy
+
+  end
+
+  def self.crear_producto(productos_empresa)
+
+    estatus = Estatus.find(:first, :conditions => ['descripcion like ? and alcance = ?', 'Activo', 'Producto'])
+
+    productos_empresa.collect{|producto_empresa|
+      producto_eliminado = ProductoEliminado.find(:first, :conditions => ["gtin like ?", producto_empresa.gtin])
+      producto = Producto.new;
+      producto.gtin = producto_eliminado.gtin;
+      producto.descripcion = producto_eliminado.descripcion ? producto_eliminado.descripcion : "No tiene";
+      producto.marca = producto_eliminado.marca ? producto_eliminado.marca : "No tiene";;
+      producto.gpc = producto_eliminado.gpc ? producto_eliminado.gpc : "No tiene";;
+      producto.id_estatus = estatus.id;
+      producto.codigo_prod = producto_eliminado.codigo_prod ? producto_eliminado.codigo_prod : "No tiene";
+      producto.fecha_creacion = producto_eliminado.fecha_creacion ? producto_eliminado.fecha_creacion : Time.now;
+      producto.id_tipo_gtin = producto_eliminado.id_tipo_gtin;
+      producto.save;
+      producto_eliminado.destroy;
+
+    }
+
   end
 
 end

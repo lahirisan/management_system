@@ -15,17 +15,17 @@
           %ul
             // Customización de los mensajes de error para el formulario empresa
             -@empresa.errors.full_messages.each do |msg|
-              -if msg == 'Id estado No puede estar en blanco'
+              -if msg == 'Id estado no puede estar en blanco'
                 %li='Debe selecionar una opción para el Estado.'
-              -elsif msg == 'Id ciudad No puede estar en blanco'
+              -elsif msg == 'Id ciudad no puede estar en blanco'
                 %li='Debe selecionar una opción para la Ciudad.'
-              -elsif msg == 'Id clasificacion No puede estar en blanco'
-                %li='Debe seleccionar una Clasificación.'
-              -elsif msg == 'Datos contacto contacto No puede estar en blanco'
+              -elsif msg == 'Id clasificación no puede estar en blanco'
+                %li='Debe seleccionar una clasificación.'
+              -elsif msg == 'Datos contacto contacto no puede estar en blanco'
                 %li='El campo Contacto no puede estar en blanco.'
-              -elsif msg == 'Datos contacto nombre contacto No puede estar en blanco'
+              -elsif msg == 'Datos contacto nombre contacto no puede estar en blanco'
                 %li='El campo Nombre Contacto no puede estar en blanco.'
-              -elsif msg == 'Datos contacto cargo contacto No puede estar en blanco'
+              -elsif msg == 'Datos contacto cargo contacto no puede estar en blanco'
                 %li='El campo Cargo Contacto no puede estar en blanco.'
               -else
                 %li=msg + '.'
@@ -128,7 +128,7 @@
               %td
                 Contacto
               %td
-                =fc.text_field :contacto
+                =fc.text_field :contacto, :placeholder => "Teléfono"
             %tr
               %td
                 Nombre Contacto

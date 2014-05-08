@@ -21,11 +21,10 @@ private
 
     productos.map do |producto|
       
-        fecha = ""
-        fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
-        fecha_retiro = "" 
-        fecha_retiro = producto.productos_retirados.fecha_retiro if (producto.try(:productos_retirados).fecha_retiro)
-        [ 
+      fecha = ""
+      fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
+      fecha_retiro = (producto.productos_retirados) ? producto.productos_retirados.fecha_retiro.strftime("%Y-%m-%d") : ""
+      [ 
         producto.try(:productos_empresa).try(:empresa).try(:nombre_empresa),
         producto.try(:tipo_gtin).try(:tipo),
         producto.gtin,
@@ -37,7 +36,7 @@ private
         fecha,
         producto.try(:productos_retirados).try(:sub_estatus).try(:descripcion),
         producto.try(:productos_retirados).try(:motivo_retiro).try(:descripcion),
-        fecha_retiro.strftime("%Y-%m-%d")
+        fecha_retiro
       ]
       
       

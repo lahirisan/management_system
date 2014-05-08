@@ -73,6 +73,11 @@
 					.opcion
 						%ul
 							%li 
+								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos/new", :title => "Crear producto"}
+									.opcion Crear Producto
+					.opcion
+						%ul
+							%li 
 								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?retirar=true", :title => "Retirar uno o más productos"}
 									.opcion Retirar Productos
 					.opcion

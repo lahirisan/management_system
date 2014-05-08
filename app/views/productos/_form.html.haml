@@ -11,20 +11,12 @@
   = form_for @producto do |f|
     - if @producto.errors.any?
       #error_explanation
-        %h2= "#{pluralize(@producto.errors.count, "error")} prohibited this producto from being saved:"
+        %h2= "#{pluralize(@producto.errors.count, "error")} :"
         %ul
           - @producto.errors.full_messages.each do |msg|
             %li= msg
 
     %table
-      / %tr
-      /   %td
-      /     GTIN
-      /   %td
-      /     -if @producto.new_record?
-      /       =f.text_field :gtin
-      /     -else
-      /       = @producto.gtin
       %tr
         %td
           Descripción
@@ -39,26 +31,24 @@
         %td
           GPC
         %td
-          =f.text_field :gpc
-      %tr
-        %td
-          Estatus
-        %td
-        
-          = f.collection_select :id_estatus, Estatus.find(:all, :conditions => ["(descripcion like ? or descripcion like ?) and alcance = ?", 'Activo', 'Retirado', 'Producto']), :id, :descripcion
-          
+          =@producto.new_record? ? (f.text_field :gpc) :  (f.text_field :gpc, :readonly => :true, :class => "campo_readonly")
    
       %tr
         %td
           Código Producto
         %td
-          = f.text_field :codigo_prod
+          =@producto.new_record? ? (f.text_field :codigo_prod) : (f.text_field :codigo_prod, :readonly => :true, :class => "campo_readonly")
      
       %tr
         %td
           Tipo GTIN
         %td
-          = f.collection_select :id_tipo_gtin, TipoGtin.all, :id, :tipo_gtin_base, @base ? {:selected => "#{@base.id}"} : {}
+          -if @producto.new_record? 
+            =(f.collection_select :id_tipo_gtin, TipoGtin.find(:all, :conditions => ["(id != ?) and (id != ?)",2,5]), :id, :tipo_gtin_base)
+          -else
+            =f.hidden_field :id_tipo_gtin, :value => "#{@producto.id_tipo_gtin}"
+            =text_field_tag "tipo_gtin", "#{@producto.tipo_gtin.tipo}", :class => "campo_readonly", :readonly => :true
+
     =hidden_field_tag "prefijo", "#{@prefijo}"
     =hidden_field_tag "gtin", "#{@gtin}"
           

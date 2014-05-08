@@ -24,7 +24,7 @@ private
         fecha = ""
         fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
         [ 
-        producto.try(:productos_empresa).try(:empresa).try(:nombre_empresa),
+        producto.try(:productos_empresa).try(:empresa_eliminada).try(:nombre_empresa),
         producto.try(:tipo_gtin).try(:tipo),
         producto.gtin,
         producto.descripcion,

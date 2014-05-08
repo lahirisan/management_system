@@ -119,7 +119,7 @@
   %label.contexto Empresa > Datos de Contacto
   %hr.contexto{:size => "1"}  
   %table
-    -@empresa.datos_contacto.each do |contacto|
+    -@contacto.each do |contacto|
       %tr
         %td
           Tipo Contacto
@@ -148,48 +148,48 @@
       %td
         Representante Técnico
       %td
-        =@empresa.try(:correspondencia).try(:rep_tecnico)
+        =@correspondecia.try(:rep_tecnico)
     %tr
       %td
         Cargo Rep Técnico
       %td
-        =@empresa.try(:correspondencia).try(:cargo_rep_tecnico)
+        =@correspondencia.try(:cargo_rep_tecnico)
     %tr
       %td
         Edificio
       %td
-        =@empresa.try(:correspondencia).try(:edificio)
+        =@correspondencia.try(:edificio)
     %tr
       %td
         Calle
       %td
-        =@empresa.try(:correspondencia).try(:calle)
+        =@correspondencia.try(:calle)
     %tr
       %td
         Urbanización
       %td
-        =@empresa.try(:correspondencia).try(:urbanizacion)
+        =@correspondencia.try(:urbanizacion)
     %tr
       %td
         Estado
       %td
-        =@empresa.try(:correspondencia).try(:estado).try(:nombre)
+        =@correspondencia.try(:estado).try(:nombre)
     
     %tr
       %td
         Ciudad
       %td
-        =@empresa.try(:correspondencia).try(:ciudad).try(:nombre)
+        =@correspondencia.try(:ciudad).try(:nombre)
     %tr
       %td
         Código Postal
       %td
-        =@empresa.try(:correspondencia).try(:cod_postal)
+        =@correspondencia.try(:cod_postal)
     %tr
       %td
         Punto Referencia
       %td
-        =@empresa.try(:correspondencia).try(:punto_referencia)
+        =@correspondencia.try(:punto_referencia)
   %br
   %br
   
