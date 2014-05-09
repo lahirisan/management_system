@@ -1,17 +1,11 @@
 GS1::Application.routes.draw do
   
-  resources :servicios
-  resources :glns
-  
-  resources :productos do
-    collection do
-      put 'update_multiple', :action => 'update_multiple', :as => 'update_multiple'  # la ruta update_multiple para productos
-    end
-  end
+  resources :empresa_servicios
+  resources :productos
 
   resources :empresas do  
 
-    resources :servicios
+    resources :empresa_servicios
     resources :productos do #/empresas/1/productos
 
       collection do

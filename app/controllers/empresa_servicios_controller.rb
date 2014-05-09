@@ -5,14 +5,14 @@ class EmpresaServiciosController < ApplicationController
     
     respond_to do |format|
       format.html {
-                    if params[:eliminar]
-                      render :template =>'/empresa_servicios/eliminar_servicios.html.haml'
-                    elsif params[:eliminados]
-                      render :template =>'/empresa_servicios/servicios_eliminados.html.haml'
-                    else
-                      render :template =>'/empresa_servicios/index.html.haml'
-                    end
-
+                  if params[:eliminar]
+                    render :template =>'/empresa_servicios/eliminar_servicios.html.haml'
+                  elsif params[:eliminados]
+                    render :template =>'/empresa_servicios/servicios_eliminados.html.haml'
+                  else
+                    render :template =>'/empresa_servicios/index.html.haml'
+                  end
+                   
       }
        format.json {
                     if params[:eliminar]
@@ -22,6 +22,7 @@ class EmpresaServiciosController < ApplicationController
                     else
                       render json: (EmpresaServiciosDatatable.new(view_context)) 
                     end
+                    
                   }
     end
   end
@@ -40,10 +41,8 @@ class EmpresaServiciosController < ApplicationController
   # GET /empresa_servicios/new
   # GET /empresa_servicios/new.json
   def new
-    
+    @prefijo = params[:empresa_id]
     @empresa_servicio = EmpresaServicio.new
-    @servicio = Servicio.new
-
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @empresa_servicio }
@@ -61,15 +60,14 @@ class EmpresaServiciosController < ApplicationController
   # POST /empresa_servicios
   # POST /empresa_servicios.json
   def create
+    @prefijo = params[:empresa_servicio][:prefijo]
+    @empresa_servicio = EmpresaServicio.new(params[:empresa_servicio])
 
-    @servicio = Servicio.new(params[:servicio])
+
     respond_to do |format|
-      if @servicio.save
+      if @empresa_servicio.save
         
-        params[:empresa_servicio][:id_servicio] = @servicio.id
-        @empresa_servicio = EmpresaServicio.new(params[:empresa_servicio])
-        @empresa_servicio.save
-        format.html { redirect_to "/empresas/#{params[:empresa_servicio][:prefijo]}/empresa_servicios", notice: "El servicio #{params[:servicio][:nombre]} fue creado para la empresa con prefijo #{params[:empresa_servicio][:prefijo]}"}
+        format.html { redirect_to "/empresas/#{@prefijo}/empresa_servicios", notice: "El servicio a fue asociado a la empresa con prefijo #{@prefijo}"}
         
       else
         format.html { render action: "new" }

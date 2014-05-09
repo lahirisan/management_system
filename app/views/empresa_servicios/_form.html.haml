@@ -12,22 +12,25 @@
             - @empresa_servicio.errors.full_messages.each do |msg|
               %li= msg
       %table
-        =fields_for @servicio do |servicio|
-          %tr
-            %td
-              Nombre
-            %td
-              =servicio.text_field :nombre
+        %tr
+          %td
+            Nombre Servicio
+          %td
+            -if @empresa_servicio.new_record?
+              =f.collection_select :id_servicio, Servicio.all, :id, :nombre, :prompt => "-Seleccione-"
+            -else
+              =f.hidden_field :id_servicio, :value => @empresa_servicio.id_servicio
+              =text_field_tag "servicio", "#{@empresa_servicio.servicio.nombre}", :readonly => :true, :class => "campo_readonly"
         %tr
           %td
             Fecha Contratación
           %td
-            =f.text_field :fecha_contratacion
+            = @empresa_servicio.new_record? ? (f.text_field :fecha_contratacion) : (f.text_field :fecha_contratacion , :value => "#{@empresa_servicio.fecha_contratacion.strftime("%Y-%m-%d")}", :class => 'campo_readonly', :readonly => :true)
         %tr
           %td
             Fecha Culminación
           %td
-            =f.text_field :fecha_finalizacion
+            = @empresa_servicio.new_record? ? (f.text_field :fecha_finalizacion) : (f.text_field :fecha_finalizacion , :value => "#{@empresa_servicio.fecha_contratacion.strftime("%Y-%m-%d")}", :class => 'campo_readonly', :readonly => :true)
         %tr
           %td
             Nombre Contacto
@@ -48,8 +51,7 @@
             Correo
           %td
             =f.text_field :email
-        
-        =hidden_field_tag "empresa_servicio[prefijo]", "#{params[:empresa_id]}"
+        =f.hidden_field :prefijo, :value => "#{@prefijo}"
      
       .actions
         = f.submit 'Guardar'

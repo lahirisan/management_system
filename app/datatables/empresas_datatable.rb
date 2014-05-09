@@ -35,7 +35,7 @@ private
         link_to("Ver Detalle", empresa_path(empresa)),        
         link_to("Editar Empresa", edit_empresa_path(empresa)),
         link_to("Productos", empresa_productos_path(empresa)),
-        link_to("Servicios", "/empresas/#{empresa.prefijo}/servicios"),
+        link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios"),
         link_to("GLN", empresa_glns_path(empresa))          
       ]
 

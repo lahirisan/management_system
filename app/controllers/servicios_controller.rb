@@ -6,23 +6,10 @@ class ServiciosController < ApplicationController
     respond_to do |format|
       
       format.html {
-
-         if params[:eliminar]
-            render :template =>'/servicios/eliminar_servicios.html.haml'
-          elsif params[:eliminados]
-            render :template =>'/servicios/servicios_eliminados.html.haml'
-          else
-            render :template =>'/servicios/index.html.haml'
-          end
+                
       }
       format.json { 
-                    if params[:eliminar]
-                      render json: (EliminarServiciosDatatable.new(view_context))
-                    elsif params[:eliminados]
-                      render json: (ServiciosEliminadosDatatable.new(view_context))
-                    else
-                      render json: (ServiciosDatatable.new(view_context)) 
-                    end
+                    
        }
     end
   end
@@ -60,11 +47,9 @@ class ServiciosController < ApplicationController
   def create
     
     @servicio = Servicio.new(params[:servicio])
-    raise @servicio.empresa_servicios.prefijo.to_yaml
-
     respond_to do |format|
       if @servicio.save
-        format.html { redirect_to empresa_servicios, notice: "EL servicio #{@servicio.nombre} fue creado satisfactoriamente" }
+        format.html { redirect_to "/empresas/#{params[:prefijo]}/servicios", notice: "EL servicio #{@servicio.nombre} fue creado satisfactoriamente" }
       else
         format.html { render action: "new" }
         format.json { render json: @servicio.errors, status: :unprocessable_entity }

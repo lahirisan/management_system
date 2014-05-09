@@ -3,6 +3,8 @@ class EmpresaServiciosDatatable < AjaxDatatablesRails
 
    def initialize(view)
     @view = view
+
+
    end
 
   def as_json(options = {})
@@ -30,7 +32,7 @@ private
           empresa_servicio.cargo_contacto,
           empresa_servicio.telefono,
           empresa_servicio.email,
-          link_to("Editar", "/empresas/#{params[:prefijo]}/empresa_servicios/#{empresa_servicio.id}/edit")
+          link_to("Editar", "/empresas/#{params[:empresa_id]}/empresa_servicios/#{empresa_servicio.id}/edit")
           
         ]
       
@@ -44,11 +46,11 @@ private
 
   def fetch_empresa_servicios
 
-    empresa_servicios = EmpresaServicio.where("prefijo = ?", params[:prefijo]).includes(:servicio)
+    empresa_servicios = EmpresaServicio.where("prefijo = ?", params[:empresa_id]).includes(:servicio)
     empresa_servicios = empresa_servicios.page(page).per_page(per_page)
     
     # if params[:sSearch].present? # Filtro de busqueda general
-    #   productos = productos.where("empresa.nombre_empresa like :search or tipo_gtin.tipo like :search or producto.gtin like :search or producto.descripcion like :search or producto.marca like :search or producto.gpc like :search or estatus.descripcion like :search or estatus.descripcion like :search or producto.codigo_prod like :search ", search: "%#{params[:sSearch]}%")
+    #   productos = productos.where("empresa_servicios like :search  or servicio.", search: "%#{params[:sSearch]}%")
     # end
     
     # if params[:sSearch_0].present? # Filtro de busqueda Nombre de la Empresa

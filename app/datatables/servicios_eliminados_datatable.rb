@@ -1,4 +1,4 @@
-class ServiciosEliminadosDatatable < AjaxDatatablesRails
+class EmpresaServiciosEliminadosDatatable < AjaxDatatablesRails
   delegate :params, :h, :link_to,  to: :@view
 
    def initialize(view)

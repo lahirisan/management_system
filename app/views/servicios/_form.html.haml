@@ -52,9 +52,7 @@
               =empresa_servicio.text_field :email
         
           =empresa_servicio.hidden_field :prefijo, :value => "#{params[:empresa_id]}"
-          =empresa_servicio.hidden_field :id_servicio, :value => "#{@servicio.id}"
-      
-        
+      =hidden_field_tag "prefijo", "#{params[:empresa_id]}"
      
       .actions
         = f.submit 'Guardar'

@@ -5,7 +5,7 @@
 
 %section#areaTrabajo.areaTrabajo
   %p#notice= notice
-  %table#data_table_empresa_servicios.display{:"data-source" => "/empresa_servicios.json?prefijo=#{params[:empresa_id]}"}
+  %table#data_table_empresa_servicios.display{:"data-source" => "#{empresa_empresa_servicios_path}.json"}
     %thead
       %tr
         %th Prefijo
@@ -21,6 +21,7 @@
 
     %tbody
     %tfoot
+      =render 'empresa_servicios_footer'
 
   
  

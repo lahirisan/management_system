@@ -1,13 +1,13 @@
 $( document ).ready(function() {
 	// Datatable que maneja el listado de servicios
-    $("#data_table_servicios").dataTable({
+    $("#data_table_empresa_servicios").dataTable({
         sPaginationType: "full_numbers",
         bJQueryUI: true,
         bProcessing: true,
         bServerSide: true,
         sDom: 'T<"clear">lfrtip',            
-        sAjaxSource: $('#data_table_servicios').data('source')
-    });
+        sAjaxSource: $('#data_table_empresa_servicios').data('source')
+    }).columnFilter({ aoColumns: [{ type: "text"}, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});;
 
     // Datatable eliminar_servicios
 
@@ -20,8 +20,14 @@ $( document ).ready(function() {
     //     sAjaxSource: $('#data_table_eliminar_servicios').data('source')
     // });
 
-    $("#servicio_empresa_servicio_attributes_0_fecha_contratacion").datepicker();
-    $("#servicio_empresa_servicio_attributes_0_fecha_finalizacion").datepicker();
+    
+
+    if (window.location.pathname.split('/')[4] == 'new')
+    {
+        $("#empresa_servicio_fecha_contratacion").datepicker();
+        
+        $("#empresa_servicio_fecha_finalizacion").datepicker();
+    }
 
     // // Eliminar servicio masivamente
     // $('#eliminar_masivo_servicios').live('change', function() {
