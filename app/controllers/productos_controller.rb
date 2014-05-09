@@ -125,7 +125,8 @@ class ProductosController < ApplicationController
     end
     
     respond_to do |format|
-      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?retirar=true", notice: "Los GTIN #{string_gtin} #{accion}" }
+      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?retirados=true", notice: "Los GTIN #{string_gtin} #{accion}" } if params[:retirar]
+      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?eliminados=true", notice: "Los GTIN #{string_gtin} #{accion}" } if params[:eliminados]
     end
   end
 

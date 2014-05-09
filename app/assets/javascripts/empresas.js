@@ -271,7 +271,7 @@
                     $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
                 });  
             }
-            else // múltiple selecccion de empresas a eliminar
+            else // múltiple selecccion de empresas a eliminar, no masivo
             {
 
                

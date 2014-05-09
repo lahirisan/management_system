@@ -121,7 +121,7 @@ private
   def sort_column
 
      columns = %w[producto.id_estatus]
-     columns[params[:iSortCol_0].to_i]
+     raise columns[params[:iSortCol_0].to_i].to_yaml
   end
 
   def sort_direction

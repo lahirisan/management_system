@@ -6,6 +6,10 @@
     %p#notice= notice
     =form_tag "/empresas/#{@prefijo}/productos/update_multiple", :method => "put", :id => "formulario_retirar_productos" do
         
+        %button#submit.ui-state-default.ui-corner-all.retirar_productos{:type => "submit", :title => "Retirar productos"}
+            %span.ui-icon.ui-icon-circle-minus
+            Retirar
+
         %table.margen_inferior{:border => 1}
             %tr
                 %td
@@ -18,9 +22,9 @@
                 %td
                     =check_box_tag "retiro_masivo_productos"
                 %td
-                    =select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
+                    =select_tag("retirar_producto_sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
                 %td
-                    =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
+                    =select_tag("retirar_producto_motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
         %table#data_table_retirar_productos.display{:"data-source" => "/productos.json?retirar=true&prefijo=#{@prefijo}"}
             %thead
                 %tr
@@ -45,5 +49,8 @@
         %br/
         #datos_productos_retirar_productos
         =hidden_field_tag "retirar"
-        =submit_tag "retirar"
+        %button#submit.ui-state-default.ui-corner-all.retirar_productos{:type => "submit", :title => "Retirar Productos"}
+            %span.ui-icon.ui-icon-circle-minus
+            Retirar
+
         
