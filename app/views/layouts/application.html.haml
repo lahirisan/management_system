@@ -96,19 +96,24 @@
 								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminados=true", :title => "Listado de los productos eliminados"}
 									.opcion Productos Eliminados
 
-			-if params[:controller] == 'empresa_servicios'
+			-if params[:controller] == 'servicios'
 
-				%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios", :title => "Listado de Servicios para la empresa seleccionada"}
+				%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/servicios", :title => "Listado de Servicios para la empresa seleccionada"}
 					.opcion Servicios
 					.opcion
 						%ul
 							%li 
-								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios?eliminar=true", :title => "ELiminar Servicios"}
+								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/servicios/new", :title => "Opción que permite crear servicio"}
+									.opcion Crear Servicio
+					.opcion
+						%ul
+							%li 
+								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/servicios?eliminar=true", :title => "ELiminar Servicios"}
 									.opcion Eliminar Servicios
 					.opcion
 						%ul
 							%li 
-								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios?eliminados=true", :title => "Listado de los Servicios eliminados"}
+								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/servicios?eliminados=true", :title => "Listado de los Servicios eliminados"}
 									.opcion Servicios Eliminados
 
 

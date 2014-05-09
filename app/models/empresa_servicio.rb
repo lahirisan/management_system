@@ -1,8 +1,11 @@
 class EmpresaServicio < ActiveRecord::Base
-  attr_accessible :cargo_contacto, :email, :fecha_contratacion, :fecha_finalizacion, :id_servicio, :nombre_contacto, :prefijo, :telefono
+  attr_accessible :cargo_contacto, :email, :fecha_contratacion, :fecha_finalizacion, :id_servicio, :nombre_contacto, :prefijo, :telefono, :empresa_servicio
   self.table_name = "empresa_servicios"
+
   belongs_to :servicio, :foreign_key => "id_servicio"
   belongs_to :empresa, :foreign_key => "prefijo"
+
+  validates :fecha_contratacion,  :fecha_finalizacion,  :nombre_contacto, :cargo_contacto,:prefijo,  :telefono,  :email ,      :presence => {:message => "No puede estar en blanco"}, :on => :create
 
   	#Eliminar servicios
   	def self.eliminar(parametros)

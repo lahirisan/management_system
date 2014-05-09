@@ -123,10 +123,13 @@ class ProductosController < ApplicationController
       string_gtin = ""
       params[:eliminar_productos].collect{|gtin| string_gtin += gtin + " "} 
     end
+
+
+
     
     respond_to do |format|
       format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?retirados=true", notice: "Los GTIN #{string_gtin} #{accion}" } if params[:retirar]
-      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?eliminados=true", notice: "Los GTIN #{string_gtin} #{accion}" } if params[:eliminados]
+      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?eliminados=true", notice: "Los GTIN #{string_gtin} #{accion}" } if params[:eliminar]
     end
   end
 

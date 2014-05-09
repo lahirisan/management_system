@@ -18,7 +18,7 @@
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_retirar_productos').data('source')
-        }).columnFilter({ aoColumns: [null, { type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [null, { type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
         // Datatable que maneja retirar productos
         $("#data_table_productos_retirados").dataTable({
@@ -176,7 +176,7 @@
         });
 
         // Efectos del boton importar
-        $('.boton_importar, .retirar_productos').hover(
+        $('.boton_importar, .retirar_productos,   .eliminar_productos').hover(
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');}
         );
