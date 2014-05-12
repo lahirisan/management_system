@@ -44,7 +44,7 @@
           Tipo GTIN
         %td
           -if @producto.new_record? 
-            =(f.collection_select :id_tipo_gtin, TipoGtin.find(:all, :conditions => ["(id != ?) and (id != ?)",2,5]), :id, :tipo_gtin_base)
+            =params[:gtin] ? (f.collection_select :id_tipo_gtin, TipoGtin.find(:all, :conditions => ["id  in (?)",[4,6]]), :id, :tipo_gtin_base) : (f.collection_select :id_tipo_gtin, TipoGtin.find(:all, :conditions => ["id not in (?)",[2,5,4,6]]), :id, :tipo_gtin_base)
           -else
             =f.hidden_field :id_tipo_gtin, :value => "#{@producto.id_tipo_gtin}"
             =text_field_tag "tipo_gtin", "#{@producto.tipo_gtin.tipo}", :class => "campo_readonly", :readonly => :true

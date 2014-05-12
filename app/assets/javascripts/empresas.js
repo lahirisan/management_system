@@ -67,7 +67,7 @@
         }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
         
-        if (window.location.pathname.split('/')[2] == 'new')
+        if (window.location.pathname.split('/')[3] != 'edit')
         {
             $("#empresa_fecha_inscripcion").datepicker();
         }
