@@ -20,19 +20,21 @@ private
   def data
 
     empresa_servicios_eliminados.map do |empresa_servicio_eliminado|
-        
+
+        empresa = empresa_servicio_eliminado.try(:empresa).try(:nombre_empresa) ? empresa_servicio_eliminado.try(:empresa).try(:nombre_empresa) : empresa_servicio_eliminado.try(:empresa_eliminada).try(:nombre_empresa)
+
         [
-          empresa_servicio_eliminado.prefijo,
+          empresa,
           empresa_servicio_eliminado.servicio.nombre,
-          empresa_servicio_eliminado.fecha_contratacion,
-          empresa_servicio_eliminado.fecha_finalizacion,
+          empresa_servicio_eliminado.fecha_contratacion.strftime("%Y-%m-%d"),
+          empresa_servicio_eliminado.fecha_finalizacion.strftime("%Y-%m-%d"),
           empresa_servicio_eliminado.nombre_contacto,
           empresa_servicio_eliminado.cargo_contacto,
           empresa_servicio_eliminado.telefono,
           empresa_servicio_eliminado.email,
-          empresa_servicio_eliminado.motivo_retiro.descripcion,
           empresa_servicio_eliminado.sub_estatus.descripcion,
-          empresa_servicio_eliminado.fecha_eliminacion
+          empresa_servicio_eliminado.motivo_retiro.descripcion,
+          empresa_servicio_eliminado.fecha_eliminacion.strftime("%Y-%m-%d")
         ]
       
     end
@@ -45,44 +47,54 @@ private
 
   def fetch_empresa_servicios_eliminados
 
-    empresa_servicios = EmpresaServiciosEliminado.where("prefijo = ?", params[:prefijo]).includes(:servicio)
+    empresa_servicios = EmpresaServiciosEliminado.where("prefijo = ?", params[:empresa_id]).includes(:servicio, :sub_estatus, :motivo_retiro)
     empresa_servicios = empresa_servicios.page(page).per_page(per_page)
     
-    # if params[:sSearch].present? # Filtro de busqueda general
-    #   productos = productos.where("empresa.nombre_empresa like :search or tipo_gtin.tipo like :search or producto.gtin like :search or producto.descripcion like :search or producto.marca like :search or producto.gpc like :search or estatus.descripcion like :search or estatus.descripcion like :search or producto.codigo_prod like :search ", search: "%#{params[:sSearch]}%")
-    # end
+    if params[:sSearch].present? # Filtro de busqueda generalx
+      empresa_servicios = empresa_servicios.where("servicios.nombre like :search or empresa_servicios_eliminado.fecha_contratacion like :search or empresa_servicios_eliminado.fecha_finalizacion like :search or empresa_servicios_eliminado.nombre_contacto like :search or empresa_servicios_eliminado.cargo_contacto like :search or empresa_servicios_eliminado.telefono like :search or empresa_servicios_eliminado.email like :search or  sub_estatus.descripcion like :search or motivo_retiro.descripcion like :search or empresa_servicios_eliminado.fecha_eliminacion like :search", search: "%#{params[:sSearch]}%")
+    end
     
-    # if params[:sSearch_0].present? # Filtro de busqueda Nombre de la Empresa
-    #   productos = productos.where("empresa.nombre_empresa like :search0", search0: "%#{params[:sSearch_0]}%" )
-    # end
+    if params[:sSearch_1].present? # Filtro GTIN
+      empresa_servicios = empresa_servicios.where("servicios.nombre like :search1", search1: "%#{params[:sSearch_1]}%" )
+    end
     
-    # if params[:sSearch_1].present? # Filtro de busqueda por Tipo GTIN
-    #   productos = productos.where("tipo_gtin.tipo like :search1", search1: "%#{params[:sSearch_1]}%" )
-    # end
+    if params[:sSearch_2].present?
+      empresa_servicios = empresa_servicios.where("empresa_servicios_eliminado.fecha_contratacion like :search2", search2: "%#{params[:sSearch_2]}%" )
+    end
 
-    # if params[:sSearch_2].present? # Filtro GTIN
-    #   productos = productos.where("producto.gtin like :search2", search2: "%#{params[:sSearch_2]}%" )
-    # end
+    if params[:sSearch_3].present?
+      empresa_servicios = empresa_servicios.where("empresa_servicios_eliminado.fecha_finalizacion like :search3", search3: "%#{params[:sSearch_3]}%" )
+    end
+
+    if params[:sSearch_4].present?
+      empresa_servicios = empresa_servicios.where("empresa_servicios_eliminado.nombre_contacto like :search4", search4: "%#{params[:sSearch_4]}%" )
+    end
+
+    if params[:sSearch_5].present?
+      empresa_servicios = empresa_servicios.where("empresa_servicios_eliminado.cargo_contacto like :search5", search5: "%#{params[:sSearch_5]}%")
+    end
+
+    if params[:sSearch_6].present?
+      empresa_servicios = empresa_servicios.where("empresa_servicios_eliminado.telefono like :search6", search6: "%#{params[:sSearch_6]}%" )
+    end
+
+    if params[:sSearch_7].present?
+      empresa_servicios = empresa_servicios.where("empresa_servicios_eliminado.email like :search7", search7: "%#{params[:sSearch_7]}%" )
+    end
     
-    # if params[:sSearch_3].present?
-    #   productos = productos.where("producto.descripcion like :search3", search3: "%#{params[:sSearch_3]}%" )
-    # end
+    if params[:sSearch_8].present?
+      empresa_servicios = empresa_servicios.where("sub_estatus.descripcion like :search8", search8: "%#{params[:sSearch_8]}%" )
+    end
 
-    # if params[:sSearch_4].present?
-    #   productos = productos.where("producto.marca like :search4", search4: "%#{params[:sSearch_4]}%" )
-    # end
+    if params[:sSearch_9].present?
+      empresa_servicios = empresa_servicios.where("motivo_retiro.descripcion like :search9", search9: "%#{params[:sSearch_9]}%" )
+    end
 
-    # if params[:sSearch_5].present?
-    #   productos = productos.where("producto.gpc like :search5", search5: "%#{params[:sSearch_5]}%" )
-    # end
+    if params[:sSearch_10].present?
+      empresa_servicios = empresa_servicios.where("empresa_servicios_eliminado.fecha_eliminacion like :search10", search10: "%#{params[:sSearch_10]}%" )
+    end
 
-    # if params[:sSearch_6].present?
-    #   productos = productos.where("estatus.descripcion like :search6", search6: "%#{params[:sSearch_6]}%")
-    # end
 
-    # if params[:sSearch_7].present?
-    #   productos = productos.where("producto.codigo_prod like :search7", search7: "%#{params[:sSearch_7]}%" )
-    # end
 
     empresa_servicios
   end

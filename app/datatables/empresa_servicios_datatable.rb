@@ -24,10 +24,10 @@ private
     empresa_servicios.map do |empresa_servicio|
         
         [
-          empresa_servicio.prefijo,
+          empresa_servicio.empresa.nombre_empresa,
           empresa_servicio.servicio.nombre,
-          empresa_servicio.fecha_contratacion,
-          empresa_servicio.fecha_finalizacion,
+          empresa_servicio.fecha_contratacion.strftime("%Y-%m-%d"),
+          empresa_servicio.fecha_finalizacion.strftime("%Y-%m-%d"),
           empresa_servicio.nombre_contacto,
           empresa_servicio.cargo_contacto,
           empresa_servicio.telefono,
@@ -46,44 +46,41 @@ private
 
   def fetch_empresa_servicios
 
-    empresa_servicios = EmpresaServicio.where("prefijo = ?", params[:empresa_id]).includes(:servicio)
+    empresa_servicios = EmpresaServicio.where("empresa_servicios.prefijo = ?", params[:empresa_id]).includes(:servicio, :empresa)
     empresa_servicios = empresa_servicios.page(page).per_page(per_page)
     
-    # if params[:sSearch].present? # Filtro de busqueda general
-    #   productos = productos.where("empresa_servicios like :search  or servicio.", search: "%#{params[:sSearch]}%")
-    # end
+    if params[:sSearch].present? # Filtro de busqueda general
+      empresa_servicios = empresa_servicios.where("servicios.nombre like :search  or empresa_servicios.fecha_contratacion like :search or empresa_servicios.fecha_finalizacion like :search or empresa_servicios.nombre_contacto like :search or empresa_servicios.cargo_contacto like :search or empresa_servicios.telefono like :search or empresa_servicios.email like :search", search: "%#{params[:sSearch]}%")
+    end
     
-    # if params[:sSearch_0].present? # Filtro de busqueda Nombre de la Empresa
-    #   productos = productos.where("empresa.nombre_empresa like :search0", search0: "%#{params[:sSearch_0]}%" )
-    # end
+
+    if params[:sSearch_1].present? # Filtro de busqueda por Tipo GTIN
+      empresa_servicios = empresa_servicios.where("servicios.nombre like :search1", search1: "%#{params[:sSearch_1]}%" )
+    end
+
+    if params[:sSearch_2].present? # Filtro GTIN
+      empresa_servicios = empresa_servicios.where("empresa_servicios.fecha_contratacion like :search2", search2: "%#{params[:sSearch_2]}%" )
+    end
     
-    # if params[:sSearch_1].present? # Filtro de busqueda por Tipo GTIN
-    #   productos = productos.where("tipo_gtin.tipo like :search1", search1: "%#{params[:sSearch_1]}%" )
-    # end
+    if params[:sSearch_3].present?
+      empresa_servicios = empresa_servicios.where("empresa_servicios.fecha_finalizacion like :search3", search3: "%#{params[:sSearch_3]}%" )
+    end
 
-    # if params[:sSearch_2].present? # Filtro GTIN
-    #   productos = productos.where("producto.gtin like :search2", search2: "%#{params[:sSearch_2]}%" )
-    # end
-    
-    # if params[:sSearch_3].present?
-    #   productos = productos.where("producto.descripcion like :search3", search3: "%#{params[:sSearch_3]}%" )
-    # end
+    if params[:sSearch_4].present?
+      empresa_servicios = empresa_servicios.where("empresa_servicios.nombre_contacto like :search4", search4: "%#{params[:sSearch_4]}%" )
+    end
 
-    # if params[:sSearch_4].present?
-    #   productos = productos.where("producto.marca like :search4", search4: "%#{params[:sSearch_4]}%" )
-    # end
+    if params[:sSearch_5].present?
+      empresa_servicios = empresa_servicios.where("empresa_servicios.cargo_contacto like :search5", search5: "%#{params[:sSearch_5]}%" )
+    end
 
-    # if params[:sSearch_5].present?
-    #   productos = productos.where("producto.gpc like :search5", search5: "%#{params[:sSearch_5]}%" )
-    # end
+    if params[:sSearch_6].present?
+      empresa_servicios = empresa_servicios.where("empresa_servicios.telefono like :search6", search6: "%#{params[:sSearch_6]}%" )
+    end
 
-    # if params[:sSearch_6].present?
-    #   productos = productos.where("estatus.descripcion like :search6", search6: "%#{params[:sSearch_6]}%")
-    # end
-
-    # if params[:sSearch_7].present?
-    #   productos = productos.where("producto.codigo_prod like :search7", search7: "%#{params[:sSearch_7]}%" )
-    # end
+    if params[:sSearch_7].present?
+      empresa_servicios = empresa_servicios.where("empresa_servicios.email like :search7", search7: "%#{params[:sSearch_7]}%" )
+    end
 
     empresa_servicios
   end

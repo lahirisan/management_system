@@ -142,7 +142,7 @@ class Empresa < ActiveRecord::Base
         empresa_eliminar.productos_empresa.collect{|productos_empresa| producto = Producto.find(:first, :conditions => ["gtin like ?", productos_empresa.gtin]); producto.destroy}
         
         # Se elimina los servicios de la empresa
-        #empresa_eliminar.empresa_servicio.collect{|servicio| EmpresaServicio.servicio_eliminado(servicio,1,1)}
+        empresa_eliminar.empresa_servicio.collect{|servicio| EmpresaServicio.servicio_eliminado(servicio,1,1)}
         empresa_eliminar.destroy
 
       end
