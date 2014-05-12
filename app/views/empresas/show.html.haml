@@ -1,0 +1,200 @@
+:css
+  a#dialog_link{ font: 62.5% "Trebuchet MS", sans-serif; }
+  #dialog{ font: 62.5% "Trebuchet MS", sans-serif; }
+  
+  #dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
+  
+%section.contexto
+  %label.contexto Empresa > Datos Básicos
+  %hr.contexto{:size => "1"}
+
+%section#areaTrabajo.areaTrabajo{:style => "font: 82.5% 'Trebuchet MS', sans-serif"}
+ 
+  %table
+    %tr
+      %td
+        Prefijo
+      %td
+        =@empresa.prefijo
+    %tr
+      %td
+        Nombre Empresa
+      %td
+        = @empresa.nombre_empresa
+    %tr
+      %td
+        Fecha Inscripción
+      %td
+        =@empresa.fecha_inscripcion.nil? ? "No Tiene" : @empresa.fecha_inscripcion.strftime("%Y-%m-%d")
+    %tr
+      %td
+        Dirección de la empresa
+      %td
+        = @empresa.direccion_empresa
+    %tr
+      %td
+        Estado
+      %td
+        =@empresa.estado.nombre
+    %tr
+      %td
+        Ciudad
+      %td
+        = @empresa.ciudad.nombre
+    %tr
+      %td
+        RIF
+      %td
+        = @empresa.rif
+    %tr
+      %td
+        Estatus
+      %td
+        =@empresa.try(:estatus).try(:descripcion)
+    %tr
+      %td
+        Rep Legal
+      %td
+        = @empresa.rep_legal
+    %tr
+      %td
+        Cargo Rep Legal
+      %td
+        = @empresa.cargo_rep_legal
+    -if (@retirar)
+      %tr
+        %td
+          Sub Estatus
+        %td
+          =@empresa.try(:sub_estatus).try(:descripcion)
+      %tr
+        %td
+          Motivo Retiro
+        %td
+          =@empresa.try(:motivo_retiro).try(:descripcion)
+
+
+
+  %br
+  %label.contexto  Empresa > Clasificación de la Empresa
+  %hr.contexto{:size => "1"}
+
+  %table
+    %tr
+      %td
+        Tipo de Usuario
+      %td
+        = @empresa.try(:tipo_usuario_empresa).try(:descripcion)
+    %tr
+      %td
+        Nombre Comercial
+      %td
+        = @empresa.nombre_comercial
+    %tr
+      %td
+        Clasificación
+      %td
+        = @empresa.try(:clasificacion).try(:descripcion)
+    %tr
+      %td
+        Categoría
+      %td
+        = @empresa.categoria
+    %tr
+      %td
+        División
+      %td
+        = @empresa.division
+    %tr
+      %td
+        Grupo
+      %td
+        = @empresa.grupo
+    %tr
+      %td
+        Clase
+      %td
+        = @empresa.clase
+  %br
+  %label.contexto Empresa > Datos de Contacto
+  %hr.contexto{:size => "1"}  
+  %table
+    -@contacto.each do |contacto|
+      %tr
+        %td
+          Tipo Contacto
+        %td
+          =contacto.tipo
+      %tr
+        %td
+          Contacto
+        %td
+          =contacto.contacto
+      %tr
+        %td
+          Nombre Contacto
+        %td
+          =contacto.nombre_contacto
+      %tr
+        %td
+          Cargo Contacto
+        %td
+          =contacto.cargo_contacto
+  %br
+  %label.contexto Empresa > Datos Correspondencia
+  %hr.contexto{:size => "1"}
+  %table
+    %tr
+      %td
+        Representante Técnico
+      %td
+        =@correspondecia.try(:rep_tecnico)
+    %tr
+      %td
+        Cargo Rep Técnico
+      %td
+        =@correspondencia.try(:cargo_rep_tecnico)
+    %tr
+      %td
+        Edificio
+      %td
+        =@correspondencia.try(:edificio)
+    %tr
+      %td
+        Calle
+      %td
+        =@correspondencia.try(:calle)
+    %tr
+      %td
+        Urbanización
+      %td
+        =@correspondencia.try(:urbanizacion)
+    %tr
+      %td
+        Estado
+      %td
+        =@correspondencia.try(:estado).try(:nombre)
+    
+    %tr
+      %td
+        Ciudad
+      %td
+        =@correspondencia.try(:ciudad).try(:nombre)
+    %tr
+      %td
+        Código Postal
+      %td
+        =@correspondencia.try(:cod_postal)
+    %tr
+      %td
+        Punto Referencia
+      %td
+        =@correspondencia.try(:punto_referencia)
+  %br
+  %br
+  
+  %a.ui-state-default.ui-corner-all.regresar{:href => "/empresas"}
+    %span.ui-icon.ui-icon-arrowreturnthick-1-w
+    Regresar
+  
+

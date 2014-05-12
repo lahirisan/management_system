@@ -1,17 +1,15 @@
-class EmpresaServiciosDatatable < AjaxDatatablesRails
+class EmpresaServiciosEliminadosDatatable < AjaxDatatablesRails
   delegate :params, :h, :link_to,  to: :@view
 
    def initialize(view)
     @view = view
-
-
    end
 
   def as_json(options = {})
     {
       sEcho: params[:sEcho].to_i,
-      iTotalRecords: empresa_servicios.count,
-      iTotalDisplayRecords: empresa_servicios.total_entries,      
+      iTotalRecords: empresa_servicios_eliminados.count,
+      iTotalDisplayRecords: empresa_servicios_eliminados.total_entries,      
       aaData: data
     }
 
@@ -21,36 +19,37 @@ private
 
   def data
 
-    empresa_servicios.map do |empresa_servicio|
+    empresa_servicios_eliminados.map do |empresa_servicio_eliminado|
         
         [
-          empresa_servicio.prefijo,
-          empresa_servicio.servicio.nombre,
-          empresa_servicio.fecha_contratacion,
-          empresa_servicio.fecha_finalizacion,
-          empresa_servicio.nombre_contacto,
-          empresa_servicio.cargo_contacto,
-          empresa_servicio.telefono,
-          empresa_servicio.email,
-          link_to("Editar", "/empresas/#{params[:empresa_id]}/empresa_servicios/#{empresa_servicio.id}/edit")
-          
+          empresa_servicio_eliminado.prefijo,
+          empresa_servicio_eliminado.servicio.nombre,
+          empresa_servicio_eliminado.fecha_contratacion,
+          empresa_servicio_eliminado.fecha_finalizacion,
+          empresa_servicio_eliminado.nombre_contacto,
+          empresa_servicio_eliminado.cargo_contacto,
+          empresa_servicio_eliminado.telefono,
+          empresa_servicio_eliminado.email,
+          empresa_servicio_eliminado.motivo_retiro.descripcion,
+          empresa_servicio_eliminado.sub_estatus.descripcion,
+          empresa_servicio_eliminado.fecha_eliminacion
         ]
       
     end
 
   end
 
-  def empresa_servicios
-    empresa_servicios ||= fetch_empresa_servicios
+  def empresa_servicios_eliminados
+    empresa_servicios ||= fetch_empresa_servicios_eliminados
   end
 
-  def fetch_empresa_servicios
+  def fetch_empresa_servicios_eliminados
 
-    empresa_servicios = EmpresaServicio.where("prefijo = ?", params[:empresa_id]).includes(:servicio)
+    empresa_servicios = EmpresaServiciosEliminado.where("prefijo = ?", params[:prefijo]).includes(:servicio)
     empresa_servicios = empresa_servicios.page(page).per_page(per_page)
     
     # if params[:sSearch].present? # Filtro de busqueda general
-    #   productos = productos.where("empresa_servicios like :search  or servicio.", search: "%#{params[:sSearch]}%")
+    #   productos = productos.where("empresa.nombre_empresa like :search or tipo_gtin.tipo like :search or producto.gtin like :search or producto.descripcion like :search or producto.marca like :search or producto.gpc like :search or estatus.descripcion like :search or estatus.descripcion like :search or producto.codigo_prod like :search ", search: "%#{params[:sSearch]}%")
     # end
     
     # if params[:sSearch_0].present? # Filtro de busqueda Nombre de la Empresa

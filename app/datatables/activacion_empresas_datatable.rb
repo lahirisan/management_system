@@ -26,7 +26,7 @@ private
       fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
 
         [ 
-        check_box_tag("activar_empresa[]", "#{empresa.id}"),
+        check_box_tag("activar_empresas[]", "#{empresa.id}", false, :class => "activar_empresa"),
         empresa.prefijo,
         empresa.nombre_empresa,
         fecha,
@@ -34,16 +34,8 @@ private
         empresa.estado.nombre,
         empresa.ciudad.nombre,
         empresa.rif,
-        empresa.estatus.descripcion,
-        empresa.id_tipo_usuario,
-        empresa.nombre_comercial,
-        empresa.id_clasificacion,
-        empresa.categoria,
-        empresa.division,
-        empresa.grupo,
-        empresa.clase,
-        empresa.rep_legal,
-        empresa.cargo_rep_legal
+        empresa.estatus.descripcion
+       
       ]
 
     end
@@ -56,8 +48,8 @@ private
 
   def fetch_empresas
     
-   
-    empresas = Empresa.where("estatus.descripcion like ?", "No Validada").includes(:estado, :ciudad, :estatus).order("#{sort_column} #{sort_direction}")
+    
+    empresas = Empresa.where("estatus.descripcion like ?", "No Validado").includes(:estado, :ciudad, :estatus).order("#{sort_column} #{sort_direction}")
    
     
     empresas = empresas.page(page).per_page(per_page)
@@ -91,33 +83,7 @@ private
     if params[:sSearch_8].present?
       empresas = empresas.where("estatus.descripcion like :search8", search8: "%#{params[:sSearch_8]}%" )
     end
-    if params[:sSearch_9].present?
-      empresas = empresas.where("empresa.id_tipo_usuario like :search9", search9: "%#{params[:sSearch_9]}%" )
-    end
-    if params[:sSearch_10].present?
-      empresas = empresas.where("empresa.nombre_comercial like :search10", search10: "%#{params[:sSearch_10]}%" )
-    end
-    if params[:sSearch_11].present?
-      empresas = empresas.where("empresa.id_clasificacion like :search11", search11: "%#{params[:sSearch_11]}%" )
-    end
-    if params[:sSearch_12].present?
-      empresas = empresas.where("empresa.categoria like :search12", search12: "%#{params[:sSearch_12]}%" )
-    end
-    if params[:sSearch_13].present?
-      empresas = empresas.where("empresa.division like :search13", search13: "%#{params[:sSearch_13]}%" )
-    end
-    if params[:sSearch_14].present?
-      empresas = empresas.where("empresa.grupo like :search14", search14: "%#{params[:sSearch_14]}%" )
-    end
-    if params[:sSearch_15].present? 
-      empresas = empresas.where("empresa.clase like :search15", search15: "%#{params[:sSearch_15]}%" )
-    end
-    if params[:sSearch_16].present?
-      empresas = empresas.where("empresa.rep_legal like :search16", search16: "%#{params[:sSearch_16]}%" )
-    end
-    if params[:sSearch_17].present?
-      empresas = empresas.where("empresa.cargo_rep_legal like :search17", search17: "%#{params[:sSearch_17]}%" )
-    end
+    
     empresas
   end
 

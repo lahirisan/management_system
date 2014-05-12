@@ -21,9 +21,10 @@ private
 
     productos.map do |producto|
       
-        fecha = ""
-        fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
-        [ 
+      fecha = ""
+      fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
+      fecha_retiro = (producto.productos_retirados) ? producto.productos_retirados.fecha_retiro.strftime("%Y-%m-%d") : ""
+      [ 
         producto.try(:productos_empresa).try(:empresa).try(:nombre_empresa),
         producto.try(:tipo_gtin).try(:tipo),
         producto.gtin,
@@ -35,7 +36,7 @@ private
         fecha,
         producto.try(:productos_retirados).try(:sub_estatus).try(:descripcion),
         producto.try(:productos_retirados).try(:motivo_retiro).try(:descripcion),
-        producto.try(:productos_retirados).fecha_retiro.strftime("%Y-%m-%d")
+        fecha_retiro
       ]
       
       
@@ -54,11 +55,7 @@ private
     productos = productos.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general
-      productos = productos.where("empresa.nombre_empresa like :search or tipo_gtin.tipo like :search or producto.gtin like :search or producto.descripcion like :search or producto.marca like :search or producto.gpc like :search or estatus.descripcion like :search or estatus.descripcion like :search or producto.codigo_prod like :search or sub_estatus.descripcion like :search or motivo_retiro.descripcion like :search or productos_retirados.fecha_retiro like :search", search: "%#{params[:sSearch]}%")
-    end
-    
-    if params[:sSearch_0].present? # Filtro de busqueda Nombre de la Empresa
-      productos = productos.where("empresa.nombre_empresa like :search0", search0: "%#{params[:sSearch_0]}%" )
+      productos = productos.where("tipo_gtin.tipo like :search or producto.gtin like :search or producto.descripcion like :search or producto.marca like :search or producto.gpc like :search or producto.codigo_prod like :search or sub_estatus.descripcion like :search or motivo_retiro.descripcion like :search or productos_retirados.fecha_retiro like :search", search: "%#{params[:sSearch]}%")
     end
     
     if params[:sSearch_1].present? # Filtro de busqueda por Tipo GTIN
@@ -119,8 +116,8 @@ private
 
   def sort_column
 
-     columns = %w[producto.id_estatus]
-     columns[params[:iSortCol_0].to_i]
+     columns = %w[empresa.nombre_empresa tipo_gtin.tipo producto.gtin producto.descripcion producto.marca producto.gpc estatus.descripcion producto.codigo_prod producto.fecha_creacion sub_estatus.descripcion motivo_retiro.descripcion productos_retirados.fecha_retiro]
+     raise columns[params[:iSortCol_0].to_i].to_yaml
   end
 
   def sort_direction

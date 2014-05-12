@@ -1,46 +1,55 @@
 %section.contexto
     %label.contexto Empresas > Empresas Retiradas
     %hr.contexto{:size => "1"}
-%p#notice.ui-state-highlight.ui-corner-all
-    -if (notice)
-        =notice
-        -notice = nil
 %section#areaTrabajo.areaTrabajo
+    %p#notice= notice
     =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retiradas" do
+        %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
+            %span.ui-icon.ui-icon-circle-minus
+            Eliminar
         %table.margen_inferior{:border => 1}
             %tr
                 %td
-                    Activación Masiva
+                    ELiminar Masivo
+                %td
+                    Sub-Estatus
+                %td
+                    Motivo Retiro
             %tr
                 %td
-                    =check_box_tag "activacion_masiva"
+                    =check_box_tag "eliminar_masivo"
+                %td
+                    =select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
+                %td
+                    =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
        
-        %table#data_table_empresas_retirar.display{:"data-source" => "/empresas.json?retiradas=true"}
+        %table#data_table_empresas_retiradas.display{:"data-source" => "/empresas.json?retiradas=true"}
             %thead
                 %tr
                     %th Selección
                     %th Prefijo
                     %th Nombre Empresa
                     %th Fecha Inscripción
-                    %th Dirección empresa
-                    %th Estado
                     %th Ciudad
                     %th RIF
-                    %th Estatus
-                    %th Clasificación
-                    %th Rep Legal
+                    %th Fecha Retiro
                     %th Sub-estatus
-                    %th Motivo Eliminación
+                    %th Motivo Retiro
+                    %th Empresa Detalle
+                    %th Productos
+                    %th Servicios
+                    %th GLN
 
             %tbody
             %tfoot
-                =render 'footer_retirar'
+                =render 'footer_retiradas'
         %br/
         %br/
-        #datos_empresas_retirar
+        #datos_empresas_eliminar
+        =hidden_field_tag "eliminar", "true"
+        %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
+            %span.ui-icon.ui-icon-circle-minus
+            Eliminar
         
-        =hidden_field_tag "reactivar", "true"
-        =hidden_field_tag "retiradas", "true"
-        = submit_tag 'Reactivar'
         
     

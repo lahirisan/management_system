@@ -13,17 +13,21 @@
         %th 
         %th 
     %tbody
-    - @datos_contactos.each do |datos_contacto|
-      %tr
-        %td= datos_contacto.prefijo        
-        %td= datos_contacto.tipo
-        %td= datos_contacto.contacto
-        %td= datos_contacto.nombre_contacto
-        %td= datos_contacto.cargo_contacto
-        %td= link_to 'Editar', "/empresas/#{params[:empresa_id]}/datos_contactos/#{datos_contacto.id}/edit"
-        %td= link_to 'Eliminar', "/empresas/#{params[:empresa_id]}/datos_contactos/#{datos_contacto.id}", {:method => :delete, :data => { :confirm => 'Seguro ELIMINAR este contacto?'}} 
+      - @datos_contactos.each do |datos_contacto|
+        %tr
+          %td= datos_contacto.prefijo        
+          %td= datos_contacto.tipo
+          %td= datos_contacto.contacto
+          %td= datos_contacto.nombre_contacto
+          %td= datos_contacto.cargo_contacto
+          %td= link_to 'Editar', "/empresas/#{params[:empresa_id]}/datos_contactos/#{datos_contacto.id}/edit"
+          %td= link_to 'Eliminar', "/empresas/#{params[:empresa_id]}/datos_contactos/#{datos_contacto.id}", {:method => :delete, :data => { :confirm => 'Seguro ELIMINAR este contacto?'}} 
               
   %br/
   %br/
-  = link_to 'Nuevo Contacto', new_empresa_datos_contacto_path
+  %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "#{new_empresa_datos_contacto_path}"}
+    %span.ui-icon.ui-icon-circle-plus
+    Nuevo Contacto
+
+  
 

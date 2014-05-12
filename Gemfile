@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.17'
+gem 'rails', '3.2.18'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -28,13 +28,14 @@ group :assets do
 
   # para utilizar datatables
   
-  # gem 'jquery-datatables-rails', github: 'rweng/jquery-datatables-rails'
-   gem 'ajax-datatables-rails'
+   gem 'jquery-datatables-rails', github: 'rweng/jquery-datatables-rails'
+   
   # gem 'jquery-ui-rails'
 
   gem 'uglifier', '>= 1.0.3'
 end
 
+gem 'ajax-datatables-rails'
 gem 'jquery-rails'
 
 # gema para manejar el Excel

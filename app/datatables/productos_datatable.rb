@@ -67,14 +67,11 @@ private
 
   def fetch_productos
     
-    productos = Producto.where("productos_empresa.prefijo = ?", params[:prefijo]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin) 
-    
-    
-
+    productos = Producto.where("productos_empresa.prefijo = ?", params[:prefijo]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("#{sort_column} #{sort_direction}") 
     productos = productos.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general
-      productos = productos.where("empresa.nombre_empresa like :search or tipo_gtin.tipo like :search or producto.gtin like :search or producto.descripcion like :search or producto.marca like :search or producto.gpc like :search or estatus.descripcion like :search or estatus.descripcion like :search or producto.codigo_prod like :search ", search: "%#{params[:sSearch]}%")
+      productos = productos.where("tipo_gtin.tipo like :search or producto.gtin like :search or producto.descripcion like :search or producto.marca like :search or producto.gpc like :search or estatus.descripcion like :search or estatus.descripcion like :search or producto.codigo_prod like :search ", search: "%#{params[:sSearch]}%")
     end
     
     if params[:sSearch_0].present? # Filtro de busqueda Nombre de la Empresa
@@ -122,7 +119,7 @@ private
 
   def sort_column
 
-     columns = %w[empresa.nombre_empresa tipo_gtin.tipo producto.gtin producto.descripcion producto.marca producto.gpc estatus.descripcion producto.codigo_prod like]
+     columns = %w[empresa.nombre_empresa tipo_gtin.tipo producto.gtin producto.descripcion producto.marca producto.gpc estatus.descripcion producto.codigo_prod producto.fecha_creacion]
      columns[params[:iSortCol_0].to_i]
   end
 

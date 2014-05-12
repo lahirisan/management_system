@@ -4,10 +4,12 @@ class Producto < ActiveRecord::Base
   belongs_to :productos_empresa, :primary_key => "gtin",  :foreign_key => "gtin" # busca los productos en productos_empresa a traves de gtin no del campo  id
   belongs_to :estatus, :foreign_key => "id_estatus"
   belongs_to :tipo_gtin, :foreign_key => "id_tipo_gtin"
-  has_one    :productos_retirados, :foreign_key => "gtin"
+  has_one    :productos_retirados, :foreign_key => "gtin", :dependent => :destroy 
+
+  validates :descripcion, :marca, :gpc, :id_estatus, :codigo_prod, :fecha_creacion, :id_tipo_gtin, :presence => {:message => "No puede estar en blanco"}, :on => :create
 
 
-  def self.retirar(parametros)
+  def self.retirar(parametros) # Retira productos seleccionadaos individualmete
 
   	# Se busca el estatus retirado
     estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Retirado', 'Producto'])
@@ -28,6 +30,26 @@ class Producto < ActiveRecord::Base
       
     end
   
+  end
+
+  def self.retirar_productos_empresa(prefijo, motivo_retiro, sub_estatus) # Retira todos los producctos de una empresa dado su prefijo
+    
+    estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Retirado', 'Producto'])
+    empresa = Empresa.find(:first, :conditions => ["prefijo = ?", prefijo])
+    empresa.producto.collect{|producto|
+      producto_ = Producto.find(:first, :conditions => ["gtin like ?", producto.gtin]);
+      producto_.id_estatus = estatus_producto.id;
+      producto_.save;
+      producto_retirado = ProductosRetirados.new; 
+      producto_retirado.gtin = producto_.gtin;
+      producto_retirado.fecha_retiro = Time.now;
+      producto_retirado.id_motivo_retiro = motivo_retiro;
+      producto_retirado.id_subestatus = sub_estatus;
+      producto_retirado.save 
+
+    }
+    
+
   end
 
   def self.eliminar(parametros)

@@ -4,6 +4,10 @@
 
 %section#areaTrabajo.areaTrabajo
     =form_tag "/empresas/#{@prefijo}/productos/update_multiple", :method => "put", :id => "formulario_eliminar_productos" do
+        %button#submit.ui-state-default.ui-corner-all.eliminar_productos{:type => "submit", :title => "Eliminar productos"}
+            %span.ui-icon.ui-icon-circle-minus
+            Eliminar
+            
         %table.margen_inferior{:border => 1}
             %tr
                 %td
@@ -44,5 +48,8 @@
         %br/
         #datos_productos_eliminar_productos
         =hidden_field_tag "eliminar"
-        =submit_tag "eliminar"
+        %button#submit.ui-state-default.ui-corner-all.eliminar_productos{:type => "submit", :title => "Eliminar productos"}
+            %span.ui-icon.ui-icon-circle-minus
+            Eliminar
+        
         

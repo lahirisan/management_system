@@ -2,30 +2,50 @@
     %label.contexto Empresas > Listado
     %hr.contexto{:size => "1"}
 %section#areaTrabajo.areaTrabajo
+    %p#notice= notice
+    %form{action: "/empresas.xlsx", method: "get"}
+        #parametros_excel
+        %button#submit.ui-state-default.ui-corner-all.exportar_excel{:type => "submit"}
+            %span.ui-icon.ui-icon-disk
+            Exportar Excel
+    
+    
+    
     %table#data_table_empresas.display{:"data-source" => "/empresas.json"}
         %thead
             %tr
                 %th Prefijo
                 %th Nombre Empresa
                 %th Fecha Inscripción
-                %th Dirección empresa
                 %th Estado
                 %th Ciudad
                 %th RIF
                 %th Estatus
-                %th 
+                %th Detalle Empresa
+                %th Editar Empresa
                 %th Productos
                 %th Servicios
                 %th GLN
                
-        %tbody
         %tfoot
             =render 'footer'
+            
+        %tbody
+    
     %br/
     %br/
-    = link_to 'Crear Empresa', new_empresa_path
-    = link_to 'Exportar Excel', '/empresas.xlsx'
-    = link_to 'Exportar CSV', '/empresas.csv'
-    = link_to 'Exportar PDF', '/empresas.pdf'
+    %form{action: "/empresas.xlsx", method: "get"}
+        #parametros_excel
+        %button#submit.ui-state-default.ui-corner-all.exportar_excel{:type => "submit"}
+            %span.ui-icon.ui-icon-disk
+            Exportar Excel
+   
+    / %a.ui-state-default.ui-corner-all.exportar_csv{:href => "/empresas.csv"}
+    /     %span.ui-icon.ui-icon-arrowreturnthick-1-s
+    /     Exportar CSV
+    / %a.ui-state-default.ui-corner-all.exportar_pdf{:href => "/empresas.pdf"}
+    /     %span.ui-icon.ui-icon-arrowreturnthick-1-s
+    /     Exportar PDF
+    
     .loader_prueba
-        /=image_tag "loader.gif", :class => "loader" 
+        =image_tag "loader.gif", :class => "loader" 

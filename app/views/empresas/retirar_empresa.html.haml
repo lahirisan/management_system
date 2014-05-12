@@ -7,6 +7,10 @@
         -notice = nil
 %section#areaTrabajo.areaTrabajo
     =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retirar_empresa" do
+        %button#submit.ui-state-default.ui-corner-all.retirar{:type => "submit"}
+            %span.ui-icon.ui-icon-circle-minus
+            Retirar
+
         %table.margen_inferior{:border => 1}
             %tr
                 %td
@@ -30,13 +34,13 @@
                     %th Prefijo
                     %th Nombre Empresa
                     %th Fecha Inscripción
-                    %th Dirección empresa
-                    %th Estado
                     %th Ciudad
                     %th RIF
                     %th Estatus
-                    %th Clasificación
-                    %th Rep Legal
+                    %th Detalle Empresa
+                    %th Productos
+                    %th Servicios
+                    %th GLN
                     %th Sub-estatus
                     %th Motivo Ret
 
@@ -50,5 +54,8 @@
         #datos_empresas_retirar
         
         =hidden_field_tag "retiro", "true"
-        = submit_tag 'Retirar'
+        %button#submit.ui-state-default.ui-corner-all.retirar{:type => "submit"}
+            %span.ui-icon.ui-icon-circle-minus
+            Retirar
+        
     

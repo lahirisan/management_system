@@ -4,6 +4,11 @@
 
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
+    %a.boton_importar.ui-state-default.ui-corner-all{:href => "#"}
+        %span.ui-icon.ui-icon-transferthick-e-w
+        Importar Producto
+
+
     %table#data_table_productos.display{:"data-source" => "/productos.json?prefijo=#{params[:empresa_id]}"}
         %thead
             %tr
@@ -16,16 +21,18 @@
                 %th Estatus
                 %th Código Prod
                 %th Fecha Creación
-                %th
-                %th
+                %th Editar Producto
+                %th GTIN 14
         %tbody
         %tfoot
             =render 'footer'
     %br/
     %br/
 
-    = link_to 'Crear Producto', new_empresa_producto_path
-    %a#boton_importar.ui-state-default.ui-corner-all{:href => "#"}
+    
+   
+
+    %a.boton_importar.ui-state-default.ui-corner-all{:href => "#"}
         %span.ui-icon.ui-icon-transferthick-e-w
         Importar Producto
 
