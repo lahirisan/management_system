@@ -19,26 +19,21 @@ private
 
   def data
 
-    glns.map do |gln|
+    glns.map do |empresa_gln|
       
         [ 
-          gln.gln,
-          gln.try(:tipo_gln).try(:nombre),
-          gln.codigo_localizacion,
-          gln.descripcion,
-          gln.try(:estatus).try(:descripcion),
-          gln.fecha_asignacion,
-          gln.try(:id_pais),
-          gln.try(:estado).try(:nombre),
-          gln.id_municipio,
-          gln.try(:ciudad).try(:nombre),
-          gln.edificio,
-          gln.calle,
-          gln.urbanizacion,
-          gln.punto_referencia,
-          gln.cod_postal,
-          link_to("Editar", "/empresas/#{params[:prefijo]}/glns/#{gln.gln}/edit"),
-          link_to('Eliminar', gln, :confirm => 'seguro desea ELIMINAR este GLN?', :method => :delete)
+          empresa_gln.gln.gln,
+          empresa_gln.try(:gln).try(:tipo_gln).try(:nombre),
+          empresa_gln.try(:gln).try(:codigo_localizacion),
+          empresa_gln.try(:gln).try(:descripcion),
+          empresa_gln.try(:gln).try(:estatus).try(:descripcion),
+          empresa_gln.try(:gln).try(:fecha_asignacion).strftime("%Y-%m-%d"),
+          empresa_gln.try(:gln).try(:estado).try(:nombre),
+          empresa_gln.try(:gln).try(:id_municipio),
+          empresa_gln.try(:gln).try(:ciudad).try(:nombre),
+          link_to("Editar", "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}/edit"),
+          link_to("Ver Detalle", "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}"),
+          
         ]
     end
 
@@ -50,9 +45,12 @@ private
 
   def fetch_glns
 
-    glns = Gln.where("gln_empresa.prefijo = ?", params[:prefijo]).includes({:gln_empresa => :empresa}, :estatus, :tipo_gln, :estado, :ciudad) 
- 
+    glns = GlnEmpresa.where("gln_empresa.prefijo = ?", params[:empresa_id]).includes(:gln,  :empresa) 
+    
     glns = glns.page(page).per_page(per_page)
+
+   
+
     
     # if params[:sSearch].present? # Filtro de busqueda general
     #   productos = productos.where("empresa.nombre_empresa like :search or tipo_gtin.tipo like :search or producto.gtin like :search or producto.descripcion like :search or producto.marca like :search or producto.gpc like :search or estatus.descripcion like :search or estatus.descripcion like :search or producto.codigo_prod like :search ", search: "%#{params[:sSearch]}%")
@@ -98,7 +96,7 @@ private
   end
 
   def per_page
-    params[:iDisplayLength].to_i > 0 ? params[:iDisplayLength].to_i : 100
+    prueba =params[:iDisplayLength].to_i > 0 ? params[:iDisplayLength].to_i : 100
   end
 
   def sort_column

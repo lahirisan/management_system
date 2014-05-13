@@ -5,7 +5,7 @@
 %section#areaTrabajo.areaTrabajo
   %p#notice= notice
 
-  %table#data_table_glns.display{:"data-source" => "/glns.json?prefijo=#{params[:empresa_id]}"}
+  %table#data_table_glns.display{:"data-source" => "#{empresa_glns_path}.json"}
     %thead
       %tr
         %th GLN
@@ -14,20 +14,15 @@
         %th Descripción
         %th Estatus
         %th Fecha asignación
-        %th Pais
         %th Estado
         %th Municipio
         %th Ciudad
-        %th Edificio
-        %th Calle
-        %th Urbanización
-        %th Punto ref
-        %th Cod postal
-        %th
-        %th
+        %th Editar GLN
+        %th Detalle
+        
     %tbody
     %tfoot
       =render "footer"
   %br
   %br
-  = link_to 'New Gln', new_gln_path
+  = link_to 'New Gln', new_empresa_gln_path
