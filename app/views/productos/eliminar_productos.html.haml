@@ -24,7 +24,7 @@
                 %td
                     =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
                     
-        %table#data_table_eliminar_productos.display{:"data-source" => "/productos.json?eliminar=true&prefijo=#{@prefijo}"}
+        %table#data_table_eliminar_productos.display{:"data-source" => "#{empresa_productos_path}.json?eliminar=true"}
             %thead
                 %tr
                     %th
@@ -39,6 +39,7 @@
                     %th Fecha Creación
                     %th Sub Estatus
                     %th Motivo Retiro
+                    %th Fecha Retiro
                    
             %tbody
             %tfoot

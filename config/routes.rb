@@ -1,11 +1,11 @@
 GS1::Application.routes.draw do
   
   resources :empresa_servicios
-  resources :productos
 
   resources :empresas do  
 
     resources :empresa_servicios
+    
     resources :productos do #/empresas/1/productos
 
       collection do
