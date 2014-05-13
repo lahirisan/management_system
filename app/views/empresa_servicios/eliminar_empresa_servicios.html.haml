@@ -1,0 +1,48 @@
+%section.contexto
+    %label.contexto Servicios > Eliminar Servicios
+    %hr.contexto{:size => "1"}
+
+%section#areaTrabajo.areaTrabajo
+    =form_tag "/empresas/#{params[:empresa_id]}/empresa_servicios/0", :method => "delete", :id => "formulario_eliminar_servicios" do
+        %table.margen_inferior{:border => 1}
+            %tr
+                %td
+                    ELiminar Masivo
+                %td
+                    SubEstatus
+                %td
+                    Motivo Retiro
+            %tr
+                %td
+                    =check_box_tag "eliminar_masivo_servicios"
+                %td
+                    =select_tag("eliminar_servicio_sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
+                %td
+                    =select_tag("eliminar_servicio_motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
+                    
+        %table#data_table_eliminar_empresa_servicios.display{:"data-source" => "/empresa_servicios.json?eliminar=true&prefijo=#{params[:empresa_id]}"}
+            %thead
+                %tr
+                    %th
+                    %th Empresa
+                    %th Servicio
+                    %th Fecha Contratación
+                    %th Fecha Finalización
+                    %th Nombre Contacto
+                    %th Cargo Contacto
+                    %th Teléfono
+                    %th Correo
+                    %th Motivo Retiro
+                    %th Sub Estatus
+                   
+            %tbody
+            %tfoot
+                =render 'footer_empresa_servicios_eliminar'
+                
+        
+        %br/
+        %br/
+        #datos_servicio_eliminar
+        =hidden_field_tag "eliminar"
+        =submit_tag "eliminar"
+        

@@ -6,7 +6,7 @@ class EmpresaServiciosController < ApplicationController
     respond_to do |format|
       format.html {
                   if params[:eliminar]
-                    render :template =>'/empresa_servicios/eliminar_servicios.html.haml'
+                    render :template =>'/empresa_servicios/eliminar_empresa_servicios.html.haml'
                   elsif params[:eliminados]
                     render :template =>'/empresa_servicios/servicios_eliminados.html.haml'
                   else
@@ -100,10 +100,13 @@ class EmpresaServiciosController < ApplicationController
   # DELETE /empresa_servicios/1.json
   def destroy
 
-    EmpresaServicio.eliminar(params) if params[:eliminar]
+    # Los nombre de los servicios
+    servicios = ""
+    params[:eliminar_servicios].collect{|id_servicio| empresa_servicio = EmpresaServicio.find(id_servicio); servicios += empresa_servicio.servicio.nombre +  " "}
     
+    EmpresaServicio.eliminar(params) if params[:eliminar]
     respond_to do |format|
-      format.html { redirect_to "/empresas/#{params[:empresa_id]}/empresa_servicios", notice: "Los servicios seleccionados fueron eliminados."}
+      format.html { redirect_to "/empresas/#{params[:empresa_id]}/empresa_servicios?eliminados=true", notice: "Los servicios #{servicios} fueron eliminados."}
     end
   end
 end

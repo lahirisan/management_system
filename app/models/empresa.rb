@@ -24,6 +24,7 @@ class Empresa < ActiveRecord::Base
   validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo, :nombre_comercial , :id_clasificacion,  :presence => {:message => "No puede estar en blanco"}, :on => :create
   validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{8})-([0-9]{1})$/, on: :create, :message => "El Formato del RIF es invalido"} # Validacion al crear
 
+
   validates :rif, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado. Por favor verifique."}
 
   def self.to_csv # Se genera el CSV de Empresas
@@ -142,7 +143,7 @@ class Empresa < ActiveRecord::Base
         empresa_eliminar.productos_empresa.collect{|productos_empresa| producto = Producto.find(:first, :conditions => ["gtin like ?", productos_empresa.gtin]); producto.destroy}
         
         # Se elimina los servicios de la empresa
-        #empresa_eliminar.empresa_servicio.collect{|servicio| EmpresaServicio.servicio_eliminado(servicio,1,1)}
+        empresa_eliminar.empresa_servicio.collect{|servicio| EmpresaServicio.servicio_eliminado(servicio,1,1)}
         empresa_eliminar.destroy
 
       end

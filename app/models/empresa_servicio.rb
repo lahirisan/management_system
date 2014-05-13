@@ -21,7 +21,6 @@ class EmpresaServicio < ActiveRecord::Base
 	      servicio_ = EmpresaServicio.find(id) 
 	      EmpresaServicio.servicio_eliminado(servicio_, eliminar_datos.split('_')[1], eliminar_datos.split('_')[2])
 
-
 	    end
 
 
@@ -30,19 +29,19 @@ class EmpresaServicio < ActiveRecord::Base
 	def self.servicio_eliminado(servicio,motivo_retiro,subestatus)
 	  
 	  servicio_eliminado = EmpresaServiciosEliminado.new;
-      servicio_eliminado.prefijo = servicio.prefijo; 
-      servicio_eliminado.id_servicio = servicio.id_servicio; 
-      servicio_eliminado.fecha_contratacion = servicio.fecha_contratacion; 
-      servicio_eliminado.fecha_finalizacion = servicio.fecha_finalizacion;
-      servicio_eliminado.nombre_contacto = servicio.nombre_contacto; 
-      servicio_eliminado.cargo_contacto = servicio.cargo_contacto;
-      servicio_eliminado.telefono = servicio.telefono;
-      servicio_eliminado.email = servicio.email;
-      servicio_eliminado.fecha_eliminacion = Time.now
-      servicio_eliminado.id_subestatus = subestatus
-      servicio_eliminado.id_motivo_retiro = motivo_retiro 
-      servicio_eliminado.save
-      servicio.destroy
+    servicio_eliminado.prefijo = servicio.prefijo; 
+    servicio_eliminado.id_servicio = servicio.id_servicio; 
+    servicio_eliminado.fecha_contratacion = servicio.fecha_contratacion; 
+    servicio_eliminado.fecha_finalizacion = servicio.fecha_finalizacion;
+    servicio_eliminado.nombre_contacto = servicio.nombre_contacto; 
+    servicio_eliminado.cargo_contacto = servicio.cargo_contacto;
+    servicio_eliminado.telefono = servicio.telefono.to_s;
+    servicio_eliminado.email = servicio.email;
+    servicio_eliminado.fecha_eliminacion = Time.now
+    servicio_eliminado.id_subestatus = subestatus
+    servicio_eliminado.id_motivo_retiro = motivo_retiro 
+    servicio_eliminado.save
+    servicio.destroy
 
 	end
 
