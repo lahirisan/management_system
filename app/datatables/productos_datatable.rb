@@ -35,8 +35,8 @@ private
           producto.try(:estatus).try(:descripcion),
           producto.codigo_prod,
           fecha,
-          link_to("Editar", "/empresas/#{params[:prefijo]}/productos/#{producto.gtin}/edit"),
-          link_to("Crear GTIN 14", "/empresas/#{params[:prefijo]}/productos/new?gtin=#{producto.gtin}")
+          link_to("Editar", "/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit"),
+          link_to("Crear GTIN 14", "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}")
         ]
 
       else
@@ -51,7 +51,7 @@ private
           producto.try(:estatus).try(:descripcion),
           producto.codigo_prod,
           fecha,
-          link_to("Editar", "/empresas/#{params[:prefijo]}/productos/#{producto.gtin}/edit"),
+          link_to("Editar", "/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit"),
           ""
         ]
 
@@ -67,7 +67,7 @@ private
 
   def fetch_productos
     
-    productos = Producto.where("productos_empresa.prefijo = ?", params[:prefijo]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("#{sort_column} #{sort_direction}") 
+    productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("#{sort_column} #{sort_direction}") 
     productos = productos.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general

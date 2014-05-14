@@ -9,7 +9,7 @@
         Importar Producto
 
 
-    %table#data_table_productos.display{:"data-source" => "/productos.json?prefijo=#{params[:empresa_id]}"}
+    %table#data_table_productos.display{:"data-source" => "#{empresa_productos_path}.json"}
         %thead
             %tr
                 %th Empresa

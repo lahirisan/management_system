@@ -2,7 +2,6 @@ class GlnsController < ApplicationController
   # GET /glns
   # GET /glns.json
   def index
-    @glns = Gln.all
     
     respond_to do |format|
       format.html # index.html.erb
@@ -24,7 +23,9 @@ class GlnsController < ApplicationController
   # GET /glns/new
   # GET /glns/new.json
   def new
-    @gln = Gln.new
+
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
+    @gln = @empresa.gln.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -34,6 +35,7 @@ class GlnsController < ApplicationController
 
   # GET /glns/1/edit
   def edit
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
     @gln = Gln.find(params[:id])
   end
 
@@ -56,11 +58,11 @@ class GlnsController < ApplicationController
   # PUT /glns/1
   # PUT /glns/1.json
   def update
-    @gln = Gln.find(params[:id])
 
+    @gln = Gln.find(params[:id])
     respond_to do |format|
       if @gln.update_attributes(params[:gln])
-        format.html { redirect_to @gln, notice: 'Gln was successfully updated.' }
+        format.html { redirect_to empresa_glns_path, notice: "EL GLN fue modificado correctamente." }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

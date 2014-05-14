@@ -1,51 +1,90 @@
-%p#notice= notice
+%section.contexto
+  %label.contexto Empresa > Datos Básicos
+  %hr.contexto{:size => "1"}
 
-%p
-  %b Gln:
-  = @gln.gln
-%p
-  %b Tipo gln:
-  = @gln.tipo_gln
-%p
-  %b Codigo localizacion:
-  = @gln.codigo_localizacion
-%p
-  %b Descripcion:
-  = @gln.descripcion
-%p
-  %b Id estatus:
-  = @gln.id_estatus
-%p
-  %b Facha asignacion:
-  = @gln.facha_asignacion
-%p
-  %b Id pais:
-  = @gln.id_pais
-%p
-  %b Id estado:
-  = @gln.id_estado
-%p
-  %b Id municipio:
-  = @gln.id_municipio
-%p
-  %b Id ciudad:
-  = @gln.id_ciudad
-%p
-  %b Edificio:
-  = @gln.edificio
-%p
-  %b Calle:
-  = @gln.calle
-%p
-  %b Urbanizacion:
-  = @gln.urbanizacion
-%p
-  %b Punto referencia:
-  = @gln.punto_referencia
-%p
-  %b Cod postal:
-  = @gln.cod_postal
+%section#areaTrabajo.areaTrabajo{:style => "font: 100% 'Trebuchet MS', sans-serif"}
+  %table
+    %tr
+      %td
+        Empresa
+      %td
+        =@gln.gln_empresa.empresa.nombre_empresa
+    %tr
+      %td
+        GLN
+      %td
+        = @gln.gln
+    %tr
+      %td
+        Tipo GLN
+      %td
+        = @gln.tipo_gln.nombre
+    %tr
+      %td
+        Código Localización
+      %td
+        = @gln.codigo_localizacion
+    %tr
+      %td
+        Descripción
+      %td
+        = @gln.descripcion
+    %tr
+      %td
+        Estatus
+      %td
+        = @gln.estatus.descripcion
+    %tr
+      %td
+        Fecha Asignación
+      %td
+        = @gln.fecha_asignacion
+    %tr
+      %td
+        País
+      %td
+        =@gln.try(:pais).try(:nombre)
+    %tr
+      %td
+        Estado
+      %td
+        =@gln.estado.nombre
+    %tr
+      %td
+        Municipio
+      %td
+        /= @gln.try(:municipio).try(:nombre) 
+    %tr
+      %td
+        Ciudad
+      %td
+        = @gln.ciudad.nombre
+    %tr
+      %td
+        Edificio
+      %td
+        =@gln.edificio
+    %tr
+      %td
+        Calle
+      %td
+        = @gln.calle
+    %tr
+      %td
+        Urbanización
+      %td
+        = @gln.urbanizacion
+    %tr
+      %td
+        Punto Referencia
+      %td
+        =@gln.punto_referencia
+    %tr
+      %td
+        Código Postal
+      %td
+        =@gln.cod_postal
 
-= link_to 'Edit', edit_gln_path(@gln)
-\|
-= link_to 'Back', glns_path
+  =link_to 'Regresar', empresa_glns_path
+  
+ 

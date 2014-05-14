@@ -4,7 +4,7 @@
 
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
-    %table#data_table_productos_eliminados.display{:"data-source" => "/productos.json?eliminados=true&prefijo=#{@prefijo}"}
+    %table#data_table_productos_eliminados.display{:"data-source" => "#{empresa_productos_path}.json?eliminados=true"}
         %thead
             %tr
                

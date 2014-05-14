@@ -3,6 +3,7 @@
         // Datatable que maneja el listado de productos
         $("#data_table_productos").dataTable({
             sPaginationType: "full_numbers",
+            aaSorting: [[ 8, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
@@ -13,6 +14,7 @@
         // Datatable que maneja retirar productos
         $("#data_table_retirar_productos").dataTable({
             sPaginationType: "full_numbers",
+            aaSorting: [[ 9, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
@@ -34,6 +36,7 @@
         // Datatable que maneja retirar productos
         $("#data_table_productos_eliminados").dataTable({
             sPaginationType: "full_numbers",
+              aaSorting: [[ 9, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
@@ -44,6 +47,7 @@
         // Datatable que maneja retirar productos
         $("#data_table_eliminar_productos").dataTable({
             sPaginationType: "full_numbers",
+             aaSorting: [[ 12, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,

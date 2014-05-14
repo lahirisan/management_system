@@ -25,7 +25,9 @@
                     =select_tag("retirar_producto_sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
                 %td
                     =select_tag("retirar_producto_motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
-        %table#data_table_retirar_productos.display{:"data-source" => "/productos.json?retirar=true&prefijo=#{@prefijo}"}
+        
+        
+        %table#data_table_retirar_productos.display{:"data-source" => "#{empresa_productos_path}.json?retirar=true"}
             %thead
                 %tr
                     %th

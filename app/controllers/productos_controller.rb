@@ -19,7 +19,8 @@ class ProductosController < ApplicationController
                     end
                   }
       format.json { 
-                  	if params[:retirar]
+                  	
+                    if params[:retirar]
                       render json: (RetirarProductosDatatable.new(view_context))
                     elsif params[:retirados]
                       render json: (ProductosRetiradosDatatable.new(view_context))
@@ -51,15 +52,15 @@ class ProductosController < ApplicationController
   def new
     
 
-    @prefijo = params[:empresa_id]
-    @producto = Producto.new
-    @gtin = params[:gtin]
+    @empresa =  Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]] )
+    @producto = @empresa.producto.build  # Se crea el form_for
+    
+    @gtin = params[:gtin] if params[:gtin] != ''# SI esta gtin  es para crear gtin tipo 14 base 8 o gtin 14 base 13
+    
 
     @producto_ = Producto.find(:first, :conditions => ["gtin like ?", params[:gtin]]) if params[:gtin]
-    
     @base = TipoGtin.find(:first, :conditions =>["tipo like ? and base like ?", "GTIN-14", @producto_.tipo_gtin.tipo]) if @producto_
 
-    
 
     respond_to do |format|
       format.html # new.html.erb
@@ -77,17 +78,20 @@ class ProductosController < ApplicationController
   # POST /productos
   # POST /productos.json
   def create
-    
-    params[:producto][:gtin] = Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:prefijo], params[:gtin])
+
+    @gtin = params[:gtin]  if params[:gtin] != ''
+
+    params[:producto][:gtin] = Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin])
     params[:producto][:fecha_creacion] = Time.now
     estatus = Estatus.find(:first, :conditions => ["(descripcion = ?) and (alcance = ?)", "Activo", "Producto"])
     params[:producto][:id_estatus] = estatus.id
     
     @producto = Producto.new(params[:producto])
 
+
     respond_to do |format|
       if @producto.save
-        format.html { redirect_to "/empresas/#{params[:prefijo]}/productos", notice: "EL #{@producto.tipo_gtin.tipo} #{@producto.gtin} fue creado." }        
+        format.html { redirect_to empresa_productos_path, notice: "EL #{@producto.tipo_gtin.tipo} #{@producto.gtin} fue creado." }        
       else
         format.html { render action: "new" }        
       end
