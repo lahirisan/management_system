@@ -3,7 +3,6 @@ class ProductosController < ApplicationController
   # GET /productos.json
   def index
     
-    @prefijo = params[:empresa_id]
     respond_to do |format|
       format.html {
                     if params[:retirar]
@@ -70,7 +69,7 @@ class ProductosController < ApplicationController
 
   # GET /productos/1/edit
   def edit
-    @prefijo = params[:empresa_id]
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
     @producto = Producto.find(:first, :conditions => ["gtin like ?", params[:id]])
 
   end
@@ -102,11 +101,12 @@ class ProductosController < ApplicationController
   # PUT /productos/1.json
   def update
     
+
     @producto = Producto.find(:first, :conditions => ["gtin like ?", params[:id]])
 
     respond_to do |format|
       if @producto.update_attributes(params[:producto])
-        format.html { redirect_to "/empresas/#{params[:prefijo]}/productos", notice: "EL GTIN #{@producto.gtin} fue actualizado." }
+        format.html { redirect_to empresa_productos_path, notice: "EL GTIN #{@producto.gtin} fue actualizado." }
       else
         format.html { render action: "edit" }
       end

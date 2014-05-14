@@ -8,7 +8,7 @@
 
   %section.formulario
 
-  = form_for @producto, :url => empresa_productos_path  do |f|
+  = form_for [@empresa, @producto] do |f|
     - if @producto.errors.any?
       #error_explanation
         %h2= "#{pluralize(@producto.errors.count, "errore")} "

@@ -46,7 +46,7 @@ private
 
   def fetch_empresa_servicios
 
-    empresa_servicios = EmpresaServicio.where("empresa_servicios.prefijo = ?", params[:empresa_id]).includes(:servicio, :empresa)
+    empresa_servicios = EmpresaServicio.where("empresa_servicios.prefijo = ?", params[:empresa_id]).includes(:servicio, :empresa).order("#{sort_column} #{sort_direction}") 
     empresa_servicios = empresa_servicios.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general
@@ -95,7 +95,7 @@ private
 
   def sort_column
 
-     columns = %w[empresa.nombre_empresa tipo_gtin.tipo producto.gtin producto.descripcion producto.marca producto.gpc estatus.descripcion producto.codigo_prod like]
+     columns = %w[empresa.nombre_empresa servicios.nombre empresa_servicios.fecha_contratacion empresa_servicios.fecha_finalizacion empresa_servicios.nombre_contacto empresa_servicios.cargo_contacto empresa_servicios.telefono empresa_servicios.email]
      columns[params[:iSortCol_0].to_i]
   end
 

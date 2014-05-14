@@ -4,6 +4,7 @@ $( document ).ready(function() {
     // Datatable que maneja el listado de servicios
     $("#data_table_empresa_servicios").dataTable({
         sPaginationType: "full_numbers",
+        aaSorting: [[ 2, "desc" ]],
         bJQueryUI: true,
         bProcessing: true,
         bServerSide: true,
@@ -33,7 +34,7 @@ $( document ).ready(function() {
     }).columnFilter({ aoColumns: [null, { type: "text"}, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
 
-    if (window.location.pathname.split('/')[4] == 'new')
+    if (window.location.pathname.split('/')[5] != 'edit')
     {
         $("#empresa_servicio_fecha_contratacion").datepicker();
         

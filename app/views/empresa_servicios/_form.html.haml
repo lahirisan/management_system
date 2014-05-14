@@ -4,10 +4,10 @@
   %hr.contexto{:size => "1"}
 
   %section.formulario
-    = form_for @empresa_servicio do |f|
+    = form_for [@empresa, @empresa_servicio] do |f|
       - if @empresa_servicio.errors.any?
         #error_explanation
-          %h2= "#{pluralize(@empresa_servicio.errors.count, "error")} prohibited this servicio from being saved:"
+          %h2= "#{pluralize(@empresa_servicio.errors.count, "errore")}"
           %ul
             - @empresa_servicio.errors.full_messages.each do |msg|
               %li= msg
@@ -45,13 +45,13 @@
           %td
             Teléfono
           %td
-            =f.text_field :telefono
+            =f.text_field :telefono, :placeholder => "Ej. 04161234567"
         %tr
           %td
             Correo
           %td
-            =f.text_field :email
-        =f.hidden_field :prefijo, :value => "#{@prefijo}"
+            =f.text_field :email, :placeholder => "correo@dominio.com"
+        
      
       .actions
         = f.submit 'Guardar'

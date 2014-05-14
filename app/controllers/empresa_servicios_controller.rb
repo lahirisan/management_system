@@ -41,7 +41,10 @@ class EmpresaServiciosController < ApplicationController
   # GET /empresa_servicios/new
   # GET /empresa_servicios/new.json
   def new
-    @prefijo = params[:empresa_id]
+    
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
+    @empresa_servicio = @empresa.empresa_servicio.build
+
     @empresa_servicio = EmpresaServicio.new
     respond_to do |format|
       format.html # new.html.erb
@@ -52,22 +55,23 @@ class EmpresaServiciosController < ApplicationController
   # GET /empresa_servicios/1/edit
   def edit
     
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
     @empresa_servicio = EmpresaServicio.find(params[:id])
-    @servicio = Servicio.find(@empresa_servicio.id_servicio)
+    #@servicio = Servicio.find(@empresa_servicio.id_servicio)
 
   end
 
   # POST /empresa_servicios
   # POST /empresa_servicios.json
   def create
-    @prefijo = params[:empresa_servicio][:prefijo]
+    
+    params[:empresa_servicio][:prefijo] = params[:empresa_id]
     @empresa_servicio = EmpresaServicio.new(params[:empresa_servicio])
-
 
     respond_to do |format|
       if @empresa_servicio.save
         
-        format.html { redirect_to "/empresas/#{@prefijo}/empresa_servicios", notice: "El servicio a fue asociado a la empresa con prefijo #{@prefijo}"}
+        format.html { redirect_to empresa_empresa_servicios_path, notice: "El servicio #{@empresa_servicio.servicio.nombre} fue asociado a la empresa #{@empresa_servicio.empresa.nombre_empresa}"}
         
       else
         format.html { render action: "new" }
@@ -79,16 +83,13 @@ class EmpresaServiciosController < ApplicationController
   # PUT /empresa_servicios/1
   # PUT /empresa_servicios/1.json
   def update
-    
-    @empresa_servicio = EmpresaServicio.find(params[:id])
-    @servicio = Servicio.find(@empresa_servicio.id_servicio)
 
+    @empresa_servicio = EmpresaServicio.find(params[:id])
     respond_to do |format|
       if @empresa_servicio.update_attributes(params[:empresa_servicio])
-         @servicio.update_attributes(params[:servicio])
 
-        format.html { redirect_to "/empresas/#{params[:empresa_servicio][:prefijo]}/empresa_servicios", notice: "EL servicio #{params[:servicio][:nombre]} fue actualizado para la empresa con prefijo #{params[:empresa_servicio][:prefijo]}"}
-        format.json { head :no_content }
+        format.html { redirect_to empresa_empresa_servicios_path, notice: "Los datos del servicio fueron actualizados para la empresa #{@empresa_servicio.empresa.nombre_empresa}"}
+      
       else
         format.html { render action: "edit" }
         format.json { render json: @empresa_servicio.errors, status: :unprocessable_entity }
