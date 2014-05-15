@@ -1,0 +1,56 @@
+%section.contexto
+  %label.contexto GLN > Eliminar GLN
+  %hr.contexto{:size => "1"}
+
+%section#areaTrabajo.areaTrabajo
+  %p#notice= notice
+
+  =form_tag "#{destroy_multiple_empresa_glns_path}", :method => "delete", :id => "formulario_eliminar_gln" do
+    %button#submit.ui-state-default.ui-corner-all.eliminar_gln{:type => "submit", :title => "Eliminar GLN"}
+      %span.ui-icon.ui-icon-circle-minus
+      Eliminar
+    
+    %table.margen_inferior{:border => 1}
+      %tr
+        %td
+          ELiminar Masivo
+        %td
+          SubEstatus
+        %td
+          Motivo Retiro
+      %tr
+        %td
+          =check_box_tag "eliminar_masivo_gln"
+        %td
+          =select_tag("sub_estatus_masivo_gln", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
+        %td
+          =select_tag("motivo_retiro_masivo_gln", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
+
+
+    %table#data_table_eliminar_gln.display{:"data-source" => "#{empresa_glns_path}.json?eliminar=true"}
+      %thead
+        %tr
+          %th
+          %th GLN
+          %th Tipo GLN
+          %th Código localización
+          %th Descripción
+          %th Fecha asignación
+          %th Estado
+          %th Municipio
+          %th Ciudad
+          %th Estatus
+          %th Detalle
+          %th Sub Estatus
+          %th Motivo Retiro
+          
+      %tbody
+      %tfoot
+        =render "footer_eliminar"
+    #datos_eliminar_gln
+    %br
+    %br
+    
+    %button#submit.ui-state-default.ui-corner-all.eliminar_gln{:type => "submit", :title => "Eliminar GLN"}
+      %span.ui-icon.ui-icon-circle-minus
+      Eliminar

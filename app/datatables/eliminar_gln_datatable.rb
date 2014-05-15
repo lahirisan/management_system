@@ -1,4 +1,4 @@
-class GlnsDatatable < AjaxDatatablesRails
+class EliminarGlnDatatable < AjaxDatatablesRails
   delegate :params, :h, :link_to,  to: :@view
 
    def initialize(view)
@@ -18,19 +18,24 @@ class GlnsDatatable < AjaxDatatablesRails
 private
 
   def data
+
     glns.map do |empresa_gln|
+      
         [ 
+          check_box_tag("eliminar_glns[]", "#{empresa_gln.gln.gln}", false, :class=>"eliminar_gln"),
           empresa_gln.gln.gln,
           empresa_gln.try(:gln).try(:tipo_gln).try(:nombre),
           empresa_gln.try(:gln).try(:codigo_localizacion),
           empresa_gln.try(:gln).try(:descripcion),
-          empresa_gln.try(:gln).try(:estatus).try(:descripcion),
           empresa_gln.try(:gln).try(:fecha_asignacion).strftime("%Y-%m-%d"),
           empresa_gln.try(:gln).try(:estado).try(:nombre),
           empresa_gln.try(:gln).try(:id_municipio),
           empresa_gln.try(:gln).try(:ciudad).try(:nombre),
-          link_to("Editar", "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}/edit"),
+          empresa_gln.try(:gln).try(:estatus).try(:descripcion),
           link_to("Ver Detalle", "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}"),
+          select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"), :id => "#{empresa_gln.id}sub_estatus"),
+          select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"), :id => "#{empresa_gln.id}motivo_ret")
+          
         ]
     end
 
@@ -43,11 +48,7 @@ private
   def fetch_glns
 
     glns = GlnEmpresa.where("gln_empresa.prefijo = ?", params[:empresa_id]).includes(:gln,  :empresa) 
-    
     glns = glns.page(page).per_page(per_page)
-
-   
-
     
     # if params[:sSearch].present? # Filtro de busqueda general
     #   productos = productos.where("empresa.nombre_empresa like :search or tipo_gtin.tipo like :search or producto.gtin like :search or producto.descripcion like :search or producto.marca like :search or producto.gpc like :search or estatus.descripcion like :search or estatus.descripcion like :search or producto.codigo_prod like :search ", search: "%#{params[:sSearch]}%")

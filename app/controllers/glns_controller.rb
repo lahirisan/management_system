@@ -4,8 +4,26 @@ class GlnsController < ApplicationController
   def index
     
     respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: GlnsDatatable.new(view_context)}
+      format.html {
+        if params[:eliminar]
+          render :template => '/glns/eliminar_gln.html.haml'
+        elsif params[:eliminados]
+          render :template => '/glns/gln_eliminados.html.haml'
+        else
+          render :template => '/glns/index.html.haml'
+        end
+      }
+
+      format.json { 
+
+        if params[:eliminar]
+          render json: (EliminarGlnDatatable.new(view_context))
+        elsif params[:eliminados]
+          render json: (GlnEliminadosDatatable.new(view_context))
+        else
+          render json: GlnsDatatable.new(view_context)
+        end
+      }
     end
   end
 
@@ -71,15 +89,18 @@ class GlnsController < ApplicationController
     end
   end
 
-  # DELETE /glns/1
-  # DELETE /glns/1.json
-  def destroy
-    @gln = Gln.find(params[:id])
-    @gln.destroy
+  
+  def destroy_multiple
+
+    Gln.eliminar(params)
+    gln_eliminados = ""
+    params[:eliminar_gln].collect{|gln| gln_eliminados += gln + " "}
 
     respond_to do |format|
-      format.html { redirect_to glns_url }
+      format.html { redirect_to   "#{empresa_glns_path}?eliminado=true", notice: "GLN Eliminado(s): #{gln_eliminados}"}
       format.json { head :no_content }
     end
   end
+
+
 end

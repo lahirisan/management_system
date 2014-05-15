@@ -116,6 +116,24 @@
 								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios?eliminados=true", :title => "Listado de los Servicios eliminados"}
 									.opcion Servicios Eliminados
 
+			-if params[:controller] == 'glns'
+				%a.opcion{:href => "#{empresa_glns_path}", :title => "Listado de GLN para la empresa seleccionada"}
+					.opcion GLN
+					.opcion
+						%ul
+							%li 
+								%a.opcion{:href => "#{new_empresa_gln_path}", :title => "Opción que permite crear GLN"}
+									.opcion Crear GLN
+					.opcion
+						%ul
+							%li 
+								%a.opcion{:href => "#{empresa_glns_path}?eliminar=true", :title => "ELiminar GLN"}
+									.opcion Eliminar GLN
+					.opcion
+						%ul
+							%li 
+								%a.opcion{:href => "#{empresa_glns_path}?eliminados=true", :title => "GLN eliminados"}
+									.opcion GLN Eliminados
 
 			
 		= yield

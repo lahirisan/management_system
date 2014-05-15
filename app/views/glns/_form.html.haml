@@ -14,19 +14,18 @@
           %ul
             - @gln.errors.full_messages.each do |msg|
               %li= msg
-
-     
       %table
-        %tr
-          %td
-            GLN
-          %td.campo_readonly
-            =@gln.gln
+        -if !@gln.new_record?
+          %tr
+            %td
+              GLN
+            %td.campo_readonly
+              =@gln.gln
         %tr
           %td
             Tipo GLN
           %td.campo_readonly
-            =@gln.tipo_gln.nombre
+            =@gln.new_record ? @gln.tipo_gln.nombre
         %tr
           %td
             Código Localización
