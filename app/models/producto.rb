@@ -94,27 +94,18 @@ class Producto < ActiveRecord::Base
     if tipo_gtin.tipo == "GTIN-8"             
      
       ultimo_gtin_asignado = Producto.find(:first, :conditions => ["producto.id_tipo_gtin = ?", tipo_gtin], :order => "producto.fecha_creacion desc")
-      
-      raise ultimo_gtin_asignado.to_yaml
-
       secuencia = ultimo_gtin_asignado.gtin[3..6]  # N-1 digitos primeros digitos del último gtin8 asignado
-
       secuencia = (secuencia.to_i + 1)
       secuencia_siguiente = completar_secuencia(secuencia, tipo_gtin.tipo) # Se completa con ceros a la izquierda si la secuecnia es menor 5 digitos
       secuencia_completa = "759" + secuencia_siguiente.to_s 
       digito_verificacion = calcular_digito_verificacion(secuencia_completa.to_i, "GTIN-8")
       gtin_generado =  secuencia_completa.to_s + digito_verificacion.to_s # 759 + secuencia + verificacion
-
     
     elsif tipo_gtin.tipo == "GTIN-13"
     
       ultimo_gtin_asignado = Producto.find(:first, :conditions => ["producto.id_tipo_gtin = ?", tipo_gtin], :order => "producto.fecha_creacion desc")
-      
-
       secuencia = ultimo_gtin_asignado.gtin[7..11] # la secuencia
-      
       secuencia = secuencia.to_i + 1
-      raise ultimo_gtin_asignado.to_yaml
       secuencia_completa = completar_secuencia(secuencia, tipo_gtin.tipo)
       gtin_valido = completar_prefijo(secuencia_completa, prefijo)
       digito_verificacion = calcular_digito_verificacion(gtin_valido.to_i, "GTIN-13")
@@ -131,6 +122,7 @@ class Producto < ActiveRecord::Base
         gtin_generado = gtin_valido_generado.to_s + digito_verificacion.to_s
 
       elsif tipo_gtin.base == "GTIN-8"
+        
         productos = Producto.find(:all, :conditions => ["producto.id_tipo_gtin = ? and producto.gtin like ?",tipo_gtin.id, "%#{gtin[0..6]}%"])
         numeracion_producto = productos.nil? ? 1 : (productos.size + 1)
         gtin_valido_generado = (numeracion_producto.to_s + "00000" + gtin[0..6]) 
@@ -138,9 +130,8 @@ class Producto < ActiveRecord::Base
         gtin_generado = gtin_valido_generado.to_s + digito_verificacion.to_s 
         
       end
-
+      
     end
-
     asociar_producto_empresa(prefijo,gtin_generado)
 
     return gtin_generado
