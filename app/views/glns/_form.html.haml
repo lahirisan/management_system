@@ -7,7 +7,7 @@
   %hr.contexto{:size => "1"}
 
   %section.formulario
-    = form_for [@empresa, @gln] do |f|
+    =form_for @gln,  :url => empresa_glns_path do |f|
       - if @gln.errors.any?
         #error_explanation
           %h2= "#{pluralize(@gln.errors.count, "errore")} "
@@ -20,12 +20,12 @@
         %tr
           %td
             GLN
-          %td
+          %td.campo_readonly
             =@gln.gln
         %tr
           %td
             Tipo GLN
-          %td
+          %td.campo_readonly
             =@gln.tipo_gln.nombre
         %tr
           %td

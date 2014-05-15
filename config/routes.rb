@@ -1,6 +1,19 @@
 GS1::Application.routes.draw do
   
+  # Veririficar porque no funcionan si no se colocal estas rutas afuera del recurso empresa
+
+  resources :productos do #/empresas/1/productos
+
+      collection do
+        put 'update_multiple', :action => 'update_multiple', :as => 'update_multiple'  # la ruta update_multiple para productos
+        post 'import', :action => 'import', :as => 'import'  # Ruta para importar archivos
+      end
+    end
+
   resources :empresa_servicios
+  resources :glns
+
+  ###########################################################################################
 
   resources :empresas do  
 

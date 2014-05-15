@@ -217,7 +217,7 @@ class Producto < ActiveRecord::Base
 
     spreadsheet = open_spreadsheet(file)
 
-    (2..spreadsheet.last_row).each do |fila|
+    (1..spreadsheet.last_row).each do |fila|
       gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil)
       producto = new
       producto.gtin = gtin.to_s
@@ -226,7 +226,10 @@ class Producto < ActiveRecord::Base
       producto.id_estatus = 3
       producto.fecha_creacion = Time.now
       producto.id_tipo_gtin = tipo_gtin.to_i
+      producto.gpc = 0 ### OJO con esto va cbleado a todos los productos que se importan
       producto.save
+
+
     end
   end
 

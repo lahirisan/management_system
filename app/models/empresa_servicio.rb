@@ -7,6 +7,7 @@ class EmpresaServicio < ActiveRecord::Base
 
   validates :id_servicio, :fecha_contratacion,  :fecha_finalizacion,  :nombre_contacto, :cargo_contacto,  :telefono,  :email ,      :presence => {:message => "No puede estar en blanco"}, :on => :create
   validates :email, format: { with: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/, on: :create, :message => "El Formato del correo es invalido"} # Validacion al crear
+  validates :telefono, format: { with: /^[0-9]\d*$/, on: :create, :message => "Solo numeros para el telefono"} # Validacion al crear
 
   	#Eliminar servicios
   	def self.eliminar(parametros)

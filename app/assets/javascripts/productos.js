@@ -179,6 +179,8 @@
            
         });
 
+        
+
         // Efectos del boton importar
         $('.boton_importar, .retirar_productos,   .eliminar_productos').hover(
           function() { $(this).addClass('ui-state-hover'); },
@@ -196,6 +198,25 @@
             w.preventDefault(); // Deshabilita el hipervinculo el boton importar
             $('.importar_producto').dialog('open');
         });
+
+        // validacion importar archivo
+        $('#importar_archivo').submit(function( event ) { 
+             
+            if ($('#archivo_excel').val() == '')
+            {
+                alert('Estimado usuario, no ha seleccionado nigún archivo excel del cual se importará los datos. Por favor verifique.');
+                return false;               
+            }
+
+            if ($('#tipo_gtin').val() == '')
+            {
+                alert('Estimado usuario, debe seleccionar el TIPO GTIN asociado a los productos que se van a importar. Por favor verifique');
+                return false;                 
+            }
+
+
+        })
+
 
     })   
 

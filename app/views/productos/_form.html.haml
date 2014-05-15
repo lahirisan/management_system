@@ -8,50 +8,50 @@
 
   %section.formulario
 
-  = form_for @producto, :url => empresa_productos_path  do |f|
-    - if @producto.errors.any?
-      #error_explanation
-        %h2= "#{pluralize(@producto.errors.count, "errore")} "
-        %ul
-          - @producto.errors.full_messages.each do |msg|
-            %li= msg
-
-    %table
-      %tr
-        %td
-          Descripción
-        %td
-          = f.text_field :descripcion
-      %tr
-        %td
-          Marca
-        %td
-          = f.text_field :marca
-      %tr
-        %td
-          GPC
-        %td
-          =@producto.new_record? ? (f.text_field :gpc) :  (f.text_field :gpc, :readonly => :true, :class => "campo_readonly")
-   
-      %tr
-        %td
-          Código Producto
-        %td
-          =@producto.new_record? ? (f.text_field :codigo_prod) : (f.text_field :codigo_prod, :readonly => :true, :class => "campo_readonly")
+    = form_for [@empresa, @producto] do |f|
+      - if @producto.errors.any?
+        #error_explanation
+          %h2= "#{pluralize(@producto.errors.count, "errore")} "
+          %ul
+            - @producto.errors.full_messages.each do |msg|
+              %li= msg
+      
+      %table
+        %tr
+          %td
+            Descripción
+          %td
+            = f.text_field :descripcion
+        %tr
+          %td
+            Marca
+          %td
+            = f.text_field :marca
+        %tr
+          %td
+            GPC
+          %td
+            =@producto.new_record? ? (f.text_field :gpc) :  (f.text_field :gpc, :readonly => :true, :class => "campo_readonly")
      
-      %tr
-        %td
-          Tipo GTIN
-        %td
-          -if @producto.new_record? 
-            
-            = (@gtin) ?  (f.collection_select :id_tipo_gtin, TipoGtin.find(:all, :conditions => ["id in (?)",[4,6]]), :id, :tipo_gtin_base) : (f.collection_select :id_tipo_gtin, TipoGtin.find(:all, :conditions => ["id  in (?)",[1,3]]), :id, :tipo_gtin_base)
-          -else
-            =f.hidden_field :id_tipo_gtin, :value => "#{@producto.id_tipo_gtin}"
-            =text_field_tag "tipo_gtin", "#{@producto.tipo_gtin.tipo}", :class => "campo_readonly", :readonly => :true
+        %tr
+          %td
+            Código Producto
+          %td
+            =@producto.new_record? ? (f.text_field :codigo_prod) : (f.text_field :codigo_prod, :readonly => :true, :class => "campo_readonly")
+       
+        %tr
+          %td
+            Tipo GTIN
+          %td
+            -if @producto.new_record? 
+              
+              = (@gtin) ?  (f.collection_select :id_tipo_gtin, TipoGtin.find(:all, :conditions => ["id in (?)",[4,6]]), :id, :tipo_gtin_base) : (f.collection_select :id_tipo_gtin, TipoGtin.find(:all, :conditions => ["id  in (?)",[1,3]]), :id, :tipo_gtin_base)
+            -else
+              =f.hidden_field :id_tipo_gtin, :value => "#{@producto.id_tipo_gtin}"
+              =text_field_tag "tipo_gtin", "#{@producto.tipo_gtin.tipo}", :class => "campo_readonly", :readonly => :true
 
-    =hidden_field_tag "gtin", "#{@gtin}"
-          
-    .actions
-      = f.submit 'Guardar'
-    
+      =hidden_field_tag "gtin", "#{@gtin}"
+            
+      .actions
+        = f.submit 'Guardar'
+      
