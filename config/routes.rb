@@ -11,7 +11,13 @@ GS1::Application.routes.draw do
     end
 
   resources :empresa_servicios
-  resources :glns
+  
+  resources :glns do
+      collection do
+        delete 'destroy_multiple', :action => 'destroy_multiple', :as => 'destroy_multiple'  # la ruta delete_multiple para gln
+      end
+
+  end
 
   ###########################################################################################
 
@@ -27,7 +33,12 @@ GS1::Application.routes.draw do
       end
     end
 
-    resources :glns
+    resources :glns do
+      collection do
+        delete 'destroy_multiple', :action => 'destroy_multiple', :as => 'destroy_multiple'  # la ruta delete_multiple para gln
+      end
+
+    end
 
     resources :datos_contactos   #/empresas/1/datos_contactos
     
