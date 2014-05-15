@@ -94,8 +94,11 @@ class Producto < ActiveRecord::Base
     if tipo_gtin.tipo == "GTIN-8"             
      
       ultimo_gtin_asignado = Producto.find(:first, :conditions => ["producto.id_tipo_gtin = ?", tipo_gtin], :order => "producto.fecha_creacion desc")
-      secuencia = ultimo_gtin_asignado.gtin[3..6]  # N-1 digitos primeros digitos del último gtin8 asignado
       
+      raise ultimo_gtin_asignado.to_yaml
+
+      secuencia = ultimo_gtin_asignado.gtin[3..6]  # N-1 digitos primeros digitos del último gtin8 asignado
+
       secuencia = (secuencia.to_i + 1)
       secuencia_siguiente = completar_secuencia(secuencia, tipo_gtin.tipo) # Se completa con ceros a la izquierda si la secuecnia es menor 5 digitos
       secuencia_completa = "759" + secuencia_siguiente.to_s 
@@ -106,6 +109,8 @@ class Producto < ActiveRecord::Base
     elsif tipo_gtin.tipo == "GTIN-13"
     
       ultimo_gtin_asignado = Producto.find(:first, :conditions => ["producto.id_tipo_gtin = ?", tipo_gtin], :order => "producto.fecha_creacion desc")
+      raise ultimo_gtin_asignado.to_yaml
+
       secuencia = ultimo_gtin_asignado.gtin[7..11] # la secuencia
       secuencia = secuencia.to_i + 1
       secuencia_completa = completar_secuencia(secuencia, tipo_gtin.tipo)
