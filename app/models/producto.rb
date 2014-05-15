@@ -109,10 +109,12 @@ class Producto < ActiveRecord::Base
     elsif tipo_gtin.tipo == "GTIN-13"
     
       ultimo_gtin_asignado = Producto.find(:first, :conditions => ["producto.id_tipo_gtin = ?", tipo_gtin], :order => "producto.fecha_creacion desc")
-      raise ultimo_gtin_asignado.to_yaml
+      
 
       secuencia = ultimo_gtin_asignado.gtin[7..11] # la secuencia
+      
       secuencia = secuencia.to_i + 1
+      raise ultimo_gtin_asignado.to_yaml
       secuencia_completa = completar_secuencia(secuencia, tipo_gtin.tipo)
       gtin_valido = completar_prefijo(secuencia_completa, prefijo)
       digito_verificacion = calcular_digito_verificacion(gtin_valido.to_i, "GTIN-13")
