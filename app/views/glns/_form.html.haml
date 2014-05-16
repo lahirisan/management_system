@@ -7,7 +7,7 @@
   %hr.contexto{:size => "1"}
 
   %section.formulario
-    =form_for @gln,  :url => empresa_glns_path do |f|
+    =form_for [@empresa, @gln] do |f|
       - if @gln.errors.any?
         #error_explanation
           %h2= "#{pluralize(@gln.errors.count, "errore")} "
@@ -15,17 +15,21 @@
             - @gln.errors.full_messages.each do |msg|
               %li= msg
       %table
-        -if !@gln.new_record?
+        -if (!@gln.new_record?)
           %tr
             %td
               GLN
             %td.campo_readonly
-              =@gln.gln
+              =f.text_field :gln , :value => "#{@gln.gln}", :disabled => "true", :class => "campo_readonly"
         %tr
           %td
             Tipo GLN
-          %td.campo_readonly
-            =@gln.new_record ? @gln.tipo_gln.nombre
+          %td
+            - if @gln.new_record?
+              =@empresa.gln.any? ? (f.collection_select :id_tipo_gln, TipoGln.find(:all, :conditions => ["nombre in (?)", ['Operativo', 'Fisico']]), :id, :nombre, :prompt => '-Seleccione-') : (f.collection_select :id_tipo_gln, TipoGln.find(:all, :conditions => ["nombre = ?", 'Legal']), :id, :nombre) 
+            -else
+              =f.text_field :tipo_gln, :value => "#{@gln.tipo_gln.nombre}", :disabled => :true, :class => "campo_readonly"
+
         %tr
           %td
             Código Localización
@@ -36,26 +40,26 @@
             Descripción
           %td
             = f.text_field :descripcion
-        %tr
-          %td
-            País
-          %td
-            = f.text_field :id_pais
+        / %tr
+        /   %td
+        /     País
+        /   %td
+        /     = f.text_field :id_pais
         %tr
           %td
             Estado
           %td
-            = f.text_field :id_estado
+            = f.collection_select :id_estado, Estado.all, :id, :nombre, :prompt => "-Seleccione-"
         %tr
           %td
             Municipio
           %td
-            = f.text_field :id_municipio
+            = f.collection_select :id_municipio, Municipio.all, :id, :nombre, :prompt => "-Seleccione-"
         %tr
           %td
             Ciudad
           %td
-            = f.text_field :id_ciudad
+            = f.collection_select :id_ciudad, Ciudad.all, :id, :nombre, :prompt => "-Seleccione-"
         %tr
           %td
             Edificio
