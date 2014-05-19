@@ -104,12 +104,15 @@ class GlnsController < ApplicationController
   
   def destroy_multiple
 
+
+    
+
     Gln.eliminar(params)
-    gln_eliminados = ""
-    params[:eliminar_glns].collect{|gln| gln_eliminados += gln + " "}
+    gln = ""
+    params[:eliminar_glns].collect{|gln_| gln += gln_ + " "} if params[:eliminar_glns]
 
     respond_to do |format|
-      format.html { redirect_to   "#{empresa_glns_path}?eliminado=true", notice: "GLN Eliminado(s): #{gln_eliminados}"}
+      format.html { redirect_to "#{empresa_glns_path}?eliminados=true", notice: "GLN Eliminado(s): #{gln}"}
       format.json { head :no_content }
     end
   end

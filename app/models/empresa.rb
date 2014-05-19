@@ -74,6 +74,11 @@ class Empresa < ActiveRecord::Base
         # Se retiran todo los productos de la empresa
         Producto.retirar_productos_empresa(empresa.prefijo, retirar_datos.split('_')[2], retirar_datos.split('_')[1])
 
+        # Retirar Servicios
+        
+
+        # Retirar GLN
+
 
       end
   end
