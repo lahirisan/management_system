@@ -1,4 +1,4 @@
-class EliminarGlnDatatable < AjaxDatatablesRails
+class GlnEliminadosDatatable < AjaxDatatablesRails
   delegate :params, :h, :link_to,  to: :@view
 
    def initialize(view)
@@ -18,24 +18,22 @@ class EliminarGlnDatatable < AjaxDatatablesRails
 private
 
   def data
-
     glns.map do |empresa_gln|
-      
+        
         [ 
-          check_box_tag("eliminar_glns[]", "#{empresa_gln.gln.gln}", false, :class=>"eliminar_gln"),
-          empresa_gln.gln.gln,
-          empresa_gln.try(:gln).try(:tipo_gln).try(:nombre),
-          empresa_gln.try(:gln).try(:codigo_localizacion),
-          empresa_gln.try(:gln).try(:descripcion),
-          empresa_gln.try(:gln).try(:fecha_asignacion).strftime("%Y-%m-%d"),
-          empresa_gln.try(:gln).try(:estado).try(:nombre),
-          empresa_gln.try(:gln).try(:id_municipio),
-          empresa_gln.try(:gln).try(:ciudad).try(:nombre),
-          empresa_gln.try(:gln).try(:estatus).try(:descripcion),
-          link_to("Ver Detalle", "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}"),
-          select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"), :id => "#{empresa_gln.id}sub_estatus"),
-          select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"), :id => "#{empresa_gln.id}motivo_ret")
-          
+          empresa_gln.try(:gln_eliminado).try(:gln),
+          empresa_gln.try(:gln_eliminado).try(:tipo_gln).try(:nombre),
+          empresa_gln.try(:gln_eliminado).try(:codigo_localizacion),
+          empresa_gln.try(:gln_eliminado).try(:descripcion),
+          empresa_gln.try(:gln_eliminado).try(:estatus).try(:descripcion),
+          empresa_gln.try(:gln_eliminado).try(:fecha_asignacion).strftime("%Y-%m-%d"),
+          empresa_gln.try(:gln_eliminado).try(:estado).try(:nombre),
+          empresa_gln.try(:gln_eliminado).try(:ciudad).try(:nombre),
+          empresa_gln.try(:gln_eliminado).try(:id_municipio),
+          empresa_gln.try(:gln_eliminado).try(:fecha_eliminacion),
+          link_to("Ver Detalle", "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln_eliminado.gln}?eliminado=true"),
+          empresa_gln.try(:gln_eliminado).try(:sub_estatus).try(:descripcion),
+          empresa_gln.try(:gln_eliminado).try(:motivo_retiro).try(:descripcion)
         ]
     end
 
@@ -47,8 +45,19 @@ private
 
   def fetch_glns
 
-    glns = GlnEmpresa.where("gln_empresa.prefijo = ?", params[:empresa_id]).joins(:gln,  :empresa) 
+    # Se verifica si la empresa esta eliminada
+    empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
+
+    if empresa
+
+      glns = GlnEmpresa.where("gln_empresa.prefijo = ?", params[:empresa_id]).joins(:gln_eliminado , :empresa)
+
+    else
+        glns = GlnEmpresa.where("gln_empresa.prefijo = ?", params[:empresa_id]).joins(:gln_eliminado , :empresa_eliminada)
+    end
+    
     glns = glns.page(page).per_page(per_page)
+
     
     # if params[:sSearch].present? # Filtro de busqueda general
     #   productos = productos.where("empresa.nombre_empresa like :search or tipo_gtin.tipo like :search or producto.gtin like :search or producto.descripcion like :search or producto.marca like :search or producto.gpc like :search or estatus.descripcion like :search or estatus.descripcion like :search or producto.codigo_prod like :search ", search: "%#{params[:sSearch]}%")

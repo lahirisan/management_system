@@ -3,6 +3,7 @@ $( document ).ready(function() {
         // Datatable que maneja el listado de glns
         $("#data_table_glns").dataTable({
             sPaginationType: "full_numbers",
+            aaSorting: [[ 5, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
@@ -14,6 +15,7 @@ $( document ).ready(function() {
         // Datatable que maneja el listado de glns
         $("#data_table_eliminar_gln").dataTable({
             sPaginationType: "full_numbers",
+            aaSorting: [[ 5, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
@@ -22,13 +24,14 @@ $( document ).ready(function() {
         }).columnFilter({ aoColumns: [null,{ type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
          // Datatable que maneja el listado de glns
-        $("#data_table_gln_eliminado").dataTable({
+        $("#data_table_gln_eliminados").dataTable({
+            aaSorting: [[ 9, "desc" ]],
             sPaginationType: "full_numbers",
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
-            sAjaxSource: $('#data_table_gln_eliminado').data('source')
+            sAjaxSource: $('#data_table_gln_eliminados').data('source')
         }).columnFilter({ aoColumns: [{ type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
 
@@ -80,4 +83,30 @@ $( document ).ready(function() {
             }
         });
 
+
+        // Manejo de la seleccion de estados municipios, ciudades
+
+        $('#gln_id_estado').change(function() {
+
+            //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/ciudades.json?id_estado="+$(this).val(), function( data ) { 
+                var ciudades = $("#gln_id_ciudad");
+                ciudades.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    ciudades.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            })
+
+            //AJAX que obtiene las municpios dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/municipios.json?id_estado="+$(this).val(), function( data ) { 
+                var municipios = $("#gln_id_municipio");
+                municipios.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    municipios.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            })
+
+        });
 });

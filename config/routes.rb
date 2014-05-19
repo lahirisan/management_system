@@ -50,6 +50,7 @@ GS1::Application.routes.draw do
   resources :usuarios
   resources :ciudades
   resources :clasificaciones
+  resources :municipios
 
 
 

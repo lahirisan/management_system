@@ -30,7 +30,8 @@ class GlnsController < ApplicationController
   # GET /glns/1
   # GET /glns/1.json
   def show
-    @gln = Gln.find(params[:id])
+
+    @gln =  params[:eliminado] ? GlnEliminado.find(params[:id]) : Gln.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -43,7 +44,10 @@ class GlnsController < ApplicationController
   def new
 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
+    # SI la empresa GLN Legal puede crear GLN fisico y operativo, sino puede crear legal
+    
     @gln = @empresa.gln.build
+
 
     respond_to do |format|
       format.html # new.html.erb
@@ -60,11 +64,19 @@ class GlnsController < ApplicationController
   # POST /glns
   # POST /glns.json
   def create
+    
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]]) # para la validacion del formulario
+
+    params[:gln][:gln] = Gln.generar_gln(params[:empresa_id])
+    params[:gln][:fecha_asignacion] = Time.now
+    estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Activo', 'GLN'])
+    params[:gln][:id_estatus] = estatus.id
+
     @gln = Gln.new(params[:gln])
 
     respond_to do |format|
       if @gln.save
-        format.html { redirect_to @gln, notice: 'Gln was successfully created.' }
+        format.html { redirect_to empresa_glns_path, notice: "GLN #{@gln.gln} fue generado."}
         format.json { render json: @gln, status: :created, location: @gln }
       else
         format.html { render action: "new" }
@@ -94,7 +106,7 @@ class GlnsController < ApplicationController
 
     Gln.eliminar(params)
     gln_eliminados = ""
-    params[:eliminar_gln].collect{|gln| gln_eliminados += gln + " "}
+    params[:eliminar_glns].collect{|gln| gln_eliminados += gln + " "}
 
     respond_to do |format|
       format.html { redirect_to   "#{empresa_glns_path}?eliminado=true", notice: "GLN Eliminado(s): #{gln_eliminados}"}

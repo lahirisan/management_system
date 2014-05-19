@@ -58,7 +58,7 @@
       %td
         Ciudad
       %td
-        = @gln.ciudad.nombre
+        = @gln.try(:ciudad).try(:nombre)
     %tr
       %td
         Edificio
@@ -85,6 +85,6 @@
       %td
         =@gln.cod_postal
 
-  =link_to 'Regresar', empresa_glns_path
+  
   
  
