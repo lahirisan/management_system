@@ -43,7 +43,7 @@ private
 
   def fetch_glns
 
-    glns = GlnEmpresa.where("gln_empresa.prefijo = ?", params[:empresa_id]).joins({:gln => :tipo_gln} , {:gln => :estatus}, {:gln => :estado}, {:gln => :municipio}, {:gln => :ciudad},  :empresa, )
+    glns = GlnEmpresa.where("gln_empresa.prefijo = ?", params[:empresa_id]).joins({:gln => :tipo_gln} , {:gln => :estatus}, {:gln => :estado}, {:gln => :municipio}, {:gln => :ciudad},  :empresa).order("#{sort_column} #{sort_direction}") 
     glns = glns.page(page).per_page(per_page)
 
     
@@ -80,11 +80,11 @@ private
     end
 
     if params[:sSearch_7].present?
-      glns = glns.where("minicipio.nombre like :search7", search7: "%#{params[:sSearch_7]}%" )
+      glns = glns.where("municipio.nombre like :search7", search7: "%#{params[:sSearch_7]}%" )
     end
 
     if params[:sSearch_8].present?
-      glns = glns.where("ciudad.nombre like :search7", search8: "%#{params[:sSearch_8]}%" )
+      glns = glns.where("ciudad.nombre like :search8", search8: "%#{params[:sSearch_8]}%" )
     end
 
 
