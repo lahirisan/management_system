@@ -67,11 +67,11 @@ class GlnsController < ApplicationController
     
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]]) # para la validacion del formulario
 
-    params[:gln][:gln] = Gln.generar_gln(params[:empresa_id])
+    params[:gln][:gln] = Gln.generar(params[:empresa_id])
     params[:gln][:fecha_asignacion] = Time.now
     estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Activo', 'GLN'])
     params[:gln][:id_estatus] = estatus.id
-
+    params[:gln][:codigo_localizacion] = Gln.codigo_localizacion(@empresa.prefijo)
     @gln = Gln.new(params[:gln])
 
     respond_to do |format|
@@ -103,9 +103,6 @@ class GlnsController < ApplicationController
 
   
   def destroy_multiple
-
-
-    
 
     Gln.eliminar(params)
     gln = ""

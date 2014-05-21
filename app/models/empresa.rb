@@ -66,6 +66,7 @@ class Empresa < ActiveRecord::Base
         empresa_retirar.save
         
         empresa = Empresa.find(:first, :conditions => ["prefijo = ?", retirar_datos.split('_')[0]]) # La clave primaria es es prefijo
+        
         # # El estatus de retirada Se cambia el estatus de la empresa
         estatus_retirada = Estatus.find(:first, :conditions => ["descripcion like ? and alcance like ?", 'Retirada', 'Empresa'])
         empresa.id_estatus = estatus_retirada.id
@@ -79,6 +80,8 @@ class Empresa < ActiveRecord::Base
 
         # Retirar GLN
 
+        gln_retirado = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", "Retirado", "GLN"])
+        empresa.gln_empresa.collect{| gln_empresa| gln = Gln.find(:first, :conditions => ["gln = ?", gln_empresa.id_gln]); gln.id_estatus = gln_retirado.id; gln.save}
 
       end
   end
@@ -155,6 +158,12 @@ class Empresa < ActiveRecord::Base
         
         # Se elimina los servicios de la empresa
         empresa_eliminar.empresa_servicio.collect{|servicio| EmpresaServicio.servicio_eliminado(servicio,1,1)}
+
+        # Se elimina el GLN
+        gln_eliminado = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", "Eliminado", "GLN"])
+        empresa_eliminar.gln_empresa.collect{| gln_empresa| gln = Gln.find(:first, :conditions => ["gln = ?", gln_empresa.id_gln]); gln.id_estatus = gln_eliminado.id; gln.save}
+
+
         empresa_eliminar.destroy
 
       end
@@ -219,7 +228,7 @@ class Empresa < ActiveRecord::Base
       correspondencia_eliminada.save;
 
       # Se elimina la correspondencia
-      correspondecia = Correspondencia.find(:first, :conditions => ["prefijo = ?", empresa.correspondencia.prefijo])
+      correspondencia = Correspondencia.find(:first, :conditions => ["prefijo = ?", empresa.correspondencia.prefijo])
       correspondencia.destroy
 
 

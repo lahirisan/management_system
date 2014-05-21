@@ -102,7 +102,9 @@ class EmpresasController < ApplicationController
     @empresa = Empresa.new(params[:empresa])
 
     respond_to do |format|
-      if @empresa.save
+     if @empresa.save
+
+          Gln.generar_legal(@empresa.prefijo.to_s) # Se genra GLN legal
         format.html { redirect_to '/empresas?activacion=true', notice: "Empresa con prefijo #{@empresa.prefijo} creada satisfactoriamente." }
       else
         format.html { render action: "new" }
