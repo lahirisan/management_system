@@ -1,0 +1,35 @@
+%section.contexto
+  %label.contexto 
+    -if @empresa.new_record?
+      Registar Empresa - Datos Básicos
+    -else
+      Editar Empresa - Datos Básicos
+  %hr.contexto{:size => "1"}
+
+  %section.formulario
+    = form_for(@usuario) do |f|
+      - if @usuario.errors.any?
+        #error_explanation
+          %h2
+            = pluralize(@usuario.errors.count, "error")
+          %ul
+            - @usuario.errors.full_messages.each do |msg|
+              %li= msg
+      %table
+        %tr
+          %td
+            Usuario
+          %td
+            = f.text_field :username
+        %tr
+          %td
+            Clave
+          %td
+            = f.password_field :password
+        %tr
+          %td
+            Confirmación
+          %td
+            = f.password_field :password_confirmation
+      .actions
+        = f.submit

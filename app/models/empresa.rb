@@ -54,6 +54,7 @@ class Empresa < ActiveRecord::Base
     # OJO: Esto se puede optimizar actualizando masivamente // Refrencia RailCast 198
 
       for retirar_empresas in (0..parametros[:retirar_empresas].size-1)
+       
         empresa_seleccionada = parametros[:retirar_empresas][retirar_empresas]
         retirar_datos = parametros[:"#{empresa_seleccionada}"]
         retirar_datos.split('_')[0] # retirar_datos.split('_')[0] Prefijo de la empresa retirar_datos.split('_')[1] id sub_estatus retirar_datos.split('_')[2] id motivo_retiro
@@ -63,7 +64,7 @@ class Empresa < ActiveRecord::Base
         empresa_retirar.fecha_retiro = fecha_retiro
         empresa_retirar.id_motivo_retiro = retirar_datos.split('_')[2]
         empresa_retirar.id_subestatus = retirar_datos.split('_')[1]
-        empresa_retirar.save
+        #empresa_retirar.save
         
         empresa = Empresa.find(:first, :conditions => ["prefijo = ?", retirar_datos.split('_')[0]]) # La clave primaria es es prefijo
         
@@ -76,12 +77,10 @@ class Empresa < ActiveRecord::Base
         Producto.retirar_productos_empresa(empresa.prefijo, retirar_datos.split('_')[2], retirar_datos.split('_')[1])
 
         # Retirar Servicios
-        
 
-        # Retirar GLN
-
-        gln_retirado = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", "Retirado", "GLN"])
-        empresa.gln_empresa.collect{| gln_empresa| gln = Gln.find(:first, :conditions => ["gln = ?", gln_empresa.id_gln]); gln.id_estatus = gln_retirado.id; gln.save}
+        # Retirar GLN ojo REVISAR
+        empresa.gln_empresa.collect{| gln_empresa | Gln.retirar(gln_empresa.id_gln) }
+    
 
       end
   end
@@ -152,20 +151,17 @@ class Empresa < ActiveRecord::Base
         producto_elim_detalle.id_subestatus =  eliminar_datos.split('_')[1];
 
         producto_elim_detalle.save}
-        
+
         # Se elimina los productos de la empresa
         empresa_eliminar.productos_empresa.collect{|productos_empresa| producto = Producto.find(:first, :conditions => ["gtin like ?", productos_empresa.gtin]); producto.destroy}
-        
+
         # Se elimina los servicios de la empresa
         empresa_eliminar.empresa_servicio.collect{|servicio| EmpresaServicio.servicio_eliminado(servicio,1,1)}
 
         # Se elimina el GLN
-        gln_eliminado = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", "Eliminado", "GLN"])
-        empresa_eliminar.gln_empresa.collect{| gln_empresa| gln = Gln.find(:first, :conditions => ["gln = ?", gln_empresa.id_gln]); gln.id_estatus = gln_eliminado.id; gln.save}
-
+        empresa_eliminar.gln_empresa.collect{|gln_empresa| Gln.eliminar_gln(gln_empresa.gln,1,1)}
 
         empresa_eliminar.destroy
-
       end
   end
   

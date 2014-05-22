@@ -1,0 +1,18 @@
+!!!
+%html
+	%head
+		%title GS1 Venezuela - 
+		= stylesheet_link_tag    "application", :media => "all"
+		= javascript_include_tag "application"
+		= csrf_meta_tags
+	%body
+		%div.banner
+			=image_tag 'GS1-Header-1.png', :class => "logo-izq"
+			=image_tag 'GS1-Header-3.png', :class => "logo-der"
+		
+		-flash.each do |name, msg| 
+			=content_tag :div, msg, :id => "flash_#{name}", :class => "mensaje" 
+
+			
+		= yield
+		

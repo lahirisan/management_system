@@ -1,0 +1,33 @@
+%section.contexto
+	%label.contexto Usuarios > Listado
+	%hr.contexto{:size => "1"}
+%section#areaTrabajo.areaTrabajo
+	%p#notice= notice
+	%table
+		%tr
+		%th Username
+		%th Password
+		%th Nombre apellido
+		%th Email
+		%th Id perfil
+		%th Id gerencia
+		%th Id cargo
+		%th Fecha creacion
+		%th
+		%th
+		%th
+		- @usuarios.each do |usuario|
+			%tr
+				%td= usuario.username
+				%td= usuario.password
+				%td= usuario.nombre_apellido
+				%td= usuario.email
+				%td= usuario.id_perfil
+				%td= usuario.id_gerencia
+				%td= usuario.id_cargo
+				%td= usuario.fecha_creacion
+				%td= link_to 'Show', usuario
+				%td= link_to 'Edit', edit_usuario_path(usuario)
+				%td= link_to 'Destroy', usuario, method: :delete, data: { confirm: 'Are you sure?' }
+	%br/
+	=link_to 'New Usuario', new_usuario_path

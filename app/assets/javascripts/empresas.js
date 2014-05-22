@@ -25,7 +25,7 @@
         // Datatable que maneja el listado para retirar empresas
         $("#data_table_empresas_retirar").dataTable({
             sPaginationType: "full_numbers",
-            aaSorting: [[ 2, "desc" ]],
+            aaSorting: [[ 3, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
@@ -36,7 +36,7 @@
         // Datatable que maneja el listado para empresas retiradas
         $("#data_table_empresas_retiradas").dataTable({
             sPaginationType: "full_numbers",
-            aaSorting: [[ 5, "desc" ]],
+            aaSorting: [[ 6, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
