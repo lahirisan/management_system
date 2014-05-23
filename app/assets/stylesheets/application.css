@@ -29,20 +29,7 @@
 		
 		
 	}
-	div.footer{
-		width: 100%;
-		height: 45px;
-		font-family: arial,sans-serif;
-		font-size: 10px;
-		color: #919194;
-		text-align: center;
-		vertical-align: bottom;
-		border-top-style: solid;
-		border-top-width: 1px;
-				border-top-color: #bbbdc0;
-		position: absolute;
-		bottom: 0px;
-	}
+	
 	
 	img.logo-der{
 		
@@ -63,7 +50,7 @@
 	width: 170px;
 	height: 100%;
 	position: absolute;
-	top: 150px;
+	top: 220px;
 }
 div.submenu{
 	font-family: arial,sans-serif;
@@ -101,6 +88,8 @@ a.opcion:link    {color:#949393;}
 a.opcion:visited {color:#949393;}
 a.opcion:hover   {color:#666666;}
 a.opcion:active  {color:black;}
+
+
 div.opcion:hover{background-color: #f6f5f5;color:#666666;}	
 
 hr.separador{			
@@ -133,16 +122,16 @@ section.contexto{
 	width: 85%;
 	height: 30px;
 	position: absolute;
-	top: 150px;
+	top: 220px;
 	left: 180px;
 }
 section.identificador{
 	/*border-style: solid;
 	border-width: 1px;*/
 	position: absolute;
-	top: 29px;
+	top: 80px;
 	right: 20px;
-	text-align:right;
+	text-align:center;
 
 }
 section.areaTrabajo{
@@ -151,7 +140,7 @@ section.areaTrabajo{
 	width: 84%;
 	height: 100%;
 	position: absolute;
-	top: 200px;
+	top: 240px;
 	left: 190px;
 }
 
@@ -173,6 +162,18 @@ label.usuario{
 	color: #545454;
 	position: relative;
 }
+
+label.session{
+	/*border-style: solid;
+	border-width: 1px;*/
+	font-family: arial,sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color:#F74a4a;
+	position: relative;
+}
+
+
 label.rol{
 	/*border-style: solid;
 	border-width: 1px;*/
@@ -187,34 +188,4 @@ label.actor{
 	color: #949393;
 	position: relative;
 }
-section.detallePerfil{
-		font-family: arial,sans-serif;
-		border-right-style: solid;
-		border-left-style: solid;
-		border-bottom-style: solid;
-		border-top-style: solid;
-		border-right-width: 1px;
-		border-left-width: 1px;
-		border-bottom-width: 1px;
-		border-top-width: 1px;
-		border-right-color: black;
-		border-left-color: black;
-		border-bottom-color: black;
-		border-top-color: black;
-		background-color: white;
-		padding-right: 5px;
-	    padding-left: 5px;
-	    padding-bottom: 5px;
-	    padding-top: 5px;
-		width: 350px;
-		height: 150px;
 
-		-webkit-box-shadow: 0px 0px 10px #333333;
-	    -moz-box-shadow: 0px 0px 10px #333333;
-	    box-shadow: 3px 3px 15px #333333;
-	    position: absolute;
-	    z-index: 3;
-	    opacity: 0.9;
-		-moz-opacity:0.9;
-		filter:alpha(opacity=9);
-	}

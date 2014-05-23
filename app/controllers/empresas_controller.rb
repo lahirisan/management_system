@@ -1,4 +1,5 @@
 class EmpresasController < ApplicationController
+  before_filter :require_authentication
   # GET /empresas
   # GET /empresas.json
   def index

@@ -7,16 +7,17 @@ class SessionsController < ApplicationController
 	  user = Usuario.authenticate(params[:usuario], params[:clave])
 	  if user
 	    session[:user_id] = user.id
-	    redirect_to empresas_path, :notice => "Logged in"
+	    redirect_to empresas_path
 	  else
-	    flash.now.alert = "Invalid email or password"
+	    flash.now.alert = "Usuario o clave invalido"
 	    render "new"
 	  end
 	end
 
 	def destroy
+	  reset_session
 	  session[:user_id] = nil
-	  redirect_to 'session/new', :notice => "Logged out!"
+	  redirect_to root_path
 	end
 
 

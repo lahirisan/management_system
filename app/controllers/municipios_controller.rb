@@ -1,4 +1,5 @@
 class MunicipiosController < ApplicationController
+	
 	def index
     	@municipios = Municipio.where("id_estado = ?", params[:id_estado])
     	respond_to do |format|

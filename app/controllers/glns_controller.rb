@@ -1,4 +1,5 @@
 class GlnsController < ApplicationController
+  before_filter :require_authentication
   # GET /glns
   # GET /glns.json
   def index

@@ -11,46 +11,54 @@
       - if @usuario.errors.any?
         #error_explanation
           %h2
-            = pluralize(@usuario.errors.count, "error")
-            prohibited this usuario from being saved:
+            = pluralize(@usuario.errors.count, "errore")
           %ul
             - @usuario.errors.full_messages.each do |msg|
               %li= msg
-      .field
-        = f.label :username
-        %br/
-        = f.text_field :username
-      .field
-        = f.label :password
-        %br/
-        = f.password_field :password
-      .field
-        = f.label :password_confirmation
-        %br/
-        = f.password_field :password_confirmation
-      .field
-        = f.label :nombre_apellido
-        %br/
-        = f.text_field :nombre_apellido
-      .field
-        = f.label :email
-        %br/
-        = f.text_field :email
-      .field
-        = f.label :id_perfil
-        %br/
-        = f.number_field :id_perfil
-      .field
-        = f.label :id_gerencia
-        %br/
-        = f.number_field :id_gerencia
-      .field
-        = f.label :id_cargo
-        %br/
-        = f.number_field :id_cargo
-      .field
-        = f.label :fecha_creacion
-        %br/
-        = f.text_field :fecha_creacion
+      %table
+        %tr
+          %td
+            Usuario
+          %td
+            = f.text_field :username
+        %tr
+          %td
+            Clave
+          %td
+            /=@usuario.new_record? ? f.password_field(:password) : f.password_field(:password, :value => "password")
+            =f.password_field(:password)
+        %tr
+          %td
+            Confirmación Clave
+          %td
+            /=@usuario.new_record? ? f.password_field(:password_confirmation): f.password_field(:password_confirmation, :value => "password")
+            =f.password_field(:password_confirmation)
+        %tr
+          %td
+            Nombre
+          %td
+            =f.text_field :nombre_apellido
+        %tr
+          %td
+            Correo
+          %td
+            = f.text_field :email
+        %tr
+          %td
+            Perfil
+          %td
+            =f.collection_select :id_perfil, Perfil.all, :id, :descripcion, :prompt => "-Seleccione-"
+        %tr
+          %td
+            Gerencia
+          %td
+            = f.collection_select :id_gerencia, Gerencia.all, :id, :nombre, :prompt => "-Seleccione-"
+        %tr
+          %td
+            Cargo
+          %td
+            = f.collection_select :id_cargo, Cargo.all, :id, :descripcion, :prompt => "-Seleccione-"
+
       .actions
-        = f.submit
+        = f.submit 'Guardar'
+        =link_to "Regresar", usuarios_path

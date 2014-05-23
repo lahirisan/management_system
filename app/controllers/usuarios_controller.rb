@@ -1,4 +1,5 @@
 class UsuariosController < ApplicationController
+  before_filter :require_authentication
   # GET /usuarios
   # GET /usuarios.json
   def index
@@ -40,6 +41,8 @@ class UsuariosController < ApplicationController
   # POST /usuarios
   # POST /usuarios.json
   def create
+    
+    params[:usuario][:fecha_creacion] = Time.now
     @usuario = Usuario.new(params[:usuario])
 
     respond_to do |format|
@@ -55,6 +58,8 @@ class UsuariosController < ApplicationController
   # PUT /usuarios/1.json
   def update
     @usuario = Usuario.find(params[:id])
+
+    #params[:usuario][:password] = nil if params[:usuario][:password] == 'password'
 
     respond_to do |format|
       if @usuario.update_attributes(params[:usuario])

@@ -3,31 +3,32 @@
 	%hr.contexto{:size => "1"}
 %section#areaTrabajo.areaTrabajo
 	%p#notice= notice
-	%table
-		%tr
-		%th Username
-		%th Password
-		%th Nombre apellido
-		%th Email
-		%th Id perfil
-		%th Id gerencia
-		%th Id cargo
-		%th Fecha creacion
-		%th
-		%th
-		%th
-		- @usuarios.each do |usuario|
+	%table#usuarios.display
+		%thead
 			%tr
-				%td= usuario.username
-				%td= usuario.password
-				%td= usuario.nombre_apellido
-				%td= usuario.email
-				%td= usuario.id_perfil
-				%td= usuario.id_gerencia
-				%td= usuario.id_cargo
-				%td= usuario.fecha_creacion
-				%td= link_to 'Show', usuario
-				%td= link_to 'Edit', edit_usuario_path(usuario)
-				%td= link_to 'Destroy', usuario, method: :delete, data: { confirm: 'Are you sure?' }
-	%br/
-	=link_to 'New Usuario', new_usuario_path
+			%th Usuario
+			%th Nombre 
+			%th Email
+			%th Perfil
+			%th Gerencia
+			%th Cargo
+			%th Fecha Creación
+			%th
+			%th
+			%th
+		%tbody
+			- @usuarios.each do |usuario|
+				%tr
+					%td= usuario.username
+					%td= usuario.nombre_apellido
+					%td= usuario.email
+					%td= usuario.try(:perfil).try(:descripcion)
+					%td= usuario.try(:gerencia).try(:nombre)
+					%td= usuario.try(:cargo).try(:descripcion)
+					%td
+						= usuario.fecha_creacion.strftime("%Y-%m-%d") if usuario.fecha_creacion
+					%td= link_to 'Ver', usuario
+					%td= link_to 'Editar', edit_usuario_path(usuario)
+					%td= link_to 'Eliminar', usuario, method: :delete, data: { confirm: 'Desea ELIMINAR este usuario?' }
+	
+	

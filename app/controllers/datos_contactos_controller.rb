@@ -1,4 +1,5 @@
 class DatosContactosController < ApplicationController
+  before_filter :require_authentication
   # GET /datos_contactos
   # GET /datos_contactos.json
   def index
