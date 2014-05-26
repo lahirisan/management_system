@@ -1,0 +1,34 @@
+%section.contexto
+	%label.contexto Usuarios > Listado
+	%hr.contexto{:size => "1"}
+%section#areaTrabajo.areaTrabajo
+	%p#notice= notice
+	%table#usuarios.display
+		%thead
+			%tr
+			%th Usuario
+			%th Nombre 
+			%th Email
+			%th Perfil
+			%th Gerencia
+			%th Cargo
+			%th Fecha Creación
+			%th
+			%th
+			%th
+		%tbody
+			- @usuarios.each do |usuario|
+				%tr
+					%td= usuario.username
+					%td= usuario.nombre_apellido
+					%td= usuario.email
+					%td= usuario.try(:perfil).try(:descripcion)
+					%td= usuario.try(:gerencia).try(:nombre)
+					%td= usuario.try(:cargo).try(:descripcion)
+					%td
+						= usuario.fecha_creacion.strftime("%Y-%m-%d") if usuario.fecha_creacion
+					%td= link_to 'Ver', usuario
+					%td= link_to 'Editar', edit_usuario_path(usuario)
+					%td= link_to 'Eliminar', usuario, method: :delete, data: { confirm: 'Desea ELIMINAR este usuario?' }
+	
+	

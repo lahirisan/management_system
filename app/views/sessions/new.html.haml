@@ -1,0 +1,16 @@
+#centrado.borde
+	= form_tag sessions_path, :class => "formulario_login" do
+		%table
+			%tr
+				%td
+					Usuario
+				%td
+					=text_field_tag :usuario
+			%tr
+				%td
+					Clave
+				%td
+					=password_field_tag :clave
+
+		%p.button
+			= submit_tag "Entrar"

@@ -10,30 +10,24 @@
 			=image_tag 'GS1-Header-1.png', :class => "logo-izq"
 			=image_tag 'GS1-Header-3.png', :class => "logo-der"
 
-		/ %section#identificador.identificador{:onclick => "displayDetallePerfil(event)"}
-		/ 	%label.usuario
-		/ 		Usuario
-		/ 	%label.actor
-		/ 		Actor
-		/ 	%label.rol
-		/ 		Role
+		%section#identificador.identificador{:onclick => "displayDetallePerfil(event)"}
+			=image_tag 'user_photo.png'
+			%br
+			
+			%label.usuario
+				Usuario
+			%br
+			%label.rol
+				Administrador
 
-		/ %section#detallePerfil.detallePerfil{:onmouseout => "noDisplayDetallePerfil()", :onmouseover => "displayDetallePerfil(event)", :style => "display:none;"}
-		/ 	.tituloFormulario Detalle del usuario
-		/ 	=image_tag 'default_photo.png'
-		/ 	%div
-		/ 		%label.usuario
-		/ 			Usuario
-		/ 	%div
-		/ 		%label.actor
-		/ 			Actor
-		/ 	.botonera
-		/ 		%a.link{:href => "#{}"} Editar perfil
-		/ 		%a.link{:href => "#{}"} Cerrar session
+			%br
+			%label.session
+				=link_to 'Cerrar Sesión', logout_path, :class => "enlace_session", :title => "Cierra sesión"
+		
 
 		%section#menu.menu	
 			.submenu Administración
-			%a.opcion{:href => "/empresas", :title => "Listado general de Empresas"}
+			%a.opcion{:href => "/empresas", :title => "Listado de Empresas"}
 				.opcion Empresas
 				.opcion
 					%ul
@@ -134,7 +128,13 @@
 							%li 
 								%a.opcion{:href => "#{empresa_glns_path}?eliminados=true", :title => "GLN eliminados"}
 									.opcion GLN Eliminados
-
+			.opcion
+				=link_to 'Usuarios', usuarios_path, :class => "opcion", :title => "Usuarios registrados en la aplicación"
+			.opcion
+				%ul
+					%li 
+						%a.opcion{:href => "#{new_usuario_path}", :title => "Crear usuario"}
+							.opcion Crear Usuario
 			
 		= yield
 		

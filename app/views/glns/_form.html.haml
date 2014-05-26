@@ -26,25 +26,15 @@
             Tipo GLN
           %td
             - if @gln.new_record?
-              =@empresa.gln.any? ? (f.collection_select :id_tipo_gln, TipoGln.find(:all, :conditions => ["nombre in (?)", ['Operativo', 'Fisico']]), :id, :nombre, :prompt => '-Seleccione-') : (f.collection_select :id_tipo_gln, TipoGln.find(:all, :conditions => ["nombre = ?", 'Legal']), :id, :nombre) 
+              =(f.collection_select :id_tipo_gln, TipoGln.find(:all, :conditions => ["nombre in (?)", ['Operativo', 'Fisico']]), :id, :nombre, :prompt => '-Seleccione-') 
             -else
               =f.text_field :tipo_gln, :value => "#{@gln.tipo_gln.nombre}", :disabled => :true, :class => "campo_readonly"
-
-        %tr
-          %td
-            Código Localización
-          %td
-            = f.text_field :codigo_localizacion
+        
         %tr
           %td
             Descripción
           %td
             = f.text_field :descripcion
-        / %tr
-        /   %td
-        /     País
-        /   %td
-        /     = f.text_field :id_pais
         %tr
           %td
             Estado

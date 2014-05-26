@@ -1,0 +1,44 @@
+%section.contexto
+  %label.contexto Usuarios > Detalle
+  %hr.contexto{:size => "1"}
+%section#areaTrabajo.areaTrabajo{:style => "font: 100% 'Trebuchet MS', sans-serif"}
+  %p#notice= notice
+  %table
+    %tr
+      %td
+        Usuario
+      %td
+        = @usuario.username
+    %tr
+      %td
+        Nombre 
+      %td
+        = @usuario.nombre_apellido
+    %tr
+      %td
+        Correo
+      %td
+        = @usuario.email
+    %tr
+      %td
+        Perfil
+      %td
+        = @usuario.id_perfil
+    %tr
+      %td
+        Gerencia
+      %td
+        = @usuario.id_gerencia
+    %tr
+      %td
+        Cargo
+      %td
+        = @usuario.id_cargo
+    %tr
+      %td
+        Fecha Creación
+      %td
+        = @usuario.fecha_creacion
+
+  = link_to 'Editar', edit_usuario_path(@usuario)
+  = link_to 'Regresar', usuarios_path

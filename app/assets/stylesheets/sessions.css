@@ -1,0 +1,48 @@
+#centrado {
+
+  position:relative;
+  top:200px;
+  width: 300px ;
+  margin-left: auto ;
+  margin-right: auto ;
+
+}
+
+.borde{
+	border:2px solid; border-radius:25px;
+
+}
+
+.formulario_login{
+	padding-left: 30px;
+	padding-top: 30px;
+
+}
+
+.mensaje{
+	position: absolute;
+	top: 200px;
+	text-align: center;
+  	
+
+}
+
+#contenedor {
+height: auto;
+min-height: 100%;
+}
+
+#footer {
+	width: 100%;
+position: fixed;
+bottom: 3px;
+text-align: center;
+}
+
+.footer_centrado
+{
+	margin-right: auto;
+	margin-left: auto;
+
+}
+

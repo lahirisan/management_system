@@ -13,5 +13,6 @@ class EmpresaEliminada < ActiveRecord::Base
   has_one :correspondencia_eliminada, :foreign_key => "prefijo"
   has_many :productos_empresa, :foreign_key => "prefijo" # Define una asociaicion 1 a N con productos_empresa
   has_many :producto_eliminado, :through => :productos_empresa, :foreign_key => "prefijo", :dependent => :destroy# Define una asociaicion 1 a N con productos_empresa
+  has_many :gln_empresa, :foreign_key => "prefijo"
   
 end

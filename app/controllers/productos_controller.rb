@@ -1,4 +1,5 @@
 class ProductosController < ApplicationController
+  before_filter :require_authentication
   # GET /productos
   # GET /productos.json
   def index

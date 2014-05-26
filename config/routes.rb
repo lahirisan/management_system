@@ -1,6 +1,13 @@
 GS1::Application.routes.draw do
   
-  # Veririficar porque no funcionan si no se colocal estas rutas afuera del recurso empresa
+  get "gerencia/index"
+
+  get "cargo/index"
+
+  get "perfil/index"
+  get "logout" => "sessions#destroy", :as => "logout"
+
+  resources :usuarios 
 
   resources :productos do #/empresas/1/productos
 
@@ -47,10 +54,11 @@ GS1::Application.routes.draw do
     end
   end
   
-  resources :usuarios
+ 
   resources :ciudades
   resources :clasificaciones
   resources :municipios
+  resources :sessions
 
 
 
@@ -103,7 +111,7 @@ GS1::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'empresas#index'
+  root :to => 'sessions#new'
 
   # See how all your routes lay out with "rake routes"
 
