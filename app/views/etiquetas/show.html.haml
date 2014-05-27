@@ -1,0 +1,74 @@
+%section.contexto
+  %label.contexto 
+    Administración > Etiquetas
+  %hr.contexto{:size => "1"}
+
+  %section.formulario
+  %p#notice= notice
+
+  %table
+    %tr
+      %td
+        Nombre
+      %td
+        =@contacto.try(:nombre_contacto) ?  @contacto.try(:nombre_contacto)  : "No tiene"
+    %tr
+      %td
+        Cargo
+      %td
+        =@contacto.try(:cargo_contacto) ? @contacto.try(:cargo_contacto) : "No tiene"
+    %tr
+      %td
+        Teléfono Principal
+      %td
+        =@contacto.try(:contacto) ? @contacto.try(:contacto) : "No tiene"
+    %tr
+      %td
+        Edificio
+      %td
+        =@etiqueta.edificio
+    %tr
+      %td
+        Calle
+      %td
+        =@etiqueta.calle
+    %tr
+      %td
+        Urbanización
+      %td
+        =@etiqueta.urbanizacion
+    %tr
+      %td
+        Estado
+      %td 
+        =@etiqueta.estado.nombre
+    %tr
+      %td
+        Ciudad
+      %td
+        =@etiqueta.ciudad.nombre
+    %tr
+      %td
+        Municipio
+      %td
+        =@etiqueta.try(:municipio).try(:nombre)
+    %tr
+      %td
+        Parroquia
+      %td
+        =@etiqueta.try(:parroquia).try(:nombre)
+    %tr
+      %td
+        Código Postal
+      %td
+        =@etiqueta.cod_postal
+    %tr
+      %td
+        Punto Referencia
+      %td
+        =@etiqueta.punto_referencia
+  
+
+  = link_to 'Regresar', empresas_path
+  \|
+  = link_to 'Editar', edit_empresa_etiqueta_path(params[:empresa_id], params[:empresa_id])

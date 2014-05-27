@@ -1,9 +1,7 @@
 GS1::Application.routes.draw do
   
   get "gerencia/index"
-
   get "cargo/index"
-
   get "perfil/index"
   get "logout" => "sessions#destroy", :as => "logout"
 
@@ -31,6 +29,7 @@ GS1::Application.routes.draw do
   resources :empresas do  
 
     resources :empresa_servicios
+    resources :etiquetas
     
     resources :productos do #/empresas/1/productos
 

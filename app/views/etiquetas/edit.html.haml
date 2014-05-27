@@ -1,0 +1,21 @@
+%section.contexto
+  %label.contexto 
+    Etiquetas > Editar
+  %hr.contexto{:size => "1"}
+
+  %section.formulario
+
+    = form_for "/empresas/#{params[:empresa_id]}/etiquetas/#{params[:empresa_id]}" do |f|
+      - if @etiqueta.errors.any?
+        #error_explanation
+          %h2= "#{pluralize(@etiqueta.errors.count, "errore")} "
+          %ul
+            - @etiqueta.errors.full_messages.each do |msg|
+              %li= msg
+      
+      
+          
+            
+      .actions
+        = f.submit 'Guardar'
+      

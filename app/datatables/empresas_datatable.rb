@@ -23,7 +23,6 @@ private
       
       fecha = ""
       fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
-
         [ 
         empresa.prefijo,
         empresa.nombre_empresa,
@@ -36,7 +35,8 @@ private
         link_to("Editar Empresa", edit_empresa_path(empresa)),
         link_to("Productos", empresa_productos_path(empresa)),
         link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios"),
-        link_to("GLN", empresa_glns_path(empresa))          
+        link_to("GLN", empresa_glns_path(empresa)),  
+        link_to("Etiqueta", empresa_etiqueta_path(empresa.prefijo, empresa.prefijo))
       ]
 
     end
