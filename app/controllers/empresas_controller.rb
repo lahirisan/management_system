@@ -116,7 +116,6 @@ class EmpresasController < ApplicationController
   # PUT /empresas/1
   # PUT /empresas/1.json
   def update
-    
     @empresa = Empresa.find(params[:id])
 
     respond_to do |format|

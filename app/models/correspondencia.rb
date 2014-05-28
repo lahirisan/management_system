@@ -8,5 +8,23 @@ class Correspondencia < ActiveRecord::Base
    belongs_to :parroquia, :foreign_key => "id_parroquia"
 
    validates :rep_tecnico, :cargo_rep_tecnico, :edificio, :calle, :urbanizacion, :id_estado, :id_ciudad , :cod_postal, :punto_referencia, :presence => {:message => "No puede estar en blanco"}, :on => :create
+
+   def self.modificar_etiqueta(parametros)
+
+   	etiqueta = Correspondencia.find(:first, :conditions => ["prefijo = ?", parametros[:empresa_id]])
+   	etiqueta.edificio = parametros[:edificio]
+   	etiqueta.calle = parametros[:calle]
+   	etiqueta.urbanizacion = parametros[:urbanizacion]
+   	etiqueta.id_estado = parametros[:id_estado]
+   	etiqueta.id_ciudad = parametros[:id_ciudad]
+   	etiqueta.id_municipio = parametros[:id_municipio]
+   	etiqueta.id_parroquia = parametros[:id_parroquia]
+   	etiqueta.cod_postal = parametros[:cod_postal]
+   	etiqueta.punto_referencia = parametros[:punto_referencia]
+   	etiqueta.save
+
+   	DatosContacto.modificar_etiqueta(parametros)
+
+   end
   
 end

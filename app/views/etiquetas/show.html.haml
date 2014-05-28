@@ -72,3 +72,5 @@
   = link_to 'Regresar', empresas_path
   \|
   = link_to 'Editar', edit_empresa_etiqueta_path(params[:empresa_id], params[:empresa_id])
+  \|
+  = link_to 'Exportar PDF', "/empresas/#{params[:empresa_id]}/etiquetas/#{params[:empresa_id]}.pdf", :target => "_blank"

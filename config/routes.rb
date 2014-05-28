@@ -29,7 +29,11 @@ GS1::Application.routes.draw do
   resources :empresas do  
 
     resources :empresa_servicios
-    resources :etiquetas
+    resources :etiquetas do
+      collection do
+        get 'exportar', :action => 'exportar', :as => 'exportar' 
+      end
+    end
     
     resources :productos do #/empresas/1/productos
 
