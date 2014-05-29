@@ -4,9 +4,10 @@
 
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
-    %a.boton_importar.ui-state-default.ui-corner-all{:href => "#"}
-        %span.ui-icon.ui-icon-transferthick-e-w
-        Importar Producto
+    - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Importar Producto')
+        %a.boton_importar.ui-state-default.ui-corner-all{:href => "#"}
+            %span.ui-icon.ui-icon-transferthick-e-w
+            Importar Producto
 
 
     %table#data_table_productos.display{:"data-source" => "#{empresa_productos_path}.json"}
@@ -30,10 +31,10 @@
     %br/
 
     
-   
+    - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Importar Empresa')
 
-    %a.boton_importar.ui-state-default.ui-corner-all{:href => "#"}
-        %span.ui-icon.ui-icon-transferthick-e-w
-        Importar Producto
+        %a.boton_importar.ui-state-default.ui-corner-all{:href => "#"}
+            %span.ui-icon.ui-icon-transferthick-e-w
+            Importar Producto
 
     =render "importar_producto"

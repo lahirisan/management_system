@@ -4,9 +4,11 @@
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
     =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retiradas" do
-        %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
-            %span.ui-icon.ui-icon-circle-minus
-            Eliminar
+        - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Empresa')
+
+            %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
+                %span.ui-icon.ui-icon-circle-minus
+                Eliminar
         %table.margen_inferior{:border => 1}
             %tr
                 %td
@@ -47,9 +49,10 @@
         %br/
         #datos_empresas_eliminar
         =hidden_field_tag "eliminar", "true"
-        %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
-            %span.ui-icon.ui-icon-circle-minus
-            Eliminar
+        - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Empresa')
+            %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
+                %span.ui-icon.ui-icon-circle-minus
+                Eliminar
         
         
     

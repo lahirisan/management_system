@@ -2,7 +2,9 @@ class EmpresasController < ApplicationController
   before_filter :require_authentication
   # GET /empresas
   # GET /empresas.json
+  
   def index
+
     @empresas = Empresa.includes(:estado, :ciudad, :estatus, :tipo_usuario_empresa, :clasificacion)
     # OJO: La llamada JSON y los parametro se establecen en el datatable desde el template.html.haml
    

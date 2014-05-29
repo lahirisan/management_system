@@ -4,9 +4,10 @@
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
     =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_eliminadas" do
-        %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit", :title => "Reactivar empresas seleccionadas"}
-            %span.ui-icon.ui-icon-circle-check
-            Reactivar Empresa
+        - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Reactivar Empresa')
+            %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit", :title => "Reactivar empresas seleccionadas"}
+                %span.ui-icon.ui-icon-circle-check
+                Reactivar Empresa
         %table#data_table_empresas_eliminadas.display{:"data-source" => "/empresas.json?eliminadas=true"}
             %thead
                 %tr
@@ -30,8 +31,10 @@
         %br/
         
         =hidden_field_tag "reactivar", "true"
-        %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit", :title => "Reactivar empresas seleccionadas"}
-            %span.ui-icon.ui-icon-circle-check
-            Reactivar Empresa
+        - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Reactivar Empresa')
+        
+            %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit", :title => "Reactivar empresas seleccionadas"}
+                %span.ui-icon.ui-icon-circle-check
+                Reactivar Empresa
         
     
