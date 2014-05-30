@@ -4,4 +4,15 @@ class DatosContacto < ActiveRecord::Base
   validates :contacto, :tipo,  :presence => {:message => "No puede estar en blanco"}, :on => :create
   validates :contacto, format: { with: /^[0-9]\d*$/, on: :create, :message => "Solo numeros para el contacto"} # Validacion al crear
 
+
+  def self.modificar_etiqueta(parametros)
+
+  	contacto = DatosContacto.find(:first, :conditions => ["prefijo = ? and tipo = ?", parametros[:empresa_id], 'principal'])
+  	contacto.contacto = parametros[:contacto]
+  	contacto.nombre_contacto = parametros[:nombre_contacto]
+  	contacto.cargo_contacto = parametros[:cargo_contacto]
+  	contacto.save
+
+  end
+
 end

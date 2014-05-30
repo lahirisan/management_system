@@ -4,10 +4,12 @@
 
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
-    %a.boton_importar.ui-state-default.ui-corner-all{:href => "#"}
-        %span.ui-icon.ui-icon-transferthick-e-w
-        Importar Producto
-
+    - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Importar Producto')
+        %a.boton_importar.ui-state-default.ui-corner-all{:href => "#", :title => "Opción que permite importar los productos desde un archivo Excel"}
+            %span.ui-icon.ui-icon-transferthick-e-w
+            Importar Producto
+    %br/
+    %br/    
 
     %table#data_table_productos.display{:"data-source" => "#{empresa_productos_path}.json"}
         %thead
@@ -21,7 +23,8 @@
                 %th Estatus
                 %th Código Prod
                 %th Fecha Creación
-                %th Editar Producto
+                -if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Servicio')
+                    %th Editar Producto
                 %th GTIN 14
         %tbody
         %tfoot
@@ -30,10 +33,10 @@
     %br/
 
     
-   
+    - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Importar Producto')
 
-    %a.boton_importar.ui-state-default.ui-corner-all{:href => "#"}
-        %span.ui-icon.ui-icon-transferthick-e-w
-        Importar Producto
+        %a.boton_importar.ui-state-default.ui-corner-all{:href => "#", :title => "Opción que permite importar los productos desde un archivo Excel"}
+            %span.ui-icon.ui-icon-transferthick-e-w
+            Importar Producto
 
     =render "importar_producto"

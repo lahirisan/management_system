@@ -29,7 +29,11 @@ class ProductosController < ApplicationController
                     elsif params[:eliminados]
                       render json: (ProductosEliminadosDatatable.new(view_context))
                     else
-                      render json: ProductosDatatable.new(view_context) 
+                      if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Producto')
+                        render json: ProductosDatatable.new(view_context) 
+                      else
+                        render json: ProductosNotEditableDatatable.new(view_context) 
+                      end
                     end
                   }
       

@@ -13,8 +13,10 @@
 			%th Gerencia
 			%th Cargo
 			%th Fecha Creación
-			%th
-			%th
+			- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Usuario')
+				%th
+			- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Usuario')
+				%th
 			%th
 		%tbody
 			- @usuarios.each do |usuario|
@@ -28,7 +30,9 @@
 					%td
 						= usuario.fecha_creacion.strftime("%Y-%m-%d") if usuario.fecha_creacion
 					%td= link_to 'Ver', usuario
-					%td= link_to 'Editar', edit_usuario_path(usuario)
-					%td= link_to 'Eliminar', usuario, method: :delete, data: { confirm: 'Desea ELIMINAR este usuario?' }
+					- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Usuario')
+						%td= link_to 'Editar', edit_usuario_path(usuario)
+					- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Usuario')
+						%td= link_to 'Eliminar', usuario, method: :delete, data: { confirm: 'Desea ELIMINAR este usuario?' }
 	
 	

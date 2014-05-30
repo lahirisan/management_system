@@ -20,10 +20,12 @@
                 %th RIF
                 %th Estatus
                 %th Detalle Empresa
-                %th Editar Empresa
+                - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Empresa')
+                    %th Editar Empresa 
                 %th Productos
                 %th Servicios
                 %th GLN
+                %th Etiquetas
                
         %tfoot
             =render 'footer'

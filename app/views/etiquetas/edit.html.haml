@@ -1,0 +1,78 @@
+%section.contexto
+  %label.contexto 
+    Etiquetas > Editar
+  %hr.contexto{:size => "1"}
+  %section.formulario
+
+    = form_tag "/empresas/#{params[:empresa_id]}/etiquetas/#{params[:empresa_id]}", :method => "put" do 
+      - if @etiqueta.errors.any?
+        #error_explanation
+          %h2= "#{pluralize(@etiqueta.errors.count, "errore")} "
+          %ul
+            - @etiqueta.errors.full_messages.each do |msg|
+              %li= msg
+      %table
+        %tr
+          %td
+            Usuario
+          %td
+            =text_field_tag "nombre_contacto", "#{@contacto.nombre_contacto}"
+        %tr
+          %td
+            Cargo
+          %td
+            =text_field_tag "cargo_contacto", "#{@contacto.cargo_contacto}"
+        %tr
+          %td
+            Teléfono
+          %td
+            =text_field_tag "contacto", "#{@contacto.contacto}"
+        %tr
+          %td
+            Edificio
+          %td
+            =text_field_tag "edificio", "#{@etiqueta.edificio}"
+        %tr
+          %td
+            Calle 
+          %td
+            =text_field_tag "calle", "#{@etiqueta.calle}"
+        %tr
+          %td
+            Urbanización
+          %td
+            =text_field_tag "urbanizacion", "#{@etiqueta.urbanizacion}"
+        %tr
+          %td
+            Estado
+          %td
+            =select_tag "id_estado", options_from_collection_for_select(Estado.all, :id, :nombre, @etiqueta.try(:id_estado)), :prompt => "-Seleccione-"
+        %tr
+          %td
+            Ciudad
+          %td
+            =select_tag "id_ciudad", options_from_collection_for_select(Ciudad.all, :id, :nombre, @etiqueta.try(:id_ciudad)), :prompt => "-Seleccione-"
+        %tr
+          %td
+            Municipio
+          %td
+            =select_tag "id_municipio", options_from_collection_for_select(Municipio.all, :id, :nombre,@etiqueta.try(:id_municipio)), :prompt => "-Seleccione-"
+        %tr
+          %td
+            Parroquia
+          %td
+            =select_tag "id_parroquia", options_from_collection_for_select(Parroquia.all, :id, :nombre,@etqueta.try(:id_parroquia)), :prompt => "-Seleccione-"
+        %tr
+          %td
+            Código Postal
+          %td
+            =text_field_tag "cod_postal", "#{@etiqueta.cod_postal}"
+        %tr
+          %td
+            Punto Referencia
+          %td
+            =text_field_tag "punto_referencia", "#{@etiqueta.punto_referencia}"
+          
+      .actions
+        = submit_tag 'Guardar'
+      

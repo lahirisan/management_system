@@ -20,25 +20,48 @@ private
   def data
 
     empresas.map do |empresa|
+
+
       
       fecha = ""
       fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
 
+      if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Empresa')
         [ 
-        empresa.prefijo,
-        empresa.nombre_empresa,
-        fecha,
-        empresa.estado.nombre,
-        empresa.ciudad.nombre,
-        empresa.rif,
-        empresa.estatus.descripcion,
-        link_to("Ver Detalle", empresa_path(empresa)),        
-        link_to("Editar Empresa", edit_empresa_path(empresa)),
-        link_to("Productos", empresa_productos_path(empresa)),
-        link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios"),
-        link_to("GLN", empresa_glns_path(empresa))          
-      ]
+          empresa.prefijo,
+          empresa.nombre_empresa,
+          fecha,
+          empresa.estado.nombre,
+          empresa.ciudad.nombre,
+          empresa.rif,
+          empresa.estatus.descripcion,
+          link_to("Ver Detalle", empresa_path(empresa)),        
+          link_to("Editar Empresa", edit_empresa_path(empresa)),
+          link_to("Productos", empresa_productos_path(empresa)),
+          link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios"),
+          link_to("GLN", empresa_glns_path(empresa)),  
+          link_to("Etiqueta", empresa_etiqueta_path(empresa.prefijo, empresa.prefijo))
+        ]
 
+      else
+
+        [ 
+          empresa.prefijo,
+          empresa.nombre_empresa,
+          fecha,
+          empresa.estado.nombre,
+          empresa.ciudad.nombre,
+          empresa.rif,
+          empresa.estatus.descripcion,
+          link_to("Ver Detalle", empresa_path(empresa)),        
+          link_to("Productos", empresa_productos_path(empresa)),
+          link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios"),
+          link_to("GLN", empresa_glns_path(empresa)),  
+          link_to("Etiqueta", empresa_etiqueta_path(empresa.prefijo, empresa.prefijo))
+        ]
+
+      end
+    
     end
 
   end

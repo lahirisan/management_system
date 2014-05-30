@@ -13,42 +13,44 @@
 		%section#identificador.identificador{:onclick => "displayDetallePerfil(event)"}
 			=image_tag 'user_photo.png'
 			%br
-			
 			%label.usuario
-				Usuario
+				=session[:usuario]
 			%br
 			%label.rol
-				Administrador
-
+				=session[:perfil]
 			%br
 			%label.session
 				=link_to 'Cerrar Sesión', logout_path, :class => "enlace_session", :title => "Cierra sesión"
-		
 
 		%section#menu.menu	
 			.submenu Administración
 			%a.opcion{:href => "/empresas", :title => "Listado de Empresas"}
 				.opcion Empresas
-				.opcion
-					%ul
-						%li 
-							%a.opcion{:href => "/empresas/new", :title => "Opción para Crear Empresa"}
-								.opcion Registrar
-				.opcion
-					%ul
-						%li 
-							%a.opcion{:href => "/empresas?activacion=true", :title => "Opción para Activar Empresas creadas"}
-								.opcion Activar Empresa
-				.opcion
-					%ul
-						%li 
-							%a.opcion{:href => "/empresas?retirar=true", :title => "Opción para Retirar Empresa"}
-								.opcion Retirar Empresa
-				.opcion
-					%ul
-						%li 
-							%a.opcion{:href => "/empresas?eliminar=true", :title => "Oción para Eliminar Empresa"}
-								.opcion Eliminar Empresa
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Empresa')
+					.opcion
+						%ul
+							%li 
+								%a.opcion{:href => "/empresas/new", :title => "Opción para Crear Empresa"}
+									.opcion Registrar
+				
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Validar Empresa')
+					.opcion
+						%ul
+							%li 
+								%a.opcion{:href => "/empresas?activacion=true", :title => "Opción para Activar Empresas creadas"}
+									.opcion Activar Empresa
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Retirar Empresa')
+					.opcion
+						%ul
+							%li 
+								%a.opcion{:href => "/empresas?retirar=true", :title => "Opción para Retirar Empresa"}
+									.opcion Retirar Empresa
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Empresa')
+					.opcion
+						%ul
+							%li 
+								%a.opcion{:href => "/empresas?eliminar=true", :title => "Oción para Eliminar Empresa"}
+									.opcion Eliminar Empresa
 				.opcion
 					%ul
 						%li 
@@ -64,26 +66,29 @@
 
 				%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos", :title => "Listado de productos para la empresa seleccionada"}
 					.opcion Productos
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos/new", :title => "Crear producto"}
-									.opcion Crear Producto
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?retirar=true", :title => "Retirar uno o más productos"}
-									.opcion Retirar Productos
+					- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Producto')
+						.opcion
+							%ul
+								%li 
+									%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos/new", :title => "Crear producto"}
+										.opcion Crear Producto
+					- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Retirar Producto')
+						.opcion
+							%ul
+								%li 
+									%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?retirar=true", :title => "Retirar uno o más productos"}
+										.opcion Retirar Productos
 					.opcion
 						%ul
 							%li 
 								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?retirados=true", :title => "Listado de los productos retirados"}
 									.opcion Productos Retirados
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminar=true", :title => "ELiminar productos"}
-									.opcion Eliminar Productos
+					- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Producto')
+						.opcion
+							%ul
+								%li 
+									%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminar=true", :title => "ELiminar productos"}
+										.opcion Eliminar Productos
 					.opcion
 						%ul
 							%li 
@@ -94,16 +99,18 @@
 
 				%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios", :title => "Listado de Servicios para la empresa seleccionada"}
 					.opcion Servicios
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios/new", :title => "Opción que permite crear servicio"}
-									.opcion Crear Servicio
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios?eliminar=true", :title => "ELiminar Servicios"}
-									.opcion Eliminar Servicios
+					- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Servicio')
+						.opcion
+							%ul
+								%li 
+									%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios/new", :title => "Opción que permite crear servicio"}
+										.opcion Crear Servicio
+					- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Servicio')
+						.opcion
+							%ul
+								%li 
+									%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios?eliminar=true", :title => "ELiminar Servicios"}
+										.opcion Eliminar Servicios
 					.opcion
 						%ul
 							%li 
@@ -130,11 +137,12 @@
 									.opcion GLN Eliminados
 			.opcion
 				=link_to 'Usuarios', usuarios_path, :class => "opcion", :title => "Usuarios registrados en la aplicación"
-			.opcion
-				%ul
-					%li 
-						%a.opcion{:href => "#{new_usuario_path}", :title => "Crear usuario"}
-							.opcion Crear Usuario
-			
+			- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Usuario')
+				.opcion
+					%ul
+						%li 
+							%a.opcion{:href => "#{new_usuario_path}", :title => "Crear usuario"}
+								.opcion Crear Usuario
+				
 		= yield
 		
