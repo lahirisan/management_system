@@ -20,9 +20,9 @@ class EmpresaServiciosDatatable < AjaxDatatablesRails
 private
 
   def data
-
+    
     empresa_servicios.map do |empresa_servicio|
-        
+      if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Servicio')
         [
           empresa_servicio.empresa.nombre_empresa,
           empresa_servicio.servicio.nombre,
@@ -33,8 +33,22 @@ private
           empresa_servicio.telefono,
           empresa_servicio.email,
           link_to("Editar", "/empresas/#{params[:empresa_id]}/empresa_servicios/#{empresa_servicio.id}/edit")
+        ]
+      else
+        [
+          empresa_servicio.empresa.nombre_empresa,
+          empresa_servicio.servicio.nombre,
+          empresa_servicio.fecha_contratacion.strftime("%Y-%m-%d"),
+          empresa_servicio.fecha_finalizacion.strftime("%Y-%m-%d"),
+          empresa_servicio.nombre_contacto,
+          empresa_servicio.cargo_contacto,
+          empresa_servicio.telefono,
+          empresa_servicio.email
           
         ]
+
+      end
+
       
     end
 

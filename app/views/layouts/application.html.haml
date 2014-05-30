@@ -13,17 +13,14 @@
 		%section#identificador.identificador{:onclick => "displayDetallePerfil(event)"}
 			=image_tag 'user_photo.png'
 			%br
-			
 			%label.usuario
-				Usuario
+				=session[:usuario]
 			%br
 			%label.rol
-				Administrador
-
+				=session[:perfil]
 			%br
 			%label.session
 				=link_to 'Cerrar Sesión', logout_path, :class => "enlace_session", :title => "Cierra sesión"
-		
 
 		%section#menu.menu	
 			.submenu Administración
@@ -108,11 +105,12 @@
 								%li 
 									%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios/new", :title => "Opción que permite crear servicio"}
 										.opcion Crear Servicio
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios?eliminar=true", :title => "ELiminar Servicios"}
-									.opcion Eliminar Servicios
+					- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Servicio')
+						.opcion
+							%ul
+								%li 
+									%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios?eliminar=true", :title => "ELiminar Servicios"}
+										.opcion Eliminar Servicios
 					.opcion
 						%ul
 							%li 
@@ -139,11 +137,12 @@
 									.opcion GLN Eliminados
 			.opcion
 				=link_to 'Usuarios', usuarios_path, :class => "opcion", :title => "Usuarios registrados en la aplicación"
-			.opcion
-				%ul
-					%li 
-						%a.opcion{:href => "#{new_usuario_path}", :title => "Crear usuario"}
-							.opcion Crear Usuario
-			
+			- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Usuario')
+				.opcion
+					%ul
+						%li 
+							%a.opcion{:href => "#{new_usuario_path}", :title => "Crear usuario"}
+								.opcion Crear Usuario
+				
 		= yield
 		

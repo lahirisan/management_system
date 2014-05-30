@@ -40,5 +40,6 @@
       %td
         = @usuario.fecha_creacion
 
-  = link_to 'Editar', edit_usuario_path(@usuario)
+  - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Usuario')
+    = link_to 'Editar', edit_usuario_path(@usuario)
   = link_to 'Regresar', usuarios_path

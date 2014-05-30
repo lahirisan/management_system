@@ -16,7 +16,8 @@
         %th Cargo Contacto
         %th Teléfono
         %th Correo
-        %th Editar
+        -if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Empresa')
+          %th Editar
         
 
     %tbody

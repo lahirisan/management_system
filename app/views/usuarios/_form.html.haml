@@ -47,17 +47,17 @@
           %td
             Perfil
           %td
-            =f.collection_select :id_perfil, Perfil.all, :id, :descripcion, :prompt => "-Seleccione-"
+            =f.collection_select :id_perfil, Perfil.order("descripcion asc"), :id, :descripcion, :prompt => "-Seleccione-"
         %tr
           %td
             Gerencia
           %td
-            = f.collection_select :id_gerencia, Gerencia.all, :id, :nombre, :prompt => "-Seleccione-"
+            = f.collection_select :id_gerencia, Gerencia.order("nombre asc"), :id, :nombre, :prompt => "-Seleccione-"
         %tr
           %td
             Cargo
           %td
-            = f.collection_select :id_cargo, Cargo.all, :id, :descripcion, :prompt => "-Seleccione-"
+            = f.collection_select :id_cargo, Cargo.order("descripcion asc"), :id, :descripcion, :prompt => "-Seleccione-"
 
       .actions
         = f.submit 'Guardar'

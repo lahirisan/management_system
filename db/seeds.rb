@@ -8,8 +8,6 @@
 
 #Usuario.create(username: 'admin', password: 'admin', email: 'admin@app.com', nombre_apellido: 'admin', fecha_creacion: Time.now)
 #Perfil.create([{descripcion: 'prefil2', detalle: 'detalle2', habilitado: 1},{descripcion: 'prefil3', detalle: 'detalle3', habilitado: 1}])
-#Cargo.create([{descripcion: 'cargo1',  habilitado: 1},{descripcion: 'cargo2',  habilitado: 1}])
-#Gerencia.create([{nombre: 'nombre1',  habilitado: 1},{nombre: 'nombre2',  habilitado: 1}])
 
 UsuariosAlcance.create([
 	{perfil:'Administrador', alcance:'Listar Empresa'},
@@ -116,6 +114,15 @@ UsuariosAlcance.create([
  	{perfil:'Usuario Validador', alcance:'Exportar Etiqueta'}
 	])
 
+cargos = Cargo.all
+cargos.collect{|cargo| cargo.destroy}
+
+Cargo.create([{descripcion: 'Coordinador',  habilitado: 1},{descripcion: 'Asistente',  habilitado: 1},{descripcion: 'Administrador Sistema',  habilitado: 1}])
+
+gerencias = Gerencia.all
+gerencias.collect{|gerencia|gerencia.destroy}
+
+Gerencia.create([{nombre: 'Comercial',  habilitado: 1},{nombre: 'Administrativa',  habilitado: 1},{nombre: 'Tecnica',  habilitado: 1}, {nombre: 'General',  habilitado: 1}])
 
 perfiles = Perfil.all
 perfiles.collect{|perfil| perfil.destroy}
