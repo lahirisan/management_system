@@ -19,7 +19,7 @@
           %tr
             %td
               GLN
-            %td.campo_readonly
+            %td
               =f.text_field :gln , :value => "#{@gln.gln}", :disabled => "true", :class => "campo_readonly"
         %tr
           %td
@@ -74,6 +74,6 @@
           %td
             Código Postal
           %td
-            = f.text_field :cod_postal
+            = f.text_field :cod_postal, :placeholder => "1000"
       .actions
         = f.submit 'Guardar'
