@@ -11,13 +11,20 @@
 			=image_tag 'GS1-Header-3.png', :class => "logo-der"
 
 		%section#identificador.identificador{:onclick => "displayDetallePerfil(event)"}
-			=image_tag 'user_photo.png'
+			
 			%br
 			%label.usuario
 				=session[:usuario]
 			%br
 			%label.rol
 				=session[:perfil]
+			%br
+			%label.rol
+				=session[:gerencia]
+			%br
+			%label.rol
+				=session[:cargo]
+
 			%br
 			%label.session
 				=link_to 'Cerrar Sesión', logout_path, :class => "enlace_session", :title => "Cierra sesión"
@@ -135,8 +142,9 @@
 							%li 
 								%a.opcion{:href => "#{empresa_glns_path}?eliminados=true", :title => "GLN eliminados"}
 									.opcion GLN Eliminados
-			.opcion
-				=link_to 'Usuarios', usuarios_path, :class => "opcion", :title => "Usuarios registrados en la aplicación"
+			- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Listar Usuario')
+				.opcion
+					=link_to 'Usuarios', usuarios_path, :class => "opcion", :title => "Usuarios registrados en la aplicación"
 			- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Usuario')
 				.opcion
 					%ul

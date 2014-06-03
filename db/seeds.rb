@@ -131,7 +131,9 @@ Perfil.create([{descripcion: 'Administrador', detalle: '', habilitado: 1},{descr
 usuarios = Usuario.all
 usuarios.collect{|usuario| usuario.destroy}
 perfil_administrador = Perfil.find(:first, :conditions => ["descripcion = ?", "Administrador"])
-Usuario.create(username: 'admin', password: 'admin', email: 'admin@app.com', nombre_apellido: 'admin', fecha_creacion: Time.now, id_perfil:perfil_administrador.id)
+gerencia_tecnica = Gerencia.find(:first, :conditions => ["nombre = ?", "Tecnica"])
+cargo_administrador = Cargo.find(:first, :conditions => ["descripcion = ?", "Administrador Sistema"])
+Usuario.create(username: 'admin', password: 'admin', email: 'admin@app.com', nombre_apellido: 'admin', fecha_creacion: Time.now, id_perfil:perfil_administrador.id, id_gerencia:gerencia_tecnica.id, id_cargo:cargo_administrador.id)
 
 
 
