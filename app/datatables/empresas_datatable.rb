@@ -21,7 +21,6 @@ private
 
     empresas.map do |empresa|
 
-
       
       fecha = ""
       fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)

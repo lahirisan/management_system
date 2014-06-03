@@ -60,20 +60,16 @@ class Gln < ActiveRecord::Base
   # OJO falta validar los casos cuando la empresa es de 9 digitos y de 6 digitos
   
   empresa = Empresa.find(:first, :conditions => ["prefijo = ?", prefijo_empresa])
-  
   gln_generado = "759" + prefijo_empresa[3..6] + "00001" 
+
   digito_verificacion = Producto.calcular_digito_verificacion(gln_generado.to_i,"GTIN-13")
   gln = gln_generado + digito_verificacion.to_s
-
   
   tipo_gln = TipoGln.find(:first, :conditions => ["nombre = ?", "Legal"])
   estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?","Activo", "GLN"])
-  pais = Pais.find(:first, :conditions => ["nombre = ?", "No tiene"])
+  pais = Pais.find(:first, :conditions => ["nombre = ?", "Venezuela"])
 
-  estado = Estado.find(:first, :conditions => ["nombre = ?", "NO ASIGNADA"])
-  municipio = Municipio.find(:first, :conditions => ["nombre = ?", "DESCONOCIDO"])
-  ciudad = Ciudad.find(:first, :conditions => ["nombre = ?", "NO ASIGNADA"])
-
+  
   gln_legal = Gln.new
   gln_legal.gln = gln
   gln_legal.id_tipo_gln = tipo_gln.id
@@ -82,9 +78,9 @@ class Gln < ActiveRecord::Base
   gln_legal.id_estatus = estatus.id
   gln_legal.fecha_asignacion = Time.now
   gln_legal.id_pais = pais.id
-  gln_legal.id_estado = estado.id
-  gln_legal.id_municipio = municipio.id
-  gln_legal.id_ciudad = ciudad.id
+  gln_legal.id_estado = empresa.id_estado
+  gln_legal.id_municipio = 999 # 
+  gln_legal.id_ciudad = empresa.id_ciudad
   gln_legal.edificio = "-"
   gln_legal.calle = "-"
   gln_legal.urbanizacion = "-"
@@ -120,11 +116,11 @@ class Gln < ActiveRecord::Base
  end
 
 
- def self.asociar_gln_empresa(gln, prefijo_empresa)
+ def self.asociar_gln_empresa(parametro_gln, prefijo_empresa)
 
   empresa_gln = GlnEmpresa.new
   empresa_gln.prefijo = prefijo_empresa
-  empresa_gln.id_gln = gln
+  empresa_gln.id_gln = parametro_gln
   empresa_gln.save
 
  end

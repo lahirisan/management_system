@@ -26,7 +26,7 @@
             Tipo GLN
           %td
             - if @gln.new_record?
-              =(f.collection_select :id_tipo_gln, TipoGln.find(:all, :conditions => ["nombre in (?)", ['Operativo', 'Fisico']]), :id, :nombre, :prompt => '-Seleccione-') 
+              =(f.collection_select :id_tipo_gln, TipoGln.find(:all, :conditions => ["nombre in (?)", ['Operativo', 'Físico']]), :id, :nombre, :prompt => '-Seleccione-') 
             -else
               =f.text_field :tipo_gln, :value => "#{@gln.tipo_gln.nombre}", :disabled => :true, :class => "campo_readonly"
         
