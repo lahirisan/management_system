@@ -85,13 +85,19 @@ class ProductosController < ApplicationController
 
     @gtin = params[:gtin]  if params[:gtin] != ''
 
-    params[:producto][:gtin] = Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin])
+    params[:producto][:gtin] = Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin], params[:producto][:codigo_prod])
     params[:producto][:fecha_creacion] = Time.now
     estatus = Estatus.find(:first, :conditions => ["(descripcion = ?) and (alcance = ?)", "Activo", "Producto"])
     params[:producto][:id_estatus] = estatus.id
-    
-    @producto = Producto.new(params[:producto])
 
+
+
+    params[:producto][:codigo_prod] = params[:producto][:gtin][3..6] if params[:producto][:id_tipo_gtin] == '1'
+    params[:producto][:codigo_prod] = params[:producto][:gtin][7..11] if params[:producto][:id_tipo_gtin] == '3'
+    params[:producto][:codigo_prod] = params[:producto][:gtin][8..12] if params[:producto][:id_tipo_gtin] == '4' or params[:producto][:id_tipo_gtin] == '6'
+
+
+    @producto = Producto.new(params[:producto])
 
     respond_to do |format|
       if @producto.save

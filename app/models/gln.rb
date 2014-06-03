@@ -61,7 +61,7 @@ class Gln < ActiveRecord::Base
   
   empresa = Empresa.find(:first, :conditions => ["prefijo = ?", prefijo_empresa])
   
-  gln_generado = "759" + prefijo_empresa[3..6] + "90001" 
+  gln_generado = "759" + prefijo_empresa[3..6] + "00001" 
   digito_verificacion = Producto.calcular_digito_verificacion(gln_generado.to_i,"GTIN-13")
   gln = gln_generado + digito_verificacion.to_s
 
@@ -77,7 +77,7 @@ class Gln < ActiveRecord::Base
   gln_legal = Gln.new
   gln_legal.gln = gln
   gln_legal.id_tipo_gln = tipo_gln.id
-  gln_legal.codigo_localizacion = "90001"
+  gln_legal.codigo_localizacion = "00001"
   gln_legal.descripcion = "GLN Legal"
   gln_legal.id_estatus = estatus.id
   gln_legal.fecha_asignacion = Time.now
