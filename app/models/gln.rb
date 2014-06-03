@@ -10,6 +10,7 @@ class Gln < ActiveRecord::Base
   belongs_to :municipio, :foreign_key => "id_municipio"
 
   validates :gln, :id_tipo_gln, :id_estado, :id_municipio, :id_ciudad, :descripcion,  :edificio, :calle, :urbanizacion, :punto_referencia, :cod_postal,  :presence => {:message => "No puede estar en blanco"}, :on => :create
+  validates :cod_postal, format: { with: /^[1-9]\d*$/, on: :create, :message => "El Formato del Codigo Postal es incorrecto"} # Validacion al crear
 
 
  def self.eliminar(parametros)
