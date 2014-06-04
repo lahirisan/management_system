@@ -83,8 +83,7 @@
  				$.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
   					ciudades.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
 				});
-        	})
-
+        	});
            
 
 		});
@@ -101,6 +100,16 @@
   					correspondencia_ciudades.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
 				});
         	})
+
+            //AJAX que obtiene las municpios dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/municipios.json?id_estado="+$(this).val(), function( data ) { 
+                var municipios = $("#empresa_correspondencia_attributes_id_municipio");
+                municipios.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    municipios.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            })
 		});
 
         //  Manejador del evento Change del campo Clasificacion

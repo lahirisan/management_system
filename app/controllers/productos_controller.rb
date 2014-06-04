@@ -19,9 +19,12 @@ class ProductosController < ApplicationController
                     end
                   }
       format.json { 
-                  	
                     if params[:retirar]
                       render json: (RetirarProductosDatatable.new(view_context))
+                    elsif params[:gtin]
+                      gtin = params[:gtin]
+                      codigo_generado =  gtin + Producto.calcular_digito_verificacion(params[:gtin].to_i,"GTIN-13").to_s
+                      render json: ProductosEmpresa.find(:first, :conditions => ["prefijo = ? and gtin = ?", params[:gtin].to_i, codigo_generado])
                     elsif params[:retirados]
                       render json: (ProductosRetiradosDatatable.new(view_context))
                     elsif params[:eliminar]

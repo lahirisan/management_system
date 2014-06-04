@@ -186,12 +186,12 @@
               %td
                 Ciudad
               %td
-                =fa.collection_select :id_ciudad,  Ciudad.all, :id, :nombre, {:prompt => '-Seleccione Estado-'}
-            / %tr
-            /   %td
-            /     Municipio
-            /   %td
-            /     =fa.text_field :id_municipio
+                =fa.collection_select :id_ciudad,  Ciudad.all, :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
+            %tr
+              %td
+                Municipio
+              %td
+                =fa.collection_select :id_municipio,  Municipio.all, :id, :nombre, {:prompt => '-Seleccione Municipio-'}
             / %tr
             /   %td
             /     Parroquia

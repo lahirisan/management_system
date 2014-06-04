@@ -216,6 +216,7 @@
             }
         });
 
+        /*
         if (window.location.pathname.split('/')[4] == 'new')
         {
             $("input[name='tipo_creacion']" ).live('change', function() {
@@ -242,20 +243,72 @@
             
         }
 
+        */
+
+        $("#producto_id_tipo_gtin" ).live('change', function() {
+
+            if ($(this).val() == 3) // GTIN 13
+            { 
+                $('td.texto_manual_automatico').html("Tipo de Creación");  
+                $('td.radio_manual_automatico').html('Automática<input id="tipo_creacion_automatica" name="tipo_creacion" type="radio" value="automatica">Manual<input id="tipo_creacion_manual" name="tipo_creacion" type="radio" value="manual">');  
+
+                $("input[name='tipo_creacion']" ).live('change', function() {
+
+                    if ($(this).val() == 'manual')
+                    {
+                        $('td.codigo_producto').html('Código producto');
+                        $('td.valor_codigo_producto').html('<input id="producto_codigo_prod" name="producto[codigo_prod]" type="text" placeholder="12345">');
+
+                    }
+                    else
+                    {
+                     $('td.codigo_producto').html('');
+                     $('td.valor_codigo_producto').html('');                       
+                    }
+
+                });
+            }
+            else
+            {
+                $('td.texto_manual_automatico').html("");  
+                $('td.radio_manual_automatico').html('');
+                $('td.codigo_producto').html('');
+                $('td.valor_codigo_producto').html('');           
+            }
+
+        });
+
+
+
         $('#new_producto').submit(function( event ) { 
-            
-            if (($("input[name='tipo_creacion']" ).val() == 'manual') && ($('#producto_id_tipo_gtin').val() == 3))
+
+            if (($("input[type='radio'][name='tipo_creacion']:checked").val() == 'manual') && ($('#producto_id_tipo_gtin').val() == 3))
             {
                 var reg = /^[0-9]{5}$/;
                 var cod_producto = $('#producto_codigo_prod').val();
                 if ( !reg.test(cod_producto) )
                 {
-                    alert('Estimado usuario, el codigo producto debe ser un número de 5 dígitos. Pro favor verifique');
+                    alert('Estimado usuario, el codigo producto debe ser un número de 5 dígitos. Por favor verifique');
                     return false;
                 }
+                else
+                {
+                    var prefijo = window.location.pathname.split('/')[2];
+                    var gtin = prefijo + $('#producto_codigo_prod').val();
+                    $.get("/productos.json?gtin="+gtin, function( data ) {
+                        if (data != null)
+                        {
+                            alert('Estimado usuario, el código de producto que está ingresando ya está asignado a la empresa. Porfavor verifique.');
+                            return false;
+                        }
+                        
+                    });
+                }
+                
             }
 
         });
+
 
     })   
 

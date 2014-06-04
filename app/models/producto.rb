@@ -6,7 +6,7 @@ class Producto < ActiveRecord::Base
   belongs_to :tipo_gtin, :foreign_key => "id_tipo_gtin"
   has_one    :productos_retirados, :foreign_key => "gtin", :dependent => :destroy 
 
-  validates :descripcion, :marca, :gpc, :id_estatus,  :fecha_creacion, :id_tipo_gtin, :presence => {:message => "No puede estar en blanco"}, :on => :create
+  validates :descripcion, :marca, :gpc, :id_tipo_gtin, :presence => {:message => "No puede estar en blanco"}, :on => :create
 
 
   def self.retirar(parametros) # Retira productos seleccionadaos individualmete
@@ -105,23 +105,42 @@ class Producto < ActiveRecord::Base
     
     elsif tipo_gtin.tipo == "GTIN-13"
       
-      ultimo_gtin_asignado = ProductosEmpresa.find(:first, :conditions => ["producto.id_tipo_gtin = ? and productos_empresa.prefijo = ?", tipo_gtin, prefijo], :joins => [:producto], :order => "producto.fecha_creacion desc")
+      #ultimo_gtin_asignado = ProductosEmpresa.find(:first, :conditions => ["producto.id_tipo_gtin = ? and productos_empresa.prefijo = ?", tipo_gtin, prefijo], :joins => [:producto], :order => "producto.fecha_creacion desc")
+      secuencia = "00001"
+      codigo_producto = prefijo.to_s + secuencia
+      digito_verificacion = calcular_digito_verificacion(codigo_producto.to_i, "GTIN-13")
+      gtin_generado = codigo_producto.to_s + digito_verificacion.to_s
+      
+      codigo_asignado = ProductosEmpresa.find(:first, :conditions => [" gtin = ? and prefijo = ?", gtin_generado, prefijo])
 
-      if ultimo_gtin_asignado.nil? # La Empresa no tiene producto GTIN 13
-        if codigo_producto.nil? 
-          secuencia = "00001"
-        else
-          secuencia = codigo_producto
-        end
-      else
-        secuencia = ultimo_gtin_asignado.gtin[7..11] # la secuencia
-        secuencia = secuencia.to_i + 1
+      while (codigo_asignado) do
+
+        codigo_producto = codigo_producto.to_i + 1
+        digito_verificacion = calcular_digito_verificacion(codigo_producto.to_i, "GTIN-13")
+        gtin_generado = codigo_producto.to_s + digito_verificacion.to_s
+        codigo_asignado = ProductosEmpresa.find(:first, :conditions => [" gtin = ? and prefijo = ?", gtin_generado, prefijo])
+       
       end
 
-      secuencia_completa = completar_secuencia(secuencia, tipo_gtin.tipo)
-      gtin_valido = completar_prefijo(secuencia_completa, prefijo)
-      digito_verificacion = calcular_digito_verificacion(gtin_valido.to_i, "GTIN-13")
-      gtin_generado = gtin_valido.to_s + digito_verificacion.to_s
+
+
+
+
+      # if ultimo_gtin_asignado.nil? # La Empresa no tiene producto GTIN 13
+      #   if codigo_producto.nil? 
+      #     secuencia = "00001"
+      #   else
+      #     secuencia = codigo_producto
+      #   end
+      # else
+      #   secuencia = ultimo_gtin_asignado.gtin[7..11] # la secuencia
+      #   secuencia = secuencia.to_i + 1
+      # end
+
+      #secuencia_completa = completar_secuencia(secuencia, tipo_gtin.tipo)
+      #gtin_valido = completar_prefijo(secuencia_completa, prefijo)
+      #digito_verificacion = calcular_digito_verificacion(gtin_valido.to_i, "GTIN-13")
+      #gtin_generado = gtin_valido.to_s + digito_verificacion.to_s
 
     elsif tipo_gtin.tipo == "GTIN-14"
       

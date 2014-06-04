@@ -69,7 +69,6 @@ class Gln < ActiveRecord::Base
   tipo_gln = TipoGln.find(:first, :conditions => ["nombre = ?", "Legal"])
   estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?","Activo", "GLN"])
   pais = Pais.find(:first, :conditions => ["nombre = ?", "Venezuela"])
-
   
   gln_legal = Gln.new
   gln_legal.gln = gln
@@ -80,7 +79,7 @@ class Gln < ActiveRecord::Base
   gln_legal.fecha_asignacion = Time.now
   gln_legal.id_pais = pais.id
   gln_legal.id_estado = empresa.id_estado
-  gln_legal.id_municipio = 999 # 
+  gln_legal.id_municipio = empresa.correspondencia.id_municipio # Al Legal se le esta pasando el id_municipio
   gln_legal.id_ciudad = empresa.id_ciudad
   gln_legal.edificio = "-"
   gln_legal.calle = "-"
