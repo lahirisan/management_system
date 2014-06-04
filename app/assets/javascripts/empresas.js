@@ -84,6 +84,9 @@
   					ciudades.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
 				});
         	})
+
+           
+
 		});
 
         // Verificar el cambio del select  estado de la correspondencia

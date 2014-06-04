@@ -9,6 +9,8 @@ class SessionsController < ApplicationController
 	    session[:user_id] = user.id
 	    session[:usuario] = user.username
 	    session[:perfil] = user.perfil.descripcion
+	    session[:cargo] = user.try(:cargo).try(:descripcion)
+	    session[:gerencia] = user.try(:gerencia).try(:nombre)
 	    redirect_to empresas_path
 	  else
 	    flash.now.alert = "Usuario o clave invalido"

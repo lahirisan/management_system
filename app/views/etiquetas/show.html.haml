@@ -26,27 +26,27 @@
       %td
         Edificio
       %td
-        =@etiqueta.edificio
+        =@etiqueta.try(:edificio)
     %tr
       %td
         Calle
       %td
-        =@etiqueta.calle
+        =@etiqueta.try(:calle)
     %tr
       %td
         Urbanización
       %td
-        =@etiqueta.urbanizacion
+        =@etiqueta.try(:urbanizacion)
     %tr
       %td
         Estado
       %td 
-        =@etiqueta.estado.nombre
+        =@etiqueta.try(:estado).try(:nombre)
     %tr
       %td
         Ciudad
       %td
-        =@etiqueta.ciudad.nombre
+        =@etiqueta.try(:ciudad).try(:nombre)
     %tr
       %td
         Municipio
@@ -61,12 +61,12 @@
       %td
         Código Postal
       %td
-        =@etiqueta.cod_postal
+        =@etiqueta.try(:cod_postal)
     %tr
       %td
         Punto Referencia
       %td
-        =@etiqueta.punto_referencia
+        =@etiqueta.try(:punto_referencia)
   
 
   = link_to 'Regresar', empresas_path

@@ -4,8 +4,8 @@ development:
   host: 192.168.1.14  
   database: administrativoGS1_
   username: sa
-  password: Sc4nnv3n
-  port: 1434
+  password: Gs1vzla
+  port: 1433
   pool: 5
   timeout: 5000
 
