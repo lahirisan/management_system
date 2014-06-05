@@ -20,11 +20,11 @@
       %table
         %tr
           %td.texto_tipo_gtin
-            -if @producto.new_record?
-              Tipo GTIN
+            =@gtin.nil? ? "Tipo GTIN" : "Tipo GTIN Base"
           %td.combo_tipo_gtin
+
             -if @producto.new_record?
-              =@gtin.nil? ? f.collection_select(:id_tipo_gtin, TipoGtin.find(:all, :conditions => ["tipo in (?)", ["GTIN-8", "GTIN-13"]]), :id, :tipo, :prompt => "-Seleccione-") : f.collection_select(:id_tipo_gtin, TipoGtin.find(:all, :conditions => ["id in (?)", [4,6]]), :id, :tipo, :prompt => "-Seleccione-")
+              =@gtin.nil? ? f.collection_select(:id_tipo_gtin, TipoGtin.find(:all, :conditions => ["tipo in (?)", ["GTIN-8", "GTIN-13"]]), :id, :tipo, :prompt => "-Seleccione-") : f.collection_select(:id_tipo_gtin, TipoGtin.find(:all, :conditions => ["id in (?)", [4,6]]), :id, :tipo_gtin_base, {:selected => params[:base].to_i})
 
             -else
               =f.hidden_field :id_tipo_gtin, :value => "#{@producto.id_tipo_gtin}"
@@ -37,12 +37,13 @@
           %td
             Descripción
           %td
-            =@producto.new_record? ? f.text_field(:descripcion) : f.text_field(:descripcion)
+            =params[:descripcion] ? f.text_field(:descripcion, :value => params[:descripcion]) : f.text_field(:descripcion)
+            
         %tr
           %td
             Marca
           %td
-            = @producto.new_record? ? f.text_field(:marca): f.text_field(:marca)
+            =params[:marca] ? f.text_field(:marca, :value => params[:marca]): f.text_field(:marca)
         %tr
           %td
             GPC
@@ -50,6 +51,8 @@
             =@producto.new_record? ? (f.text_field :gpc) :  (f.text_field :gpc, :readonly => :true, :class => "campo_readonly")
         %tr
           %td.codigo_producto
+            -if !@producto.new_record?
+              Código Producto
           %td.valor_codigo_producto
             -if !@producto.new_record?
               =(f.text_field :codigo_prod, :readonly => :true, :class => "campo_readonly")

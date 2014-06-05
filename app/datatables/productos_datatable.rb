@@ -24,7 +24,10 @@ private
       fecha = ""
       fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
       
+      
       if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3)
+        base = (producto.id_tipo_gtin == 1) ? 4 : 6  # Para mostrar seleccioando la base del producto cunado se crear GTIN 14
+
         [ 
           producto.try(:productos_empresa).try(:empresa).try(:nombre_empresa),
           producto.try(:tipo_gtin).try(:tipo),
@@ -36,7 +39,7 @@ private
           producto.codigo_prod,
           fecha,
           link_to("Editar", "/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit"),
-          link_to("Crear GTIN 14", "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}")
+          link_to("Crear GTIN 14", "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{producto.descripcion}&marca=#{producto.marca}")
         ]
 
       else
