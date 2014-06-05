@@ -48,7 +48,13 @@
           %td
             GPC
           %td
-            =@producto.new_record? ? (f.text_field :gpc) :  (f.text_field :gpc, :readonly => :true, :class => "campo_readonly")
+            -if @producto.new_record?
+              -if params[:gpc]
+                =f.text_field :gpc, :value => params[:gpc]
+              -else
+                =f.text_field :gpc
+            -else
+              =f.text_field :gpc, :readonly => :true, :class => "campo_readonly"
         %tr
           %td.codigo_producto
             -if !@producto.new_record?

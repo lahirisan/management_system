@@ -227,19 +227,23 @@ class Producto < ActiveRecord::Base
     spreadsheet = open_spreadsheet(file)
 
     (1..spreadsheet.last_row).each do |fila|
-      gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil)
+      gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil, nil)
       producto = new
       producto.gtin = gtin.to_s
       producto.descripcion = spreadsheet.row(fila)[1]
       producto.marca = spreadsheet.row(fila)[0]
       producto.id_estatus = 3
       producto.fecha_creacion = Time.now
+      producto.codigo_prod = (tipo_gtin == '1') ? producto.gtin[3..6] : producto.gtin[7..11] # SI es GTIIN 8 los 4 caracateres antes del codigo de prod si es GTIN 13 los 5 caratteres antes del codigo de prod
       producto.id_tipo_gtin = tipo_gtin.to_i
       producto.gpc = 0 ### OJO con esto va cbleado a todos los productos que se importan
       producto.save
 
+      asociar_producto_empresa(prefijo,producto.gtin)
 
     end
+
+
   end
 
   def self.open_spreadsheet(file)
