@@ -39,7 +39,7 @@ private
           producto.codigo_prod,
           fecha,
           link_to("Editar", "/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit"),
-          link_to("Crear GTIN 14", "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{producto.descripcion}&marca=#{producto.marca}")
+          link_to("Crear GTIN 14", "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{producto.descripcion}&marca=#{producto.marca}&gpc=#{producto.gpc}")
         ]
 
       else
