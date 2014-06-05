@@ -19,9 +19,13 @@ class ProductosController < ApplicationController
                     end
                   }
       format.json { 
-                  	
+                    
                     if params[:retirar]
                       render json: (RetirarProductosDatatable.new(view_context))
+                    elsif params[:gtin]
+                      gtin = params[:gtin]
+                      codigo_generado =  gtin + Producto.calcular_digito_verificacion(params[:gtin].to_i,"GTIN-13").to_s
+                      render json: (ProductosEmpresa.find(:first, :conditions => ["prefijo = ? and gtin = ?", 7599008, codigo_generado]))
                     elsif params[:retirados]
                       render json: (ProductosRetiradosDatatable.new(view_context))
                     elsif params[:eliminar]
@@ -61,6 +65,7 @@ class ProductosController < ApplicationController
     
     @gtin = params[:gtin] if params[:gtin] != ''# SI esta gtin  es para crear gtin tipo 14 base 8 o gtin 14 base 13
     
+    
 
     @producto_ = Producto.find(:first, :conditions => ["gtin like ?", params[:gtin]]) if params[:gtin]
     @base = TipoGtin.find(:first, :conditions =>["tipo like ? and base like ?", "GTIN-14", @producto_.tipo_gtin.tipo]) if @producto_
@@ -94,6 +99,7 @@ class ProductosController < ApplicationController
 
     params[:producto][:codigo_prod] = params[:producto][:gtin][3..6] if params[:producto][:id_tipo_gtin] == '1'
     params[:producto][:codigo_prod] = params[:producto][:gtin][7..11] if params[:producto][:id_tipo_gtin] == '3'
+
     params[:producto][:codigo_prod] = params[:producto][:gtin][8..12] if params[:producto][:id_tipo_gtin] == '4' or params[:producto][:id_tipo_gtin] == '6'
 
 
@@ -101,7 +107,8 @@ class ProductosController < ApplicationController
 
     respond_to do |format|
       if @producto.save
-        format.html { redirect_to empresa_productos_path, notice: "EL #{@producto.tipo_gtin.tipo} #{@producto.gtin} fue creado." }        
+        Producto.asociar_producto_empresa(params[:empresa_id],params[:producto][:gtin]) # Se asocia el producto con la empresa
+        format.html { redirect_to empresa_productos_path, notice: "EL #{@producto.tipo_gtin.tipo} #{@producto.gtin} fue creado correctamente." }        
       else
         format.html { render action: "new" }        
       end

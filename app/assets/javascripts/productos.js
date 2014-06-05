@@ -216,46 +216,90 @@
             }
         });
 
-        if (window.location.pathname.split('/')[4] == 'new')
-        {
-            $("input[name='tipo_creacion']" ).live('change', function() {
-                $('.texto_tipo_gtin').html('Tipo GTIN');
-                $('.combo_tipo_gtin').html('<select id="producto_id_tipo_gtin" name="producto[id_tipo_gtin]"><option value="1">GTIN-8 </option><option value="3">GTIN-13 </option></select>');
-                $('.boton_submit').html('<input name="commit" type="submit" value="Guardar">');
-                
-                // Se habilitan los campos
-                $('#producto_descripcion').prop('disabled', false);
-                $('#producto_marca').prop('disabled', false);
-                $('#producto_gpc').prop('disabled', false);
+        
+        $("#producto_id_tipo_gtin" ).live('change', function() {
 
-                if ($(this).val() == 'manual')
-                {
-                    $('#producto_codigo_prod').prop('disabled', false);
+            if ($(this).val() == 3) // GTIN 13
+            { 
+                $('td.texto_manual_automatico').html("Tipo de Creación");  
+                $('td.radio_manual_automatico').html('Automática<input id="tipo_creacion_automatica" name="tipo_creacion" type="radio" value="automatica">Manual<input id="tipo_creacion_manual" name="tipo_creacion" type="radio" value="manual">');  
 
-                }
-                else
-                {
-                    $('#producto_codigo_prod').prop('disabled', true);                    
-                }
+                $("input[name='tipo_creacion']" ).live('change', function() {
 
-            });
-            
-        }
+                    if ($(this).val() == 'manual')
+                    {
+                        $('td.codigo_producto').html('Código producto');
+                        $('td.valor_codigo_producto').html('<input id="producto_codigo_prod" name="producto[codigo_prod]" type="text" placeholder="12345">');
+
+                    }
+                    else
+                    {
+                     $('td.codigo_producto').html('');
+                     $('td.valor_codigo_producto').html('');                       
+                    }
+
+                });
+            }
+            else
+            {
+                $('td.texto_manual_automatico').html("");  
+                $('td.radio_manual_automatico').html('');
+                $('td.codigo_producto').html('');
+                $('td.valor_codigo_producto').html('');           
+            }
+
+        });
+
 
         $('#new_producto').submit(function( event ) { 
-            
-            if (($("input[name='tipo_creacion']" ).val() == 'manual') && ($('#producto_id_tipo_gtin').val() == 3))
+
+            if ($('#producto_id_tipo_gtin').val() == '')
             {
+                alert('Estimado usuario, debe seleccionar el Tipo de GTIN para poder continuar.')
+                return false;
+            }
+
+            if (($('#producto_descripcion').val() == '') || ($('#producto_marca').val() == '') || ($('#producto_gpc').val() == ''))
+            {
+                alert('Estimado usuario, todos los campos son obligatorios para poder continuar.')
+                return false;
+            }
+
+
+            
+            if (($("input[type='radio'][name='tipo_creacion']:checked").val() == 'manual') && ($('#producto_id_tipo_gtin').val() == 3))
+            {
+                
                 var reg = /^[0-9]{5}$/;
                 var cod_producto = $('#producto_codigo_prod').val();
                 if ( !reg.test(cod_producto) )
                 {
-                    alert('Estimado usuario, el codigo producto debe ser un número de 5 dígitos. Pro favor verifique');
+                    alert('Estimado usuario, el codigo producto debe ser un número de 5 dígitos. Por favor verifique');
                     return false;
                 }
+                else
+                { 
+                    var prefijo = window.location.pathname.split('/')[2];  // Prefijo de la empresa
+                    var gtin = prefijo + $('#producto_codigo_prod').val();
+                   
+                    $.get("/productos.json?gtin="+gtin , function( data ) {
+                        if (data != null)
+                        {  
+                            alert('Estimado usuario, el código de producto que está ingresando ya está asignado a la empresa. Porfavor verifique.');
+                            return false;
+                        }
+                        
+                    });
+
+                }
+
+                
+                
+                
             }
 
         });
+
 
     })   
 
