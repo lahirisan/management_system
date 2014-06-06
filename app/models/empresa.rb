@@ -119,7 +119,6 @@ class Empresa < ActiveRecord::Base
         empresa_eliminada.id_subestatus = eliminar_datos.split('_')[1]
         empresa_eliminada.save
 
-        #crear_datos_contacto_eliminada(empresa_eliminar) if empresa_eliminar.datos_contacto.any? # Los datos de empresa.correspondencia
         crear_correspondencia_eliminada(empresa_eliminar) if (empresa_eliminar.correspondencia) # Correspondencia
 
         empresa_eliminada_detalle = EmpresaElimDetalle.new
@@ -127,7 +126,6 @@ class Empresa < ActiveRecord::Base
         empresa_eliminada_detalle.fecha_eliminacion = Time.now
         empresa_eliminada_detalle.id = empresa_eliminada.prefijo
         empresa_eliminada_detalle.save
-
         
         estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Eliminado', 'Producto'])
         
@@ -151,8 +149,6 @@ class Empresa < ActiveRecord::Base
 
           producto_elim_detalle.save}
 
-        
-
         # Se elimina los productos de la empresa
         empresa_eliminar.productos_empresa.collect{|productos_empresa| producto = Producto.find(:first, :conditions => ["gtin like ?", productos_empresa.gtin]); producto.destroy}
 
@@ -167,39 +163,24 @@ class Empresa < ActiveRecord::Base
   end
   
 
-  def self.reactivar_empresas_eliminadas(parametros)
+  def self.reactivar_empresas_retiradas(parametros)
     
     estatus_empresa = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activa', 'Empresa'])
     estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activo', 'Producto'])
+    estatus_gln = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Activo', 'GLN'])
 
 
-    parametros[:reactivar_empresas].collect{|prefijo| eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", prefijo]);
-      
-      empresa =  Empresa.new  # Se crear el registro de la Empresa
-      empresa.prefijo = eliminada.prefijo;
-      empresa.nombre_empresa = eliminada.nombre_empresa;
-      empresa.fecha_inscripcion = eliminada.fecha_inscripcion;
-      empresa.direccion_empresa = eliminada.direccion_empresa;
-      empresa.id_estado = eliminada.id_estado;
-      empresa.id_ciudad = eliminada.id_ciudad;
-      empresa.rif = eliminada.rif.strip;
-      empresa.id_estatus = estatus_empresa.id  ;
-      empresa.id_tipo_usuario = eliminada.id_tipo_usuario;
-      empresa.nombre_comercial = eliminada.nombre_comercial ? eliminada.nombre_comercial : "No tiene";
-      empresa.id_clasificacion = eliminada.id_clasificacion ? eliminada.id_clasificacion : 531;
-      empresa.categoria = eliminada.categoria ? eliminada.categoria : "No tiene";
-      empresa.division = eliminada.division ? eliminada.division : 0;
-      empresa.grupo = eliminada.grupo ? eliminada.grupo : 0;
-      empresa.clase = eliminada.clase ? eliminada.clase : 0;
-      empresa.rep_legal = eliminada.rep_legal ? eliminada.rep_legal : "No tiene";
-      empresa.cargo_rep_legal = eliminada.cargo_rep_legal ? eliminada.cargo_rep_legal : "No tiene";
-      empresa.save; 
-
-      crear_datos_contacto(eliminada.empresa_contacto_eliminada) if (eliminada.empresa_contacto_eliminada.any?);
-      crear_correspondencia(eliminada.correspondencia_eliminada) if (eliminada.correspondencia_eliminada);
-      
-      crear_producto(eliminada.productos_empresa) if eliminada.productos_empresa.any?;
-      eliminada.destroy;
+    parametros[:reactivar_empresas].collect{|prefijo| empresa = Empresa.find(:first, :conditions => ["prefijo = ?", prefijo]);
+      empresa.id_estatus = estatus_empresa.id;
+      empresa.save;
+      empresa.producto.collect{|objeto_producto| producto = Producto.find(:first, :conditions => ["gtin = ?", objeto_producto.gtin]);
+        producto.id_estatus = estatus_producto.id;
+        producto.save;
+        };
+      empresa.gln.collect{ |objeto_gln| gln = Gln.find(:first, :conditions => ["gln = ?", objeto_gln.gln]);
+        gln.id_estatus = estatus_gln.id;
+        gln.save
+      };
 
     } 
 
@@ -227,7 +208,6 @@ class Empresa < ActiveRecord::Base
       # Se elimina la correspondencia
       correspondencia = Correspondencia.find(:first, :conditions => ["prefijo = ?", empresa.correspondencia.prefijo])
       correspondencia.destroy
-
 
   end
 
