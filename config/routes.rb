@@ -15,7 +15,7 @@ GS1::Application.routes.draw do
       end
     end
 
-  resources :empresa_servicios
+  
   
   resources :glns do
       collection do

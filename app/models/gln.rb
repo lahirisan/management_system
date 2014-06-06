@@ -85,7 +85,7 @@ class Gln < ActiveRecord::Base
   gln_legal.calle = "-"
   gln_legal.urbanizacion = "-"
   gln_legal.punto_referencia = "-"
-  gln_legal.cod_postal = "-"
+  gln_legal.cod_postal = empresa.correspondencia.cod_postal
   gln_legal.save
 
   Gln.asociar_gln_empresa(gln, prefijo_empresa)
@@ -128,12 +128,10 @@ class Gln < ActiveRecord::Base
 
  def self.retirar(id_gln)
 
-    gln_retirado = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", "Retirado", "GLN"])
+    estatus_retirado = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", "Retirado", "GLN"])
     gln = Gln.find(:first, :conditions => ["gln = ?", id_gln])
-
-    
-    #gln.id_estatus = gln_retirado.id
-    objeto.save
+    gln.id_estatus = estatus_retirado.id
+    gln.save
 
  end
 
