@@ -22,7 +22,7 @@ private
   def data
     
     empresa_servicios.map do |empresa_servicio|
-      if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Servicio')
+      if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Servicio') or (params[:empresa_retirada] == 'false')
         [
           empresa_servicio.empresa.nombre_empresa,
           empresa_servicio.servicio.nombre,
@@ -60,6 +60,7 @@ private
 
   def fetch_empresa_servicios
 
+    
     empresa_servicios = EmpresaServicio.where("empresa_servicios.prefijo = ?", params[:empresa_id]).includes(:servicio, :empresa).order("#{sort_column} #{sort_direction}") 
     empresa_servicios = empresa_servicios.page(page).per_page(per_page)
     

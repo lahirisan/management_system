@@ -327,7 +327,7 @@
 
         
         // estilos de los botones exportar
-        $('.exportar_excel, .exportar_csv, .exportar_pdf, .regresar, .retirar, .reactivar, .eliminar, .activar_empresa, .reactivar').hover(
+        $('.exportar_excel, .exportar_csv, .exportar_pdf, .regresar, .retirar, .reactivar, .eliminar, .activar_empresa, .reactivar, .crear_empresa').hover(
      
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');

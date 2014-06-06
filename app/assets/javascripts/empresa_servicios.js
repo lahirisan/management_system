@@ -120,12 +120,27 @@ $( document ).ready(function() {
         }
 
 
-         if (seleccion_invalida)
+
+        if (seleccion_invalida)
                 return false;
 
-            if (!(confirm('Esta seguro ELIMINAR los servicios seleccionados ?')))
-                return false;
+        if (!(confirm('Esta seguro ELIMINAR los servicios seleccionados ?')))
+            return false;
            
     });
 
+    $('#new_empresa_servicio').submit(function( event ) { 
+        
+        var fecha_inicio = new Date($('#empresa_servicio_fecha_contratacion').val());
+        var fecha_finalizacion = new Date($('#empresa_servicio_fecha_finalizacion').val());
+        
+        if (fecha_inicio >= fecha_finalizacion)
+        {
+            alert('La fecha de culmanción del servicio debe ser mayor que la fecha de contratación ');
+            return false;
+        }
+
+    });
+
+     
 });

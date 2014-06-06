@@ -24,7 +24,7 @@
           %td.combo_tipo_gtin
 
             -if @producto.new_record?
-              =@gtin.nil? ? f.collection_select(:id_tipo_gtin, TipoGtin.find(:all, :conditions => ["tipo in (?)", ["GTIN-8", "GTIN-13"]]), :id, :tipo, :prompt => "-Seleccione-") : f.collection_select(:id_tipo_gtin, TipoGtin.find(:all, :conditions => ["id in (?)", [4,6]]), :id, :tipo_gtin_base, {:selected => params[:base].to_i})
+              =@gtin.nil? ? f.collection_select(:id_tipo_gtin, TipoGtin.find(:all, :conditions => ["tipo in (?)", ["GTIN-8", "GTIN-13"]]), :id, :tipo, :prompt => "-Seleccione-") : f.collection_select(:id_tipo_gtin, TipoGtin.find(:all, :conditions => ["id = ?", params[:base]]), :id, :tipo_gtin_base)
 
             -else
               =f.hidden_field :id_tipo_gtin, :value => "#{@producto.id_tipo_gtin}"

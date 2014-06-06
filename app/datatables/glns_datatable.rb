@@ -19,20 +19,35 @@ private
 
   def data
     glns.map do |empresa_gln|
-        
-        [ 
-          empresa_gln.try(:gln).try(:gln),
-          empresa_gln.try(:gln).try(:tipo_gln).try(:nombre),
-          empresa_gln.try(:gln).try(:codigo_localizacion),
-          empresa_gln.try(:gln).try(:descripcion),
-          empresa_gln.try(:gln).try(:estatus).try(:descripcion),
-          empresa_gln.try(:gln).try(:fecha_asignacion).strftime("%Y-%m-%d"),
-          empresa_gln.try(:gln).try(:estado).try(:nombre),
-          empresa_gln.try(:gln).try(:municipio).try(:nombre),
-          empresa_gln.try(:gln).try(:ciudad).try(:nombre),
-          link_to("Editar", "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}/edit"),
-          link_to("Ver Detalle", "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}"),
-        ]
+        if params[:empresa_retirada] == 'false'
+          [ 
+            empresa_gln.try(:gln).try(:gln),
+            empresa_gln.try(:gln).try(:tipo_gln).try(:nombre),
+            empresa_gln.try(:gln).try(:codigo_localizacion),
+            empresa_gln.try(:gln).try(:descripcion),
+            empresa_gln.try(:gln).try(:estatus).try(:descripcion),
+            empresa_gln.try(:gln).try(:fecha_asignacion).strftime("%Y-%m-%d"),
+            empresa_gln.try(:gln).try(:estado).try(:nombre),
+            empresa_gln.try(:gln).try(:municipio).try(:nombre),
+            empresa_gln.try(:gln).try(:ciudad).try(:nombre),
+            link_to("Editar", "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}/edit"),
+            link_to("Ver Detalle", "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}"),
+          ]
+        else
+          [ 
+            empresa_gln.try(:gln).try(:gln),
+            empresa_gln.try(:gln).try(:tipo_gln).try(:nombre),
+            empresa_gln.try(:gln).try(:codigo_localizacion),
+            empresa_gln.try(:gln).try(:descripcion),
+            empresa_gln.try(:gln).try(:estatus).try(:descripcion),
+            empresa_gln.try(:gln).try(:fecha_asignacion).strftime("%Y-%m-%d"),
+            empresa_gln.try(:gln).try(:estado).try(:nombre),
+            empresa_gln.try(:gln).try(:municipio).try(:nombre),
+            empresa_gln.try(:gln).try(:ciudad).try(:nombre),
+            link_to("Ver Detalle", "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}"),
+          ]
+        end
+
     end
 
   end
@@ -43,6 +58,7 @@ private
 
   def fetch_glns
 
+    
     glns = GlnEmpresa.where("gln_empresa.prefijo = ?", params[:empresa_id]).joins({:gln => :tipo_gln} , {:gln => :estatus}, {:gln => :estado}, {:gln => :municipio}, {:gln => :ciudad},  :empresa).order("#{sort_column} #{sort_direction}") 
     glns = glns.page(page).per_page(per_page)
 

@@ -36,7 +36,7 @@
             Prefijo
           %td
             -if @empresa.new_record?
-              =f.text_field :prefijo , :value => "#{@ultimo.prefijo + 1}", :readonly => :true, :class => 'campo_readonly'
+              =f.text_field :prefijo , :value => "#{@ultimo}", :readonly => :true, :class => 'campo_readonly'
             -else
               =f.text_field :prefijo, :readonly => :true, :class => 'campo_readonly'
 
@@ -208,7 +208,10 @@
               %td
                 =fa.text_field :punto_referencia
       
-      = f.submit "Crear Empresa"
+      %button#submit.ui-state-default.ui-corner-all.crear_empresa{:type => "submit"}
+        %span.ui-icon.ui-icon-circle-plus
+        Guardar
+      
 
 
 
