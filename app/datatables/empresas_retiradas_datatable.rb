@@ -40,8 +40,8 @@ private
         select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_motivo_retiro)), :id => "#{empresa.prefijo}motivo_ret"),
         link_to("Ver Detalle", empresa_path(empresa, :retirar => true)),
         link_to("Productos", empresa_productos_path(empresa, :retirados => "true")),
-        link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios"),
-        link_to("GLN", empresa_glns_path(empresa))
+        link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios?retirados=true"),
+        link_to("GLN", empresa_glns_path(empresa, :retirados => "true"))
       ]
   
     end
@@ -53,6 +53,7 @@ private
   end
 
   def fetch_empresas
+    
     
     empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, {:empresas_retiradas => :sub_estatus},{:empresas_retiradas => :motivo_retiro}).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("#{sort_column} #{sort_direction}")
     empresas = empresas.page(page).per_page(per_page)

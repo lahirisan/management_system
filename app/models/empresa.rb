@@ -285,4 +285,19 @@ class Empresa < ActiveRecord::Base
 
   end
 
+  def self.generar_prefijo_valido
+    
+    empresa = Empresa.find(:first, :conditions => ["prefijo < 7600000"], :order => "prefijo DESC")
+    # Se veririca que el prefijo encontrado no este asignado a una empresa eliminada
+    empresa_prefijo_invalido = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", empresa.prefijo])
+
+      while (empresa_prefijo_invalido)
+        empresa.prefijo += 1
+        empresa_prefijo_invalido = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", empresa.prefijo])
+      end
+
+    return empresa.prefijo
+
+  end
+
 end

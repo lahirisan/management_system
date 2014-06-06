@@ -45,7 +45,7 @@ private
 
   def fetch_servicios
    
-    empresa_servicios = EmpresaServicio.where("empresa_servicios.prefijo = ?", params[:prefijo]).includes(:servicio, :empresa)
+    empresa_servicios = EmpresaServicio.where("empresa_servicios.prefijo = ?", params[:empresa_id]).includes(:servicio, :empresa)
     empresa_servicios = empresa_servicios.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general

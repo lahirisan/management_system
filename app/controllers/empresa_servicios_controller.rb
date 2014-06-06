@@ -11,6 +11,7 @@ class EmpresaServiciosController < ApplicationController
                   elsif params[:eliminados]
                     render :template =>'/empresa_servicios/servicios_eliminados.html.haml'
                   else
+                    @empresas_retiradas = params[:retirados].nil? ? false : true
                     render :template =>'/empresa_servicios/index.html.haml'
                   end
                    

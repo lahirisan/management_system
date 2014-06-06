@@ -81,7 +81,7 @@ class EmpresasController < ApplicationController
   # GET /empresas/new.json
   def new
 
-    @ultimo = Empresa.find(:first, :conditions => ["prefijo < 7600000"], :order => "prefijo DESC") # EL ultimo prefijo antes de 999999999
+    @ultimo = Empresa.generar_prefijo_valido
     @empresa = Empresa.new
     @empresa.build_correspondencia   #Para que maneje el modelo de correspondencia
     @empresa.datos_contacto.build   #Para que manejar los datos de la tabla empresa_contactos, mapeado por el modelo DatosContacto
@@ -104,7 +104,7 @@ class EmpresasController < ApplicationController
   # POST /empresas.json
   def create
 
-    @ultimo = Empresa.find(:first, :conditions => ["prefijo < 7600000"], :order => "prefijo DESC")
+    @ultimo =  Empresa.generar_prefijo_valido
     params[:empresa][:id_estatus] = Estatus.empresa_inactiva()
     @empresa = Empresa.new(params[:empresa])
 
