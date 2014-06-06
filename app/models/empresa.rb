@@ -76,8 +76,6 @@ class Empresa < ActiveRecord::Base
         # Se retiran todo los productos de la empresa
         Producto.retirar_productos_empresa(empresa.prefijo, retirar_datos.split('_')[2], retirar_datos.split('_')[1])
 
-        # Retirar Servicios
-
         # Retirar GLN ojo REVISAR
         empresa.gln_empresa.collect{| gln_empresa | Gln.retirar(gln_empresa.id_gln) }
     
@@ -119,9 +117,9 @@ class Empresa < ActiveRecord::Base
         empresa_eliminada.cargo_rep_legal = empresa_eliminar.try(:cargo_rep_legal)
         empresa_eliminada.id_motivo_retiro = eliminar_datos.split('_')[2]
         empresa_eliminada.id_subestatus = eliminar_datos.split('_')[1]
-        empresa_eliminada.save
+        #empresa_eliminada.save
 
-        crear_datos_contacto_eliminada(empresa_eliminar) if empresa_eliminar.datos_contacto.any? # Los datos de empresa.correspondencia
+        #crear_datos_contacto_eliminada(empresa_eliminar) if empresa_eliminar.datos_contacto.any? # Los datos de empresa.correspondencia
         crear_correspondencia_eliminada(empresa_eliminar) if (empresa_eliminar.correspondencia) # Correspondencia
 
         empresa_eliminada_detalle = EmpresaElimDetalle.new
