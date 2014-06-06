@@ -75,7 +75,7 @@ private
     empresas = empresas.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general
-      empresas = empresas.where("empresa.nombre_empresa like :search or empresa.fecha_inscripcion like :search or estados.nombre like :search or ciudad.nombre like :search or empresa.rif like :search or estatus.descripcion like :search", search: "%#{params[:sSearch]}%")
+      empresas = empresas.where("empresa.prefijo like :search or  empresa.nombre_empresa like :search or empresa.fecha_inscripcion like :search or estados.nombre like :search or ciudad.nombre like :search or empresa.rif like :search or estatus.descripcion like :search", search: "%#{params[:sSearch]}%")
     end
     if params[:sSearch_0].present? # Filtro de busqueda prefijo
       empresas = empresas.where("empresa.prefijo like :search0", search0: "%#{params[:sSearch_0]}%" )
