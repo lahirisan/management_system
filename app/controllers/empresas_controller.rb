@@ -19,8 +19,10 @@ class EmpresasController < ApplicationController
                     render :template =>'/empresas/eliminar_empresa.html.haml'
                   elsif params[:eliminadas]
                     render :template =>'/empresas/empresas_eliminadas.html.haml'
-                  elsif params[:retiradas]
-                    render :template =>'/empresas/empresas_retiradas.html.haml'  
+                  elsif params[:retiradas] 
+                    render :template =>'/empresas/empresas_retiradas.html.haml'
+                  elsif params[:reactivar]
+                    render :template =>'/empresas/empresas_reactivar.html.haml'   
                   else
                     render :template =>'/empresas/index.html.haml'
                   end
@@ -40,6 +42,8 @@ class EmpresasController < ApplicationController
                       render json: (EmpresasEliminadasDatatable.new(view_context))
                     elsif (params[:retiradas] == 'true')
                       render json: (EmpresasRetiradasDatatable.new(view_context))
+                    elsif (params[:reactivar] == 'true')
+                      render json: (ReactivarEmpresasDatatable.new(view_context))
                     else
                       render json: (EmpresasDatatable.new(view_context))
                     end
@@ -133,10 +137,11 @@ class EmpresasController < ApplicationController
 
   def update_multiple
 
+    
     Empresa.validar_empresas(params[:activar_empresas]) if params[:activar_empresas] #Parametro que indica Validar Empresa       
     Empresa.retirar_empresas(params) if params[:retiro]
     Empresa.eliminar_empresas(params) if params[:eliminar]
-    Empresa.reactivar_empresas_eliminadas(params) if params[:reactivar]
+    Empresa.reactivar_empresas_retiradas(params) if params[:reactivar]
      
     
     @procesadas = ""
@@ -149,8 +154,8 @@ class EmpresasController < ApplicationController
           format.html { 
           redirect_to '/empresas', notice: "Los Prefijos #{@procesadas} fueron activados."  if params[:activar_empresas]
           redirect_to '/empresas?retiradas=true', notice: "Los Prefijos #{@procesadas} fueron retirados."  if params[:retiro]
-          redirect_to '/empresas?eliminadas=true', notice: "Los Prefijos #{@procesadas} fueron eliminados"  if params[:eliminar_empresas]
-          redirect_to '/empresas', notice: "Los Prefijos #{@procesadas} fueron reactivados satisfactoriamente" if params[:reactivar]  # Empresasa eliminadas que se reactivan
+          redirect_to '/empresas?eliminadas=true', notice: "Los Prefijos #{@procesadas} fueron eliminados."  if params[:eliminar_empresas]
+          redirect_to '/empresas', notice: "Los Prefijos #{@procesadas} fueron reactivados satisfactoriamente." if params[:reactivar]  # Empresasa eliminadas que se reactivan
         }
     end
   end
