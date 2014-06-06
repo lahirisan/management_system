@@ -132,22 +132,19 @@ class Empresa < ActiveRecord::Base
         estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Eliminado', 'Producto'])
         
         #Los productos se agrega a productos eliminados
-        
 
           empresa_eliminar.productos_empresa.collect{|producto_empresa|
-
-          raise producto_empresa.to_yaml 
           producto_eliminado = ProductoEliminado.new; 
-          producto_eliminado.gtin = producto_empresa.try(:gtin); 
-          producto_eliminado.descripcion = producto_empresa.try(:descripcion); 
-          producto_eliminado.marca = producto_empresa.try(:marca); 
-          producto_eliminado.gpc = producto_empresa.try(:gpc); 
+          producto_eliminado.gtin = producto_empresa.try(:producto).try(:gtin); 
+          producto_eliminado.descripcion = producto_empresa.try(:producto).try(:descripcion); 
+          producto_eliminado.marca = producto_empresa.try(:producto).try(:marca); 
+          producto_eliminado.gpc = producto_empresa.try(:producto).try(:gpc); 
           producto_eliminado.id_estatus = estatus_producto.id; 
-          producto_eliminado.codigo_prod = producto_empresa.try(:codigo_prod); 
+          producto_eliminado.codigo_prod = producto_empresa.try(:producto).try(:codigo_prod); 
           producto_eliminado.fecha_creacion = Time.now; 
-          producto_eliminado.id_tipo_gtin = producto_empresa.try(:id_tipo_gtin); 
+          producto_eliminado.id_tipo_gtin = producto_empresa.try(:producto).try(:id_tipo_gtin); 
           producto_eliminado.save; producto_elim_detalle = ProductoElimDetalle.new; 
-          producto_elim_detalle.gtin = producto_empresa.try(:gtin); 
+          producto_elim_detalle.gtin = producto_empresa.try(:producto).try(:gtin); 
           producto_elim_detalle.fecha_eliminacion = Time.now;
           producto_elim_detalle.id_motivo_retiro =  eliminar_datos.split('_')[2];
           producto_elim_detalle.id_subestatus =  eliminar_datos.split('_')[1];
