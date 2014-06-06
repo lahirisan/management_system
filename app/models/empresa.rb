@@ -64,7 +64,7 @@ class Empresa < ActiveRecord::Base
         empresa_retirar.fecha_retiro = fecha_retiro
         empresa_retirar.id_motivo_retiro = retirar_datos.split('_')[2]
         empresa_retirar.id_subestatus = retirar_datos.split('_')[1]
-        #empresa_retirar.save
+        empresa_retirar.save
         
         empresa = Empresa.find(:first, :conditions => ["prefijo = ?", retirar_datos.split('_')[0]]) # La clave primaria es es prefijo
         
