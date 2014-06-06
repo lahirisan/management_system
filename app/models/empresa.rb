@@ -134,7 +134,9 @@ class Empresa < ActiveRecord::Base
         #Los productos se agrega a productos eliminados
         
 
-          empresa_eliminar.productos_empresa.collect{|producto_empresa| 
+          empresa_eliminar.productos_empresa.collect{|producto_empresa|
+
+          raise producto_empresa.to_yaml 
           producto_eliminado = ProductoEliminado.new; 
           producto_eliminado.gtin = producto_empresa.try(:gtin); 
           producto_eliminado.descripcion = producto_empresa.try(:descripcion); 
