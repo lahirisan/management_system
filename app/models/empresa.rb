@@ -117,7 +117,7 @@ class Empresa < ActiveRecord::Base
         empresa_eliminada.cargo_rep_legal = empresa_eliminar.try(:cargo_rep_legal)
         empresa_eliminada.id_motivo_retiro = eliminar_datos.split('_')[2]
         empresa_eliminada.id_subestatus = eliminar_datos.split('_')[1]
-        #empresa_eliminada.save
+        empresa_eliminada.save
 
         #crear_datos_contacto_eliminada(empresa_eliminar) if empresa_eliminar.datos_contacto.any? # Los datos de empresa.correspondencia
         crear_correspondencia_eliminada(empresa_eliminar) if (empresa_eliminar.correspondencia) # Correspondencia
@@ -132,23 +132,29 @@ class Empresa < ActiveRecord::Base
         estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Eliminado', 'Producto'])
         
         #Los productos se agrega a productos eliminados
-        empresa_eliminar.productos_empresa.collect{|producto_empresa| 
-        producto_eliminado = ProductoEliminado.new; 
-        producto_eliminado.gtin = producto_empresa.producto.gtin; 
-        producto_eliminado.descripcion = producto_empresa.producto.descripcion; 
-        producto_eliminado.marca = producto_empresa.producto.marca; 
-        producto_eliminado.gpc = producto_empresa.producto.gpc; 
-        producto_eliminado.id_estatus = estatus_producto.id; 
-        producto_eliminado.codigo_prod = producto_empresa.producto.codigo_prod; 
-        producto_eliminado.fecha_creacion = Time.now; 
-        producto_eliminado.id_tipo_gtin = producto_empresa.producto.id_tipo_gtin; 
-        producto_eliminado.save; producto_elim_detalle = ProductoElimDetalle.new; 
-        producto_elim_detalle.gtin = producto_empresa.producto.gtin; 
-        producto_elim_detalle.fecha_eliminacion = Time.now;
-        producto_elim_detalle.id_motivo_retiro =  eliminar_datos.split('_')[2];
-        producto_elim_detalle.id_subestatus =  eliminar_datos.split('_')[1];
+        
 
-        producto_elim_detalle.save}
+          empresa_eliminar.productos_empresa.collect{|producto_empresa|
+
+          raise producto_empresa.to_yaml 
+          producto_eliminado = ProductoEliminado.new; 
+          producto_eliminado.gtin = producto_empresa.try(:gtin); 
+          producto_eliminado.descripcion = producto_empresa.try(:descripcion); 
+          producto_eliminado.marca = producto_empresa.try(:marca); 
+          producto_eliminado.gpc = producto_empresa.try(:gpc); 
+          producto_eliminado.id_estatus = estatus_producto.id; 
+          producto_eliminado.codigo_prod = producto_empresa.try(:codigo_prod); 
+          producto_eliminado.fecha_creacion = Time.now; 
+          producto_eliminado.id_tipo_gtin = producto_empresa.try(:id_tipo_gtin); 
+          producto_eliminado.save; producto_elim_detalle = ProductoElimDetalle.new; 
+          producto_elim_detalle.gtin = producto_empresa.try(:gtin); 
+          producto_elim_detalle.fecha_eliminacion = Time.now;
+          producto_elim_detalle.id_motivo_retiro =  eliminar_datos.split('_')[2];
+          producto_elim_detalle.id_subestatus =  eliminar_datos.split('_')[1];
+
+          producto_elim_detalle.save}
+
+        
 
         # Se elimina los productos de la empresa
         empresa_eliminar.productos_empresa.collect{|productos_empresa| producto = Producto.find(:first, :conditions => ["gtin like ?", productos_empresa.gtin]); producto.destroy}
