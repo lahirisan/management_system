@@ -29,8 +29,6 @@ class Empresa < ActiveRecord::Base
   
   validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo, :nombre_comercial , :id_clasificacion,  :presence => {:message => "No puede estar en blanco"}, :on => :create
   validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{8})-([0-9]{1})$/, on: :create, :message => "El Formato del RIF es invalido"} # Validacion al crear
-
-
   validates :rif, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado. Por favor verifique."}
 
   def self.to_csv # Se genera el CSV de Empresas
@@ -288,19 +286,19 @@ class Empresa < ActiveRecord::Base
   def self.generar_prefijo_valido
 
     # Ojo revisar esto !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    
     empresa = Empresa.find(:first, :conditions => ["prefijo >= 7590000 and prefijo <= 7599999"], :order => "prefijo DESC")
     prefijo = empresa.prefijo + 1
+    
     # Se veririca que el prefijo encontrado no este asignado a una empresa eliminada
     empresa_prefijo_invalido = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", prefijo])
 
       while (empresa_prefijo_invalido) # SI encontro registro se suma 1 y se verifica nuevamnete ese prefijo
+
         prefijo += 1
         empresa_prefijo_invalido = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", prefijo])
         
         if (empresa_prefijo_invalido.nil?) # Si no existe el prefijo en empresas eliminadas se busca en empresas activas
-          empresa_prefijo_invalido = Empresa.find(empresa_prefijo_invalido.prefijo)
+          empresa_prefijo_invalido = Empresa.find(prefijo)
         end
       end
 
