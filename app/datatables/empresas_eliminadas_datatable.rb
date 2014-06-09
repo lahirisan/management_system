@@ -58,7 +58,7 @@ private
     
     empresas = empresas.page(page).per_page(per_page)
    
-    empresas = empresas.where("empresa_eliminada.nombre_empresa like :search or empresa_eliminada.fecha_inscripcion like :search or ciudad.nombre like :search or empresa_eliminada.rif like :search ", search: "%#{params[:sSearch]}%")  if params[:sSearch].present? # Filtro de busqueda general
+    empresas = empresas.where("empresa_eliminada.prefijo like :search or empresa_eliminada.nombre_empresa like :search or empresa_eliminada.fecha_inscripcion like :search or ciudad.nombre like :search or empresa_eliminada.rif like :search ", search: "%#{params[:sSearch]}%")  if params[:sSearch].present? # Filtro de busqueda general
   
     empresas = empresas.where("empresa_eliminada.prefijo like :search1", search1: "%#{params[:sSearch_1]}%" )   if params[:sSearch_1].present? # Filtro de busqueda por nombre de la empresa
     empresas = empresas.where("empresa_eliminada.nombre_empresa like :search2", search2: "%#{params[:sSearch_2]}%" )  if params[:sSearch_2].present? # Filtro fecha_inscripcion

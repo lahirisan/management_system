@@ -1,4 +1,4 @@
-class EmpresasRetiradasDatatable < AjaxDatatablesRails
+class ReactivarEmpresasDatatable < AjaxDatatablesRails
   delegate :params, :h,  :link_to, :check_box_tag, :try, :select_tag, :options_from_collection_for_select,  to: :@view
 
    def initialize(view)
@@ -29,19 +29,19 @@ private
       fecha_retiro = empresa.empresas_retiradas.try(:fecha_retiro).nil? ? '' : empresa.empresas_retiradas.fecha_retiro.strftime("%Y-%m-%d")
 
         [ 
-        check_box_tag("eliminar_empresas[]", "#{empresa.id}", false, :class=>"eliminar_empresa"),
+        check_box_tag("reactivar_empresas[]", "#{empresa.id}", false, :class=>"reactivar_empresa"),
         empresa.prefijo,
         empresa.nombre_empresa,
         fecha,
         empresa.ciudad.nombre,
         empresa.rif,
         fecha_retiro,
-        select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_subestatus)), :id => "#{empresa.prefijo}sub_estatus"),
-        select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_motivo_retiro)), :id => "#{empresa.prefijo}motivo_ret"),
+        empresa.empresas_retiradas.try(:sub_estatus).try(:descripcion), 
+        empresa.empresas_retiradas.try(:motivo_retiro).try(:descripcion), 
         link_to("Ver Detalle", empresa_path(empresa, :retirar => true)),
         link_to("Productos", empresa_productos_path(empresa, :retirados => "true")),
-        link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios?retirados=true"),
-        link_to("GLN", empresa_glns_path(empresa, :retirados => "true"))
+        link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios"),
+        link_to("GLN", empresa_glns_path(empresa))
       ]
   
     end
@@ -53,7 +53,6 @@ private
   end
 
   def fetch_empresas
-    
     
     empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, {:empresas_retiradas => :sub_estatus},{:empresas_retiradas => :motivo_retiro}).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("#{sort_column} #{sort_direction}")
     empresas = empresas.page(page).per_page(per_page)

@@ -36,7 +36,7 @@
         // Datatable que maneja el listado para empresas retiradas
         $("#data_table_empresas_retiradas").dataTable({
             sPaginationType: "full_numbers",
-            aaSorting: [[ 6, "desc" ]],
+            aaSorting: [[ 5, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
@@ -327,7 +327,7 @@
 
         
         // estilos de los botones exportar
-        $('.exportar_excel, .exportar_csv, .exportar_pdf, .regresar, .retirar, .reactivar, .eliminar, .activar_empresa, .reactivar').hover(
+        $('.exportar_excel, .exportar_csv, .exportar_pdf, .regresar, .retirar, .reactivar, .eliminar, .activar_empresa, .reactivar, .crear_empresa').hover(
      
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');

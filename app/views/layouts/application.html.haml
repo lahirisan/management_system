@@ -52,17 +52,25 @@
 							%li 
 								%a.opcion{:href => "/empresas?retirar=true", :title => "Opción para Retirar Empresa"}
 									.opcion Retirar Empresa
-				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Empresa')
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Reactivar Empresa')
 					.opcion
 						%ul
 							%li 
-								%a.opcion{:href => "/empresas?eliminar=true", :title => "Oción para Eliminar Empresa"}
-									.opcion Eliminar Empresa
+								%a.opcion{:href => "/empresas?reactivar=true", :title => "Opción que permite Reactivar Empresas Retiradas"}
+									.opcion Reactivar Empresa
+				
 				.opcion
 					%ul
 						%li 
 							%a.opcion{:href => "/empresas?retiradas=true", :title => "Opción para Listar Empresas Retiradas"}
 								.opcion Empresas Retiradas
+				
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Empresa')
+					.opcion
+						%ul
+							%li 
+								%a.opcion{:href => "/empresas?eliminar=true", :title => "Opción para Eliminar Empresa"}
+									.opcion Eliminar Empresa
 				.opcion
 					%ul
 						%li 

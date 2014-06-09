@@ -13,6 +13,7 @@ class GlnsController < ApplicationController
         elsif params[:eliminados]
           render :template => '/glns/gln_eliminados.html.haml'
         else
+          @empresas_retiradas = params[:retirados].nil? ? false : true
           render :template => '/glns/index.html.haml'
         end
       }

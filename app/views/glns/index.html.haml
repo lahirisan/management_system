@@ -6,7 +6,7 @@
 %section#areaTrabajo.areaTrabajo
   %p#notice= notice
 
-  %table#data_table_glns.display{:"data-source" => "#{empresa_glns_path}.json"}
+  %table#data_table_glns.display{:"data-source" => "#{empresa_glns_path}.json?empresa_retirada=#{@empresas_retiradas}"}
     %thead
       %tr
         %th GLN
@@ -18,7 +18,8 @@
         %th Estado
         %th Municipio
         %th Ciudad
-        %th Editar GLN
+        -if params[:retirados].nil?
+          %th Editar GLN
         %th Detalle
         
     %tbody

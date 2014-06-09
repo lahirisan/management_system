@@ -64,21 +64,23 @@ class Producto < ActiveRecord::Base
       eliminar_datos = parametros[:"#{producto_seleccionado}"]
       gtin = eliminar_datos.split('_')[0]
       producto = Producto.find(:first, :conditions => ["gtin like ?", gtin]) 
-    	producto_eliminado = ProductoEliminado.new;
-      producto_eliminado.gtin = producto.gtin; 
-    	producto_eliminado.descripcion = producto.descripcion; 
-    	producto_eliminado.marca = producto.marca; 
-    	producto_eliminado.gpc = producto.gpc; 
-    	producto_eliminado.id_estatus = estatus_producto.id; 
-    	producto_eliminado.codigo_prod = producto.codigo_prod; 
-    	producto_eliminado.fecha_creacion = Time.now; 
-    	producto_eliminado.id_tipo_gtin =producto.id_tipo_gtin; 
-    	producto_eliminado.save; 
-      producto_elim_detalle = ProductoElimDetalle.new; 
-    	producto_elim_detalle.gtin = producto.gtin; 
-    	producto_elim_detalle.fecha_eliminacion = Time.now;
+    	producto_eliminado = ProductoEliminado.new
+      producto_eliminado.gtin = producto.gtin
+    	producto_eliminado.descripcion = producto.descripcion 
+    	producto_eliminado.marca = producto.marca 
+    	producto_eliminado.gpc = producto.gpc
+    	producto_eliminado.id_estatus = estatus_producto.id
+    	producto_eliminado.codigo_prod = producto.codigo_prod
+    	producto_eliminado.fecha_creacion = Time.now
+    	producto_eliminado.id_tipo_gtin =producto.id_tipo_gtin
+    	producto_eliminado.save
+      
+
+      producto_elim_detalle = ProductoElimDetalle.new
+    	producto_elim_detalle.gtin = producto.gtin
+    	producto_elim_detalle.fecha_eliminacion = Time.now
       producto_elim_detalle.id_subestatus = eliminar_datos.split('_')[1]
-      producto_elim_detalle.id_motivo_retiro = eliminar_datos.split('_')[2] 
+      producto_elim_detalle.id_motivo_retiro = eliminar_datos.split('_')[2]
     	producto_elim_detalle.save
       producto.destroy
       
@@ -105,8 +107,7 @@ class Producto < ActiveRecord::Base
     
     elsif tipo_gtin.tipo == "GTIN-13"
       
-      #ultimo_gtin_asignado = ProductosEmpresa.find(:first, :conditions => ["producto.id_tipo_gtin = ? and productos_empresa.prefijo = ?", tipo_gtin, prefijo], :joins => [:producto], :order => "producto.fecha_creacion desc")
-      secuencia = "00001"
+      secuencia =  codigo_producto.nil? ? "00001" : codigo_producto
       codigo_producto = prefijo.to_s + secuencia
       digito_verificacion = calcular_digito_verificacion(codigo_producto.to_i, "GTIN-13")
       gtin_generado = codigo_producto.to_s + digito_verificacion.to_s
@@ -121,26 +122,6 @@ class Producto < ActiveRecord::Base
         codigo_asignado = ProductosEmpresa.find(:first, :conditions => [" gtin = ? and prefijo = ?", gtin_generado, prefijo])
        
       end
-
-
-
-
-
-      # if ultimo_gtin_asignado.nil? # La Empresa no tiene producto GTIN 13
-      #   if codigo_producto.nil? 
-      #     secuencia = "00001"
-      #   else
-      #     secuencia = codigo_producto
-      #   end
-      # else
-      #   secuencia = ultimo_gtin_asignado.gtin[7..11] # la secuencia
-      #   secuencia = secuencia.to_i + 1
-      # end
-
-      #secuencia_completa = completar_secuencia(secuencia, tipo_gtin.tipo)
-      #gtin_valido = completar_prefijo(secuencia_completa, prefijo)
-      #digito_verificacion = calcular_digito_verificacion(gtin_valido.to_i, "GTIN-13")
-      #gtin_generado = gtin_valido.to_s + digito_verificacion.to_s
 
     elsif tipo_gtin.tipo == "GTIN-14"
       
@@ -163,7 +144,6 @@ class Producto < ActiveRecord::Base
       end
       
     end
-    asociar_producto_empresa(prefijo,gtin_generado)
 
     return gtin_generado
 
@@ -247,19 +227,23 @@ class Producto < ActiveRecord::Base
     spreadsheet = open_spreadsheet(file)
 
     (1..spreadsheet.last_row).each do |fila|
-      gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil)
+      gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil, nil)
       producto = new
       producto.gtin = gtin.to_s
       producto.descripcion = spreadsheet.row(fila)[1]
       producto.marca = spreadsheet.row(fila)[0]
       producto.id_estatus = 3
       producto.fecha_creacion = Time.now
+      producto.codigo_prod = (tipo_gtin == '1') ? producto.gtin[3..6] : producto.gtin[7..11] # SI es GTIIN 8 los 4 caracateres antes del codigo de prod si es GTIN 13 los 5 caratteres antes del codigo de prod
       producto.id_tipo_gtin = tipo_gtin.to_i
       producto.gpc = 0 ### OJO con esto va cbleado a todos los productos que se importan
       producto.save
 
+      asociar_producto_empresa(prefijo,producto.gtin)
 
     end
+
+
   end
 
   def self.open_spreadsheet(file)

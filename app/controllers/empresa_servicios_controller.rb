@@ -11,6 +11,7 @@ class EmpresaServiciosController < ApplicationController
                   elsif params[:eliminados]
                     render :template =>'/empresa_servicios/servicios_eliminados.html.haml'
                   else
+                    @empresas_retiradas = params[:retirados].nil? ? false : true
                     render :template =>'/empresa_servicios/index.html.haml'
                   end
                    
@@ -46,10 +47,10 @@ class EmpresaServiciosController < ApplicationController
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
     @empresa_servicio = @empresa.empresa_servicio.build
 
-    @empresa_servicio = EmpresaServicio.new
+    
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @empresa_servicio }
+      
     end
   end
 
@@ -58,8 +59,7 @@ class EmpresaServiciosController < ApplicationController
     
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
     @empresa_servicio = EmpresaServicio.find(params[:id])
-    #@servicio = Servicio.find(@empresa_servicio.id_servicio)
-
+    
   end
 
   # POST /empresa_servicios
@@ -67,7 +67,8 @@ class EmpresaServiciosController < ApplicationController
   def create
     
     params[:empresa_servicio][:prefijo] = params[:empresa_id]
-    @empresa_servicio = EmpresaServicio.new(params[:empresa_servicio])
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
+    @empresa_servicio = @empresa.empresa_servicio.build(params[:empresa_servicio])
 
     respond_to do |format|
       if @empresa_servicio.save
@@ -76,7 +77,6 @@ class EmpresaServiciosController < ApplicationController
         
       else
         format.html { render action: "new" }
-        format.json { render json: @empresa_servicio.errors, status: :unprocessable_entity }
       end
     end
   end

@@ -19,8 +19,10 @@ class EmpresasController < ApplicationController
                     render :template =>'/empresas/eliminar_empresa.html.haml'
                   elsif params[:eliminadas]
                     render :template =>'/empresas/empresas_eliminadas.html.haml'
-                  elsif params[:retiradas]
-                    render :template =>'/empresas/empresas_retiradas.html.haml'  
+                  elsif params[:retiradas] 
+                    render :template =>'/empresas/empresas_retiradas.html.haml'
+                  elsif params[:reactivar]
+                    render :template =>'/empresas/empresas_reactivar.html.haml'   
                   else
                     render :template =>'/empresas/index.html.haml'
                   end
@@ -40,6 +42,8 @@ class EmpresasController < ApplicationController
                       render json: (EmpresasEliminadasDatatable.new(view_context))
                     elsif (params[:retiradas] == 'true')
                       render json: (EmpresasRetiradasDatatable.new(view_context))
+                    elsif (params[:reactivar] == 'true')
+                      render json: (ReactivarEmpresasDatatable.new(view_context))
                     else
                       render json: (EmpresasDatatable.new(view_context))
                     end
@@ -77,7 +81,7 @@ class EmpresasController < ApplicationController
   # GET /empresas/new.json
   def new
 
-    @ultimo = Empresa.find(:first, :conditions => ["prefijo < 7600000"], :order => "prefijo DESC") # EL ultimo prefijo antes de 999999999
+    @ultimo = Empresa.generar_prefijo_valido
     @empresa = Empresa.new
     @empresa.build_correspondencia   #Para que maneje el modelo de correspondencia
     @empresa.datos_contacto.build   #Para que manejar los datos de la tabla empresa_contactos, mapeado por el modelo DatosContacto
@@ -100,14 +104,14 @@ class EmpresasController < ApplicationController
   # POST /empresas.json
   def create
 
-    @ultimo = Empresa.find(:first, :conditions => ["prefijo < 7600000"], :order => "prefijo DESC")
+    @ultimo =  Empresa.generar_prefijo_valido
     params[:empresa][:id_estatus] = Estatus.empresa_inactiva()
     @empresa = Empresa.new(params[:empresa])
 
     respond_to do |format|
      if @empresa.save
 
-          Gln.generar_legal(@empresa.prefijo.to_s) # Se genra GLN legal
+        Gln.generar_legal(@empresa.prefijo.to_s) # Se genra GLN legal
         format.html { redirect_to '/empresas?activacion=true', notice: "Empresa con prefijo #{@empresa.prefijo} creada satisfactoriamente." }
       else
         format.html { render action: "new" }
@@ -133,10 +137,11 @@ class EmpresasController < ApplicationController
 
   def update_multiple
 
+    
     Empresa.validar_empresas(params[:activar_empresas]) if params[:activar_empresas] #Parametro que indica Validar Empresa       
     Empresa.retirar_empresas(params) if params[:retiro]
     Empresa.eliminar_empresas(params) if params[:eliminar]
-    Empresa.reactivar_empresas_eliminadas(params) if params[:reactivar]
+    Empresa.reactivar_empresas_retiradas(params) if params[:reactivar]
      
     
     @procesadas = ""
@@ -149,8 +154,8 @@ class EmpresasController < ApplicationController
           format.html { 
           redirect_to '/empresas', notice: "Los Prefijos #{@procesadas} fueron activados."  if params[:activar_empresas]
           redirect_to '/empresas?retiradas=true', notice: "Los Prefijos #{@procesadas} fueron retirados."  if params[:retiro]
-          redirect_to '/empresas?eliminadas=true', notice: "Los Prefijos #{@procesadas} fueron eliminados"  if params[:eliminar_empresas]
-          redirect_to '/empresas', notice: "Los Prefijos #{@procesadas} fueron reactivados satisfactoriamente" if params[:reactivar]  # Empresasa eliminadas que se reactivan
+          redirect_to '/empresas?eliminadas=true', notice: "Los Prefijos #{@procesadas} fueron eliminados."  if params[:eliminar_empresas]
+          redirect_to '/empresas', notice: "Los Prefijos #{@procesadas} fueron reactivados satisfactoriamente." if params[:reactivar]  # Empresasa eliminadas que se reactivan
         }
     end
   end

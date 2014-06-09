@@ -20,7 +20,7 @@
                 %td
                     =select_tag("eliminar_servicio_motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
                     
-        %table#data_table_eliminar_empresa_servicios.display{:"data-source" => "/empresa_servicios.json?eliminar=true&prefijo=#{params[:empresa_id]}"}
+        %table#data_table_eliminar_empresa_servicios.display{:"data-source" => "/empresas/#{params[:empresa_id]}/empresa_servicios.json?eliminar=true"}
             %thead
                 %tr
                     %th
