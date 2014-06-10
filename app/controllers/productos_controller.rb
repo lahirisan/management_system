@@ -24,8 +24,10 @@ class ProductosController < ApplicationController
                       render json: (RetirarProductosDatatable.new(view_context))
                     elsif params[:gtin]
                       gtin = params[:gtin]
-                      codigo_generado =  gtin + Producto.calcular_digito_verificacion(params[:gtin].to_i,"GTIN-13").to_s
-                      render json: (ProductosEmpresa.find(:first, :conditions => ["prefijo = ? and gtin = ?", 7599008, codigo_generado]))
+                      digito_verificacion = Producto.calcular_digito_verificacion(params[:gtin].to_i,"GTIN-13")
+                      codigo_generado =  gtin + digito_verificacion.to_s
+                      producto = ProductosEmpresa.find(:first, :conditions => ["prefijo = ? and gtin = ?", params[:prefijo], codigo_generado])
+                      render json: producto
                     elsif params[:retirados]
                       render json: (ProductosRetiradosDatatable.new(view_context))
                     elsif params[:eliminar]
@@ -90,12 +92,11 @@ class ProductosController < ApplicationController
 
     @gtin = params[:gtin]  if params[:gtin] != ''
 
+    Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin], params[:producto][:codigo_prod])
     params[:producto][:gtin] = Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin], params[:producto][:codigo_prod])
     params[:producto][:fecha_creacion] = Time.now
     estatus = Estatus.find(:first, :conditions => ["(descripcion = ?) and (alcance = ?)", "Activo", "Producto"])
     params[:producto][:id_estatus] = estatus.id
-
-
 
     params[:producto][:codigo_prod] = params[:producto][:gtin][3..6] if params[:producto][:id_tipo_gtin] == '1'
     params[:producto][:codigo_prod] = params[:producto][:gtin][7..11] if params[:producto][:id_tipo_gtin] == '3'

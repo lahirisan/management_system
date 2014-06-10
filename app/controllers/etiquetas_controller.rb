@@ -3,7 +3,7 @@ class EtiquetasController < ApplicationController
   before_filter :require_authentication
   
   
-  prawnto :prawn => { :top_margin => 0 } # Marge superiori del documento pdf generado en este controlador
+  prawnto :prawn => { :top_margin => 10 } # Marge superiori del documento pdf generado en este controlador
   
   def show
 
