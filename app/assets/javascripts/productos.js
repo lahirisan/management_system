@@ -277,42 +277,48 @@
                     alert('Estimado usuario, el codigo producto debe ser un número de 5 dígitos. Por favor verifique');
                     return false;
                 }
-                // else
-                // {   
-                //     var codigo_producto = $('#producto_codigo_prod').val();
-                //     var prefijo = window.location.pathname.split('/')[2];
-                //     var gtin = prefijo + codigo_producto;
+                else
+                {   
+                    var codigo_producto = $('#producto_codigo_prod').val();
+                    var prefijo = window.location.pathname.split('/')[2];
+                    var gtin = prefijo + codigo_producto;
                     
-                //     var data = {
-                //         prefijo: prefijo,
-                //         gtin: gtin
-                //     };
+                    //var data = {
+                    //    prefijo: prefijo,
+                    //    gtin: gtin
+                    //};
 
-                //     $.ajax({
+                    $.get("/productos.json?gtin="+gtin+"&prefijo="+prefijo , function( data ) {
+                        alert('aqui');
+
+                    });
+
+                    // $.ajax({
                         
-                //         type: "GET",
-                //         url: "/productos",
-                //         dataType: 'json',
-                //         data: data,
-                //         succes: function (response, textStatus, jqXHR) {
-                //             alert('exito');
-                //             //alert(response.data);
-                //             return false;
-                //         },
+                    //     type: "GET",
+                    //     url: "/productos",
+                    //     dataType: 'json',
+                    //     data: data,
+                    //     succes: function (response, textStatus, jqXHR) {
+                    //         alert('exito');
+                    //         //alert(response.data);
+                    //         return false;
+                    //     },
 
-                //         error: function (response, textStatus, jqXHR) {
-                //             alert(jqXHR);
-                //             return false;
-                //         }
+                    //     error: function (response, textStatus, jqXHR) {
+                    //         alert('');
+                    //         return false;
+                    //     }
 
-                //     });
+                    // });
 
-                    
+
+              
 
                     
                 // }
                 
-                
+                }
             }
 
         });

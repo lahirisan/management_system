@@ -336,10 +336,17 @@
         // Se le da espacio a la parte superiori del datatable entre los botones y el datatatable
         $('.dataTables_wrapper').css('margin-top', '30px');
 
-        $('.exportar_excel').live('click', function(e) {
-           
-           $('#parametros_excel').html(
-            '<input name="nombre_empresa" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">');
+        $('body').on('click', '.exportar_excel, .exportar_csv', function() {
+
+            $('.parametros').html(
+                '<input name="nombre_empresa" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
+                '<input name="fecha_inscripcion" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="estado" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="rif" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="estatus" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'
+            );
+
         });
 
     })   

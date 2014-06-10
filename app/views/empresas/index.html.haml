@@ -3,11 +3,21 @@
     %hr.contexto{:size => "1"}
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
-    %form{action: "/empresas.xlsx", method: "get"}
-        #parametros_excel
-        %button#submit.ui-state-default.ui-corner-all.exportar_excel{:type => "submit"}
-            %span.ui-icon.ui-icon-disk
-            Exportar Excel
+    %table
+        %tr
+            %td
+
+                %form{action: "/empresas.xlsx", method: "get"}
+                    .parametros
+                    %button.ui-state-default.ui-corner-all.exportar_excel{:type => "submit", :title => "Opción que te permite exportar el listado general de Empresas a formato Excel"}
+                        %span.ui-icon.ui-icon-disk
+                        Exportar Excel
+            %td
+                %form{action: "/empresas.csv", method: "get"}
+                    .parametros
+                    %button.ui-state-default.ui-corner-all.exportar_excel{:type => "submit", :title => "Opción que te permite exportar el listado general de Empresas a CSV"}
+                        %span.ui-icon.ui-icon-disk
+                        Exportar CSV
     
     %table#data_table_empresas.display{:"data-source" => "/empresas.json"}
         %thead
@@ -35,8 +45,8 @@
     %br/
     %br/
     %form{action: "/empresas.xlsx", method: "get"}
-        #parametros_excel
-        %button#submit.ui-state-default.ui-corner-all.exportar_excel{:type => "submit"}
+        .parametros
+        %button.ui-state-default.ui-corner-all.exportar_excel{:type => "submit" , :title => "Opción que te permite exportar el listado general de Empresas a formato Excel"}
             %span.ui-icon.ui-icon-disk
             Exportar Excel
    

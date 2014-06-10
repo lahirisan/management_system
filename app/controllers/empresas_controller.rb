@@ -1,5 +1,7 @@
 class EmpresasController < ApplicationController
   before_filter :require_authentication
+  prawnto :prawn => { :top_margin => 10, :page_layout => :landscape} 
+  
   # GET /empresas
   # GET /empresas.json
   
@@ -50,13 +52,30 @@ class EmpresasController < ApplicationController
                   }
 
       format.xlsx{ 
-       
-        @empresas = @empresas.where("nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%") if (params[:nombre_empresa] != '')
-        @empresas = @empresas.where("fecha_incripcion like :search", search: "%#{params[:fecha_inscripcion]}%") if (params[:fecha_inscripcion] != '')
+
         
-       }
+        @empresas = @empresas.where("nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%") if (params[:nombre_empresa] != '')
+        @empresas = @empresas.where("fecha_inscripcion like :search", search: "%#{params[:fecha_inscripcion]}%") if (params[:fecha_inscripcion] != '')
+        @empresas = @empresas.where("estados.nombre like :search", search: "%#{params[:estado]}%") if (params[:estado] != '')
+        @empresas = @empresas.where("ciudad.nombre like :search", search: "%#{params[:ciudad]}%") if (params[:ciudad] != '')
+        @empresas = @empresas.where("empresa.rif like :search", search: "%#{params[:rif]}%")  if (params[:rif] != '')
+        @empresas = @empresas.where("estatus.descripcion like :search", search: "%#{params[:estatus]}%")  if (params[:estatus] != '')
+
+      }
       
-      format.csv{ send_data @empresas.to_csv}
+      format.csv{ 
+        
+        @empresas = @empresas.where("nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%") if (params[:nombre_empresa] != '')
+        @empresas = @empresas.where("fecha_inscripcion like :search", search: "%#{params[:fecha_inscripcion]}%") if (params[:fecha_inscripcion] != '')
+        @empresas = @empresas.where("estados.nombre like :search", search: "%#{params[:estado]}%") if (params[:estado] != '')
+        @empresas = @empresas.where("ciudad.nombre like :search", search: "%#{params[:ciudad]}%") if (params[:ciudad] != '')
+        @empresas = @empresas.where("empresa.rif like :search", search: "%#{params[:rif]}%")  if (params[:rif] != '')
+        @empresas = @empresas.where("estatus.descripcion like :search", search: "%#{params[:estatus]}%")  if (params[:estatus] != '')
+
+        send_data @empresas.to_csv
+
+      }
+
       format.pdf { }  # Generar PDF
 
     end

@@ -34,8 +34,12 @@ class Empresa < ActiveRecord::Base
   def self.to_csv # Se genera el CSV de Empresas
 
   	CSV.generate do |csv|
-  		all.each do |empresa|
-  			csv << empresa.attributes.values_at(*column_names)
+  		csv << ['prefijo', 'Nombre Empresa', 'Fecha Inscripcion', 'Direccion Empresa', 'Estado', 'Ciudad', 'RIF', 'Estatus', 'Nombre Comercial', 'Clasificacion', 'Categoria', 'Division', 'Grupo', 'Clase', 'Rep Legal', 'Cargo Rep Legal']
+      all.each do |empresa|
+        contacto =  DatosContacto.find(:first, :conditions => ["prefijo = ? and tipo = ?", empresa.prefijo, 'principal'])
+        fecha_inscripcion =  empresa.fecha_inscripcion.nil? ? '' : empresa.fecha_inscripcion.strftime("%Y-%m-%d") 
+        csv << [empresa.prefijo, empresa.nombre_empresa, fecha_inscripcion,  empresa.direccion_empresa, empresa.try(:estado).try(:nombre), empresa.try(:ciudad).try(:nombre), empresa.estatus.descripcion, empresa.nombre_comercial, empresa.try(:clasificacion).try(:descripcion), empresa.try(:clasificacion).try(:categoria), empresa.try(:clasificacion).try(:division), empresa.try(:clasificacion).try(:grupo), empresa.try(:clasificacion).try(:clase), contacto.try(:nombre_contacto), contacto.try(:cargo_contacto)]
+
   		end
     end 
   end
