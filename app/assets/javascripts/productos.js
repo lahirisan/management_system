@@ -253,17 +253,17 @@
 
         $('#new_producto').submit(function( event ) { 
 
-            if ($('#producto_id_tipo_gtin').val() == '')
-            {
-                alert('Estimado usuario, debe seleccionar el Tipo de GTIN para poder continuar.')
-                return false;
-            }
+           // if ($('#producto_id_tipo_gtin').val() == '')
+           // {
+            //    alert('Estimado usuario, debe seleccionar el Tipo de GTIN para poder continuar.')
+            //    return false;
+           // }
 
-            if (($('#producto_descripcion').val() == '') || ($('#producto_marca').val() == '') || ($('#producto_gpc').val() == ''))
-            {
-                alert('Estimado usuario, todos los campos son obligatorios para poder continuar.')
-                return false;
-            }
+           // if (($('#producto_descripcion').val() == '') || ($('#producto_marca').val() == '') || ($('#producto_gpc').val() == ''))
+           // {
+           //     alert('Estimado usuario, todos los campos son obligatorios para poder continuar.')
+            //    return false;
+           // }
 
 
             
@@ -277,28 +277,71 @@
                     alert('Estimado usuario, el codigo producto debe ser un número de 5 dígitos. Por favor verifique');
                     return false;
                 }
-                else
-                { 
-                    var prefijo = window.location.pathname.split('/')[2];  // Prefijo de la empresa
-                    var gtin = prefijo + $('#producto_codigo_prod').val();
-                   
-                    $.get("/productos.json?gtin="+gtin , function( data ) {
-                        if (data != null)
-                        {  
-                            alert('Estimado usuario, el código de producto que está ingresando ya está asignado a la empresa. Porfavor verifique.');
-                            return false;
-                        }
+                // else
+                // {   
+                //     var codigo_producto = $('#producto_codigo_prod').val();
+                //     var prefijo = window.location.pathname.split('/')[2];
+                //     var gtin = prefijo + codigo_producto;
+                    
+                //     var data = {
+                //         prefijo: prefijo,
+                //         gtin: gtin
+                //     };
+
+                //     $.ajax({
                         
-                    });
+                //         type: "GET",
+                //         url: "/productos",
+                //         dataType: 'json',
+                //         data: data,
+                //         succes: function (response, textStatus, jqXHR) {
+                //             alert('exito');
+                //             //alert(response.data);
+                //             return false;
+                //         },
 
-                }
+                //         error: function (response, textStatus, jqXHR) {
+                //             alert(jqXHR);
+                //             return false;
+                //         }
 
-                
+                //     });
+
+                    
+
+                    
+                // }
                 
                 
             }
 
         });
+
+        // Se verifica que el GTIN no exista en BD
+
+        // $( "#guardar_producto" ).click(function() {
+
+        //     // if (($("input[type='radio'][name='tipo_creacion']:checked").val() == 'manual') && ($('#producto_id_tipo_gtin').val() == 3))
+        //     // {
+        //     //     var prefijo = window.location.pathname.split('/')[2];  // Prefijo de la empresa
+        //     //     var gtin = prefijo + $('#producto_codigo_prod').val();
+        //         $.get("/productos.json?gtin="+gtin+"&prefijo="+prefijo , function( data ) {
+        //             alert('aqui');
+
+        //             if (data)
+        //             {  
+        //                 alert('Estimado usuario, el código de producto que está ingresando ('+ $('#producto_codigo_prod').val()  +') ya está asignado a la empresa. Porfavor verifique.');
+                       
+        //             }
+                                
+        //         });
+        //     //}
+
+        //     return false;
+            
+        // });
+
+        
 
 
     })   

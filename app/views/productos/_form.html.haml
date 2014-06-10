@@ -15,7 +15,10 @@
           %h2= "#{pluralize(@producto.errors.count, "errore")} "
           %ul
             - @producto.errors.full_messages.each do |msg|
-              %li= msg
+              -if msg == 'El codigo de Producto que esta ingresando ya  se encuentra asociado a un GTIN'
+                %li="El codigo de Producto que está ingresando ya se encuentra asociado a un GTIN"
+              -else
+                %li=msg 
       
       %table
         %tr
@@ -65,5 +68,5 @@
         
       =hidden_field_tag "gtin", "#{@gtin}"
       .actions.boton_submit
-        = f.submit 'Guardar'
+        = f.submit 'Guardar', :id => ''
       

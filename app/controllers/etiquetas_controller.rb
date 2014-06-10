@@ -1,9 +1,7 @@
 class EtiquetasController < ApplicationController
   
   before_filter :require_authentication
-  
-  
-  prawnto :prawn => { :top_margin => 0 } # Marge superiori del documento pdf generado en este controlador
+  prawnto :prawn => { :top_margin => 10, :left_margin => 10, :page_layout => :landscape, :page_size => [279, 267]} 
   
   def show
 
@@ -12,8 +10,8 @@ class EtiquetasController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.haml
-      format.pdf{
-      }
+      format.pdf{}
+
     end
 
   end

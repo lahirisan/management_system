@@ -29,8 +29,6 @@ class Empresa < ActiveRecord::Base
   
   validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo, :nombre_comercial , :id_clasificacion,  :presence => {:message => "No puede estar en blanco"}, :on => :create
   validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{8})-([0-9]{1})$/, on: :create, :message => "El Formato del RIF es invalido"} # Validacion al crear
-
-
   validates :rif, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado. Por favor verifique."}
 
   def self.to_csv # Se genera el CSV de Empresas
@@ -286,17 +284,49 @@ class Empresa < ActiveRecord::Base
   end
 
   def self.generar_prefijo_valido
-    
-    empresa = Empresa.find(:first, :conditions => ["prefijo < 7600000"], :order => "prefijo DESC")
-    # Se veririca que el prefijo encontrado no este asignado a una empresa eliminada
-    empresa_prefijo_invalido = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", empresa.prefijo])
 
-      while (empresa_prefijo_invalido)
-        empresa.prefijo += 1
-        empresa_prefijo_invalido = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", empresa.prefijo])
+
+    # Falta validar el caso en que no hay PREFIJOS disponibles 759XXXX
+
+    
+    empresa = Empresa.find(:first, :conditions => ["prefijo >= 7590000 and prefijo <= 7599999"], :order => "prefijo DESC")
+    prefijo = empresa.prefijo + 1
+    # Cuando la asignacion de prefijo Sea mayor a 7599999 Se hace procedera hacer una busqueda exhautiva de prefijos
+    # Disponibles desde 7590000 hasta 7599999
+    prefijo = busqueda_exhaustiva_prefijo if (prefijo > 7599999)
+
+
+    # Se veririca que el prefijo encontrado no este asignado a una empresa eliminada
+    empresa_prefijo_invalido = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", prefijo])
+
+      while (empresa_prefijo_invalido) # SI encontro registro se suma 1 y se verifica nuevamnete ese prefijo
+
+        prefijo += 1
+        empresa_prefijo_invalido = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", prefijo])
+        
+        if (empresa_prefijo_invalido.nil?) # Si no existe el prefijo en empresas eliminadas se busca en empresas activas
+
+          empresa_prefijo_invalido = Empresa.find(:first, :conditions => ["prefijo = ?", prefijo])
+
+        end
       end
 
-    return empresa.prefijo
+    return prefijo
+
+  end
+  
+  def self.busqueda_exhaustiva_prefijo
+
+    # Este busqueda se puede optimizar aplicando algoritmo de BUSQUEDA BINARIA
+
+    prefijos = Empresa.find_by_sql("Select prefijo from empresa  where (prefijo >= 7590001 and prefijo  <= 7599999) union select prefijo from empresa_eliminada where (prefijo >= 7590001 and prefijo  <= 7599999) order by prefijo")
+    prefijos =  prefijos.map{|prefijo| prefijo.prefijo}
+
+    for indice in (0..prefijos.size-2)
+      break if ((prefijos[indice + 1] - prefijos[indice]) > 1)
+    end
+    
+    return (prefijos[indice] + 1)
 
   end
 

@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
 	  if user
 	    session[:user_id] = user.id
 	    session[:usuario] = user.username
-	    session[:perfil] = user.perfil.descripcion
+	    session[:perfil] = user.try(:perfil).try(:descripcion)
 	    session[:cargo] = user.try(:cargo).try(:descripcion)
 	    session[:gerencia] = user.try(:gerencia).try(:nombre)
 	    redirect_to empresas_path
