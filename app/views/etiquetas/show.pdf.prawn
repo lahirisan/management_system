@@ -9,4 +9,3 @@ pdf.text "<font size='10'>Cod Postal: <b>#{@etiqueta.try(:cod_postal)}</b></font
 pdf.text "<font size='10'>Punto Ref: <b>#{@etiqueta.try(:punto_referencia)}</b></font>", :inline_format => true
 pdf.text "<font size='10'>Ciudad: <b>#{@etiqueta.try(:ciudad).try(:nombre)}</b></font>", :inline_format => true
 pdf.text "<font size='10'>Estado: <b>#{@etiqueta.try(:estado).try(:nombre)}</b></font>", :inline_format => true
-
