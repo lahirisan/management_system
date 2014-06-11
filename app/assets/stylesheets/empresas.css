@@ -4,25 +4,24 @@
 	text-align:center;
 	float:right;
 }
-.exportar_excel {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-right: 10px;}
-.exportar_excel span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
-.exportar_csv {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-right: 10px;}
-.exportar_csv span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
-.exportar_pdf {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 70.5% "Trebuchet MS", sans-serif}
-.exportar_pdf span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
-.regresar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif}
+.retirar_empresa_exportar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-right: 10px; cursor: pointer;}
+.retirar_empresa_exportar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+.empresas_retiradas_exportar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-right: 10px; cursor: pointer;}
+.empresas_retiradas_exportar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+.exportar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-right: 10px; cursor: pointer;}
+.exportar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+.regresar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif ; cursor: pointer;}
 .regresar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
-.retirar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif}
+.retirar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif; cursor: pointer;}
 .retirar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
-.reactivar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif}
+.reactivar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif; cursor: pointer;}
 .reactivar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
-.eliminar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif}
+.eliminar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif; cursor: pointer; }
 .eliminar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
-.activar_empresa {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif}
+.activar_empresa {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif; cursor: pointer;}
 .activar_empresa span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
-.reactivar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif}
-.reactivar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 .loader{position:fixed; top: 50%;  left: 50%; z-index:30;} 
 .campo_readonly{ background-color : #d1d1d1; }
-.crear_empresa {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-top: 30px;}
+.crear_empresa {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-top: 30px;cursor: pointer;}
 .crear_empresa span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+.margen_superior{ margin-top: 20px;}

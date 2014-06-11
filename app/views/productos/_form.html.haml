@@ -7,7 +7,6 @@
   %hr.contexto{:size => "1"}
 
   %section.formulario
-
     
     = form_for [@empresa, @producto] do |f|
       - if @producto.errors.any?
@@ -40,22 +39,22 @@
           %td
             Descripción
           %td
-            =params[:descripcion] ? f.text_field(:descripcion, :value => params[:descripcion]) : f.text_field(:descripcion)
+            =params[:descripcion] ? f.text_field(:descripcion, :value => params[:descripcion]) : f.text_field(:descripcion, :autocomplete => "off")
             
         %tr
           %td
             Marca
           %td
-            =params[:marca] ? f.text_field(:marca, :value => params[:marca]): f.text_field(:marca)
+            =params[:marca] ? f.text_field(:marca, :value => params[:marca]): f.text_field(:marca, :autocomplete => "off")
         %tr
           %td
             GPC
           %td
             -if @producto.new_record?
               -if params[:gpc]
-                =f.text_field :gpc, :value => params[:gpc]
+                =f.text_field :gpc, :value => params[:gpc], :autocomplete => "off"
               -else
-                =f.text_field :gpc
+                =f.text_field :gpc, :autocomplete => "off"
             -else
               =f.text_field :gpc, :readonly => :true, :class => "campo_readonly"
         %tr

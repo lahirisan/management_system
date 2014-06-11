@@ -38,7 +38,7 @@ class Empresa < ActiveRecord::Base
       all.each do |empresa|
         contacto =  DatosContacto.find(:first, :conditions => ["prefijo = ? and tipo = ?", empresa.prefijo, 'principal'])
         fecha_inscripcion =  empresa.fecha_inscripcion.nil? ? '' : empresa.fecha_inscripcion.strftime("%Y-%m-%d") 
-        csv << [empresa.prefijo, empresa.nombre_empresa, fecha_inscripcion,  empresa.direccion_empresa, empresa.try(:estado).try(:nombre), empresa.try(:ciudad).try(:nombre), empresa.estatus.descripcion, empresa.nombre_comercial, empresa.try(:clasificacion).try(:descripcion), empresa.try(:clasificacion).try(:categoria), empresa.try(:clasificacion).try(:division), empresa.try(:clasificacion).try(:grupo), empresa.try(:clasificacion).try(:clase), contacto.try(:nombre_contacto), contacto.try(:cargo_contacto)]
+        csv << [empresa.prefijo, empresa.nombre_empresa, fecha_inscripcion,  empresa.direccion_empresa, empresa.try(:estado).try(:nombre), empresa.try(:ciudad).try(:nombre), empresa.rif, empresa.estatus.descripcion, empresa.nombre_comercial, empresa.try(:clasificacion).try(:descripcion), empresa.try(:clasificacion).try(:categoria), empresa.try(:clasificacion).try(:division), empresa.try(:clasificacion).try(:grupo), empresa.try(:clasificacion).try(:clase), contacto.try(:nombre_contacto), contacto.try(:cargo_contacto)]
 
   		end
     end 

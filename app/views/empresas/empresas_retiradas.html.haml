@@ -3,30 +3,14 @@
     %hr.contexto{:size => "1"}
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
-    =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retiradas" do
-        - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Empresa')
 
-            %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
-                %span.ui-icon.ui-icon-circle-minus
-                Eliminar
+    = render 'botones_exportar_empresas_retiradas'
+    
+    =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retiradas" do
         
         - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Empresa')
         
-            %table.margen_inferior{:border => 1}
-                %tr
-                    %td
-                        ELiminar Masivo
-                    %td
-                        Sub-Estatus
-                    %td
-                        Motivo Retiro
-                %tr
-                    %td
-                        =check_box_tag "eliminar_masivo"
-                    %td
-                        =select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
-                    %td
-                        =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
+            =render 'eliminar_masivo'
        
         %table#data_table_empresas_retiradas.display{:"data-source" => "/empresas.json?retiradas=true"}
             %thead

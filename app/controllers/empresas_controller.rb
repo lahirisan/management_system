@@ -1,5 +1,6 @@
 class EmpresasController < ApplicationController
   before_filter :require_authentication
+  
   prawnto :prawn => { :top_margin => 10, :page_layout => :landscape} 
   
   # GET /empresas
@@ -7,9 +8,15 @@ class EmpresasController < ApplicationController
   
   def index
 
-    @empresas = Empresa.includes(:estado, :ciudad, :estatus, :tipo_usuario_empresa, :clasificacion)
     # OJO: La llamada JSON y los parametro se establecen en el datatable desde el template.html.haml
-   
+
+    if params[:retiradas]
+      @empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, {:empresas_retiradas => :sub_estatus},{:empresas_retiradas => :motivo_retiro}).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("empresas_retiradas.fecha_retiro desc")
+
+    else
+      @empresas = Empresa.includes(:estado, :ciudad, :estatus, :tipo_usuario_empresa, :clasificacion).order("empresa.fecha_inscripcion desc")
+    end
+
     respond_to do |format|
       format.html{
                   
@@ -32,7 +39,6 @@ class EmpresasController < ApplicationController
       } # index.html.erb
       
       format.json { 
-                    
 
                     if (params[:activacion] == 'true')
                       render json: (ActivacionEmpresasDatatable.new(view_context))
@@ -53,7 +59,9 @@ class EmpresasController < ApplicationController
 
       format.xlsx{ 
 
-        
+        @empresas = @empresas.where("estatus.descripcion = ?", 'Activa') if params[:retirar]
+
+        @empresas = @empresas.where("prefijo like :search", search: "%#{params[:prefijo]}%") if (params[:prefijo] != '')
         @empresas = @empresas.where("nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%") if (params[:nombre_empresa] != '')
         @empresas = @empresas.where("fecha_inscripcion like :search", search: "%#{params[:fecha_inscripcion]}%") if (params[:fecha_inscripcion] != '')
         @empresas = @empresas.where("estados.nombre like :search", search: "%#{params[:estado]}%") if (params[:estado] != '')
@@ -65,6 +73,9 @@ class EmpresasController < ApplicationController
       
       format.csv{ 
         
+        @empresas = @empresas.where("estatus.descripcion = ?", 'Activa') if params[:retirar]
+
+        @empresas = @empresas.where("prefijo like :search", search: "%#{params[:prefijo]}%") if (params[:prefijo] != '')
         @empresas = @empresas.where("nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%") if (params[:nombre_empresa] != '')
         @empresas = @empresas.where("fecha_inscripcion like :search", search: "%#{params[:fecha_inscripcion]}%") if (params[:fecha_inscripcion] != '')
         @empresas = @empresas.where("estados.nombre like :search", search: "%#{params[:estado]}%") if (params[:estado] != '')
@@ -76,7 +87,20 @@ class EmpresasController < ApplicationController
 
       }
 
-      format.pdf { }  # Generar PDF
+      format.pdf { 
+        
+        @empresas = @empresas.where("estatus.descripcion = ?", 'Activa') if params[:retirar]
+        
+        @empresas = @empresas.where("prefijo like :search", search: "%#{params[:prefijo]}%") if (params[:prefijo] != '')
+        @empresas = @empresas.where("nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%") if (params[:nombre_empresa] != '')
+        @empresas = @empresas.where("fecha_inscripcion like :search", search: "%#{params[:fecha_inscripcion]}%") if (params[:fecha_inscripcion] != '')
+        @empresas = @empresas.where("estados.nombre like :search", search: "%#{params[:estado]}%") if (params[:estado] != '')
+        @empresas = @empresas.where("ciudad.nombre like :search", search: "%#{params[:ciudad]}%") if (params[:ciudad] != '')
+        @empresas = @empresas.where("empresa.rif like :search", search: "%#{params[:rif]}%")  if (params[:rif] != '')
+        @empresas = @empresas.where("estatus.descripcion like :search", search: "%#{params[:estatus]}%")  if (params[:estatus] != '')
+        @empresas = @empresas.where("estatus.descripcion like :search", search: "%#{params[:estatus]}%")  if (params[:estatus] != '')
+         
+      } 
 
     end
 
@@ -125,6 +149,9 @@ class EmpresasController < ApplicationController
 
     @ultimo =  Empresa.generar_prefijo_valido
     params[:empresa][:id_estatus] = Estatus.empresa_inactiva()
+    # Se completa la hora con los segundos para que pueda ordenar por la ultima creada
+    time = Time.now
+    params[:empresa][:fecha_inscripcion] +=  " " + time.hour.to_s + ":" + time.min.to_s + ":" + time.sec.to_s
     @empresa = Empresa.new(params[:empresa])
 
     respond_to do |format|
