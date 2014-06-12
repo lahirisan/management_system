@@ -4,21 +4,23 @@
 	text-align:center;
 	float:right;
 }
+.exportar_empresas_eliminadas {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-right: 10px; cursor: pointer;}
+.exportar_empresas_eliminadas span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 .retirar_empresa_exportar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-right: 10px; cursor: pointer;}
 .retirar_empresa_exportar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 .empresas_retiradas_exportar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-right: 10px; cursor: pointer;}
 .empresas_retiradas_exportar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 .exportar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-right: 10px; cursor: pointer;}
 .exportar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
-.regresar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif ; cursor: pointer;}
+.regresar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif ; cursor: pointer;}
 .regresar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 .retirar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif; cursor: pointer;}
 .retirar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 .reactivar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif; cursor: pointer;}
 .reactivar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
-.eliminar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif; cursor: pointer; }
+.eliminar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif; cursor: pointer; }
 .eliminar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
-.activar_empresa {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif; cursor: pointer;}
+.activar_empresa {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif; cursor: pointer;}
 .activar_empresa span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 .loader{position:fixed; top: 50%;  left: 50%; z-index:30;} 
 .campo_readonly{ background-color : #d1d1d1; }

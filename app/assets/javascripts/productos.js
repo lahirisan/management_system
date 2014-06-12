@@ -180,7 +180,7 @@ $(document).ready(function(){
         });
 
         // Efectos del boton importar
-        $('.boton_importar, .retirar_productos,   .eliminar_productos').hover(
+        $('.boton_importar, .retirar_productos,   .eliminar_productos, .exportar_productos').hover(
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');}
         );
@@ -279,6 +279,23 @@ $(document).ready(function(){
         // Se verifica el codigo de producto
         $('#new_producto').submit(function( event ) {
             return verificar_codigo_producto();
+        });
+
+        $(".exportar_productos").click(function() {
+
+            $('.parametros').html(
+
+                '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
+                '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="gpc" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="estatus" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
+                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'
+            );
+
+          
         });
 
 });

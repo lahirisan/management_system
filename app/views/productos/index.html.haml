@@ -4,10 +4,7 @@
 
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
-    - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Importar Producto')
-        %a.boton_importar.ui-state-default.ui-corner-all{:href => "#", :title => "Opción que permite importar los productos desde un archivo Excel"}
-            %span.ui-icon.ui-icon-transferthick-e-w
-            Importar Producto
+    =render "exportar_productos"
     %br/
     %br/    
     

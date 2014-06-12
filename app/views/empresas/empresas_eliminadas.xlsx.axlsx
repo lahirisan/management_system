@@ -1,0 +1,8 @@
+@empresas = @empresas.where("empresa_eliminada.prefijo like :search", search: "%#{params[:prefijo]}%" )   if params[:prefijo] != ''
+@empresas = @empresas.where("empresa_eliminada.nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%" )  if params[:nombre_empresa] != ''
+@empresas = @empresas.where("empresa_eliminada.fecha_inscripcion like :search", search: "%#{params[:fecha_inscripcion]}%" )  if params[:fecha_inscripcion] != ''
+@empresas = @empresas.where("ciudad.nombre like :search", search: "%#{params[:ciudad]}%" ) if params[:ciudad] != ''
+@empresas = @empresas.where("empresa_eliminada.rif like :search", search: "%#{params[:rif]}%" ) if params[:rif] != ''
+@empresas = @empresas.where("empresa_elim_detalle.fecha_eliminacion like :search", search: "%#{params[:fecha_eliminacion]}%" ) if params[:fecha_eliminacion] != ''
+@empresas = @empresas.where("sub_estatus.descripcion like :search", search: "%#{params[:subestatus]}%" ) if params[:subestatus] != ''
+@empresas = @empresas.where("motivo_retiro.descripcion like :search", search: "%#{params[:motivo_retiro]}%" ) if params[:motivo_retiro] != ''

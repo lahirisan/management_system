@@ -25,7 +25,7 @@
         // Datatable que maneja el listado para retirar empresas
         $("#data_table_empresas_retirar").dataTable({
             sPaginationType: "full_numbers",
-            aaSorting: [[ 3, "desc" ]],
+            aaSorting: [[ 2, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
@@ -329,7 +329,7 @@
 
         
         // estilos de los botones exportar
-        $('.exportar, .regresar, .retirar, .reactivar, .eliminar, .activar_empresa, .reactivar, .crear_empresa, .retirar_empresa_exportar, .empresas_retiradas_exportar').hover(
+        $('.exportar_empresas_eliminadas, .exportar, .regresar, .retirar, .reactivar, .eliminar, .activar_empresa, .reactivar, .crear_empresa, .retirar_empresa_exportar, .empresas_retiradas_exportar').hover(
      
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');
@@ -379,9 +379,25 @@
                 '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
                 '<input name="rif" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
                 '<input name="fecha_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
-                '<input name="substatus" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
-                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
                 '<input name="retiradas" type="hidden" value="true">'
+            );
+
+        });
+
+        $('body').on('click', '.exportar_empresas_eliminadas', function() {
+            
+            $('.parametros').html(
+                '<input name="prefijo" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
+                '<input name="nombre_empresa" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="fecha_inscripcion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="rif" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="fecha_eliminacion" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
+                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
+                '<input name="eliminadas" type="hidden" value="true">'
             );
 
         });

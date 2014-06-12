@@ -4,6 +4,8 @@ class ProductosController < ApplicationController
   # GET /productos.json
   def index
     
+    productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("productos.fecha_inscripcion") 
+
     respond_to do |format|
       format.html {
                     if params[:retirar]
