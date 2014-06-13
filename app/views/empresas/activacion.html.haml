@@ -3,10 +3,8 @@
     %hr.contexto{:size => "1"}
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
+    =render 'exportar_empresas_no_validadas'
     =form_tag update_multiple_empresas_path, :method => "put", :id => "activar_empresa" do
-        %button#submit.ui-state-default.ui-corner-all.activar_empresa{:type => "submit", :title => "Activar empresas seleccionadas"}
-            %span.ui-icon.ui-icon-circle-check
-            Activar Empresa
         %table#data_table_empresas_activacion.display{:"data-source" => "/empresas.json?activacion=true"}
             %thead
                 %tr

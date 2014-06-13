@@ -2,9 +2,13 @@ class ProductosController < ApplicationController
   before_filter :require_authentication
   # GET /productos
   # GET /productos.json
+  
+  prawnto :prawn => { :top_margin => 10} 
+
   def index
     
     productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("productos.fecha_inscripcion") 
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
 
     respond_to do |format|
       format.html {
@@ -44,6 +48,40 @@ class ProductosController < ApplicationController
                       end
                     end
                   }
+      format.pdf  {
+                    if params[:retirar]
+                      @productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("producto.fecha_creacion") 
+                      render '/productos/retirar_productos.pdf.prawn'
+                    elsif params[:retirados]
+                      @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
+                      render '/productos/productos_retirados.pdf.prawn'
+                    elsif params[:eliminar]
+                      @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
+                      render '/productos/eliminar_productos.pdf.prawn'
+                    elsif params[:eliminados]
+                      render '/productos/productos_eliminados.pdf.prawn'
+                    else
+                      @productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("producto.fecha_creacion") 
+                      render '/productos/index.pdf.prawn'
+                    end
+      }
+      format.xlsx{
+                  if params[:retirar]
+                    @productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("producto.fecha_creacion") 
+                    render '/productos/retirar_productos.xlsx.axlsx'
+                  elsif params[:retirados]
+                    @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
+                    render '/productos/productos_retirados.xlsx.axlsx'
+                  elsif params[:eliminar]
+                    @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
+                    render '/productos/eliminar_productos.xlsx.axlsx'
+                  elsif params[:eliminados]
+                    render '/productos/productos_eliminados.xlsx.axlsx'
+                  else
+                    @productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("producto.fecha_creacion") 
+                    render '/productos/index.xlsx.axlsx'
+                  end
+      }
       
     end
   end
@@ -68,8 +106,6 @@ class ProductosController < ApplicationController
     @producto = @empresa.producto.build  # Se crea el form_for
     
     @gtin = params[:gtin] if params[:gtin] != ''# SI esta gtin  es para crear gtin tipo 14 base 8 o gtin 14 base 13
-    
-    
 
     @producto_ = Producto.find(:first, :conditions => ["gtin like ?", params[:gtin]]) if params[:gtin]
     @base = TipoGtin.find(:first, :conditions =>["tipo like ? and base like ?", "GTIN-14", @producto_.tipo_gtin.tipo]) if @producto_

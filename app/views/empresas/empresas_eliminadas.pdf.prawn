@@ -21,4 +21,4 @@ image "#{Rails.root}/app/assets/images/gs1-logohome", :width => 200, :height => 
 draw_text "Empresas Eliminadas", :size => 10, :at => [500,540]
 draw_text "Fecha:#{Time.now}", :size => 10, :at => [500,525]
 #number_pages "(<page>/<total>)", :size => 9, :at => [700, 550]
-table(empresas,  :row_colors => ["FFFFFF", "DDDDDD"], :cell_style => { size: 8 }, :column_widths => [50,100,50,70,65,40])
+table(empresas,  :row_colors => ["FFFFFF", "DDDDDD"], :cell_style => { size: 8 }, :column_widths => [50,100,50,70,65,50,50])

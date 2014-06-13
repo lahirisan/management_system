@@ -3,14 +3,11 @@
     %hr.contexto{:size => "1"}
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
+    
+    = render 'botones_exportar_empresas_retiradas'
+    
     =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_reactivar" do
-        - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Empresa')
 
-            %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
-                %span.ui-icon.ui-icon-circle-minus
-                Reactivar
-            
-       
         %table#data_table_empresas_retiradas.display{:"data-source" => "/empresas.json?reactivar=true"}
             %thead
                 %tr

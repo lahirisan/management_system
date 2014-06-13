@@ -329,7 +329,7 @@
 
         
         // estilos de los botones exportar
-        $('.exportar_empresas_eliminadas, .exportar, .regresar, .retirar, .reactivar, .eliminar, .activar_empresa, .reactivar, .crear_empresa, .retirar_empresa_exportar, .empresas_retiradas_exportar').hover(
+        $('.exportar_empresas_no_validadas, .exportar_empresas_eliminadas, .exportar, .regresar, .retirar, .reactivar, .eliminar, .activar_empresa, .reactivar, .crear_empresa, .retirar_empresa_exportar, .empresas_retiradas_exportar').hover(
      
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');
@@ -398,6 +398,21 @@
                 '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
                 '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
                 '<input name="eliminadas" type="hidden" value="true">'
+            );
+
+        });
+
+        $('body').on('click', '.exportar_empresas_no_validadas', function() {
+            
+            $('.parametros').html(
+                '<input name="prefijo" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
+                '<input name="nombre_empresa" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="fecha_inscripcion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="direccion_empresa" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="estado" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
+                '<input name="rif" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="activacion" type="hidden" value="true">'
             );
 
         });

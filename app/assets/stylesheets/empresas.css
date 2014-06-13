@@ -6,6 +6,8 @@
 }
 .exportar_empresas_eliminadas {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-right: 10px; cursor: pointer;}
 .exportar_empresas_eliminadas span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+.exportar_empresas_no_validadas {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-right: 10px; cursor: pointer;}
+.exportar_empresas_no_validadas span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 .retirar_empresa_exportar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-right: 10px; cursor: pointer;}
 .retirar_empresa_exportar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 .empresas_retiradas_exportar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-right: 10px; cursor: pointer;}

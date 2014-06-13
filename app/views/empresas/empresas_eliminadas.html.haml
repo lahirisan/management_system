@@ -29,10 +29,10 @@
         %br/
         
         =hidden_field_tag "reactivar", "true"
-        - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Reactivar Empresa')
+        / - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Reactivar Empresa')
         
-            %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit", :title => "Reactivar empresas seleccionadas"}
-                %span.ui-icon.ui-icon-circle-check
-                Reactivar Empresa
+        /     %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit", :title => "Reactivar empresas seleccionadas"}
+        /         %span.ui-icon.ui-icon-circle-check
+        /         Reactivar Empresa
         
     

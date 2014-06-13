@@ -10,13 +10,6 @@ class EmpresasController < ApplicationController
 
     # OJO: La llamada JSON y los parametro se establecen en el datatable desde el template.html.haml
 
-    if params[:retiradas]
-      @empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, {:empresas_retiradas => :sub_estatus},{:empresas_retiradas => :motivo_retiro}).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("empresas_retiradas.fecha_retiro desc")
-
-    else
-      @empresas = Empresa.includes(:estado, :ciudad, :estatus, :tipo_usuario_empresa, :clasificacion).order("empresa.fecha_inscripcion desc")
-    end
-
     respond_to do |format|
       format.html{
                   
@@ -57,49 +50,52 @@ class EmpresasController < ApplicationController
                     end
                   }
 
-      format.xlsx{ 
+      format.xlsx{
 
-        @empresas = @empresas.where("estatus.descripcion = ?", 'Activa') if params[:retirar]
+                  if params[:retiradas]
+                    @empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, {:empresas_retiradas => :sub_estatus},{:empresas_retiradas => :motivo_retiro}).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("empresas_retiradas.fecha_retiro desc")
+                    render  "/empresas/empresas_retiradas.xlsx.axlsx"
 
-        @empresas = @empresas.where("prefijo like :search", search: "%#{params[:prefijo]}%") if (params[:prefijo] != '')
-        @empresas = @empresas.where("nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%") if (params[:nombre_empresa] != '')
-        @empresas = @empresas.where("fecha_inscripcion like :search", search: "%#{params[:fecha_inscripcion]}%") if (params[:fecha_inscripcion] != '')
-        @empresas = @empresas.where("estados.nombre like :search", search: "%#{params[:estado]}%") if (params[:estado] != '')
-        @empresas = @empresas.where("ciudad.nombre like :search", search: "%#{params[:ciudad]}%") if (params[:ciudad] != '')
-        @empresas = @empresas.where("empresa.rif like :search", search: "%#{params[:rif]}%")  if (params[:rif] != '')
-        @empresas = @empresas.where("estatus.descripcion like :search", search: "%#{params[:estatus]}%")  if (params[:estatus] != '')
-
+                  elsif params[:eliminadas]
+                    @empresas = EmpresaEliminada.includes(:estado, :ciudad, :estatus, :clasificacion, :empresa_elim_detalle, :sub_estatus, :motivo_retiro).order("empresa_elim_detalle.fecha_eliminacion desc")
+                    render "/empresas/empresas_eliminadas.xlsx.axlsx"
+                  elsif params[:activacion]
+                    @empresas = Empresa.where("estatus.descripcion like ?", "No Validado").includes(:estado, :ciudad, :estatus, :correspondencia, :clasificacion).order("empresa.fecha_inscripcion")
+                    render "/empresas/activacion_empresas.xlsx.axlsx"
+                  else
+                    @empresas = Empresa.includes(:estado, :ciudad, :estatus, :tipo_usuario_empresa, :clasificacion).order("empresa.fecha_inscripcion desc")
+                    render  "/empresas/index.xlsx.axlsx"
+                  end 
       }
       
       format.csv{ 
         
-        @empresas = @empresas.where("estatus.descripcion = ?", 'Activa') if params[:retirar]
-
-        @empresas = @empresas.where("prefijo like :search", search: "%#{params[:prefijo]}%") if (params[:prefijo] != '')
-        @empresas = @empresas.where("nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%") if (params[:nombre_empresa] != '')
-        @empresas = @empresas.where("fecha_inscripcion like :search", search: "%#{params[:fecha_inscripcion]}%") if (params[:fecha_inscripcion] != '')
-        @empresas = @empresas.where("estados.nombre like :search", search: "%#{params[:estado]}%") if (params[:estado] != '')
-        @empresas = @empresas.where("ciudad.nombre like :search", search: "%#{params[:ciudad]}%") if (params[:ciudad] != '')
-        @empresas = @empresas.where("empresa.rif like :search", search: "%#{params[:rif]}%")  if (params[:rif] != '')
-        @empresas = @empresas.where("estatus.descripcion like :search", search: "%#{params[:estatus]}%")  if (params[:estatus] != '')
-
-        send_data @empresas.to_csv
-
+                @empresas = @empresas.where("estatus.descripcion = ?", 'Activa') if params[:retirar]
+                @empresas = @empresas.where("prefijo like :search", search: "%#{params[:prefijo]}%") if (params[:prefijo] != '')
+                @empresas = @empresas.where("nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%") if (params[:nombre_empresa] != '')
+                @empresas = @empresas.where("fecha_inscripcion like :search", search: "%#{params[:fecha_inscripcion]}%") if (params[:fecha_inscripcion] != '')
+                @empresas = @empresas.where("estados.nombre like :search", search: "%#{params[:estado]}%") if (params[:estado] != '')
+                @empresas = @empresas.where("ciudad.nombre like :search", search: "%#{params[:ciudad]}%") if (params[:ciudad] != '')
+                @empresas = @empresas.where("empresa.rif like :search", search: "%#{params[:rif]}%")  if (params[:rif] != '')
+                @empresas = @empresas.where("estatus.descripcion like :search", search: "%#{params[:estatus]}%")  if (params[:estatus] != '')
+                send_data @empresas.to_csv
       }
 
-      format.pdf { 
-        
-        @empresas = @empresas.where("estatus.descripcion = ?", 'Activa') if params[:retirar]
-        
-        @empresas = @empresas.where("prefijo like :search", search: "%#{params[:prefijo]}%") if (params[:prefijo] != '')
-        @empresas = @empresas.where("nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%") if (params[:nombre_empresa] != '')
-        @empresas = @empresas.where("fecha_inscripcion like :search", search: "%#{params[:fecha_inscripcion]}%") if (params[:fecha_inscripcion] != '')
-        @empresas = @empresas.where("estados.nombre like :search", search: "%#{params[:estado]}%") if (params[:estado] != '')
-        @empresas = @empresas.where("ciudad.nombre like :search", search: "%#{params[:ciudad]}%") if (params[:ciudad] != '')
-        @empresas = @empresas.where("empresa.rif like :search", search: "%#{params[:rif]}%")  if (params[:rif] != '')
-        @empresas = @empresas.where("estatus.descripcion like :search", search: "%#{params[:estatus]}%")  if (params[:estatus] != '')
-        @empresas = @empresas.where("estatus.descripcion like :search", search: "%#{params[:estatus]}%")  if (params[:estatus] != '')
-         
+      format.pdf {
+
+                if (params[:retiradas])
+                  @empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, {:empresas_retiradas => :sub_estatus},{:empresas_retiradas => :motivo_retiro}).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("empresas_retiradas.fecha_retiro desc")
+                  render "/empresas/empresas_retiradas.pdf.prawn"
+                elsif params[:eliminadas]
+                  @empresas = EmpresaEliminada.includes(:estado, :ciudad, :estatus, :clasificacion, :empresa_elim_detalle, :sub_estatus, :motivo_retiro).order("empresa_elim_detalle.fecha_eliminacion desc")
+                  render "/empresas/empresas_eliminadas.pdf.prawn"
+                elsif params[:activacion]
+                  @empresas = Empresa.where("estatus.descripcion like ?", "No Validado").includes(:estado, :ciudad, :estatus).order("empresa.fecha_inscripcion")
+                  render "/empresas/activacion_empresas.pdf.prawn"
+                else
+                  @empresas = Empresa.includes(:estado, :ciudad, :estatus, :tipo_usuario_empresa, :clasificacion).order("empresa.fecha_inscripcion desc")
+                  render "/empresas/index.pdf.prawn"
+                end
       } 
 
     end
