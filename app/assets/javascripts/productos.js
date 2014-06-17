@@ -1,4 +1,4 @@
-  $( document ).ready(function() {
+$(document).ready(function(){
 
         // Datatable que maneja el listado de productos
         $("#data_table_productos").dataTable({
@@ -9,7 +9,7 @@
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_productos').data('source')
-        }).columnFilter({ aoColumns: [{ type: "text"},{ type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [null, { type: "text"},{ type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, null, {type: "text"},null]});
 
         // Datatable que maneja retirar productos
         $("#data_table_retirar_productos").dataTable({
@@ -20,7 +20,7 @@
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_retirar_productos').data('source')
-        }).columnFilter({ aoColumns: [null, { type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [null, null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},null, {type: "text"}]});
 
         // Datatable que maneja retirar productos
         $("#data_table_productos_retirados").dataTable({
@@ -31,7 +31,7 @@
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_productos_retirados').data('source')
-        }).columnFilter({ aoColumns: [{ type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
         // Datatable que maneja retirar productos
         $("#data_table_productos_eliminados").dataTable({
@@ -53,7 +53,7 @@
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_eliminar_productos').data('source')
-        }).columnFilter({ aoColumns: [null, { type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}    ]});
+        }).columnFilter({ aoColumns: [null, null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}    ]});
 
         // formulario eliminar producto
 
@@ -179,10 +179,8 @@
            
         });
 
-        
-
         // Efectos del boton importar
-        $('.boton_importar, .retirar_productos,   .eliminar_productos').hover(
+        $('.exportar_productos_eliminar, .exportar_productos_retirados, .exportar_productos_retirar, .boton_importar, .retirar_productos,   .eliminar_productos, .exportar_productos').hover(
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');}
         );
@@ -250,26 +248,23 @@
 
         });
 
+       
+        $('#new_producto').submit(function( event ) {
+          
+           if ($('#producto_id_tipo_gtin').val() == '')
+           {
+               alert('Estimado usuario, debe seleccionar el Tipo de GTIN para poder continuar.')
+               return false;
+           }
 
-        $('#new_producto').submit(function( event ) { 
-
-           // if ($('#producto_id_tipo_gtin').val() == '')
-           // {
-            //    alert('Estimado usuario, debe seleccionar el Tipo de GTIN para poder continuar.')
-            //    return false;
-           // }
-
-           // if (($('#producto_descripcion').val() == '') || ($('#producto_marca').val() == '') || ($('#producto_gpc').val() == ''))
-           // {
-           //     alert('Estimado usuario, todos los campos son obligatorios para poder continuar.')
-            //    return false;
-           // }
-
-
+           if (($('#producto_descripcion').val() == '') || ($('#producto_marca').val() == '') || ($('#producto_gpc').val() == ''))
+           {
+               alert('Estimado usuario, todos los campos son obligatorios para poder continuar.')
+               return false;
+           }
             
             if (($("input[type='radio'][name='tipo_creacion']:checked").val() == 'manual') && ($('#producto_id_tipo_gtin').val() == 3))
-            {
-                
+            {   
                 var reg = /^[0-9]{5}$/;
                 var cod_producto = $('#producto_codigo_prod').val();
                 if ( !reg.test(cod_producto) )
@@ -277,72 +272,109 @@
                     alert('Estimado usuario, el codigo producto debe ser un número de 5 dígitos. Por favor verifique');
                     return false;
                 }
-                // else
-                // {   
-                //     var codigo_producto = $('#producto_codigo_prod').val();
-                //     var prefijo = window.location.pathname.split('/')[2];
-                //     var gtin = prefijo + codigo_producto;
-                    
-                //     var data = {
-                //         prefijo: prefijo,
-                //         gtin: gtin
-                //     };
-
-                //     $.ajax({
-                        
-                //         type: "GET",
-                //         url: "/productos",
-                //         dataType: 'json',
-                //         data: data,
-                //         succes: function (response, textStatus, jqXHR) {
-                //             alert('exito');
-                //             //alert(response.data);
-                //             return false;
-                //         },
-
-                //         error: function (response, textStatus, jqXHR) {
-                //             alert(jqXHR);
-                //             return false;
-                //         }
-
-                //     });
-
-                    
-
-                    
-                // }
-                
-                
             }
-
+                    
+        });
+        
+        // Se verifica el codigo de producto
+        $('#new_producto').submit(function( event ) {
+            return verificar_codigo_producto();
         });
 
-        // Se verifica que el GTIN no exista en BD
-
-        // $( "#guardar_producto" ).click(function() {
-
-        //     // if (($("input[type='radio'][name='tipo_creacion']:checked").val() == 'manual') && ($('#producto_id_tipo_gtin').val() == 3))
-        //     // {
-        //     //     var prefijo = window.location.pathname.split('/')[2];  // Prefijo de la empresa
-        //     //     var gtin = prefijo + $('#producto_codigo_prod').val();
-        //         $.get("/productos.json?gtin="+gtin+"&prefijo="+prefijo , function( data ) {
-        //             alert('aqui');
-
-        //             if (data)
-        //             {  
-        //                 alert('Estimado usuario, el código de producto que está ingresando ('+ $('#producto_codigo_prod').val()  +') ya está asignado a la empresa. Porfavor verifique.');
-                       
-        //             }
-                                
-        //         });
-        //     //}
-
-        //     return false;
+        $(".exportar_productos").click(function() {
             
-        // });
+            $('.parametros').html(
+                '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
+                '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="gpc" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="estatus" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
+                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'
+            );
+        });
 
-        
+        $(".exportar_productos_retirar").click(function() {
 
+            $('.parametros').html(
+                '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="gpc" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
+                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
+                '<input name="retirar" type="hidden" value="true">'
+            );
 
-    })   
+          
+        });
+
+        $(".exportar_productos_retirados").click(function() {
+
+            $('.parametros').html(
+                '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
+                '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="gpc" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
+                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
+                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(11) span input').val()+'">'+
+                '<input name="fecha_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(12) span input').val()+'">'+
+                '<input name="retirados" type="hidden" value="true">'
+            );
+
+          
+        });
+
+        $(".exportar_productos_eliminar").click(function() {
+
+            $('.parametros').html(
+                '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="gpc" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
+                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
+                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
+                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(11) span input').val()+'">'+
+                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(12) span input').val()+'">'+
+                '<input name="eliminar" type="hidden" value="true">'
+            );
+
+          
+        });
+
+});
+
+function verificar_codigo_producto() {
+
+    var codigo_producto = $('#producto_codigo_prod').val();
+    var prefijo = window.location.pathname.split('/')[2];
+    var gtin = prefijo + codigo_producto;
+                    
+    $.ajax({
+
+        type: "GET",
+        url: "/productos",
+        dataType: 'json',
+        data: data,
+        async: false,
+        succes: function (response, textStatus, jqXHR) {
+            alert('exito');
+            //alert(response.data);
+            return false;
+        },
+
+        error: function (response, textStatus, jqXHR) {
+            alert('');
+            return false;
+        }
+
+    });
+ 
+}
+
 

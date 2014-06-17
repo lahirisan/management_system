@@ -1,0 +1,15 @@
+%table.margen_inferior{:border => 1}
+    %tr
+        %td
+            Retiro Masivo
+        %td
+            Sub-Estatus
+        %td
+            Motivo Retiro
+    %tr
+        %td
+            =check_box_tag "retiro_masivo"
+        %td
+            =select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
+        %td
+            =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))

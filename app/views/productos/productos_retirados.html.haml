@@ -4,6 +4,7 @@
 
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
+    = render 'exportar_productos_retirados'
     %table#data_table_productos_retirados.display{:"data-source" => "#{empresa_productos_path}.json?retirados=true"}
         %thead
             %tr

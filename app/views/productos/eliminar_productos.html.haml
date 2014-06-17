@@ -3,10 +3,9 @@
     %hr.contexto{:size => "1"}
 
 %section#areaTrabajo.areaTrabajo
+    = render 'exportar_productos_eliminar'
     =form_tag "#{empresa_productos_path}/update_multiple", :method => "put", :id => "formulario_eliminar_productos" do
-        %button#submit.ui-state-default.ui-corner-all.eliminar_productos{:type => "submit", :title => "Eliminar productos"}
-            %span.ui-icon.ui-icon-circle-minus
-            Eliminar
+       
         %table.margen_inferior{:border => 1}
             %tr
                 %td

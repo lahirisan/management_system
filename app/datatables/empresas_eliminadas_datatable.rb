@@ -54,7 +54,7 @@ private
 
   def fetch_empresas
    
-    empresas = EmpresaEliminada.includes(:estado, :ciudad, :estatus, :clasificacion, :empresa_elim_detalle).order("#{sort_column} #{sort_direction}")
+    empresas = EmpresaEliminada.includes(:estado, :ciudad, :estatus, :clasificacion, :empresa_elim_detalle, :sub_estatus, :motivo_retiro).order("#{sort_column} #{sort_direction}")
     
     empresas = empresas.page(page).per_page(per_page)
    
@@ -63,11 +63,11 @@ private
     empresas = empresas.where("empresa_eliminada.prefijo like :search1", search1: "%#{params[:sSearch_1]}%" )   if params[:sSearch_1].present? # Filtro de busqueda por nombre de la empresa
     empresas = empresas.where("empresa_eliminada.nombre_empresa like :search2", search2: "%#{params[:sSearch_2]}%" )  if params[:sSearch_2].present? # Filtro fecha_inscripcion
     empresas = empresas.where("empresa_eliminada.fecha_inscripcion like :search3", search3: "%#{params[:sSearch_3]}%" )  if params[:sSearch_3].present? # Filtro fecha_inscripcion
-    empresas = empresas.where("empresa_eliminada.direccion_empresa like :search4", search4: "%#{params[:sSearch_4]}%" ) if params[:sSearch_4].present? # Filtro fecha_inscripcion
-    empresas = empresas.where("estados.nombre like :search5", search5: "%#{params[:sSearch_5]}%" ) if params[:sSearch_5].present?
-    empresas = empresas.where("ciudad.nombre like :search6", search6: "%#{params[:sSearch_6]}%" ) if params[:sSearch_6].present?
-    empresas = empresas.where("empresa_eliminada.rif like :search7", search7: "%#{params[:sSearch_7]}%" ) if params[:sSearch_7].present?
-    empresas = empresas.where("empresa_elim_detalle.fecha_eliminacion like :search8", search8: "%#{params[:sSearch_8]}%" ) if params[:sSearch_8].present?
+    empresas = empresas.where("ciudad.nombre like :search4", search4: "%#{params[:sSearch_4]}%" ) if params[:sSearch_4].present?
+    empresas = empresas.where("empresa_eliminada.rif like :search5", search5: "%#{params[:sSearch_5]}%" ) if params[:sSearch_5].present?
+    empresas = empresas.where("empresa_elim_detalle.fecha_eliminacion like :search6", search6: "%#{params[:sSearch_6]}%" ) if params[:sSearch_6].present?
+    empresas = empresas.where("sub_estatus.descripcion like :search7", search7: "%#{params[:sSearch_7]}%" ) if params[:sSearch_7].present?
+    empresas = empresas.where("motivo_retiro.descripcion like :search8", search8: "%#{params[:sSearch_8]}%" ) if params[:sSearch_8].present?
     
     
     empresas
