@@ -9,7 +9,7 @@ $( document ).ready(function() {
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_glns').data('source')
-        }).columnFilter({ aoColumns: [{ type: "text"},{ type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [{ type: "text"},{ type: "text"}, {type: "text" }, {type: "text"}, null,{type: "text"} , {type: "text"}, {type: "text"}, {type: "text"}]});
 
 
         // Datatable que maneja el listado de glns
@@ -36,7 +36,7 @@ $( document ).ready(function() {
 
 
         // Efectos del boton importar
-        $('.eliminar_gln').hover(
+        $('.eliminar_gln, .exportar_gln, .exportar_gln_eliminar').hover(
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');}
         );
@@ -108,5 +108,32 @@ $( document ).ready(function() {
                 });
             })
 
+        });
+
+        $(".exportar_gln").click(function() {
+            $('.parametros').html(
+                '<input name="gln" type="hidden" value="'+$('tfoot tr th:nth-child(1) span input').val()+'">'+
+                '<input name="tipo_gln" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
+                '<input name="codigo_localizacion" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="fecha_asignacion" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="estado" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
+                '<input name="municipio" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'
+            );
+        });
+
+        $(".exportar_gln_eliminar").click(function() {
+            $('.parametros').html(
+                '<input name="gln" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
+                '<input name="tipo_gln" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="codigo_localizacion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="fecha_asignacion" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
+                '<input name="estado" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="municipio" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
+                '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
+                '<input name="eliminar" type="hidden" value="eliminar">'
+            );
         });
 });

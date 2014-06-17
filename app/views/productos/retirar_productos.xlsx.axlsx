@@ -34,9 +34,9 @@ wb.add_worksheet(name: "GS1") do |sheet|
 		black_cell2 = s.add_style   :border => { :style => :thin, :color => "00" }, :i => true,:fg_color => "00", :sz => 8, :alignment => { :horizontal=> :left }
 		tomas = s.add_style  :sz => 12, :alignment => { :horizontal=> :center }
 
-			sheet.add_row ['Empresa',"#{@productos[0].productos_empresa.empresa.nombre_empresa}" ]
-			sheet.add_row ['RIF',"#{@productos[0].productos_empresa.empresa.rif}" ]
-			sheet.add_row ['Prefijo',"#{@productos[0].productos_empresa.empresa.prefijo}"]
+			sheet.add_row ['Empresa',"#{@empresa.nombre_empresa}" ]
+			sheet.add_row ['RIF',"#{@empresa.rif}" ]
+			sheet.add_row ['Prefijo',"#{@empresa.prefijo}"]
 			sheet.add_row ['']
 
 			sheet.add_row ["Tipo GTIN", "GTIN", "Descripción", "Marca", "GPC", "Estatus", "Código Producto", "Fecha Creación"], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]

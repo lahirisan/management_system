@@ -4,6 +4,7 @@ class EmpresaServiciosController < ApplicationController
   # GET /empresa_servicios.json
   def index
     
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
     respond_to do |format|
       format.html {
                   if params[:eliminar]
@@ -26,6 +27,32 @@ class EmpresaServiciosController < ApplicationController
                     end
                     
                   }
+
+      format.pdf{
+                  if params[:eliminar]
+                    @empresa_servicios = EmpresaServicio.where("empresa_servicios.prefijo = ?", params[:empresa_id]).includes(:servicio, :empresa).order("empresa_servicios.fecha_contratacion") 
+                    render '/empresa_servicios/eliminar_servicio.pdf.prawn'
+                  elsif params[:eliminados]
+                    @empresa_servicios = EmpresaServiciosEliminado.where("prefijo = ?", params[:empresa_id]).includes(:servicio, :sub_estatus, :motivo_retiro).order("empresa_servicios_eliminado.fecha_eliminacion") 
+                    render :template =>'/empresa_servicios/servicios_eliminados.pdf.prawn'
+                  else
+                    @empresa_servicios = EmpresaServicio.where("empresa_servicios.prefijo = ?", params[:empresa_id]).includes(:servicio, :empresa).order("empresa_servicios.fecha_contratacion") 
+                    render '/empresa_servicios/index.pdf.prawn'
+                  end
+      }
+
+      format.xlsx{
+                  if params[:eliminar]
+                    @empresa_servicios = EmpresaServicio.where("empresa_servicios.prefijo = ?", params[:empresa_id]).includes(:servicio, :empresa).order("empresa_servicios.fecha_contratacion") 
+                    render '/empresa_servicios/index.xlsx.axlsx'
+                  elsif params[:eliminados]
+                     @empresa_servicios = EmpresaServiciosEliminado.where("prefijo = ?", params[:empresa_id]).includes(:servicio, :sub_estatus, :motivo_retiro).order("empresa_servicios_eliminado.fecha_eliminacion") 
+                    render '/empresa_servicios/servicios_eliminados.xlsx.axlsx'
+                  else
+                    @empresa_servicios = EmpresaServicio.where("empresa_servicios.prefijo = ?", params[:empresa_id]).includes(:servicio, :empresa).order("empresa_servicios.fecha_contratacion") 
+                    render '/empresa_servicios/index.xlsx.axlsx'
+                  end
+      }
     end
   end
 

@@ -12,3 +12,5 @@
 .exportar_productos_retirados span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 .exportar_productos_eliminar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-bottom: 30px;}
 .exportar_productos_eliminar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+.exportar_productos_eliminados {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-bottom: 30px;}
+.exportar_productos_eliminados span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}

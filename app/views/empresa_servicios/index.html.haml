@@ -4,6 +4,7 @@
 
 %section#areaTrabajo.areaTrabajo
   %p#notice= notice
+  =render 'exportar_servicios'
   %table#data_table_empresa_servicios.display{:"data-source" => "#{empresa_empresa_servicios_path}.json?empresa_retirada=#{@empresas_retiradas}"}
     %thead
       %tr
