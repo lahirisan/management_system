@@ -5,7 +5,8 @@ class GlnsController < ApplicationController
   def index
 
     
-    
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
+
     respond_to do |format|
       format.html {
         if params[:eliminar]
@@ -27,6 +28,30 @@ class GlnsController < ApplicationController
         else
           render json: GlnsDatatable.new(view_context)
         end
+      }
+      format.pdf{
+
+       if params[:eliminar]
+          @glns = GlnEmpresa.where("gln_empresa.prefijo = ? and tipo_gln.id in (?)", params[:empresa_id], [2,3]).joins({:gln => :tipo_gln}, {:gln => :estado}, {:gln => :municipio}, {:gln => :ciudad}, {:gln => :estatus},  :empresa).order("gln.fecha_asignacion")  
+          render '/glns/eliminar.pdf.prawn'
+        elsif params[:eliminados]
+          render :template => '/glns/gln_eliminados.html.haml'
+        else
+          @glns = GlnEmpresa.where("gln_empresa.prefijo = ?", params[:empresa_id]).joins({:gln => :tipo_gln} , {:gln => :estatus}, {:gln => :estado}, {:gln => :municipio}, {:gln => :ciudad},  :empresa).order("gln.fecha_asignacion") 
+          render '/glns/index.pdf.prawn'
+        end 
+      }
+      format.xlsx {
+        if params[:eliminar]
+          @glns = GlnEmpresa.where("gln_empresa.prefijo = ? and tipo_gln.id in (?)", params[:empresa_id], [2,3]).joins({:gln => :tipo_gln}, {:gln => :estado}, {:gln => :municipio}, {:gln => :ciudad}, {:gln => :estatus},  :empresa).order("gln.fecha_asignacion")  
+          render '/glns/eliminar.xlsx.axlsx'
+        elsif params[:eliminados]
+          render :template => '/glns/gln_eliminados.html.haml'
+        else
+          @glns = GlnEmpresa.where("gln_empresa.prefijo = ?", params[:empresa_id]).joins({:gln => :tipo_gln} , {:gln => :estatus}, {:gln => :estado}, {:gln => :municipio}, {:gln => :ciudad},  :empresa).order("gln.fecha_asignacion") 
+          render '/glns/index.xlsx.axlsx'
+        end 
+
       }
     end
   end

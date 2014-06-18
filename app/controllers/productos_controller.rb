@@ -59,6 +59,7 @@ class ProductosController < ApplicationController
                       @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
                       render '/productos/eliminar_productos.pdf.prawn'
                     elsif params[:eliminados]
+                      @productos = ProductoEliminado.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?", params[:empresa_id], 'Eliminado', 'Producto').includes(:estatus, :tipo_gtin, {:producto_elim_detalle => :sub_estatus}, {:producto_elim_detalle => :motivo_retiro}, {:productos_empresa => :empresa})
                       render '/productos/productos_eliminados.pdf.prawn'
                     else
                       @productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("producto.fecha_creacion") 
@@ -76,6 +77,7 @@ class ProductosController < ApplicationController
                     @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
                     render '/productos/eliminar_productos.xlsx.axlsx'
                   elsif params[:eliminados]
+                    @productos = ProductoEliminado.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?", params[:empresa_id], 'Eliminado', 'Producto').includes(:estatus, :tipo_gtin, {:producto_elim_detalle => :sub_estatus}, {:producto_elim_detalle => :motivo_retiro}, {:productos_empresa => :empresa})
                     render '/productos/productos_eliminados.xlsx.axlsx'
                   else
                     @productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("producto.fecha_creacion") 

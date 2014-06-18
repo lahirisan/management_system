@@ -4,11 +4,9 @@
 
 %section#areaTrabajo.areaTrabajo
   %p#notice= notice
-
+  =render 'exportar_gln_eliminar'
   =form_tag "#{destroy_multiple_empresa_glns_path}", :method => "delete", :id => "formulario_eliminar_gln" do
-    %button#submit.ui-state-default.ui-corner-all.eliminar_gln{:type => "submit", :title => "Eliminar GLN"}
-      %span.ui-icon.ui-icon-circle-minus
-      Eliminar
+    
     
     %table.margen_inferior{:border => 1}
       %tr

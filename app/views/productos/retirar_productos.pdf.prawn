@@ -32,7 +32,7 @@ productos = [["Tipo GTIN", "GTIN", "Descripción", "Marca", "GPC", "Estatus", "C
 end
 
 image "#{Rails.root}/app/assets/images/gs1-logohome", :width => 200, :height => 50
-draw_text "#{@productos[0].productos_empresa.empresa.nombre_empresa}", :size => 8, :at => [380,735]
+draw_text "#{@empresa.nombre_empresa}", :size => 8, :at => [380,735]
 draw_text "Listado General de productos", :size => 8, :at => [380,720]
 draw_text "Fecha:#{Time.now}", :size => 8, :at => [380,705]
 #number_pages "(<page>/<total>)", :size => 9, :at => [700, 550]

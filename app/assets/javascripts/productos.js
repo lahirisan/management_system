@@ -42,7 +42,7 @@ $(document).ready(function(){
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_productos_eliminados').data('source')
-        }).columnFilter({ aoColumns: [{ type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
         // Datatable que maneja retirar productos
         $("#data_table_eliminar_productos").dataTable({
@@ -180,7 +180,7 @@ $(document).ready(function(){
         });
 
         // Efectos del boton importar
-        $('.exportar_productos_eliminar, .exportar_productos_retirados, .exportar_productos_retirar, .boton_importar, .retirar_productos,   .eliminar_productos, .exportar_productos').hover(
+        $('.exportar_productos_eliminados, .exportar_productos_eliminar, .exportar_productos_retirados, .exportar_productos_retirar, .boton_importar, .retirar_productos,   .eliminar_productos, .exportar_productos').hover(
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');}
         );
@@ -342,6 +342,43 @@ $(document).ready(function(){
                 '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(11) span input').val()+'">'+
                 '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(12) span input').val()+'">'+
                 '<input name="eliminar" type="hidden" value="true">'
+            );
+
+          
+        });
+
+        $(".exportar_productos_eliminar").click(function() {
+
+            $('.parametros').html(
+                '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="gpc" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
+                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
+                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
+                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(11) span input').val()+'">'+
+                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(12) span input').val()+'">'+
+                '<input name="eliminar" type="hidden" value="true">'
+            );
+
+          
+        });
+
+        $(".exportar_productos_eliminados").click(function() {
+
+            $('.parametros').html(
+                '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
+                '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="gpc" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
+                '<input name="fecha_eliminacion" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
+                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(11) span input').val()+'">'+
+                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(12) span input').val()+'">'+
+                '<input name="eliminados" type="hidden" value="true">'
             );
 
           

@@ -4,6 +4,7 @@
 
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
+    = render 'exportar_productos_eliminados'
     %table#data_table_productos_eliminados.display{:"data-source" => "#{empresa_productos_path}.json?eliminados=true"}
         %thead
             %tr

@@ -5,6 +5,7 @@
 
 %section#areaTrabajo.areaTrabajo
   %p#notice= notice
+  =render 'exportar_servicios_eliminados'
   %table#data_table_empresa_servicios_eliminados.display{:"data-source" => "/empresas/#{params[:empresa_id]}/empresa_servicios.json?eliminados=true"}
     %thead
       %tr
