@@ -1,9 +1,6 @@
 %section.contexto
   %label.contexto 
-    -if @gln.new_record?
-      Registrar GLN
-    -else
-      Editar GLN
+    =@gln.new_record? ? (@empresa.nombre_empresa + " > Registrar GLN") : (@empresa.nombre_empresa + " > Editar GLN")
   %hr.contexto{:size => "1"}
 
   %section.formulario

@@ -7,21 +7,29 @@ class ProductosController < ApplicationController
 
   def index
     
+
     productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("productos.fecha_inscripcion") 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
+    
 
     respond_to do |format|
       format.html {
                     if params[:retirar]
+                      @navegabilidad = @empresa.nombre_empresa + " > Retirar Productos" 
                       render :template =>'/productos/retirar_productos.html.haml'
                     elsif params[:retirados]
+                      @navegabilidad = @empresa.nombre_empresa + " > Productos Retirados"
                       render :template =>'/productos/productos_retirados.html.haml'
                     elsif params[:eliminar]
+                      @navegabilidad = @empresa.nombre_empresa + " > Eliminar Productos"
                       render :template =>'/productos/eliminar_productos.html.haml'
                     elsif params[:eliminados]
+                      @navegabilidad = @empresa.nombre_empresa + " > Productos Eliminados"
                       render :template =>'/productos/productos_eliminados.html.haml'
                     else
+                      @navegabilidad = @empresa.nombre_empresa + " > Productos > Listado"
                       render :template =>'/productos/index.html.haml'
+
                     end
                   }
       format.json { 

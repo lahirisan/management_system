@@ -6,15 +6,18 @@ class GlnsController < ApplicationController
 
     
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
-
+    
     respond_to do |format|
       format.html {
         if params[:eliminar]
+          @navegabilidad = @empresa.nombre_empresa + " > Eliminar GLN"
           render :template => '/glns/eliminar_gln.html.haml'
         elsif params[:eliminados]
+          @navegabilidad = @empresa.nombre_empresa + " > GLN Eliminados"
           render :template => '/glns/gln_eliminados.html.haml'
         else
           @empresas_retiradas = params[:retirados].nil? ? false : true
+          @navegabilidad = @empresa.nombre_empresa + " > GLN > Listado"
           render :template => '/glns/index.html.haml'
         end
       }

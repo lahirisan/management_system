@@ -1,9 +1,6 @@
 %section.contexto
   %label.contexto 
-    -if @producto.new_record?
-      Registar Producto 
-    -else
-      Editar Producto
+    =@producto.new_record? ? (@empresa.nombre_empresa + " > Registrar Producto") : (@empresa.nombre_empresa + " > Editar Producto")
   %hr.contexto{:size => "1"}
 
   %section.formulario
