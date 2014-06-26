@@ -1,6 +1,6 @@
 %section.contexto
   %label.contexto 
-    Administración > Etiquetas
+    =@navegabilidad
   %hr.contexto{:size => "1"}
 
   %section.formulario
@@ -51,6 +51,7 @@
       %td
         Municipio
       %td
+      
         =@etiqueta.try(:municipio).try(:nombre)
     %tr
       %td

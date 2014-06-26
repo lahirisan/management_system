@@ -5,8 +5,9 @@ class EtiquetasController < ApplicationController
   
   def show
 
-  	@etiqueta = Correspondencia.find(:first, :conditions => ["prefijo = ?", params[:id]], :include => :empresa)
+    @etiqueta = Correspondencia.find(:first, :conditions => ["prefijo = ?", params[:id]], :include => :empresa)
     @contacto = DatosContacto.find(:first, :conditions => ["prefijo = ? and tipo = ?", params[:empresa_id], 'principal'])
+    @navegabilidad = @etiqueta.empresa.nombre_empresa + " > Etiqueta"
 
     respond_to do |format|
       format.html # show.html.haml
