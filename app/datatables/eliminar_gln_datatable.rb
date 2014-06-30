@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class EliminarGlnDatatable < AjaxDatatablesRails
   delegate :params, :h, :link_to,  to: :@view
 
@@ -47,7 +48,7 @@ private
 
   def fetch_glns
 
-    glns = GlnEmpresa.where("gln_empresa.prefijo = ? and tipo_gln.id in (?)", params[:empresa_id], [2,3]).joins({:gln => :tipo_gln}, {:gln => :estado}, {:gln => :municipio}, {:gln => :ciudad}, {:gln => :estatus},  :empresa).order("#{sort_column} #{sort_direction}")  
+    glns = GlnEmpresa.where("gln_empresa.prefijo = ? and tipo_gln.nombre in (?)", params[:empresa_id], ['Operativo','Físico']).joins({:gln => :tipo_gln}, {:gln => :estado}, {:gln => :municipio}, {:gln => :ciudad}, {:gln => :estatus},  :empresa).order("#{sort_column} #{sort_direction}")  
     glns = glns.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general

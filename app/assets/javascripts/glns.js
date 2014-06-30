@@ -11,6 +11,8 @@ $( document ).ready(function() {
             sAjaxSource: $('#data_table_glns').data('source')
         }).columnFilter({ aoColumns: [{ type: "text"},{ type: "text"}, {type: "text" }, {type: "text"}, null,{type: "text"} , {type: "text"}, {type: "text"}, {type: "text"}]});
 
+        $('#data_table_glns input').attr("placeholder", "Buscar");
+
 
         // Datatable que maneja el listado de glns
         $("#data_table_eliminar_gln").dataTable({
@@ -23,6 +25,8 @@ $( document ).ready(function() {
             sAjaxSource: $('#data_table_eliminar_gln').data('source')
         }).columnFilter({ aoColumns: [null,{ type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
+        $('#data_table_eliminar_gln input').attr("placeholder", "Buscar");
+
          // Datatable que maneja el listado de glns
         $("#data_table_gln_eliminados").dataTable({
             aaSorting: [[ 9, "desc" ]],
@@ -33,6 +37,8 @@ $( document ).ready(function() {
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_gln_eliminados').data('source')
         }).columnFilter({ aoColumns: [{ type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
+
+        $('#data_table_gln_eliminados input').attr("placeholder", "Buscar");
 
 
         // Efectos del boton importar

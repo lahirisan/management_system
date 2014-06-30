@@ -4,6 +4,8 @@
 
 %section#areaTrabajo.areaTrabajo{:style => "font: 82.5% 'Trebuchet MS', sans-serif"}
  
+  %br
+  %br
   %table
     %tr
       %td
@@ -70,9 +72,11 @@
 
 
   %br
+  %br
   %label.contexto  Empresa > Clasificación de la Empresa
   %hr.contexto{:size => "1"}
 
+  %br
   %table
     %tr
       %td
@@ -110,8 +114,10 @@
       %td
         = @empresa.clase
   %br
+  %br
   %label.contexto Empresa > Datos de Contacto
-  %hr.contexto{:size => "1"}  
+  %hr.contexto{:size => "1"}
+  %br  
   %table
     -@contacto.each do |contacto|
       %tr
@@ -135,8 +141,10 @@
         %td
           =contacto.cargo_contacto
   %br
+  %br
   %label.contexto Empresa > Datos Correspondencia
   %hr.contexto{:size => "1"}
+  %br
   %table
     %tr
       %td
@@ -184,6 +192,7 @@
         Punto Referencia
       %td
         =@correspondencia.try(:punto_referencia)
+  %br
   %br
   %br
   

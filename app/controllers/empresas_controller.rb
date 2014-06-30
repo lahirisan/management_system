@@ -147,7 +147,7 @@ class EmpresasController < ApplicationController
     params[:empresa][:id_estatus] = Estatus.empresa_inactiva()
     # Se completa la hora con los segundos para que pueda ordenar por la ultima creada
     time = Time.now
-    params[:empresa][:fecha_inscripcion] +=  " " + time.hour.to_s + ":" + time.min.to_s + ":" + time.sec.to_s
+    params[:empresa][:fecha_inscripcion] +=  " " + time.hour.to_s + ":" + time.min.to_s + ":" + time.sec.to_s  if params[:empresa][:fecha_inscripcion] != ''
     @empresa = Empresa.new(params[:empresa])
 
     respond_to do |format|

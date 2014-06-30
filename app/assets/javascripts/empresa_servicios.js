@@ -12,6 +12,8 @@ $( document ).ready(function() {
         sAjaxSource: $('#data_table_empresa_servicios').data('source')
     }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
+    $('#data_table_empresa_servicios input').attr("placeholder", "Buscar");
+
     // Datatable eliminar_servicios
 
     $("#data_table_eliminar_empresa_servicios").dataTable({
@@ -23,6 +25,7 @@ $( document ).ready(function() {
         sDom: 'T<"clear">lfrtip',            
         sAjaxSource: $('#data_table_eliminar_empresa_servicios').data('source')
     }).columnFilter({ aoColumns: [null, null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},{type: "text"}, null]});
+    $('#data_table_eliminar_empresa_servicios input').attr("placeholder", "Buscar");
 
 
     $("#data_table_empresa_servicios_eliminados").dataTable({
@@ -34,6 +37,8 @@ $( document ).ready(function() {
         sDom: 'T<"clear">lfrtip',            
         sAjaxSource: $('#data_table_empresa_servicios_eliminados').data('source')
     }).columnFilter({ aoColumns: [null, { type: "text"}, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
+
+    $('#data_table_empresa_servicios_eliminados input').attr("placeholder", "Buscar");
 
 
     if (window.location.pathname.split('/')[5] != 'edit')

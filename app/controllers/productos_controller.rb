@@ -10,7 +10,6 @@ class ProductosController < ApplicationController
 
     productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("productos.fecha_inscripcion") 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
-    
 
     respond_to do |format|
       format.html {
@@ -24,6 +23,8 @@ class ProductosController < ApplicationController
                       @navegabilidad = @empresa.nombre_empresa + " > Eliminar Productos"
                       render :template =>'/productos/eliminar_productos.html.haml'
                     elsif params[:eliminados]
+                      @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
+                      @empresa = @empresa ?  @empresa : EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
                       @navegabilidad = @empresa.nombre_empresa + " > Productos Eliminados"
                       render :template =>'/productos/productos_eliminados.html.haml'
                     else
