@@ -139,6 +139,9 @@ class ProductosController < ApplicationController
   # POST /productos.json
   def create
 
+
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
+
     @gtin = params[:gtin]  if params[:gtin] != ''
 
     Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin], params[:producto][:codigo_prod])
@@ -160,7 +163,9 @@ class ProductosController < ApplicationController
         Producto.asociar_producto_empresa(params[:empresa_id],params[:producto][:gtin]) # Se asocia el producto con la empresa
         format.html { redirect_to empresa_productos_path, notice: "EL #{@producto.tipo_gtin.tipo} #{@producto.gtin} fue creado correctamente." }        
       else
-        format.html { render action: "new" }        
+        format.html { 
+          
+          render action: "new" }        
       end
     end
   end

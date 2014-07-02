@@ -190,7 +190,7 @@ $(document).ready(function(){
         });
 
         // Efectos del boton importar
-        $('.exportar_productos_eliminados, .exportar_productos_eliminar, .exportar_productos_retirados, .exportar_productos_retirar, .boton_importar, .retirar_productos,   .eliminar_productos, .exportar_productos').hover(
+        $('.regresar_editar_empresa, .guardar_producto, .exportar_productos_eliminados, .exportar_productos_eliminar, .exportar_productos_retirados, .exportar_productos_retirar, .boton_importar, .retirar_productos,   .eliminar_productos, .exportar_productos').hover(
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');}
         );
@@ -396,32 +396,5 @@ $(document).ready(function(){
 
 });
 
-function verificar_codigo_producto() {
-
-    var codigo_producto = $('#producto_codigo_prod').val();
-    var prefijo = window.location.pathname.split('/')[2];
-    var gtin = prefijo + codigo_producto;
-                    
-    $.ajax({
-
-        type: "GET",
-        url: "/productos",
-        dataType: 'json',
-        data: data,
-        async: false,
-        succes: function (response, textStatus, jqXHR) {
-            alert('exito');
-            //alert(response.data);
-            return false;
-        },
-
-        error: function (response, textStatus, jqXHR) {
-            alert('');
-            return false;
-        }
-
-    });
- 
-}
 
 
