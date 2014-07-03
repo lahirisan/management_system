@@ -149,7 +149,7 @@ $( document ).ready(function() {
     });
 
     // Efectos del boton importar
-        $('.exportar_servicios_eliminados, .exportar_servicios, .exportar_servicios_eliminar').hover(
+        $('.guardar_servicio, .exportar_servicios_eliminados, .exportar_servicios, .exportar_servicios_eliminar').hover(
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');}
         );

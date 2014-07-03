@@ -73,4 +73,11 @@
           %td
             = f.text_field :cod_postal, :placeholder => "1000"
       .actions
-        = f.submit 'Guardar'
+        %button#submit.ui-state-default.ui-corner-all.guardar_producto{:type => "submit", :title =>"Guardar datos del GLN"}
+          %span.ui-icon.ui-icon-circle-minus
+          Guardar
+        %a.ui-state-default.ui-corner-all.regresar_empresas{:href => "/empresas/#{params[:empresa_id]}/glns", :title => "Regresar la listado de GLN"}
+          %span.ui-icon.ui-icon-arrowreturnthick-1-w
+          Regresar
+
+        

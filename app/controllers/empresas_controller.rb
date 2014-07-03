@@ -107,8 +107,10 @@ class EmpresasController < ApplicationController
   def show
 
     (params[:eliminados]) ? (@empresa = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:id]])) : (@empresa = Empresa.find(params[:id]))
-    @contacto = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
+    @datos_contactos = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
     @correspondencia = (params[:eliminados]) ? @empresa.correspondencia_eliminada : @empresa.correspondencia
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:id]])
+    
 
     respond_to do |format|
       format.html # show.html.erb
@@ -136,6 +138,7 @@ class EmpresasController < ApplicationController
   def edit
     @empresa = Empresa.find(params[:id])
     @empresa.build_correspondencia  if @empresa.correspondencia.nil? # Si no tiene coorespondecia se crea el objeto
+    @datos_contactos = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
 
   end
 

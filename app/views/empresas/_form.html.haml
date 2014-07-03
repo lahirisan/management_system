@@ -1,9 +1,6 @@
 %section.contexto
-  %label.contexto 
-    -if @empresa.new_record?
-      Registar Empresa - Datos Básicos
-    -else
-      Editar Empresa - Datos Básicos
+  %label.contexto
+    =@empresa.new_record? ? "Empresas > Registrar empresa" : @empresa.nombre_empresa + " > Datos Básicos"
   %hr.contexto{:size => "1"}
 
   %section.formulario
@@ -60,7 +57,7 @@
           %td
             Estado
           %td
-            = f.collection_select :id_estado, Estado.all, :id, :nombre, {:prompt => '-Seleccione Estado-'}
+            = f.collection_select :id_estado, Estado.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Estado-'}
         %tr
           %td
             Ciudad
@@ -76,7 +73,7 @@
       %br/
 
       %label.contexto
-        Registrar Empresa  > Clasificación de la Empresa
+        =@empresa.new_record? ? "Empresas > Registrar empresa" : @empresa.nombre_empresa + " > Clasificación de la empresa"
       %hr.contexto{:size => "1"}
 
       %table
@@ -89,7 +86,7 @@
           %td
             Clasificación
           %td
-            =@empresa.new_record? ? f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :descripcion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:300px;"}) : f.text_field(:id_clasificacion, :value => "#{@empresa.try(:clasificacion).try(:descripcion)}", :readonly => :true)
+            =@empresa.new_record? ? f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"}) : f.text_field(:id_clasificacion, :value => "#{@empresa.try(:clasificacion).try(:descripcion)}", :readonly => :true, :style => "width:550px;")
         %tr
           %td
             Categoría 
@@ -113,13 +110,24 @@
 
       %br/
       %label.contexto
-        Registrar Empresa  > Datos de Contacto
+        =@empresa.new_record? ? "Empresas > Registrar empresa" : @empresa.nombre_empresa + " > Datos de contacto"
       %hr.contexto{:size => "1"}
       
       // Si la empresa es nueva se genera un formulario para crear un contacto, sino  muestra el enlace para ir al listadop de los contactos
       -if @empresa.new_record?
         =f.fields_for :datos_contacto do |fc|
           %table
+            
+            %tr
+              %td
+                Nombre Contacto
+              %td
+                =fc.text_field :nombre_contacto
+            %tr
+              %td
+                Cargo Contacto
+              %td
+                =fc.text_field :cargo_contacto
             %tr
               %td
                 Tipo Contacto
@@ -127,25 +135,13 @@
                 =@empresa.new_record? ? fc.text_field(:tipo, :value => 'principal', :readonly => :true, :class => "campo_readonly") : fc.select(:tipo, options_for_select(['email', 'fax', 'opcional', 'principal', 'secundario']),{:prompt => "- Seleccione -"})
             %tr
               %td
-                Contacto
+                Teléfono contacto
               %td
-                =fc.text_field :contacto, :placeholder => "Numero Teléfono. Ej.: 04168035284"
-            %tr
-              %td
-                Nombre Contacto
-              %td
-                =fc.text_field :nombre_contacto 
-            %tr
-              %td
-                Cargo Contacto
-              %td
-                =fc.text_field :cargo_contacto      
+                =fc.text_field :contacto, :placeholder => "Ej.: 04168035284"
+             
+                 
       -else
-        %table
-          %tr
-            %td
-              =link_to 'Datos de Contacto', "/empresas/#{@empresa.prefijo}/datos_contactos"
-
+        =render 'datos_contacto'
       %br/
       %label.contexto
         Registrar Empresa  > Datos de Correspondencia
@@ -181,7 +177,7 @@
               %td
                 Estado
               %td
-                =fa.collection_select :id_estado, Estado.all, :id, :nombre, {:prompt => '-Seleccione Estado-'}
+                =fa.collection_select :id_estado, Estado.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Estado-'}
             %tr
               %td
                 Ciudad
@@ -211,6 +207,11 @@
       %button#submit.ui-state-default.ui-corner-all.crear_empresa{:type => "submit"}
         %span.ui-icon.ui-icon-circle-plus
         Guardar
+
+      %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
+        %span.ui-icon.ui-icon-arrowreturnthick-1-w
+        Regresar
+
       
 
 

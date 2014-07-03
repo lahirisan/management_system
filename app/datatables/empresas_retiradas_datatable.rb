@@ -36,12 +36,12 @@ private
         empresa.ciudad.nombre,
         empresa.rif,
         fecha_retiro,
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa, :retirar => true), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, empresa_productos_path(empresa, :retirados => "true"), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios?retirados=true", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios asociados a la empresa #{empresa.nombre_empresa}"}),
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa, :retirados => "true"), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"}),
         select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_subestatus)), :id => "#{empresa.prefijo}sub_estatus"),
-        select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_motivo_retiro)), :id => "#{empresa.prefijo}motivo_ret"),
-        link_to("Ver Detalle", empresa_path(empresa, :retirar => true)),
-        link_to("Productos", empresa_productos_path(empresa, :retirados => "true")),
-        link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios?retirados=true"),
-        link_to("GLN", empresa_glns_path(empresa, :retirados => "true"))
+        select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_motivo_retiro)), :id => "#{empresa.prefijo}motivo_ret")
       ]
   
     end
@@ -81,11 +81,11 @@ private
     if params[:sSearch_6].present?
        empresas = empresas.where("empresas_retiradas.fecha_retiro like :search6", search6: "%#{params[:sSearch_6]}%" )
     end
-    if params[:sSearch_7].present?
-       empresas = empresas.where("sub_estatus.descripcion like :search7", search7: "%#{params[:sSearch_7]}%" )
+    if params[:sSearch_11].present?
+       empresas = empresas.where("sub_estatus.descripcion like :search11", search11: "%#{params[:sSearch_11]}%" )
     end
-    if params[:sSearch_8].present?
-       empresas = empresas.where("motivo_retiro.descripcion like :search8", search8: "%#{params[:sSearch_8]}%" )
+    if params[:sSearch_12].present?
+       empresas = empresas.where("motivo_retiro.descripcion like :search12", search12: "%#{params[:sSearch_12]}%" )
     end
    
     empresas

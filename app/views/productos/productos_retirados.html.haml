@@ -26,8 +26,11 @@
         %tbody
         %tfoot
             =render 'footer_productos_retirados'
+   
     %br/
     %br/
+    %a.ui-state-default.ui-corner-all.regresar{:href => "/empresas/#{params[:empresa_id]}/productos", :title => "Regresar al listado de productos para esta Empresa"}
+        %span.ui-icon.ui-icon-arrowreturnthick-1-w
+        Regresar
 
-    .loader_prueba
-        /=image_tag "loader.gif", :class => "loader" 
+    

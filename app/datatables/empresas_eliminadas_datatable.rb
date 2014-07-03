@@ -36,12 +36,12 @@ private
         empresa.ciudad.nombre,
         empresa.rif,
         fecha_eliminacion,
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa, :eliminados => true),{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe,empresa_productos_path(empresa, :eliminados => true),{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios?eliminados=true",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios asociados a la empresa #{empresa.nombre_empresa}"}),
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa, :eliminados => true),{:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"}),
         empresa.sub_estatus.try(:descripcion),
         empresa.motivo_retiro.try(:descripcion),
-        link_to("Ver Detalle", empresa_path(empresa, :eliminados => true)),
-        link_to("Productos", empresa_productos_path(empresa, :eliminados => true)),
-        link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios?eliminados=true"),
-        link_to("GLN", empresa_glns_path(empresa, :eliminados => true))
       ]
   
     end
@@ -66,8 +66,8 @@ private
     empresas = empresas.where("ciudad.nombre like :search4", search4: "%#{params[:sSearch_4]}%" ) if params[:sSearch_4].present?
     empresas = empresas.where("empresa_eliminada.rif like :search5", search5: "%#{params[:sSearch_5]}%" ) if params[:sSearch_5].present?
     empresas = empresas.where("empresa_elim_detalle.fecha_eliminacion like :search6", search6: "%#{params[:sSearch_6]}%" ) if params[:sSearch_6].present?
-    empresas = empresas.where("sub_estatus.descripcion like :search7", search7: "%#{params[:sSearch_7]}%" ) if params[:sSearch_7].present?
-    empresas = empresas.where("motivo_retiro.descripcion like :search8", search8: "%#{params[:sSearch_8]}%" ) if params[:sSearch_8].present?
+    empresas = empresas.where("sub_estatus.descripcion like :search11", search11: "%#{params[:sSearch_11]}%" ) if params[:sSearch_11].present?
+    empresas = empresas.where("motivo_retiro.descripcion like :search12", search12: "%#{params[:sSearch_12]}%" ) if params[:sSearch_12].present?
     
     
     empresas

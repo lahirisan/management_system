@@ -1,5 +1,5 @@
 %section.contexto
-  %label.contexto Empresa > Datos Básicos
+  %label.contexto=@empresa.nombre_empresa + " > Datos Básicos"
   %hr.contexto{:size => "1"}
 
 %section#areaTrabajo.areaTrabajo{:style => "font: 82.5% 'Trebuchet MS', sans-serif"}
@@ -73,7 +73,7 @@
 
   %br
   %br
-  %label.contexto  Empresa > Clasificación de la Empresa
+  %label.contexto=@empresa.nombre_empresa + " > Clasificación de la Empresa"
   %hr.contexto{:size => "1"}
 
   %br
@@ -115,34 +115,12 @@
         = @empresa.clase
   %br
   %br
-  %label.contexto Empresa > Datos de Contacto
+  %label.contexto=@empresa.nombre_empresa +   " > Datos de Contacto"
   %hr.contexto{:size => "1"}
   %br  
-  %table
-    -@contacto.each do |contacto|
-      %tr
-        %td
-          Tipo Contacto
-        %td
-          =contacto.tipo
-      %tr
-        %td
-          Contacto
-        %td
-          =contacto.contacto
-      %tr
-        %td
-          Nombre Contacto
-        %td
-          =contacto.nombre_contacto
-      %tr
-        %td
-          Cargo Contacto
-        %td
-          =contacto.cargo_contacto
-  %br
-  %br
-  %label.contexto Empresa > Datos Correspondencia
+  =render 'datos_contacto'
+
+  %label.contexto=@empresa.nombre_empresa + " > Datos Correspondencia"
   %hr.contexto{:size => "1"}
   %br
   %table

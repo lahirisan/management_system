@@ -38,10 +38,10 @@ private
         fecha_retiro,
         empresa.empresas_retiradas.try(:sub_estatus).try(:descripcion), 
         empresa.empresas_retiradas.try(:motivo_retiro).try(:descripcion), 
-        link_to("Ver Detalle", empresa_path(empresa, :retirar => true)),
-        link_to("Productos", empresa_productos_path(empresa, :retirados => "true")),
-        link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios"),
-        link_to("GLN", empresa_glns_path(empresa))
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa, :retirar => true),{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe,  empresa_productos_path(empresa, :retirados => "true"),{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios asociados a la empresa #{empresa.nombre_empresa}"}),
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa),{:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"})
       ]
   
     end
