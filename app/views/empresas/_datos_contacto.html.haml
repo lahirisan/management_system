@@ -1,0 +1,32 @@
+#notice=notice
+%br
+%table#data_table_empresas_datos_contacto.display
+  %thead
+    %tr
+      %th Prefijo
+      %th Tipo Contacto
+      %th Contacto
+      %th Nombre Contacto
+      %th Cargo
+      %th Editar contacto
+      %th Eliminar contacto
+  %tbody
+    - @datos_contactos.each do |datos_contacto|
+      %tr
+        %td= datos_contacto.prefijo        
+        %td= datos_contacto.tipo
+        %td= datos_contacto.contacto
+        %td= datos_contacto.nombre_contacto
+        %td= datos_contacto.cargo_contacto
+        %td= link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,  "/empresas/#{params[:id]}/datos_contactos/#{datos_contacto.id}/edit",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar contacto #{datos_contacto.nombre_contacto}"})
+        %td= link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Eliminar').html_safe, "/empresas/#{params[:id]}/datos_contactos/#{datos_contacto.id}", {:method => :delete, :data => { :confirm => 'Seguro ELIMINAR este contacto?'}, :class => "ui-state-default ui-corner-all botones_servicio", :title => "Eliminar contacto #{datos_contacto.nombre_contacto}" }) 
+              
+%br/
+%br/
+%a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas/#{params[:id]}/datos_contactos/new", :title => "Agregar un nuevo contacto para la empresa #{@empresa.nombre_empresa}"}
+  %span.ui-icon.ui-icon-circle-plus
+  Nuevo Contacto
+%br
+%br
+%br
+%br

@@ -1,9 +1,11 @@
 %section.contexto
-  %label.contexto Empresa > Datos Básicos
+  %label.contexto=@empresa.nombre_empresa + " > Datos Básicos"
   %hr.contexto{:size => "1"}
 
 %section#areaTrabajo.areaTrabajo{:style => "font: 82.5% 'Trebuchet MS', sans-serif"}
  
+  %br
+  %br
   %table
     %tr
       %td
@@ -70,9 +72,11 @@
 
 
   %br
-  %label.contexto  Empresa > Clasificación de la Empresa
+  %br
+  %label.contexto=@empresa.nombre_empresa + " > Clasificación de la Empresa"
   %hr.contexto{:size => "1"}
 
+  %br
   %table
     %tr
       %td
@@ -110,33 +114,15 @@
       %td
         = @empresa.clase
   %br
-  %label.contexto Empresa > Datos de Contacto
-  %hr.contexto{:size => "1"}  
-  %table
-    -@contacto.each do |contacto|
-      %tr
-        %td
-          Tipo Contacto
-        %td
-          =contacto.tipo
-      %tr
-        %td
-          Contacto
-        %td
-          =contacto.contacto
-      %tr
-        %td
-          Nombre Contacto
-        %td
-          =contacto.nombre_contacto
-      %tr
-        %td
-          Cargo Contacto
-        %td
-          =contacto.cargo_contacto
   %br
-  %label.contexto Empresa > Datos Correspondencia
+  %label.contexto=@empresa.nombre_empresa +   " > Datos de Contacto"
   %hr.contexto{:size => "1"}
+  %br  
+  =render 'datos_contacto'
+
+  %label.contexto=@empresa.nombre_empresa + " > Datos Correspondencia"
+  %hr.contexto{:size => "1"}
+  %br
   %table
     %tr
       %td
@@ -184,6 +170,7 @@
         Punto Referencia
       %td
         =@correspondencia.try(:punto_referencia)
+  %br
   %br
   %br
   

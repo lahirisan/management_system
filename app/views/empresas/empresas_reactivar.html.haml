@@ -33,9 +33,12 @@
         #datos_empresas_eliminar
         =hidden_field_tag "reactivar", "true"
         - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Reactivar Empresa')
-            %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
-                %span.ui-icon.ui-icon-circle-minus
+            %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit", :title => "Reactivar empresas seleccionadas"}
+                %span.ui-icon.ui-icon-refresh
                 Reactivar
+        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
+            %span.ui-icon.ui-icon-arrowreturnthick-1-w
+            Regresar
         
         
     

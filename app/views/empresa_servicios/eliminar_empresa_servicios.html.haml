@@ -46,5 +46,11 @@
         %br/
         #datos_servicio_eliminar
         =hidden_field_tag "eliminar"
-        =submit_tag "eliminar"
+        %button#submit.ui-state-default.ui-corner-all.guardar_producto{:type => "submit", :title => "Eliminar servicio seleccionado"}
+            %span.ui-icon.ui-icon-disk
+            Eliminar
+        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas/#{params[:empresa_id]}/empresa_servicios", :title => "Regresar al listado de servicios"}
+            %span.ui-icon.ui-icon-arrowreturnthick-1-w
+            Regresar
+        
         

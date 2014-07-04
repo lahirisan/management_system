@@ -9266,7 +9266,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sEmptyTable": "No se encontró data disponible para esta tabla",
+			"sEmptyTable": "",
 		
 		
 			/**
@@ -9524,7 +9524,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sZeroRecords": "No se encontrarón registros que cumplan con los filtros"
+			"sZeroRecords": ""
 		},
 	
 	

@@ -56,13 +56,23 @@
               =f.text_field :gpc, :readonly => :true, :class => "campo_readonly"
         %tr
           %td.codigo_producto
-            -if !@producto.new_record?
+            -if !@producto.new_record? or (@producto.errors.messages[:gtin])
               Código Producto
           %td.valor_codigo_producto
             -if !@producto.new_record?
               =(f.text_field :codigo_prod, :readonly => :true, :class => "campo_readonly")
+            -elsif @producto.errors.messages[:gtin]
+              =f.text_field :codigo_prod
         
       =hidden_field_tag "gtin", "#{@gtin}"
-      .actions.boton_submit
-        = f.submit 'Guardar', :id => ''
+     
+      %button#submit.ui-state-default.ui-corner-all.guardar_producto{:type => "submit", :title => "Guardar producto"}
+        %span.ui-icon.ui-icon-disk
+        Guardar Producto
+
+      %a.ui-state-default.ui-corner-all.regresar{:href => "/empresas/#{params[:empresa_id]}/productos", :title => "Regrar al listado de Productos para esta Empresa"}
+        %span.ui-icon.ui-icon-arrowreturnthick-1-w
+        Regresar
+        
+        
       

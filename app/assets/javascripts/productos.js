@@ -11,6 +11,8 @@ $(document).ready(function(){
             sAjaxSource: $('#data_table_productos').data('source')
         }).columnFilter({ aoColumns: [null, { type: "text"},{ type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, null, {type: "text"},null]});
 
+        $('#data_table_productos input').attr("placeholder", "Buscar");
+
         // Datatable que maneja retirar productos
         $("#data_table_retirar_productos").dataTable({
             sPaginationType: "full_numbers",
@@ -21,6 +23,8 @@ $(document).ready(function(){
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_retirar_productos').data('source')
         }).columnFilter({ aoColumns: [null, null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},null, {type: "text"}]});
+
+        $('#data_table_retirar_productos input').attr("placeholder", "Buscar");
 
         // Datatable que maneja retirar productos
         $("#data_table_productos_retirados").dataTable({
@@ -33,6 +37,8 @@ $(document).ready(function(){
             sAjaxSource: $('#data_table_productos_retirados').data('source')
         }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
+        $('#data_table_productos_retirados input').attr("placeholder", "Buscar");
+
         // Datatable que maneja retirar productos
         $("#data_table_productos_eliminados").dataTable({
             sPaginationType: "full_numbers",
@@ -44,6 +50,8 @@ $(document).ready(function(){
             sAjaxSource: $('#data_table_productos_eliminados').data('source')
         }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
+        $('#data_table_productos_eliminados input').attr("placeholder", "Buscar");
+
         // Datatable que maneja retirar productos
         $("#data_table_eliminar_productos").dataTable({
             sPaginationType: "full_numbers",
@@ -54,6 +62,8 @@ $(document).ready(function(){
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_eliminar_productos').data('source')
         }).columnFilter({ aoColumns: [null, null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}    ]});
+
+        $('#data_table_eliminar_productos input').attr("placeholder", "Buscar");
 
         // formulario eliminar producto
 
@@ -180,7 +190,7 @@ $(document).ready(function(){
         });
 
         // Efectos del boton importar
-        $('.exportar_productos_eliminados, .exportar_productos_eliminar, .exportar_productos_retirados, .exportar_productos_retirar, .boton_importar, .retirar_productos,   .eliminar_productos, .exportar_productos').hover(
+        $('.regresar_editar_empresa, .guardar_producto, .exportar_productos_eliminados, .exportar_productos_eliminar, .exportar_productos_retirados, .exportar_productos_retirar, .boton_importar, .retirar_productos,   .eliminar_productos, .exportar_productos').hover(
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');}
         );
@@ -384,34 +394,9 @@ $(document).ready(function(){
           
         });
 
+    
+
 });
 
-function verificar_codigo_producto() {
-
-    var codigo_producto = $('#producto_codigo_prod').val();
-    var prefijo = window.location.pathname.split('/')[2];
-    var gtin = prefijo + codigo_producto;
-                    
-    $.ajax({
-
-        type: "GET",
-        url: "/productos",
-        dataType: 'json',
-        data: data,
-        async: false,
-        succes: function (response, textStatus, jqXHR) {
-            alert('exito');
-            //alert(response.data);
-            return false;
-        },
-
-        error: function (response, textStatus, jqXHR) {
-            alert('');
-            return false;
-        }
-
-    });
- 
-}
 
 

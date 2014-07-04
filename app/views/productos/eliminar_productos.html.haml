@@ -10,7 +10,7 @@
         %table.margen_inferior{:border => 1}
             %tr
                 %td
-                    ELiminar Masivo
+                    Eliminar Masivo
                 %td
                     SubEstatus
                 %td
@@ -51,5 +51,8 @@
         %button#submit.ui-state-default.ui-corner-all.eliminar_productos{:type => "submit", :title => "Eliminar productos"}
             %span.ui-icon.ui-icon-circle-minus
             Eliminar
+        %a.ui-state-default.ui-corner-all.regresar{:href => "/empresas/#{params[:empresa_id]}/productos", :title => "Regresar al listado de productos para esta Empresa"}
+            %span.ui-icon.ui-icon-arrowreturnthick-1-w
+            Regresar
         
         

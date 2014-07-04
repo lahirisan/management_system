@@ -32,7 +32,7 @@ private
           empresa_servicio.cargo_contacto,
           empresa_servicio.telefono,
           empresa_servicio.email,
-          link_to("Editar", "/empresas/#{params[:empresa_id]}/empresa_servicios/#{empresa_servicio.id}/edit")
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/empresa_servicios/#{empresa_servicio.id}/edit",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar servicio"})
         ]
       else
         [

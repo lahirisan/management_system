@@ -13,7 +13,7 @@
     %table#data_table_productos.display{:"data-source" => "#{empresa_productos_path}.json"}
         %thead
             %tr
-                %th Empresa
+                %th NOmbre
                 %th Tipo GTIN    
                 %th GTIN
                 %th Descripción
@@ -23,7 +23,7 @@
                 %th Código Prod
                 %th Fecha Creación
                 -if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Servicio')
-                    %th Editar Producto
+                    %th Editar
                 %th GTIN 14
         %tbody
         %tfoot
@@ -39,3 +39,6 @@
             Importar Producto
 
     =render "importar_producto"
+    %a.ui-state-default.ui-corner-all.regresar_empresas{:href => "/empresas", :title => "Regresar al listado general de empresas"}
+        %span.ui-icon.ui-icon-arrowreturnthick-1-w
+        Regresar

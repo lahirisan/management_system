@@ -31,12 +31,12 @@
                     %th Ciudad
                     %th RIF
                     %th Fecha Retiro
-                    %th Sub-estatus
-                    %th Motivo Retiro
                     %th Empresa Detalle
                     %th Productos
                     %th Servicios
                     %th GLN
+                    %th Sub-estatus
+                    %th Motivo Retiro
                     
             %tbody
             %tfoot
@@ -49,6 +49,9 @@
         %button#submit.ui-state-default.ui-corner-all.eliminar{:type => "submit", :title =>"Elimina las empresas seleccionadas"}
             %span.ui-icon.ui-icon-circle-minus
             Eliminar
+        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
+            %span.ui-icon.ui-icon-arrowreturnthick-1-w
+            Regresar
         
         
     

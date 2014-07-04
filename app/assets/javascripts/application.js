@@ -14,11 +14,6 @@
 //= require_tree .
 //= require jquery_ujs
 
-$(function() {
-    $(".boton_menu").button()
-  
-});
-
 
 
 

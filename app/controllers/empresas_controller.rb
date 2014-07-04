@@ -107,8 +107,10 @@ class EmpresasController < ApplicationController
   def show
 
     (params[:eliminados]) ? (@empresa = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:id]])) : (@empresa = Empresa.find(params[:id]))
-    @contacto = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
+    @datos_contactos = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
     @correspondencia = (params[:eliminados]) ? @empresa.correspondencia_eliminada : @empresa.correspondencia
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:id]])
+    
 
     respond_to do |format|
       format.html # show.html.erb
@@ -136,6 +138,7 @@ class EmpresasController < ApplicationController
   def edit
     @empresa = Empresa.find(params[:id])
     @empresa.build_correspondencia  if @empresa.correspondencia.nil? # Si no tiene coorespondecia se crea el objeto
+    @datos_contactos = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
 
   end
 
@@ -147,7 +150,7 @@ class EmpresasController < ApplicationController
     params[:empresa][:id_estatus] = Estatus.empresa_inactiva()
     # Se completa la hora con los segundos para que pueda ordenar por la ultima creada
     time = Time.now
-    params[:empresa][:fecha_inscripcion] +=  " " + time.hour.to_s + ":" + time.min.to_s + ":" + time.sec.to_s
+    params[:empresa][:fecha_inscripcion] +=  " " + time.hour.to_s + ":" + time.min.to_s + ":" + time.sec.to_s  if params[:empresa][:fecha_inscripcion] != ''
     @empresa = Empresa.new(params[:empresa])
 
     respond_to do |format|

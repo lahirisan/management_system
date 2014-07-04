@@ -16,12 +16,12 @@
                     %th Ciudad
                     %th RIF
                     %th Fecha Eliminación
-                    %th Sub-estatus
-                    %th Motivo Eliminación
                     %th Detalle
                     %th Productos
                     %th Servicios
                     %th GLN
+                    %th Sub-estatus
+                    %th Motivo Eliminación
             %tbody
             %tfoot
                 =render 'footer_eliminadas'
@@ -29,10 +29,9 @@
         %br/
         
         =hidden_field_tag "reactivar", "true"
-        / - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Reactivar Empresa')
+        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
+            %span.ui-icon.ui-icon-arrowreturnthick-1-w
+            Regresar
         
-        /     %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit", :title => "Reactivar empresas seleccionadas"}
-        /         %span.ui-icon.ui-icon-circle-check
-        /         Reactivar Empresa
         
     

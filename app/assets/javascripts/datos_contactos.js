@@ -1,7 +1,9 @@
 $( document ).ready(function() {
     // Datatable que maneja el listado datos de contacto
 
-	$("#data_table_empresas_datos_contacto").dataTable();
+	$("#data_table_empresas_datos_contacto").dataTable({
+         bJQueryUI: true
+    });
     
     $('.nuevo_contacto').hover(
      
@@ -24,6 +26,11 @@ $( document ).ready(function() {
     	}
     
 	});
+
+    $('.dataTable td').css('padding', '10px 10px');
+    $('.dataTable td').css('text-align', 'center');
+    $('#data_table_empresas_datos_contacto_filter').css('visibility', 'hidden');
+    $('#data_table_empresas_datos_contacto_length').css('visibility', 'hidden');
 
 });
 

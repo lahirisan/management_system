@@ -30,8 +30,8 @@ private
             empresa_gln.try(:gln).try(:estado).try(:nombre),
             empresa_gln.try(:gln).try(:municipio).try(:nombre),
             empresa_gln.try(:gln).try(:ciudad).try(:nombre),
-            link_to("Editar", "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}/edit"),
-            link_to("Ver Detalle", "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}"),
+            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}/edit",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar datos GLN #{empresa_gln.try(:gln).try(:gln)}"}),
+            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de  GLN #{empresa_gln.try(:gln).try(:gln)}"})
           ]
         else
           [ 
@@ -44,7 +44,7 @@ private
             empresa_gln.try(:gln).try(:estado).try(:nombre),
             empresa_gln.try(:gln).try(:municipio).try(:nombre),
             empresa_gln.try(:gln).try(:ciudad).try(:nombre),
-            link_to("Ver Detalle", "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}"),
+            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar datos GLN #{empresa_gln.try(:gln).try(:gln)}"}),
           ]
         end
 

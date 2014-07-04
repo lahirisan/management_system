@@ -74,5 +74,14 @@
             =text_field_tag "punto_referencia", "#{@etiqueta.punto_referencia}"
           
       .actions
-        = submit_tag 'Guardar'
+        %br
+        %br
+        %button#submit.ui-state-default.ui-corner-all.eliminar_gln{:type => "submit", :title => "Guardar datos de etiqueta"}
+          %span.ui-icon.ui-icon-disk
+          Guardar
+
+        %a.ui-state-default.ui-corner-all.regresar_empresas{:href => "/empresas/#{params[:empresa_id]}/etiquetas/#{params[:id]}", :title => "Regresar al detalle de etiqueta"}
+          %span.ui-icon.ui-icon-arrowreturnthick-1-w
+          Regresar
+        
       

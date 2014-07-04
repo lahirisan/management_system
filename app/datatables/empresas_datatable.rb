@@ -34,12 +34,12 @@ private
           empresa.ciudad.nombre,
           empresa.rif,
           empresa.estatus.descripcion,
-          link_to("Ver Detalle", empresa_path(empresa)),        
-          link_to("Editar Empresa", edit_empresa_path(empresa)),
-          link_to("Productos", empresa_productos_path(empresa)),
-          link_to("Servicios", "/empresas/#{empresa.prefijo}/empresa_servicios"),
-          link_to("GLN", empresa_glns_path(empresa)),  
-          link_to("Etiqueta", empresa_etiqueta_path(empresa.prefijo, empresa.prefijo))
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa),  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),        
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe, edit_empresa_path(empresa), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar la empresa #{empresa.nombre_empresa}"}),
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, empresa_productos_path(empresa), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos de la empresa #{empresa.nombre_empresa}"}),
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios", :class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios de la empresa #{empresa.nombre_empresa}"),
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"}),  
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Etiqueta').html_safe, empresa_etiqueta_path(empresa.prefijo, empresa.prefijo), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Etiqueta de la empresa #{empresa.nombre_empresa}"})
         ]
 
       else
@@ -93,7 +93,7 @@ private
       empresas = empresas.where("ciudad.nombre like :search4", search4: "%#{params[:sSearch_4]}%" )
     end
     if params[:sSearch_5].present?
-      empresas = empresas.where("empresa.rif like :search6", search5: "%#{params[:sSearch_5]}%" )
+      empresas = empresas.where("empresa.rif like :search5", search5: "%#{params[:sSearch_5]}%" )
     end
     if params[:sSearch_6].present?
       empresas = empresas.where("estatus.descripcion like :search6", search6: "%#{params[:sSearch_6]}%" )

@@ -69,9 +69,19 @@
       %td
         =@etiqueta.try(:punto_referencia)
   
+  
+  %br
+  %br
+  %a.ui-state-default.ui-corner-all.etiqueta_regresar_empresas{:href => "/empresas", :title => "Regresar al listado general de empresas"}
+    %span.ui-icon.ui-icon-arrowreturnthick-1-w
+    Regresar
 
-  = link_to 'Regresar', empresas_path
-  \|
-  = link_to 'Editar', edit_empresa_etiqueta_path(params[:empresa_id], params[:empresa_id])
-  \|
-  = link_to 'Exportar PDF', "/empresas/#{params[:empresa_id]}/etiquetas/#{params[:empresa_id]}.pdf", :target => "_blank"
+  %a.ui-state-default.ui-corner-all.etiqueta_regresar_empresas_editar{:href => "#{edit_empresa_etiqueta_path(params[:empresa_id], params[:empresa_id])}", :title => "Editar datos de la etiqueta"}
+    %span.ui-icon.ui-icon.ui-icon-extlink
+    Editar
+  
+  %a.ui-state-default.ui-corner-all.etiqueta_regresar_empresas_exportar{:href => "/empresas/#{params[:empresa_id]}/etiquetas/#{params[:empresa_id]}.pdf", :title => "Exportar etiqueta formato PDF", :target => "_blank"}
+    %span.ui-icon.ui-icon.ui-icon-extlink
+    Exportar PDF
+
+  

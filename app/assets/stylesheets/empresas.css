@@ -28,4 +28,37 @@
 .campo_readonly{ background-color : #d1d1d1; }
 .crear_empresa {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-top: 30px;cursor: pointer;}
 .crear_empresa span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+.datos_contacto {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 300% "Trebuchet MS", sans-serif;margin-top: 30px;cursor: pointer;}
+.datos_contacto span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 .margen_superior{ margin-top: 20px;}
+tfoot {
+    display: table-header-group;
+}
+
+.botones_servicio {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-top: 30px;cursor: pointer;}
+.botones_servicio span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+
+a.botones_servicio:hover   {color: #212121; border: 1px solid #999999; border: 1px solid #999999;
+background: #dadada url(/assets/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x;
+font-weight: normal;
+color: #212121;}
+
+.regresar_empresas {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-left: 20px;cursor: pointer;}
+.regresar_empresas span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+.regresar_empresas_sin_espacio {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;cursor: pointer;}
+.regresar_empresas_sin_espacio span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+
+.etiqueta_regresar_empresas {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;cursor: pointer;}
+.etiqueta_regresar_empresas span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+
+.etiqueta_regresar_empresas_editar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;cursor: pointer;margin-left: 20px;}
+.etiqueta_regresar_empresas_editar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+
+.etiqueta_regresar_empresas_exportar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;cursor: pointer;margin-left: 20px;}
+.etiqueta_regresar_empresas_exportar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+
+.boton_usuario  {margin-top:50px;}
+
+
+
+

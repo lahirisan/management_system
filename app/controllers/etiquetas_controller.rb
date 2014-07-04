@@ -30,10 +30,11 @@ class EtiquetasController < ApplicationController
   def update
 
     Correspondencia.modificar_etiqueta(params)
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
 
     respond_to do |format|
         
-      format.html { redirect_to empresa_etiqueta_path, notice: "La etiqueta para el prefijo #{params[:empresa_id]} fue modificada correctamente." }
+      format.html { redirect_to empresa_etiqueta_path, notice: "Los datos para la etiqueta de la empresa #{@empresa.nombre_empresa} fueron modificados."}
      
     end
   end

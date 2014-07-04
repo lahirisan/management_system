@@ -30,135 +30,125 @@
 				=link_to 'Cerrar Sesión', logout_path, :class => "enlace_session", :title => "Cierra sesión"
 
 		%section#menu.menu	
-			.submenu Administración
-			%a.opcion{:href => "/empresas", :title => "Listado de Empresas"}
-				.opcion Empresas
+			.submenu Menú Administración
+
+			-if (params[:controller] == 'empresas' and params[:action] == 'index') or (params[:controller] == 'empresas' and params[:action] == 'new') or (params[:controller] == 'empresas' and params[:action] == 'show') or (params[:controller] == 'empresas' and params[:action] == 'edit')
+
+				%a.opcion{:href => "/empresas", :title => "Listado de Empresas", :class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-home
+					Empresas
+
+			-if params[:controller] == 'empresas' and params[:action] == 'index' and params[:activacion].nil? and params[:retirar].nil? and params[:eliminar].nil? and params[:eliminadas].nil? and params[:retiradas].nil? and params[:reactivar].nil?
+				
 				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Empresa')
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "/empresas/new", :title => "Opción para Crear Empresa"}
-									.opcion Registrar
-				
+
+					%a.opcion{:href => "/empresas/new", :title => "Opción para Crear Empresa", :class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-circle-plus
+						Registrar
+					
 				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Validar Empresa')
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "/empresas?activacion=true", :title => "Opción para Activar Empresas creadas"}
-									.opcion Activar Empresa
+				
+					%a.opcion{:href => "/empresas?activacion=true", :title => "Opción para Activar Empresas creadas", :class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-circle-check
+						Activar Empresa
+
 				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Retirar Empresa')
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "/empresas?retirar=true", :title => "Opción para Retirar Empresa"}
-									.opcion Retirar Empresa
+					%a.opcion{:href => "/empresas?retirar=true", :title => "Opción para retirar  Empresa", :class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-circle-minus
+						Retirar Empresa
+
 				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Reactivar Empresa')
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "/empresas?reactivar=true", :title => "Opción que permite Reactivar Empresas Retiradas"}
-									.opcion Reactivar Empresa
-				
-				.opcion
-					%ul
-						%li 
-							%a.opcion{:href => "/empresas?retiradas=true", :title => "Opción para Listar Empresas Retiradas"}
-								.opcion Empresas Retiradas
-				
+					%a.opcion{:href => "/empresas?reactivar=true", :title => "Opción que permite Reactivar Empresas Retiradas", :class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-refresh
+						Reactivar Empresa
+					
+			
+				%a.opcion{:href => "/empresas?retiradas=true", :title => "Opción para Listar Empresas Retiradas", :class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-folder-collapsed
+					Empresas Retiradas
+					
 				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Empresa')
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "/empresas?eliminar=true", :title => "Opción para Eliminar Empresa"}
-									.opcion Eliminar Empresa
-				.opcion
-					%ul
-						%li 
-							%a.opcion{:href => "/empresas?eliminadas=true", :title => "Opción para Listar Empresas ELiminadas"}
-								.opcion Empresas Eliminadas
-
-			-if params[:controller] == 'productos'
-
-				%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos", :title => "Listado de productos para la empresa seleccionada"}
-					.opcion Productos
-					- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Producto')
-						.opcion
-							%ul
-								%li 
-									%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos/new", :title => "Crear producto"}
-										.opcion Crear Producto
-					- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Retirar Producto')
-						.opcion
-							%ul
-								%li 
-									%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?retirar=true", :title => "Retirar uno o más productos"}
-										.opcion Retirar Productos
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?retirados=true", :title => "Listado de los productos retirados"}
-									.opcion Productos Retirados
-					- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Producto')
-						.opcion
-							%ul
-								%li 
-									%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminar=true", :title => "ELiminar productos"}
-										.opcion Eliminar Productos
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminados=true", :title => "Listado de los productos eliminados"}
-									.opcion Productos Eliminados
-
-			-if params[:controller] == 'empresa_servicios'
-
-				%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios", :title => "Listado de Servicios para la empresa seleccionada"}
-					.opcion Servicios
-					- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Servicio')
-						.opcion
-							%ul
-								%li 
-									%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios/new", :title => "Opción que permite crear servicio"}
-										.opcion Crear Servicio
-					- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Servicio')
-						.opcion
-							%ul
-								%li 
-									%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios?eliminar=true", :title => "ELiminar Servicios"}
-										.opcion Eliminar Servicios
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios?eliminados=true", :title => "Listado de los Servicios eliminados"}
-									.opcion Servicios Eliminados
-
-			-if params[:controller] == 'glns'
-				%a.opcion{:href => "#{empresa_glns_path}", :title => "Listado de GLN para la empresa seleccionada"}
-					.opcion GLN
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "#{new_empresa_gln_path}", :title => "Opción que permite crear GLN"}
-									.opcion Crear GLN
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "#{empresa_glns_path}?eliminar=true", :title => "ELiminar GLN"}
-									.opcion Eliminar GLN
-					.opcion
-						%ul
-							%li 
-								%a.opcion{:href => "#{empresa_glns_path}?eliminados=true", :title => "GLN eliminados"}
-									.opcion GLN Eliminados
-			- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Listar Usuario')
-				.opcion
-					=link_to 'Usuarios', usuarios_path, :class => "opcion", :title => "Usuarios registrados en la aplicación"
-			- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Usuario')
-				.opcion
-					%ul
-						%li 
-							%a.opcion{:href => "#{new_usuario_path}", :title => "Crear usuario"}
-								.opcion Crear Usuario
+					%a.opcion{:href => "/empresas?eliminar=true", :title => "Opción para Eliminar Empresa", :class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-circle-close
+						Eliminar Empresa
 				
+				%a.opcion{:href => "/empresas?eliminadas=true", :title => "Opción para Listar Empresas ELiminadas", :class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-trash
+					Empresas Eliminadas
+
+			-if params[:controller] == 'productos' and params[:action] == 'index' and params[:retirar].nil? and params[:retirados].nil? and params[:eliminar].nil? and params[:eliminados].nil?
+			
+
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Producto') 
+					
+					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos/new", :title => "Crear producto", :class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-circle-plus
+						Crear Producto
+
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Retirar Producto') 
+					
+					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?retirar=true", :title => "Retirar uno o más productos", :class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-circle-minus
+						Retirar Productos
+				
+					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?retirados=true", :title => "Listado de los productos retirados", :class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-folder-collapsed
+						Productos Retirados
+
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Producto') 
+					
+					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminar=true", :title => "ELiminar productos", :class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-circle-close
+						Eliminar Productos
+				
+					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminados=true", :title => "Listado de los productos eliminados", :class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-trash
+						Productos Eliminados
+
+			-if params[:controller] == 'empresa_servicios' and params[:action] == 'index'  and params[:eliminar].nil? and params[:eliminados].nil?
+				
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Servicio')
+					
+					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios/new", :title => "Opción que permite crear servicio",:class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-circle-plus
+						Crear Servicio
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Servicio')
+					
+					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios?eliminar=true", :title => "Opción que permite eliminar un servicio asociado",:class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-circle-minus
+						Eliminar Servicios
+				
+					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios?eliminados=true", :title => "Lista los servicios eliminados",:class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-trash
+						Servicios Eliminados
+
+			-if params[:controller] == 'glns' and params[:action] == 'index'  and params[:eliminar].nil? and params[:eliminados].nil?
+		
+				%a.opcion{:href => "#{new_empresa_gln_path}", :title => "Opción que permite crear GLN",:class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-circle-plus
+					Crear GLN
+			
+				%a.opcion{:href => "#{empresa_glns_path}?eliminar=true", :title => "ELiminar GLN",:class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-circle-minus
+					Eliminar GLN
+			
+				%a.opcion{:href => "#{empresa_glns_path}?eliminados=true", :title => "GLN eliminados",:class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-trash
+					GLN Eliminados
+			
+			-if params[:controller] != 'empresas'
+
+				%a.opcion{:href => "/empresas", :title => "Regresar al listado de general de Empresas", :class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-home
+					Empresas
+			
+			-if params[:controller] == 'empresas' and params[:action] == 'index' and params[:retirar].nil? and params[:retiradas].nil? and params[:eliminar].nil? and params[:eliminadas].nil? and params[:reactivar].nil? and params[:activacion].nil?
+
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Listar Usuario')
+				
+					%a.opcion{:href => "#{usuarios_path}", :title => "Usuarios registrados en el sistema",:class => "ui-state-default ui-corner-all botones_menu boton_usuario"}
+						%span.ui-icon.ui-icon-person
+						Usuarios
+
 		= yield
 		

@@ -1,5 +1,5 @@
 %section.contexto
-  %label.contexto Empresa > Datos Básicos
+  %label.contexto=@gln.gln_empresa.empresa.nombre_empresa + " > GLN #{@gln.gln} > Detalle"
   %hr.contexto{:size => "1"}
 
 %section#areaTrabajo.areaTrabajo{:style => "font: 100% 'Trebuchet MS', sans-serif"}
@@ -84,6 +84,11 @@
         Código Postal
       %td
         =@gln.cod_postal
+  %br
+  %br
+  %a.ui-state-default.ui-corner-all.regresar_empresas_sin_espacio{:href => "/empresas/#{params[:empresa_id]}/glns", :title => "Regresar al listado de GLN"}
+    %span.ui-icon.ui-icon-arrowreturnthick-1-w
+    Regresar
 
   
   
