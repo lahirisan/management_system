@@ -60,5 +60,12 @@
             = f.collection_select :id_cargo, Cargo.order("descripcion asc"), :id, :descripcion, :prompt => "-Seleccione-"
 
       .actions
-        = f.submit 'Guardar'
-        =link_to "Regresar", usuarios_path
+        %button#submit.ui-state-default.ui-corner-all.crear_empresa{:type => "submit", :title => "Guardar usuario"}
+          %span.ui-icon.ui-icon-disk
+          Guardar
+
+        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "#{usuarios_path}", :title => "Regresar al listado de usuarios"}
+          %span.ui-icon.ui-icon-arrowreturnthick-1-w
+          Regresar
+        
+        

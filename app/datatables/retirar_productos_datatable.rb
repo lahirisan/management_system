@@ -50,8 +50,8 @@ private
   end
 
   def fetch_productos
-
-    productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Activo', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
+     productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("producto.fecha_creacion") 
+    #productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Activo', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
     productos = productos.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general
@@ -94,13 +94,13 @@ private
       productos = productos.where("producto.fecha_creacion like :search9", search9: "%#{params[:sSearch_9]}%" )
     end
     
-    if params[:sSearch_10].present?
-      productos = productos.where("sub_estatus.descripcion like :search10", search10: "%#{params[:sSearch_10]}%" )
-    end
+    # if params[:sSearch_10].present?
+    #   productos = productos.where("sub_estatus.descripcion like :search10", search10: "%#{params[:sSearch_10]}%" )
+    # end
 
-    if params[:sSearch_11].present?
-      productos = productos.where("motivo_retiro.descripcion like :search11", search11: "%#{params[:sSearch_11]}%" )
-    end
+    # if params[:sSearch_11].present?
+    #   productos = productos.where("motivo_retiro.descripcion like :search11", search11: "%#{params[:sSearch_11]}%" )
+    # end
 
 
     

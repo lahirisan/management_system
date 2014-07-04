@@ -1,2 +1,6 @@
-.nuevo_contacto {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 80% "Trebuchet MS", sans-serif}
+.nuevo_contacto {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif; margin-right: 10px;}
 .nuevo_contacto span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+.regresar_editar_empresa {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif}
+.regresar_editar_empresa span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+.guardar_contacto {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif; margin-top: 30px;}
+.guardar_contacto span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}

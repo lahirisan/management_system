@@ -1,15 +1,14 @@
 %section.contexto
-    %label.contexto Productos > Retirar Productos
+    %label.contexto
+        =@navegabilidad 
     %hr.contexto{:size => "1"}
 
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
+    
+    = render 'exportar_productos_retirar.html.haml'
     =form_tag "#{empresa_productos_path}/update_multiple", :method => "put", :id => "formulario_retirar_productos" do
-        
-        %button#submit.ui-state-default.ui-corner-all.retirar_productos{:type => "submit", :title => "Retirar productos"}
-            %span.ui-icon.ui-icon-circle-minus
-            Retirar
-
+       
         %table.margen_inferior{:border => 1}
             %tr
                 %td
@@ -54,5 +53,8 @@
         %button#submit.ui-state-default.ui-corner-all.retirar_productos{:type => "submit", :title => "Retirar Productos"}
             %span.ui-icon.ui-icon-circle-minus
             Retirar
+        %a.ui-state-default.ui-corner-all.regresar{:href => "/empresas/#{params[:empresa_id]}/productos", :title => "Regresar al listado de productos para esta Empresa"}
+            %span.ui-icon.ui-icon-arrowreturnthick-1-w
+            Regresar
 
         

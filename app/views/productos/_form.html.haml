@@ -1,13 +1,9 @@
 %section.contexto
   %label.contexto 
-    -if @producto.new_record?
-      Registar Producto 
-    -else
-      Editar Producto
+    =@producto.new_record? ? (@empresa.nombre_empresa + " > Registrar Producto") : (@empresa.nombre_empresa + " > Editar Producto")
   %hr.contexto{:size => "1"}
 
   %section.formulario
-
     
     = form_for [@empresa, @producto] do |f|
       - if @producto.errors.any?
@@ -15,7 +11,10 @@
           %h2= "#{pluralize(@producto.errors.count, "errore")} "
           %ul
             - @producto.errors.full_messages.each do |msg|
-              %li= msg
+              -if msg == 'El codigo de Producto que esta ingresando ya  se encuentra asociado a un GTIN'
+                %li="El codigo de Producto que está ingresando ya se encuentra asociado a un GTIN"
+              -else
+                %li=msg 
       
       %table
         %tr
@@ -37,33 +36,43 @@
           %td
             Descripción
           %td
-            =params[:descripcion] ? f.text_field(:descripcion, :value => params[:descripcion]) : f.text_field(:descripcion)
+            =params[:descripcion] ? f.text_field(:descripcion, :value => params[:descripcion]) : f.text_field(:descripcion, :autocomplete => "off")
             
         %tr
           %td
             Marca
           %td
-            =params[:marca] ? f.text_field(:marca, :value => params[:marca]): f.text_field(:marca)
+            =params[:marca] ? f.text_field(:marca, :value => params[:marca]): f.text_field(:marca, :autocomplete => "off")
         %tr
           %td
             GPC
           %td
             -if @producto.new_record?
               -if params[:gpc]
-                =f.text_field :gpc, :value => params[:gpc]
+                =f.text_field :gpc, :value => params[:gpc], :autocomplete => "off"
               -else
-                =f.text_field :gpc
+                =f.text_field :gpc, :autocomplete => "off"
             -else
               =f.text_field :gpc, :readonly => :true, :class => "campo_readonly"
         %tr
           %td.codigo_producto
-            -if !@producto.new_record?
+            -if !@producto.new_record? or (@producto.errors.messages[:gtin])
               Código Producto
           %td.valor_codigo_producto
             -if !@producto.new_record?
               =(f.text_field :codigo_prod, :readonly => :true, :class => "campo_readonly")
+            -elsif @producto.errors.messages[:gtin]
+              =f.text_field :codigo_prod
         
       =hidden_field_tag "gtin", "#{@gtin}"
-      .actions.boton_submit
-        = f.submit 'Guardar'
+     
+      %button#submit.ui-state-default.ui-corner-all.guardar_producto{:type => "submit", :title => "Guardar producto"}
+        %span.ui-icon.ui-icon-disk
+        Guardar Producto
+
+      %a.ui-state-default.ui-corner-all.regresar{:href => "/empresas/#{params[:empresa_id]}/productos", :title => "Regrar al listado de Productos para esta Empresa"}
+        %span.ui-icon.ui-icon-arrowreturnthick-1-w
+        Regresar
+        
+        
       

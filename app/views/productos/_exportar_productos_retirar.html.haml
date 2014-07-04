@@ -1,0 +1,16 @@
+%table
+    %tr
+        %td
+            %form{action: "#{empresa_productos_path}.pdf", method: "get", target: "_blank"}
+                .parametros
+                %button.ui-state-default.ui-corner-all.exportar_productos_retirar{:type => "submit", :title => "Opción que te permite exportar el listado general de Productos a formato PDF"}
+                    %span.ui-icon.ui-icon-disk
+                    Exportar PDF
+
+        %td
+            %form{action: "#{empresa_productos_path}.xlsx", method: "get"}
+                .parametros
+                %button.ui-state-default.ui-corner-all.exportar_productos_retirar{:type => "submit", :title => "Opción que te permite exportar el listado general de Productos a formato Excel"}
+                    %span.ui-icon.ui-icon-disk
+                    Exportar Excel
+       

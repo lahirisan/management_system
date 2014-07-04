@@ -1,5 +1,6 @@
 %section.contexto
   %label.contexto 
+    =@empresa_servicio.new_record? ? (@empresa.nombre_empresa + " > Asociar Servicio") : (@empresa.nombre_empresa + " > Editar Servicio")
     
   %hr.contexto{:size => "1"}
 
@@ -54,4 +55,10 @@
         
      
       .actions
-        = f.submit 'Guardar'
+        %button#submit.ui-state-default.ui-corner-all.guardar_servicio{:type => "submit", :title => "Guardar servicio"}
+          %span.ui-icon.ui-icon-disk
+          Guardar
+        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas/#{params[:empresa_id]}/empresa_servicios", :title => "Regresar al listado de servicios"}
+          %span.ui-icon.ui-icon-arrowreturnthick-1-w
+          Regresar
+        

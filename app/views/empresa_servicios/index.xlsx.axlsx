@@ -1,0 +1,51 @@
+if params[:servicio] != ''
+  @empresa_servicios = @empresa_servicios.where("servicios.nombre like :search", search: "%#{params[:servicio]}%" )
+end
+
+if params[:fecha_contratacion] != ''
+  @empresa_servicios = @empresa_servicios.where("empresa_servicios.fecha_contratacion like :search", search: "%#{params[:fecha_contratacion]}%" )
+end
+
+if params[:fecha_finalizacion] != ''
+  @empresa_servicios = @empresa_servicios.where("empresa_servicios.fecha_finalizacion like :search", search: "%#{params[:fecha_finalizacion]}%" )
+end
+
+if params[:nombre_contacto] != ''
+  @empresa_servicios = @empresa_servicios.where("empresa_servicios.nombre_contacto like :search", search: "%#{params[:nombre_contacto]}%" )
+end
+
+if params[:cargo_contacto] != ''
+  @empresa_servicios = @empresa_servicios.where("empresa_servicios.cargo_contacto like :search", search: "%#{params[:cargo_contacto]}%" )
+end
+
+if params[:telefono] != ''
+  @empresa_servicios = @empresa_servicios.where("empresa_servicios.telefono like :search", search: "%#{params[:telefono]}%" )
+end
+
+if params[:correo] != ''
+  @empresa_servicios = @empresa_servicios.where("empresa_servicios.email like :search", search: "%#{params[:correo]}%" )
+end
+
+xlsx_package = Axlsx::Package.new 
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "GS1") do |sheet|
+	wb.styles do |s|
+		
+		black_cell = s.add_style :i => true, :bg_color => "F8F8F8", :fg_color => "00", :sz => 12, :alignment => { :horizontal=> :center }
+		black_cell2 = s.add_style   :border => { :style => :thin, :color => "00" }, :i => true,:fg_color => "00", :sz => 8, :alignment => { :horizontal=> :left }
+		tomas = s.add_style  :sz => 12, :alignment => { :horizontal=> :center }
+
+			sheet.add_row ['Empresa',"#{@empresa.nombre_empresa}" ]
+			sheet.add_row ['RIF',"#{@empresa.rif}" ]
+			sheet.add_row ['Prefijo',"#{@empresa.prefijo}"]
+			sheet.add_row ['']
+
+			sheet.add_row ["Empresa", "Servicio", "Fecha Contratación", "Fecha Finalización", "Nombre Contacto",  "Cargo", "Teléfono", "Correo"], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
+			@empresa_servicios.each do |servicio|
+
+				sheet.add_row [servicio.empresa.nombre_empresa, servicio.servicio.nombre, servicio.fecha_contratacion.strftime("%Y-%m-%d"), servicio.fecha_finalizacion.strftime("%Y-%m-%d"), servicio.nombre_contacto, servicio.cargo_contacto, servicio.telefono, servicio.email ], :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]		
+			end
+			#sheet.column_widths 13,80,20,140,40,20,20,25,50,50,50, 50, 20, 20,20,20, 40,40,40,40, 30,30,30,30,30,30,30,30 # Ancho de las columnas
+	end 
+end

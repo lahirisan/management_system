@@ -4,7 +4,10 @@ class DatosContactosController < ApplicationController
   # GET /datos_contactos.json
   def index
 
+    
     @datos_contactos = DatosContacto.find(:all, :conditions => ["prefijo =?", params[:empresa_id]])
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
+    @navegabilidad = @empresa.nombre_empresa + " > Datos de contacto"
     
     respond_to do |format|
       format.html # index.html.erb
@@ -27,8 +30,11 @@ class DatosContactosController < ApplicationController
   # GET /datos_contactos/new
   # GET /datos_contactos/new.json
   def new
+
+
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
     @datos_contacto = @empresa.datos_contacto.build  ## Crea  el formulario para los datos_contacto
+    @navegabilidad = @empresa.nombre_empresa + " > Crear contacto"
     
     respond_to do |format|
       format.html # new.html.erb
@@ -40,6 +46,7 @@ class DatosContactosController < ApplicationController
   def edit
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
     @datos_contacto = DatosContacto.find(params[:id])
+    @navegabilidad = @empresa.nombre_empresa + " > Editar contacto"
   end
 
   # POST /datos_contactos
@@ -52,7 +59,7 @@ class DatosContactosController < ApplicationController
 
     respond_to do |format|
       if @datos_contacto.save
-        format.html { redirect_to "/empresas/#{params[:empresa_id]}/datos_contactos", notice: 'Datos contacto asociados fueron asociados a la Empresa con Prefijo' + "#{params[:empresa_id]}" }        
+        format.html { redirect_to "/empresas/#{params[:empresa_id]}#data_table_empresas_datos_contacto", notice: "El contacto fue agregado exitosamente."}        
       else
         format.html { render action: "new" }
       end
@@ -67,7 +74,7 @@ class DatosContactosController < ApplicationController
 
     respond_to do |format|
       if @datos_contacto.update_attributes(params[:datos_contacto])
-        format.html { redirect_to "/empresas/#{params[:empresa_id]}/datos_contactos", notice: 'Datos contacto was successfully updated.' }
+        format.html { redirect_to "/empresas/#{params[:empresa_id]}#data_table_empresas_datos_contacto", notice: "El contacto fue editado exitosamente."}
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -84,7 +91,7 @@ class DatosContactosController < ApplicationController
     @datos_contacto.destroy
 
     respond_to do |format|
-      format.html { redirect_to "/empresas/#{params[:empresa_id]}/datos_contactos" }
+      format.html { redirect_to "/empresas/#{params[:empresa_id]}#data_table_empresas_datos_contacto", notice: "Contacto eliminado."}
     end
   end
 end

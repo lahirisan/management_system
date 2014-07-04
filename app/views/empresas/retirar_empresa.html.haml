@@ -6,28 +6,12 @@
         =notice
         -notice = nil
 %section#areaTrabajo.areaTrabajo
-    =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retirar_empresa" do
-        - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Retirar Empresa')
-            %button#submit.ui-state-default.ui-corner-all.retirar{:type => "submit"}
-                %span.ui-icon.ui-icon-circle-minus
-                Retirar
-
     
-        %table.margen_inferior{:border => 1}
-            %tr
-                %td
-                    Retiro Masivo
-                %td
-                    Sub-Estatus
-                %td
-                    Motivo Retiro
-            %tr
-                %td
-                    =check_box_tag "retiro_masivo"
-                %td
-                    =select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
-                %td
-                    =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
+    =render 'botones_retirar_empresa'
+
+    =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retirar_empresa" do
+        
+        = render 'retiro_masivo'
        
         %table#data_table_empresas_retirar.display{:"data-source" => "/empresas.json?retirar=true"}
             %thead
@@ -57,8 +41,11 @@
         
         =hidden_field_tag "retiro", "true"
         - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Retirar Empresa')
-            %button#submit.ui-state-default.ui-corner-all.retirar{:type => "submit"}
+            %button#submit.ui-state-default.ui-corner-all.retirar{:type => "submit", :id => "retirar_empresa"}
                 %span.ui-icon.ui-icon-circle-minus
                 Retirar
+        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
+            %span.ui-icon.ui-icon-arrowreturnthick-1-w
+            Regresar
         
     

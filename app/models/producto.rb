@@ -7,6 +7,7 @@ class Producto < ActiveRecord::Base
   has_one    :productos_retirados, :foreign_key => "gtin", :dependent => :destroy 
 
   validates :descripcion, :marca, :gpc, :id_tipo_gtin, :presence => {:message => "No puede estar en blanco"}, :on => :create
+  validates :gtin, :uniqueness => {:message => "El codigo de Producto que esta ingresando ya  se encuentra asociado a un GTIN"}
 
 
   def self.retirar(parametros) # Retira productos seleccionadaos individualmete
@@ -106,19 +107,19 @@ class Producto < ActiveRecord::Base
       gtin_generado =  secuencia_completa.to_s + digito_verificacion.to_s # 759 + secuencia + verificacion
     
     elsif tipo_gtin.tipo == "GTIN-13"
-      
+
       secuencia =  codigo_producto.nil? ? "00001" : codigo_producto
-      codigo_producto = prefijo.to_s + secuencia
-      digito_verificacion = calcular_digito_verificacion(codigo_producto.to_i, "GTIN-13")
-      gtin_generado = codigo_producto.to_s + digito_verificacion.to_s
+      gtin = prefijo.to_s + secuencia
+      digito_verificacion = calcular_digito_verificacion(gtin.to_i, "GTIN-13")
+      gtin_generado = gtin.to_s + digito_verificacion.to_s
       
       codigo_asignado = ProductosEmpresa.find(:first, :conditions => [" gtin = ? and prefijo = ?", gtin_generado, prefijo])
 
-      while (codigo_asignado) do
+      while (codigo_asignado and codigo_producto.nil?) do
 
-        codigo_producto = codigo_producto.to_i + 1
-        digito_verificacion = calcular_digito_verificacion(codigo_producto.to_i, "GTIN-13")
-        gtin_generado = codigo_producto.to_s + digito_verificacion.to_s
+        gtin = gtin.to_i + 1
+        digito_verificacion = calcular_digito_verificacion(gtin.to_i, "GTIN-13")
+        gtin_generado = gtin.to_s + digito_verificacion.to_s
         codigo_asignado = ProductosEmpresa.find(:first, :conditions => [" gtin = ? and prefijo = ?", gtin_generado, prefijo])
        
       end

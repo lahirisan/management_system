@@ -91,6 +91,7 @@ class Gln < ActiveRecord::Base
   Gln.asociar_gln_empresa(gln, prefijo_empresa)
 
  end
+ 
 
 
  def self.generar(prefijo_empresa)

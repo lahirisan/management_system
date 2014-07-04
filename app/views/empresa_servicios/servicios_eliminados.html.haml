@@ -1,10 +1,11 @@
 %section.contexto
   %label.contexto
-    Servicios > ELiminados
+    =@navegabilidad
   %hr.contexto{:size => "1"}
 
 %section#areaTrabajo.areaTrabajo
   %p#notice= notice
+  =render 'exportar_servicios_eliminados'
   %table#data_table_empresa_servicios_eliminados.display{:"data-source" => "/empresas/#{params[:empresa_id]}/empresa_servicios.json?eliminados=true"}
     %thead
       %tr
@@ -27,4 +28,7 @@
 
   %br
   %br
+  %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas/#{params[:empresa_id]}/empresa_servicios", :title => "Regresar al listado de servicios"}
+    %span.ui-icon.ui-icon-arrowreturnthick-1-w
+    Regresar
   

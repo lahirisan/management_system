@@ -1,7 +1,11 @@
 # adaptador SQLServer
 development:
   adapter: sqlserver
+<<<<<<< HEAD
   host: SERVLAHI
+=======
+  host: 192.168.1.14  
+>>>>>>> 85fc79c11fc28297fc650b470b00759719449d36
   database: administrativoGS1_
   username: sa
   password: Sc4nnv3n

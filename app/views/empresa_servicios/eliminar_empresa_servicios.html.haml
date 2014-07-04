@@ -1,8 +1,10 @@
 %section.contexto
-    %label.contexto Servicios > Eliminar Servicios
+    %label.contexto
+        =@navegabilidad 
     %hr.contexto{:size => "1"}
 
 %section#areaTrabajo.areaTrabajo
+    = render 'exportar_servicios_eliminar'
     =form_tag "/empresas/#{params[:empresa_id]}/empresa_servicios/0", :method => "delete", :id => "formulario_eliminar_servicios" do
         %table.margen_inferior{:border => 1}
             %tr
@@ -44,5 +46,11 @@
         %br/
         #datos_servicio_eliminar
         =hidden_field_tag "eliminar"
-        =submit_tag "eliminar"
+        %button#submit.ui-state-default.ui-corner-all.guardar_producto{:type => "submit", :title => "Eliminar servicio seleccionado"}
+            %span.ui-icon.ui-icon-disk
+            Eliminar
+        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas/#{params[:empresa_id]}/empresa_servicios", :title => "Regresar al listado de servicios"}
+            %span.ui-icon.ui-icon-arrowreturnthick-1-w
+            Regresar
+        
         

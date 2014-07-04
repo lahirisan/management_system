@@ -1,0 +1,15 @@
+%table.margen_superior
+    %tr
+        %td
+            %form{action: "#{empresa_empresa_servicios_path}.pdf", method: "get", target: "_blank"}
+                .parametros
+                %button.ui-state-default.ui-corner-all.exportar_servicios_eliminados{:type => "submit", :title => "Opción que te permite exportar el listado general de los Servicios Eliminados asociados a la empresa en formato PDF"}
+                    %span.ui-icon.ui-icon-disk
+                    Exportar PDF
+
+        %td
+            %form{action: "#{empresa_empresa_servicios_path}.xlsx", method: "get"}
+                .parametros
+                %button.ui-state-default.ui-corner-all.exportar_servicios_eliminados{:type => "submit", :title => "Opción que te permite exportar el listado general de los  Servicios Eliminados  asociados a la empresa en formato Excel"}
+                    %span.ui-icon.ui-icon-disk
+                    Exportar Excel

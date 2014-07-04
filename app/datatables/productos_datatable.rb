@@ -38,8 +38,8 @@ private
           producto.try(:estatus).try(:descripcion),
           producto.codigo_prod,
           fecha,
-          link_to("Editar", "/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit"),
-          link_to("Crear GTIN 14", "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{producto.descripcion}&marca=#{producto.marca}&gpc=#{producto.gpc}")
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar producto"}),
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"GTIN14").html_safe, "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{producto.descripcion}&marca=#{producto.marca}&gpc=#{producto.gpc}",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Generar GTIN-14"})
         ]
 
       else
