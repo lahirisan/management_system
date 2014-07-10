@@ -23,10 +23,13 @@
                 %th Fecha Creación
                 -if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Producto')
                     %th Editar
-                %th GTIN 14
+                    %th GTIN 14
         %tbody
         %tfoot
-            =render 'footer'
+            -if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Producto')
+                =render 'footer'
+            -else
+                =render 'footer_not_editable'
     %br/
     %br/
 

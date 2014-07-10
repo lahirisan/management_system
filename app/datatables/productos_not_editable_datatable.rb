@@ -24,35 +24,20 @@ private
       fecha = ""
       fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
       
-      if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3)
-        [ 
-          producto.try(:productos_empresa).try(:empresa).try(:nombre_empresa),
-          producto.try(:tipo_gtin).try(:tipo),
-          producto.gtin,
-          producto.descripcion,
-          producto.marca,
-          producto.gpc,
-          producto.try(:estatus).try(:descripcion),
-          producto.codigo_prod,
-          fecha,
-          link_to("Crear GTIN 14", "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}")
-        ]
-
-      else
+      
 
         [ 
           producto.try(:productos_empresa).try(:empresa).try(:nombre_empresa),
           producto.try(:tipo_gtin).try(:tipo),
           producto.gtin,
           producto.descripcion,
-          producto.marca,
           producto.gpc,
           producto.try(:estatus).try(:descripcion),
           producto.codigo_prod,
           fecha
         ]
 
-      end
+      
       
     end
 
@@ -91,16 +76,8 @@ private
       productos = productos.where("producto.marca like :search4", search4: "%#{params[:sSearch_4]}%" )
     end
 
-    if params[:sSearch_5].present?
-      productos = productos.where("producto.gpc like :search5", search5: "%#{params[:sSearch_5]}%" )
-    end
-
     if params[:sSearch_6].present?
-      productos = productos.where("estatus.descripcion like :search6", search6: "%#{params[:sSearch_6]}%")
-    end
-
-    if params[:sSearch_7].present?
-      productos = productos.where("producto.codigo_prod like :search7", search7: "%#{params[:sSearch_7]}%" )
+      productos = productos.where("producto.codigo_prod like :search6", search6: "%#{params[:sSearch_6]}%" )
     end
 
     productos
