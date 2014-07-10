@@ -71,7 +71,7 @@ private
 
   def fetch_empresas
    
-    empresas = Empresa.includes(:estado, :ciudad, :estatus).order("#{sort_column} #{sort_direction}") 
+    empresas = Empresa.where("estatus.descripcion = ?", 'Activa').includes(:estado, :ciudad, :estatus).order("#{sort_column} #{sort_direction}") 
     empresas = empresas.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general
