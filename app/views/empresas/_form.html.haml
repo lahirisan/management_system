@@ -62,13 +62,13 @@
           %td
             Ciudad
           %td
-            = f.collection_select :id_ciudad, Ciudad.all, :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
+            = f.collection_select :id_ciudad, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
         
         %tr
           %td
             RIF
           %td
-            = f.text_field :rif, :placeholder => "j-12548785-4"
+            = f.text_field :rif, :placeholder => "J-12548785-4"
       
       %br/
 
@@ -120,19 +120,19 @@
             
             %tr
               %td
-                Nombre Contacto
+                Nombre del contacto
               %td
                 =fc.text_field :nombre_contacto
             %tr
               %td
-                Cargo Contacto
+                Cargo del contacto
               %td
                 =fc.text_field :cargo_contacto
             %tr
               %td
                 Tipo Contacto
               %td
-                =@empresa.new_record? ? fc.text_field(:tipo, :value => 'principal', :readonly => :true, :class => "campo_readonly") : fc.select(:tipo, options_for_select(['email', 'fax', 'opcional', 'principal', 'secundario']),{:prompt => "- Seleccione -"})
+                =@empresa.new_record? ? fc.text_field(:tipo, :value => 'PRINCIPAL', :readonly => :true, :class => "campo_readonly") : fc.select(:tipo, options_for_select(['email', 'fax', 'opcional', 'principal', 'secundario']),{:prompt => "- Seleccione -"})
             %tr
               %td
                 Teléfono contacto
@@ -182,12 +182,12 @@
               %td
                 Ciudad
               %td
-                =fa.collection_select :id_ciudad,  Ciudad.all, :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
+                =fa.collection_select :id_ciudad,  Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
             %tr
               %td
                 Municipio
               %td
-                =fa.collection_select :id_municipio,  Municipio.all, :id, :nombre, {:prompt => '-Seleccione Municipio-'}
+                =fa.collection_select :id_municipio,  Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Municipio-'}
             / %tr
             /   %td
             /     Parroquia

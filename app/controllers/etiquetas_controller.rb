@@ -7,7 +7,8 @@ class EtiquetasController < ApplicationController
 
     @etiqueta = Correspondencia.find(:first, :conditions => ["prefijo = ?", params[:id]], :include => :empresa)
     @contacto = DatosContacto.find(:first, :conditions => ["prefijo = ? and tipo = ?", params[:empresa_id], 'principal'])
-    @navegabilidad = @etiqueta.empresa.nombre_empresa + " > Etiqueta"
+    @navegabilidad = @etiqueta.try(:empresa).try(:nombre_empresa) 
+    @navegabilidad = @navegabilidad ? @navegabilidad += " > Etiqueta" : ""
 
     respond_to do |format|
       format.html # show.html.haml
