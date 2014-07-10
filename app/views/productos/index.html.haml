@@ -18,11 +18,10 @@
                 %th GTIN
                 %th Descripción
                 %th Marca
-                %th GPC
                 %th Estatus
                 %th Código Prod
                 %th Fecha Creación
-                -if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Servicio')
+                -if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Producto')
                     %th Editar
                 %th GTIN 14
         %tbody

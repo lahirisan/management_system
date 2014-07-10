@@ -9,7 +9,7 @@ $(document).ready(function(){
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_productos').data('source')
-        }).columnFilter({ aoColumns: [null, { type: "text"},{ type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, null, {type: "text"},null]});
+        }).columnFilter({ aoColumns: [null, { type: "text"},{ type: "text"}, {type: "text" }, {type: "text"},  null, {type: "text"},null]});
 
         $('#data_table_productos input').attr("placeholder", "Buscar");
 
@@ -35,7 +35,7 @@ $(document).ready(function(){
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_productos_retirados').data('source')
-        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
         $('#data_table_productos_retirados input').attr("placeholder", "Buscar");
 
@@ -48,7 +48,7 @@ $(document).ready(function(){
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_productos_eliminados').data('source')
-        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"},  null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
         $('#data_table_productos_eliminados input').attr("placeholder", "Buscar");
 
@@ -61,7 +61,7 @@ $(document).ready(function(){
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_eliminar_productos').data('source')
-        }).columnFilter({ aoColumns: [null, null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}    ]});
+        }).columnFilter({ aoColumns: [null, null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"},  {type: "text"}, {type: "text"}, {type: "text"}  ]});
 
         $('#data_table_eliminar_productos input').attr("placeholder", "Buscar");
 

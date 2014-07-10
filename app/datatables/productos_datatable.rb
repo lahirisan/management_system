@@ -34,7 +34,6 @@ private
           producto.gtin,
           producto.descripcion,
           producto.marca,
-          producto.gpc,
           producto.try(:estatus).try(:descripcion),
           producto.codigo_prod,
           fecha,
@@ -50,7 +49,6 @@ private
           producto.gtin,
           producto.descripcion,
           producto.marca,
-          producto.gpc,
           producto.try(:estatus).try(:descripcion),
           producto.codigo_prod,
           fecha,
@@ -97,16 +95,8 @@ private
       productos = productos.where("producto.marca like :search4", search4: "%#{params[:sSearch_4]}%" )
     end
 
-    if params[:sSearch_5].present?
-      productos = productos.where("producto.gpc like :search5", search5: "%#{params[:sSearch_5]}%" )
-    end
-
     if params[:sSearch_6].present?
-      productos = productos.where("estatus.descripcion like :search6", search6: "%#{params[:sSearch_6]}%")
-    end
-
-    if params[:sSearch_7].present?
-      productos = productos.where("producto.codigo_prod like :search7", search7: "%#{params[:sSearch_7]}%" )
+      productos = productos.where("producto.codigo_prod like :search6", search6: "%#{params[:sSearch_6]}%" )
     end
 
     productos
