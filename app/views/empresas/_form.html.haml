@@ -135,7 +135,7 @@
                 =@empresa.new_record? ? fc.text_field(:tipo, :value => 'PRINCIPAL', :readonly => :true, :class => "campo_readonly") : fc.select(:tipo, options_for_select(['email', 'fax', 'opcional', 'principal', 'secundario']),{:prompt => "- Seleccione -"})
             %tr
               %td
-                Teléfono contacto
+                Teléfono del contacto
               %td
                 =fc.text_field :contacto, :placeholder => "Ej.: 04168035284"
              
