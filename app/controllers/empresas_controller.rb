@@ -109,7 +109,7 @@ class EmpresasController < ApplicationController
     (params[:eliminados]) ? (@empresa = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:id]])) : (@empresa = Empresa.find(params[:id]))
     @datos_contactos = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
     @correspondencia = (params[:eliminados]) ? @empresa.correspondencia_eliminada : @empresa.correspondencia
-    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:id]])
+    #@empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:id]])
     
 
     respond_to do |format|
