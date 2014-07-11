@@ -14,10 +14,6 @@ if params[:marca] != ''
   @productos = @productos.where("producto_eliminado.marca like :search", search: "%#{params[:marca]}%" )
 end
 
-if params[:gpc] != ''
-  @productos = @productos.where("producto_eliminado.gpc like :search", search: "%#{params[:gpc]}%" )
-end
-
 if params[:codigo_producto] != ''
   @productos = @productos.where("producto_eliminado.codigo_prod like :search", search: "%#{params[:codigo_producto]}%" )
 end
@@ -53,14 +49,14 @@ wb.add_worksheet(name: "GS1") do |sheet|
       sheet.add_row ['Prefijo',"#{@empresa.prefijo}"]
       sheet.add_row ['']
 
-      sheet.add_row ["Nombre Empresa","Tipo GTIN", "GTIN", "Descripción", "Marca", "GPC",  "Código Producto", "Fecha Creación", "Fecha Eliminación",  "Sub Estatus", "Motivo Retiro"], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
+      sheet.add_row ["Nombre Empresa","Tipo GTIN", "GTIN", "Descripción", "Marca",  "Código Producto", "Fecha Creación", "Fecha Eliminación",  "Sub Estatus", "Motivo Retiro"], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
       @productos.each do |producto|
 
         fecha = ""
         fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
         nombre_empresa = (producto.try(:productos_empresa).try(:empresa_eliminada).try(:nombre_empresa)) ? producto.try(:productos_empresa).try(:empresa_eliminada).try(:nombre_empresa) : producto.try(:productos_empresa).try(:empresa).try(:nombre_empresa)
-        sheet.add_row [nombre_empresa, producto.try(:tipo_gtin).try(:tipo), producto.gtin, producto.descripcion, producto.marca, producto.gpc,producto.codigo_prod,fecha,producto.try(:producto_elim_detalle).try(:fecha_eliminacion).strftime("%Y-%m-%d"),producto.try(:producto_elim_detalle).try(:sub_estatus).try(:descripcion),producto.try(:producto_elim_detalle).try(:motivo_retiro).try(:descripcion) ], :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]   
+        sheet.add_row [nombre_empresa, producto.try(:tipo_gtin).try(:tipo), producto.gtin, producto.descripcion, producto.marca, producto.codigo_prod,fecha,producto.try(:producto_elim_detalle).try(:fecha_eliminacion).strftime("%Y-%m-%d"),producto.try(:producto_elim_detalle).try(:sub_estatus).try(:descripcion),producto.try(:producto_elim_detalle).try(:motivo_retiro).try(:descripcion) ], :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas], :types =>  [:string, :string, :string, :string, :string, :string, :string, :string, :string, :string, :string, :string]              
       end
-      #sheet.column_widths 13,80,20,140,40,20,20,25,50,50,50, 50, 20, 20,20,20, 40,40,40,40, 30,30,30,30,30,30,30,30 # Ancho de las columnas
+      sheet.column_widths 25,25,30,30,20,20,30,30, 30, 30
   end 
 end
