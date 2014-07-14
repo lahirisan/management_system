@@ -59,7 +59,7 @@ class ProductosController < ApplicationController
                   }
       format.pdf  {
                     if params[:retirar]
-                      @productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("producto.fecha_creacion") 
+                      @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("producto.fecha_creacion") 
                       render '/productos/retirar_productos.pdf.prawn'
                     elsif params[:retirados]
                       @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
@@ -71,7 +71,7 @@ class ProductosController < ApplicationController
                       @productos = ProductoEliminado.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?", params[:empresa_id], 'Eliminado', 'Producto').includes(:estatus, :tipo_gtin, {:producto_elim_detalle => :sub_estatus}, {:producto_elim_detalle => :motivo_retiro}, {:productos_empresa => :empresa})
                       render '/productos/productos_eliminados.pdf.prawn'
                     else
-                      @productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("producto.fecha_creacion") 
+                      @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("producto.fecha_creacion") 
                       render '/productos/index.pdf.prawn'
                     end
       }
@@ -89,7 +89,7 @@ class ProductosController < ApplicationController
                     @productos = ProductoEliminado.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?", params[:empresa_id], 'Eliminado', 'Producto').includes(:estatus, :tipo_gtin, {:producto_elim_detalle => :sub_estatus}, {:producto_elim_detalle => :motivo_retiro}, {:productos_empresa => :empresa})
                     render '/productos/productos_eliminados.xlsx.axlsx'
                   else
-                    @productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("producto.fecha_creacion") 
+                    @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("producto.fecha_creacion") 
                     render '/productos/index.xlsx.axlsx'
                   end
       }

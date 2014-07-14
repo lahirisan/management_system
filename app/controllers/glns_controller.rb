@@ -103,7 +103,7 @@ class GlnsController < ApplicationController
     params[:gln][:fecha_asignacion] = Time.now
     estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Activo', 'GLN'])
     params[:gln][:id_estatus] = estatus.id
-    params[:gln][:codigo_localizacion] = Gln.codigo_localizacion(@empresa.prefijo)
+    params[:gln][:codigo_localizacion] = params[:gln][:gln][7..11]
     @gln = Gln.new(params[:gln])
 
     respond_to do |format|

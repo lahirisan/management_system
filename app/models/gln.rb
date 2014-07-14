@@ -88,6 +88,7 @@ class Gln < ActiveRecord::Base
   gln_legal.cod_postal = empresa.correspondencia.cod_postal
   gln_legal.save
 
+
   Gln.asociar_gln_empresa(gln, prefijo_empresa)
 
  end
@@ -113,7 +114,6 @@ class Gln < ActiveRecord::Base
   ultimo_gln = GlnEmpresa.find(:first, :conditions => ["gln_empresa.prefijo = ? and estatus.descripcion = ?", prefijo_empresa, 'Activo'] , :joins => [{:gln => :estatus}], :order => "gln.fecha_asignacion desc")
   secuencia = ultimo_gln.gln.gln[7..11]
   return Producto.completar_secuencia((secuencia.to_i + 1).to_s, "GTIN-13")
-
  end
 
 
@@ -133,7 +133,7 @@ class Gln < ActiveRecord::Base
     gln = Gln.find(:first, :conditions => ["gln = ?", id_gln])
     gln.id_estatus = estatus_retirado.id
     gln.save
-
+    
  end
 
 end
