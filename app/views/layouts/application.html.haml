@@ -34,7 +34,7 @@
 
 			-if (params[:controller] == 'empresas' and params[:action] == 'index') or (params[:controller] == 'empresas' and params[:action] == 'new') or (params[:controller] == 'empresas' and params[:action] == 'show') or (params[:controller] == 'empresas' and params[:action] == 'edit')
 
-				%a.opcion{:href => "/empresas", :title => "Listado de Empresas", :class => "ui-state-default ui-corner-all botones_menu"}
+				%a.opcion{:href => "/empresas", :title => "Empresas Activas", :class => "ui-state-default ui-corner-all botones_menu"}
 					%span.ui-icon.ui-icon-home
 					Empresas
 
@@ -138,7 +138,7 @@
 			
 			-if params[:controller] != 'empresas'
 
-				%a.opcion{:href => "/empresas", :title => "Regresar al listado de general de Empresas", :class => "ui-state-default ui-corner-all botones_menu"}
+				%a.opcion{:href => "/empresas", :title => "Listado de Empresas Activas", :class => "ui-state-default ui-corner-all botones_menu"}
 					%span.ui-icon.ui-icon-home
 					Empresas
 			

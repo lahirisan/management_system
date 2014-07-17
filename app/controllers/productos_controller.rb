@@ -10,6 +10,7 @@ class ProductosController < ApplicationController
 
     productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("productos.fecha_inscripcion") 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
+    @empresa = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]]) if @empresa.nil?
 
     respond_to do |format|
       format.html {

@@ -117,8 +117,11 @@
   %br
   %label.contexto=@empresa.nombre_empresa +   " > Datos de Contacto"
   %hr.contexto{:size => "1"}
-  %br  
-  =render 'datos_contacto'
+  %br
+  -if params[:editar]
+    =render 'datos_contacto'
+  -else
+    =render 'datos_contacto_no_editable'
 
   %label.contexto=@empresa.nombre_empresa + " > Datos Correspondencia"
   %hr.contexto{:size => "1"}
@@ -174,7 +177,7 @@
   %br
   %br
   
-  %a.ui-state-default.ui-corner-all.regresar{:href => "/empresas"}
+  %a.ui-state-default.ui-corner-all.regresar{:href => "javascript:window.history.back()"}
     %span.ui-icon.ui-icon-arrowreturnthick-1-w
     Regresar
   

@@ -29,7 +29,6 @@ private
       fecha_eliminacion = (fecha_eliminacion) ? fecha_eliminacion.strftime("%Y-%m-%d") : ""
 
         [ 
-        check_box_tag("reactivar_empresas[]", "#{empresa.id}", false, :class=>"reactivar_empresa"),
         empresa.prefijo,
         empresa.nombre_empresa,
         fecha,
@@ -60,14 +59,14 @@ private
    
     empresas = empresas.where("empresa_eliminada.prefijo like :search or empresa_eliminada.nombre_empresa like :search or empresa_eliminada.fecha_inscripcion like :search or ciudad.nombre like :search or empresa_eliminada.rif like :search ", search: "%#{params[:sSearch]}%")  if params[:sSearch].present? # Filtro de busqueda general
   
-    empresas = empresas.where("empresa_eliminada.prefijo like :search1", search1: "%#{params[:sSearch_1]}%" )   if params[:sSearch_1].present? # Filtro de busqueda por nombre de la empresa
-    empresas = empresas.where("empresa_eliminada.nombre_empresa like :search2", search2: "%#{params[:sSearch_2]}%" )  if params[:sSearch_2].present? # Filtro fecha_inscripcion
-    empresas = empresas.where("empresa_eliminada.fecha_inscripcion like :search3", search3: "%#{params[:sSearch_3]}%" )  if params[:sSearch_3].present? # Filtro fecha_inscripcion
-    empresas = empresas.where("ciudad.nombre like :search4", search4: "%#{params[:sSearch_4]}%" ) if params[:sSearch_4].present?
-    empresas = empresas.where("empresa_eliminada.rif like :search5", search5: "%#{params[:sSearch_5]}%" ) if params[:sSearch_5].present?
-    empresas = empresas.where("empresa_elim_detalle.fecha_eliminacion like :search6", search6: "%#{params[:sSearch_6]}%" ) if params[:sSearch_6].present?
-    empresas = empresas.where("sub_estatus.descripcion like :search11", search11: "%#{params[:sSearch_11]}%" ) if params[:sSearch_11].present?
-    empresas = empresas.where("motivo_retiro.descripcion like :search12", search12: "%#{params[:sSearch_12]}%" ) if params[:sSearch_12].present?
+    empresas = empresas.where("empresa_eliminada.prefijo like :search0", search0: "%#{params[:sSearch_0]}%" )   if params[:sSearch_0].present? # Filtro de busqueda por nombre de la empresa
+    empresas = empresas.where("empresa_eliminada.nombre_empresa like :search1", search1: "%#{params[:sSearch_1]}%" )  if params[:sSearch_1].present? # Filtro fecha_inscripcion
+    empresas = empresas.where("empresa_eliminada.fecha_inscripcion like :search2", search2: "%#{params[:sSearch_2]}%" )  if params[:sSearch_2].present? # Filtro fecha_inscripcion
+    empresas = empresas.where("ciudad.nombre like :search3", search3: "%#{params[:sSearch_3]}%" ) if params[:sSearch_3].present?
+    empresas = empresas.where("empresa_eliminada.rif like :search4", search4: "%#{params[:sSearch_4]}%" ) if params[:sSearch_4].present?
+    empresas = empresas.where("empresa_elim_detalle.fecha_eliminacion like :search5", search5: "%#{params[:sSearch_5]}%" ) if params[:sSearch_5].present?
+    empresas = empresas.where("sub_estatus.descripcion like :search10", search10: "%#{params[:sSearch_10]}%" ) if params[:sSearch_10].present?
+    empresas = empresas.where("motivo_retiro.descripcion like :search11", search11: "%#{params[:sSearch_11]}%" ) if params[:sSearch_11].present?
     
     
     empresas
