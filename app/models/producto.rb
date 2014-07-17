@@ -6,7 +6,7 @@ class Producto < ActiveRecord::Base
   belongs_to :tipo_gtin, :foreign_key => "id_tipo_gtin"
   has_one    :productos_retirados, :foreign_key => "gtin", :dependent => :destroy 
 
-  validates :descripcion, :marca, :gpc, :id_tipo_gtin, :presence => {:message => "No puede estar en blanco"}, :on => :create
+  validates :descripcion, :marca, :id_tipo_gtin, :presence => {:message => "No puede estar en blanco"}, :on => :create
   validates :gtin, :uniqueness => {:message => "El codigo de Producto que esta ingresando ya  se encuentra asociado a un GTIN"}
 
 
