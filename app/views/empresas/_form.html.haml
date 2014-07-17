@@ -1,6 +1,6 @@
 %section.contexto
   %label.contexto
-    =@empresa.new_record? ? "Empresas > Registrar empresa" : @empresa.nombre_empresa + " > Datos Básicos"
+    =@empresa.new_record? ? "Empresas > Datos Básicos" : @empresa.nombre_empresa + " > Datos Básicos"
   %hr.contexto{:size => "1"}
 
   %section.formulario
@@ -62,18 +62,18 @@
           %td
             Ciudad
           %td
-            = f.collection_select :id_ciudad, Ciudad.all, :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
+            = f.collection_select :id_ciudad, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
         
         %tr
           %td
             RIF
           %td
-            = f.text_field :rif, :placeholder => "j-12548785-4"
+            = f.text_field :rif, :placeholder => "J-12548785-4"
       
       %br/
 
       %label.contexto
-        =@empresa.new_record? ? "Empresas > Registrar empresa" : @empresa.nombre_empresa + " > Clasificación de la empresa"
+        =@empresa.new_record? ? "Empresas > Clasificación de la empresa" : @empresa.nombre_empresa + " > Clasificación de la empresa"
       %hr.contexto{:size => "1"}
 
       %table
@@ -110,7 +110,7 @@
 
       %br/
       %label.contexto
-        =@empresa.new_record? ? "Empresas > Registrar empresa" : @empresa.nombre_empresa + " > Datos de contacto"
+        =@empresa.new_record? ? "Empresas > Datos de contacto" : @empresa.nombre_empresa + " > Datos de contacto"
       %hr.contexto{:size => "1"}
       
       // Si la empresa es nueva se genera un formulario para crear un contacto, sino  muestra el enlace para ir al listadop de los contactos
@@ -120,22 +120,22 @@
             
             %tr
               %td
-                Nombre Contacto
+                Nombre del contacto
               %td
                 =fc.text_field :nombre_contacto
             %tr
               %td
-                Cargo Contacto
+                Cargo del contacto
               %td
                 =fc.text_field :cargo_contacto
             %tr
               %td
                 Tipo Contacto
               %td
-                =@empresa.new_record? ? fc.text_field(:tipo, :value => 'principal', :readonly => :true, :class => "campo_readonly") : fc.select(:tipo, options_for_select(['email', 'fax', 'opcional', 'principal', 'secundario']),{:prompt => "- Seleccione -"})
+                =@empresa.new_record? ? fc.text_field(:tipo, :value => 'PRINCIPAL (Rep. Legal)', :readonly => :true, :class => "campo_readonly") : fc.select(:tipo, options_for_select(['email', 'fax', 'opcional', 'principal', 'secundario']),{:prompt => "- Seleccione -"})
             %tr
               %td
-                Teléfono contacto
+                Teléfono del contacto
               %td
                 =fc.text_field :contacto, :placeholder => "Ej.: 04168035284"
              
@@ -182,12 +182,12 @@
               %td
                 Ciudad
               %td
-                =fa.collection_select :id_ciudad,  Ciudad.all, :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
+                =fa.collection_select :id_ciudad,  Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
             %tr
               %td
                 Municipio
               %td
-                =fa.collection_select :id_municipio,  Municipio.all, :id, :nombre, {:prompt => '-Seleccione Municipio-'}
+                =fa.collection_select :id_municipio,  Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Municipio-'}
             / %tr
             /   %td
             /     Parroquia

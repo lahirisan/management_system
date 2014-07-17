@@ -13,10 +13,6 @@ if params[:marca]. != ''
   @productos = @productos.where("producto.marca like :search", search: "%#{params[:marca]}%" )
 end
 
-if params[:gpc] != ''
-  @productos = @productos.where("producto.gpc like :search", search: "%#{params[:gpc]}%" )
-end
-
 if params[:codigo_producto] != ''
   @productos = @productos.where("producto.codigo_prod like :search", search: "%#{params[:codigo_producto]}%" )
 end
@@ -50,15 +46,16 @@ wb.add_worksheet(name: "GS1") do |sheet|
       sheet.add_row ['Empresa',"#{@empresa.nombre_empresa}" ]
       sheet.add_row ['RIF',"#{@empresa.rif}" ]
       sheet.add_row ['Prefijo',"#{@empresa.prefijo}"]
+      sheet.add_row ['Productos Retirados']
       sheet.add_row ['']
 
-      sheet.add_row ["Tipo GTIN", "GTIN", "Descripción", "Marca", "GPC",  "Código Producto", "Fecha Creación", "Sub Estatus", "Motivo Retiro", "Fecha Retiro"], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
+      sheet.add_row ["Tipo GTIN", "GTIN", "Descripción", "Marca",  "Código Producto", "Fecha Creación", "Sub Estatus", "Motivo Retiro", "Fecha Retiro"], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
       @productos.each do |producto|
 
         fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
         fecha_retiro = (producto.productos_retirados) ? producto.productos_retirados.fecha_retiro.strftime("%Y-%m-%d") : ""
-        sheet.add_row [producto.try(:tipo_gtin).try(:tipo), producto.gtin,producto.descripcion, producto.marca, producto.gpc,  producto.codigo_prod, fecha,  producto.try(:productos_retirados).try(:sub_estatus).try(:descripcion), producto.try(:productos_retirados).try(:motivo_retiro).try(:descripcion),  fecha_retiro ], :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]   
+        sheet.add_row [producto.try(:tipo_gtin).try(:tipo), producto.gtin,producto.descripcion, producto.marca,  producto.codigo_prod, fecha,  producto.try(:productos_retirados).try(:sub_estatus).try(:descripcion), producto.try(:productos_retirados).try(:motivo_retiro).try(:descripcion),  fecha_retiro ], :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas], :types =>  [:string, :string, :string, :string, :string, :string, :string, :string, :string, :string, :string, :string]           
       end
-      #sheet.column_widths 13,80,20,140,40,20,20,25,50,50,50, 50, 20, 20,20,20, 40,40,40,40, 30,30,30,30,30,30,30,30 # Ancho de las columnas
+      sheet.column_widths 15,25,30,30,20,20,30,30
   end 
 end

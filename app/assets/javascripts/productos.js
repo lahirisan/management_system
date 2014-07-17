@@ -9,7 +9,7 @@ $(document).ready(function(){
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_productos').data('source')
-        }).columnFilter({ aoColumns: [null, { type: "text"},{ type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, null, {type: "text"},null]});
+        }).columnFilter({ aoColumns: [null, { type: "text"},{ type: "text"}, {type: "text" }, {type: "text"},  null, {type: "text"},null]});
 
         $('#data_table_productos input').attr("placeholder", "Buscar");
 
@@ -22,7 +22,7 @@ $(document).ready(function(){
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_retirar_productos').data('source')
-        }).columnFilter({ aoColumns: [null, null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},null, {type: "text"}]});
+        }).columnFilter({ aoColumns: [null, null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, null, null]});
 
         $('#data_table_retirar_productos input').attr("placeholder", "Buscar");
 
@@ -35,7 +35,7 @@ $(document).ready(function(){
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_productos_retirados').data('source')
-        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
         $('#data_table_productos_retirados input').attr("placeholder", "Buscar");
 
@@ -48,7 +48,7 @@ $(document).ready(function(){
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_productos_eliminados').data('source')
-        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"},  null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
         $('#data_table_productos_eliminados input').attr("placeholder", "Buscar");
 
@@ -61,7 +61,7 @@ $(document).ready(function(){
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_eliminar_productos').data('source')
-        }).columnFilter({ aoColumns: [null, null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}    ]});
+        }).columnFilter({ aoColumns: [null, null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"},  {type: "text"}, {type: "text"}, {type: "text"}  ]});
 
         $('#data_table_eliminar_productos input').attr("placeholder", "Buscar");
 
@@ -298,10 +298,7 @@ $(document).ready(function(){
                 '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
                 '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
                 '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
-                '<input name="gpc" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
-                '<input name="estatus" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
-                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
-                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'
+                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'
             );
         });
 
@@ -312,8 +309,7 @@ $(document).ready(function(){
                 '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
                 '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
                 '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
-                '<input name="gpc" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
-                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
+                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
                 '<input name="retirar" type="hidden" value="true">'
             );
 
@@ -327,12 +323,11 @@ $(document).ready(function(){
                 '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
                 '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
                 '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
-                '<input name="gpc" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
-                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
-                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
-                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
-                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(11) span input').val()+'">'+
-                '<input name="fecha_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(12) span input').val()+'">'+
+                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
+                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
+                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
+                '<input name="fecha_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(11) span input').val()+'">'+
                 '<input name="retirados" type="hidden" value="true">'
             );
 
@@ -346,34 +341,16 @@ $(document).ready(function(){
                 '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
                 '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
                 '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
-                '<input name="gpc" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
-                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
-                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
-                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(11) span input').val()+'">'+
-                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(12) span input').val()+'">'+
+                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
+                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
+                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(11) span input').val()+'">'+
                 '<input name="eliminar" type="hidden" value="true">'
             );
 
           
         });
 
-        $(".exportar_productos_eliminar").click(function() {
-
-            $('.parametros').html(
-                '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
-                '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
-                '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
-                '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
-                '<input name="gpc" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
-                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
-                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
-                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(11) span input').val()+'">'+
-                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(12) span input').val()+'">'+
-                '<input name="eliminar" type="hidden" value="true">'
-            );
-
-          
-        });
 
         $(".exportar_productos_eliminados").click(function() {
 
@@ -382,12 +359,11 @@ $(document).ready(function(){
                 '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
                 '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
                 '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
-                '<input name="gpc" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
-                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
-                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
-                '<input name="fecha_eliminacion" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
-                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(11) span input').val()+'">'+
-                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(12) span input').val()+'">'+
+                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
+                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="fecha_eliminacion" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
+                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
+                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(11) span input').val()+'">'+
                 '<input name="eliminados" type="hidden" value="true">'
             );
 

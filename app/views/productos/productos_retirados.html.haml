@@ -15,7 +15,6 @@
                 %th GTIN
                 %th Descripción
                 %th Marca
-                %th GPC
                 %th Estatus
                 %th Código Prod
                 %th Fecha Creación
@@ -29,7 +28,7 @@
    
     %br/
     %br/
-    %a.ui-state-default.ui-corner-all.regresar{:href => "/empresas/#{params[:empresa_id]}/productos", :title => "Regresar al listado de productos para esta Empresa"}
+    %a.ui-state-default.ui-corner-all.regresar{:href => "javascript:window.history.back()", :title => "Regresar"}
         %span.ui-icon.ui-icon-arrowreturnthick-1-w
         Regresar
 

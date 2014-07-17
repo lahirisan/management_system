@@ -36,17 +36,17 @@
           %td
             Estado
           %td
-            = f.collection_select :id_estado, Estado.all, :id, :nombre, :prompt => "-Seleccione-"
+            = f.collection_select :id_estado, Estado.find(:all, :order => "nombre ASC" ), :id, :nombre, :prompt => "-Seleccione-"
         %tr
           %td
             Municipio
           %td
-            = f.collection_select :id_municipio, Municipio.all, :id, :nombre, :prompt => "-Seleccione-"
+            = f.collection_select :id_municipio, Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
         %tr
           %td
             Ciudad
           %td
-            = f.collection_select :id_ciudad, Ciudad.all, :id, :nombre, :prompt => "-Seleccione-"
+            = f.collection_select :id_ciudad, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
         %tr
           %td
             Edificio

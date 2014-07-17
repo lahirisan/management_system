@@ -7,6 +7,8 @@ class GlnsController < ApplicationController
     
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
     
+    @empresa =  EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]]) if @empresa.nil?
+    
     respond_to do |format|
       format.html {
         if params[:eliminar]
@@ -103,7 +105,7 @@ class GlnsController < ApplicationController
     params[:gln][:fecha_asignacion] = Time.now
     estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Activo', 'GLN'])
     params[:gln][:id_estatus] = estatus.id
-    params[:gln][:codigo_localizacion] = Gln.codigo_localizacion(@empresa.prefijo)
+    params[:gln][:codigo_localizacion] = params[:gln][:gln][7..11]
     @gln = Gln.new(params[:gln])
 
     respond_to do |format|

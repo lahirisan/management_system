@@ -14,10 +14,6 @@ if params[:marca]. != ''
   @productos = @productos.where("producto.marca like :search", search: "%#{params[:marca]}%" )
 end
 
-if params[:gpc] != ''
-  @productos = @productos.where("producto.gpc like :search", search: "%#{params[:gpc]}%" )
-end
-
 if params[:codigo_producto] != ''
   @productos = @productos.where("producto.codigo_prod like :search", search: "%#{params[:codigo_producto]}%" )
 end
@@ -39,14 +35,14 @@ if params[:fecha_retiro] != ''
 end
 
 productos = Array.new
-productos = [["Tipo GTIN", "GTIN", "Descripción", "Marca", "GPC",  "Código Producto", "Fecha Creación", "Sub Estatus", "Motivo Retiro", "Fecha Retiro"]]
+productos = [["Tipo GTIN", "GTIN", "Descripción", "Marca",  "Código Producto", "Fecha Creación", "Sub Estatus", "Motivo Retiro", "Fecha Retiro"]]
 
 @productos.each do |producto|
 
   fecha = ""
   fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
   fecha_retiro = (producto.productos_retirados) ? producto.productos_retirados.fecha_retiro.strftime("%Y-%m-%d") : ""
-  productos << [producto.try(:tipo_gtin).try(:tipo), producto.gtin,producto.descripcion, producto.marca, producto.gpc,  producto.codigo_prod, fecha,  producto.try(:productos_retirados).try(:sub_estatus).try(:descripcion), producto.try(:productos_retirados).try(:motivo_retiro).try(:descripcion),  fecha_retiro ]
+  productos << [producto.try(:tipo_gtin).try(:tipo), producto.gtin,producto.descripcion, producto.marca,  producto.codigo_prod, fecha,  producto.try(:productos_retirados).try(:sub_estatus).try(:descripcion), producto.try(:productos_retirados).try(:motivo_retiro).try(:descripcion),  fecha_retiro ]
 end
 
 image "#{Rails.root}/app/assets/images/gs1-logohome", :width => 200, :height => 50

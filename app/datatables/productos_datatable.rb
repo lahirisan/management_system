@@ -34,7 +34,6 @@ private
           producto.gtin,
           producto.descripcion,
           producto.marca,
-          producto.gpc,
           producto.try(:estatus).try(:descripcion),
           producto.codigo_prod,
           fecha,
@@ -50,11 +49,10 @@ private
           producto.gtin,
           producto.descripcion,
           producto.marca,
-          producto.gpc,
           producto.try(:estatus).try(:descripcion),
           producto.codigo_prod,
           fecha,
-          link_to("Editar", "/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit"),
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar producto"}),
           ""
         ]
 
@@ -70,7 +68,7 @@ private
 
   def fetch_productos
     
-    productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("#{sort_column} #{sort_direction}") 
+    productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("#{sort_column} #{sort_direction}") 
     productos = productos.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general
@@ -97,16 +95,8 @@ private
       productos = productos.where("producto.marca like :search4", search4: "%#{params[:sSearch_4]}%" )
     end
 
-    if params[:sSearch_5].present?
-      productos = productos.where("producto.gpc like :search5", search5: "%#{params[:sSearch_5]}%" )
-    end
-
     if params[:sSearch_6].present?
-      productos = productos.where("estatus.descripcion like :search6", search6: "%#{params[:sSearch_6]}%")
-    end
-
-    if params[:sSearch_7].present?
-      productos = productos.where("producto.codigo_prod like :search7", search7: "%#{params[:sSearch_7]}%" )
+      productos = productos.where("producto.codigo_prod like :search6", search6: "%#{params[:sSearch_6]}%" )
     end
 
     productos

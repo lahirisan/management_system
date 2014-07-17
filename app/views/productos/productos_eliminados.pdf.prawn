@@ -14,10 +14,6 @@ if params[:marca] != ''
   @productos = @productos.where("producto_eliminado.marca like :search", search: "%#{params[:marca]}%" )
 end
 
-if params[:gpc] != ''
-  @productos = @productos.where("producto_eliminado.gpc like :search", search: "%#{params[:gpc]}%" )
-end
-
 if params[:codigo_producto] != ''
   @productos = @productos.where("producto_eliminado.codigo_prod like :search", search: "%#{params[:codigo_producto]}%" )
 end
@@ -39,14 +35,14 @@ if params[:motivo_retiro] != ''
 end
 
 productos = Array.new
-productos = [["Nombre Empresa","Tipo GTIN", "GTIN", "Descripción", "Marca", "GPC",  "Código Producto", "Fecha Creación", "Fecha Eliminación",  "Sub Estatus", "Motivo Retiro"]]
+productos = [["Nombre Empresa","Tipo GTIN", "GTIN", "Descripción", "Marca", "Código Producto", "Fecha Creación", "Fecha Eliminación",  "Sub Estatus", "Motivo Retiro"]]
 
 @productos.each do |producto|
 
   fecha = ""
   fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
   nombre_empresa = (producto.try(:productos_empresa).try(:empresa_eliminada).try(:nombre_empresa)) ? producto.try(:productos_empresa).try(:empresa_eliminada).try(:nombre_empresa) : producto.try(:productos_empresa).try(:empresa).try(:nombre_empresa)
-  productos << [nombre_empresa, producto.try(:tipo_gtin).try(:tipo), producto.gtin, producto.descripcion, producto.marca, producto.gpc,producto.codigo_prod,fecha,producto.try(:producto_elim_detalle).try(:fecha_eliminacion).strftime("%Y-%m-%d"),producto.try(:producto_elim_detalle).try(:sub_estatus).try(:descripcion),producto.try(:producto_elim_detalle).try(:motivo_retiro).try(:descripcion) ]
+  productos << [nombre_empresa, producto.try(:tipo_gtin).try(:tipo), producto.gtin, producto.descripcion, producto.marca, producto.codigo_prod,fecha,producto.try(:producto_elim_detalle).try(:fecha_eliminacion).strftime("%Y-%m-%d"),producto.try(:producto_elim_detalle).try(:sub_estatus).try(:descripcion),producto.try(:producto_elim_detalle).try(:motivo_retiro).try(:descripcion) ]
 
 end
 

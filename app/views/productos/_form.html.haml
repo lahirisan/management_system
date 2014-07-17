@@ -43,17 +43,17 @@
             Marca
           %td
             =params[:marca] ? f.text_field(:marca, :value => params[:marca]): f.text_field(:marca, :autocomplete => "off")
-        %tr
-          %td
-            GPC
-          %td
-            -if @producto.new_record?
-              -if params[:gpc]
-                =f.text_field :gpc, :value => params[:gpc], :autocomplete => "off"
-              -else
-                =f.text_field :gpc, :autocomplete => "off"
-            -else
-              =f.text_field :gpc, :readonly => :true, :class => "campo_readonly"
+        / %tr
+        /   %td
+        /     GPC
+        /   %td
+        /     -if @producto.new_record?
+        /       -if params[:gpc]
+        /         =f.text_field :gpc, :value => params[:gpc], :autocomplete => "off"
+        /       -else
+        /         =f.text_field :gpc, :autocomplete => "off"
+        /     -else
+        /       =f.text_field :gpc, :readonly => :true, :class => "campo_readonly"
         %tr
           %td.codigo_producto
             -if !@producto.new_record? or (@producto.errors.messages[:gtin])
