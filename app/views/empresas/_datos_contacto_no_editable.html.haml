@@ -1,0 +1,26 @@
+#notice=notice
+%br
+%table#data_table_empresas_datos_contacto.display
+  %thead
+    %tr
+      %th Prefijo
+      %th Tipo Contacto
+      %th Contacto
+      %th Nombre Contacto
+      %th Cargo
+  %tbody
+    - @datos_contactos.each do |datos_contacto|
+      %tr
+        %td= datos_contacto.prefijo        
+        %td= datos_contacto.tipo
+        %td= datos_contacto.contacto
+        %td= datos_contacto.nombre_contacto
+        %td= datos_contacto.cargo_contacto
+              
+%br/
+%br/
+
+%br
+%br
+%br
+%br

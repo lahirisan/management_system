@@ -7,6 +7,8 @@ class GlnsController < ApplicationController
     
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
     
+    @empresa =  EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]]) if @empresa.nil?
+    
     respond_to do |format|
       format.html {
         if params[:eliminar]
