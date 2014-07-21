@@ -9,7 +9,7 @@
   %table
     %tr
       %td
-        Nombre
+        Nombre del contacto
       %td
         =@contacto.try(:nombre_contacto) ?  @contacto.try(:nombre_contacto)  : "No tiene"
     %tr
@@ -57,7 +57,8 @@
       %td
         Parroquia
       %td
-        =@etiqueta.try(:parroquia).try(:nombre)
+        /=@etiqueta.try(:parroquia).try(:nombre)
+        =@etiqueta.try(:nombre_parroquia)
     %tr
       %td
         Código Postal
