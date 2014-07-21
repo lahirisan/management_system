@@ -99,7 +99,9 @@ class Producto < ActiveRecord::Base
     if tipo_gtin.tipo == "GTIN-8"             
      
       ultimo_gtin_asignado = Producto.find(:first, :conditions => ["producto.id_tipo_gtin = ?", tipo_gtin], :order => "producto.fecha_creacion desc")
+      
       secuencia = ultimo_gtin_asignado.gtin[3..6]  # N-1 digitos primeros digitos del último gtin8 asignado
+
       secuencia = (secuencia.to_i + 1)
       secuencia_siguiente = completar_secuencia(secuencia, tipo_gtin.tipo) # Se completa con ceros a la izquierda si la secuecnia es menor 5 digitos
       secuencia_completa = "759" + secuencia_siguiente.to_s 
@@ -228,18 +230,38 @@ class Producto < ActiveRecord::Base
     spreadsheet = open_spreadsheet(file)
 
     (1..spreadsheet.last_row).each do |fila|
-      gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil, nil)
+
+      if (tipo_gtin == '3')  # Tipo GTIN 8 
+        if spreadsheet.row(fila)[2].nil?
+          gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil, nil)
+        else
+          gtin = Producto.crear_gtin(tipo_gtin, prefijo, nil, spreadsheet.row(fila)[2])
+        end
+      elsif (tipo_gtin == '1')
+        gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil, nil)
+      end
+
+
+
       producto = new
       producto.gtin = gtin.to_s
       producto.descripcion = spreadsheet.row(fila)[1]
       producto.marca = spreadsheet.row(fila)[0]
       producto.id_estatus = 3
       producto.fecha_creacion = Time.now
-      producto.codigo_prod = (tipo_gtin == '1') ? producto.gtin[3..6] : producto.gtin[7..11] # SI es GTIIN 8 los 4 caracateres antes del codigo de prod si es GTIN 13 los 5 caratteres antes del codigo de prod
+      
+      if (tipo_gtin == '3') #tipo GTIN 13
+        if spreadsheet.row(fila)[2].nil?
+          producto.codigo_prod = (tipo_gtin == '1') ? producto.gtin[3..6] : producto.gtin[7..11] # SI es GTIIN 8 los 4 caracateres antes del codigo de prod si es GTIN 13 los 5 caratteres antes del codigo de prod
+        else
+          producto.codigo_prod = spreadsheet.row(fila)[2]
+        end
+      
+      end
+      
       producto.id_tipo_gtin = tipo_gtin.to_i
-      producto.gpc = 0 ### OJO con esto va cbleado a todos los productos que se importan
       producto.save
-
+      
       asociar_producto_empresa(prefijo,producto.gtin)
 
     end

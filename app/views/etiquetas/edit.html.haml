@@ -46,7 +46,7 @@
           %td
             Estado
           %td
-            =select_tag "id_estado", options_from_collection_for_select(Estado.all, :id, :nombre, @etiqueta.try(:id_estado)), :prompt => "-Seleccione-"
+            =select_tag "id_estado", options_from_collection_for_select(Estado.find(:all, :order => "nombre ASC"), :id, :nombre, @etiqueta.try(:id_estado)), :prompt => "-Seleccione-"
         %tr
           %td
             Ciudad
