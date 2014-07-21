@@ -1,5 +1,5 @@
 class Correspondencia < ActiveRecord::Base
-  attr_accessible :calle, :cargo_rep_tecnico, :cod_postal, :edificio, :id_ciudad, :id_estado, :id_municipio, :id_parroquia, :punto_referencia, :rep_tecnico, :urbanizacion, :correspondencia
+  attr_accessible :calle, :cargo_rep_tecnico, :cod_postal, :edificio, :id_ciudad, :id_estado, :id_municipio, :id_parroquia, :punto_referencia, :rep_tecnico, :urbanizacion, :nombre_parroquia, :correspondencia
    self.table_name = "empresa_correspondencia"
    belongs_to :empresa, :foreign_key => "prefijo"
    belongs_to :estado, :foreign_key => "id_estado"
@@ -19,6 +19,7 @@ class Correspondencia < ActiveRecord::Base
    	etiqueta.id_ciudad = parametros[:id_ciudad]
    	etiqueta.id_municipio = parametros[:id_municipio]
    	etiqueta.id_parroquia = parametros[:id_parroquia]
+      etiqueta.nombre_parroquia = parametros[:nombre_parroquia]
    	etiqueta.cod_postal = parametros[:cod_postal]
    	etiqueta.punto_referencia = parametros[:punto_referencia]
    	etiqueta.save

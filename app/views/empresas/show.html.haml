@@ -165,6 +165,16 @@
         =@correspondencia.try(:ciudad).try(:nombre)
     %tr
       %td
+        Municipio
+      %td
+        =@correspondencia.try(:municipio).try(:nombre)
+    %tr
+      %td
+        Parroquia
+      %td
+        =@correspondencia.try(:nombre_parroquia)
+    %tr
+      %td
         Código Postal
       %td
         =@correspondencia.try(:cod_postal)
