@@ -7,6 +7,7 @@ class Auditoria < ActiveRecord::Base
 
 	usuario = Usuario.find(:first, :conditions => ["id = ?", usuario])
 
+
 	nuevo_evento = Auditoria.new
 	nuevo_evento.usuario  = usuario.nombre_apellido
 	nuevo_evento.tabla = tabla

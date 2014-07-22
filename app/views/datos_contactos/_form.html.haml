@@ -19,7 +19,7 @@
         %td    
           Tipo Contacto
         %td          
-          = f.select(:tipo, options_for_select(['EMAIL', 'FAX', 'OPCIONAL', 'PRINCIPAL (Rep. Legal)', 'SECUNDARIO'], @datos_contacto.tipo))
+          = f.select(:tipo, options_for_select(['email', 'fax', 'opcional', 'telefono', 'secundario'], @datos_contacto.tipo))
       %tr
         %td
           Contacto

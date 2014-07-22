@@ -334,4 +334,19 @@ class Empresa < ActiveRecord::Base
 
   end
 
+  def self.agregar_correo(correo, empresa)
+  
+    empresa = Empresa.find(:first, :conditions => ["prefijo = ?", empresa])
+    datos =  empresa.datos_contacto.first
+    dato_contacto = DatosContacto.new 
+    dato_contacto.prefijo = empresa.prefijo
+    dato_contacto.tipo = "email"
+    dato_contacto.contacto = correo
+    dato_contacto.nombre_contacto = datos.nombre_contacto
+    dato_contacto.cargo_contacto = datos.cargo_contacto
+    dato_contacto.save
+    
+
+  end
+
 end

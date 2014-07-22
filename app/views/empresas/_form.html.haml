@@ -1,6 +1,6 @@
 %section.contexto
   %label.contexto
-    =@empresa.new_record? ? "Empresas > Datos Básicos" : @empresa.nombre_empresa + " > Datos Básicos"
+    =@empresa.new_record? ? "Datos Básicos" : @empresa.nombre_empresa + " > Datos Básicos"
   %hr.contexto{:size => "1"}
 
   %section.formulario
@@ -73,7 +73,7 @@
       %br/
 
       %label.contexto
-        =@empresa.new_record? ? "Empresas > Clasificación de la empresa" : @empresa.nombre_empresa + " > Clasificación de la empresa"
+        =@empresa.new_record? ? "Clasificación de la empresa" : @empresa.nombre_empresa + " > Clasificación de la empresa"
       %hr.contexto{:size => "1"}
 
       %table
@@ -90,8 +90,7 @@
               =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"})
             -else
               =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"})
-             
-            /=@empresa.new_record? ?  : f.text_field(:id_clasificacion, :value => "#{@empresa.try(:clasificacion).try(:descripcion)}", :readonly => :true, :style => "width:550px;")
+           
             
         %tr
           %td
@@ -116,7 +115,7 @@
 
       %br/
       %label.contexto
-        =@empresa.new_record? ? "Empresas > Datos de contacto" : @empresa.nombre_empresa + " > Datos de contacto"
+        =@empresa.new_record? ? "Datos de contacto > Contacto Principal (Rep. Legal)" : @empresa.nombre_empresa + " > Datos de contacto"
       %hr.contexto{:size => "1"}
       
       // Si la empresa es nueva se genera un formulario para crear un contacto, sino  muestra el enlace para ir al listadop de los contactos
@@ -134,23 +133,26 @@
                 Cargo del contacto
               %td
                 =fc.text_field :cargo_contacto
-            %tr
+            
               %td
-                Tipo Contacto
-              %td
-                =@empresa.new_record? ? fc.text_field(:tipo, :value => 'PRINCIPAL (Rep. Legal)', :readonly => :true, :class => "campo_readonly") : fc.select(:tipo, options_for_select(['email', 'fax', 'opcional', 'principal', 'secundario']),{:prompt => "- Seleccione -"})
+                =fc.hidden_field(:tipo, :value => 'telefono') 
             %tr
               %td
                 Teléfono del contacto
               %td
                 =fc.text_field :contacto, :placeholder => "Ej.: 04168035284"
+            %tr
+              %td
+                Correo del contacto
+              %td
+                =text_field_tag "correo",'',  {:size => "40"}
              
                  
       -else
         =render 'datos_contacto'
       %br/
       %label.contexto
-        Registrar Empresa  > Datos de Correspondencia
+        Datos de Correspondencia
       %hr.contexto{:size => "1"}  
         =f.fields_for :correspondencia do |fa|
           %table

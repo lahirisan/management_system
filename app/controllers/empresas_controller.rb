@@ -155,12 +155,15 @@ class EmpresasController < ApplicationController
     @empresa = Empresa.new(params[:empresa])
 
     respond_to do |format|
+     
      if @empresa.save
 
+        Empresa.agregar_correo(params[:correo], @empresa.prefijo) if params[:correo]
+        
         Gln.generar_legal(@empresa.prefijo.to_s) # Se genra GLN legal
 
         Auditoria.registrar_evento(session[:user_id],"Empresa", "Crear", Time.now, "Prefijo #{@empresa.prefijo}")
-        format.html { redirect_to '/empresas?activacion=true', notice: "Empresa con prefijo #{@empresa.prefijo} creada satisfactoriamente." }
+        format.html { redirect_to '/empresas?activacion=true', notice: "Empresa creada satisfactoriamente. Prefijo:#{@empresa.prefijo}   Nombre:#{@empresa.nombre_empresa}" }
 
       else
         format.html { render action: "new" }

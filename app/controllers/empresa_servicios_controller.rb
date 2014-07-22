@@ -18,7 +18,7 @@ class EmpresaServiciosController < ApplicationController
                     render :template =>'/empresa_servicios/servicios_eliminados.html.haml'
                   else
                     @empresas_retiradas = params[:retirados].nil? ? false : true
-                    @navegabilidad = @empresa.nombre_empresa + " > Servicios > Listado"
+                    @navegabilidad = @empresa.nombre_empresa + " > Servicios Activos > Listado"
                     render :template =>'/empresa_servicios/index.html.haml'
                   end
                    

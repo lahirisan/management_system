@@ -6,7 +6,7 @@ class EtiquetasController < ApplicationController
   def show
 
     @etiqueta = Correspondencia.find(:first, :conditions => ["prefijo = ?", params[:id]], :include => :empresa)
-    @contacto = DatosContacto.find(:first, :conditions => ["prefijo = ? and tipo = ?", params[:empresa_id], 'PRINCIPAL (Rep. Legal)'])
+    @contacto = DatosContacto.find(:first, :conditions => ["prefijo = ? and tipo = ?", params[:empresa_id], 'telefono'])
     
     @navegabilidad = @etiqueta.try(:empresa).try(:nombre_empresa) 
     @navegabilidad = @navegabilidad ? @navegabilidad += " > Etiqueta" : ""

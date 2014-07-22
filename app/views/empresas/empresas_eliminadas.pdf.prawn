@@ -14,7 +14,7 @@ empresas = [["Prefijo", "Nombre Empresa", "Fecha Inscripción", "Ciudad", "RIF",
 	fecha =   empresa.fecha_inscripcion.nil? ? "" : empresa.fecha_inscripcion.strftime("%Y-%m-%d")
 	fecha_eliminacion = empresa.try(:empresa_elim_detalle).try(:fecha_eliminacion) 
     fecha_eliminacion = (fecha_eliminacion) ? fecha_eliminacion.strftime("%Y-%m-%d") : ""
-	empresas << [empresa.prefijo, empresa.nombre_empresa,fecha, empresa.try(:ciudad).try(:nombre),empresa.rif, empresa.try(:estatus).try(:descripcion), fecha_eliminacion,  empresa.try(:sub_estatus).try(:descripcion),empresa.try(:motivo_retiro).try(:descripcion), empresa.try(:clasificacion).try(:descripcion), empresa.try(:clasificacion).try(:categoria), empresa.try(:clasificacion).try(:division), empresa.try(:clasificacion).try(:grupo), empresa.try(:clasificacion).try(:clase)]
+	empresas << [empresa.prefijo, empresa.nombre_empresa,fecha, empresa.try(:ciudad).try(:nombre),empresa.rif, empresa.try(:estatus).try(:descripcion), fecha_eliminacion,  empresa.try(:sub_estatus).try(:descripcion),empresa.try(:motivo_retiro).try(:descripcion), empresa.try(:clasificacion).try(:descripcion), empresa.try(:categoria), empresa.try(:division), empresa.try(:grupo), empresa.try(:clase)]
  end
 
 image "#{Rails.root}/app/assets/images/gs1-logohome", :width => 200, :height => 50
