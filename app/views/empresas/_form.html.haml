@@ -86,7 +86,13 @@
           %td
             Clasificación
           %td
-            =@empresa.new_record? ? f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"}) : f.text_field(:id_clasificacion, :value => "#{@empresa.try(:clasificacion).try(:descripcion)}", :readonly => :true, :style => "width:550px;")
+            -if @empresa.new_record?
+              =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"})
+            -else
+              =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"})
+             
+            /=@empresa.new_record? ?  : f.text_field(:id_clasificacion, :value => "#{@empresa.try(:clasificacion).try(:descripcion)}", :readonly => :true, :style => "width:550px;")
+            
         %tr
           %td
             Categoría 
