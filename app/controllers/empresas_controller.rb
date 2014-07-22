@@ -158,7 +158,10 @@ class EmpresasController < ApplicationController
      if @empresa.save
 
         Gln.generar_legal(@empresa.prefijo.to_s) # Se genra GLN legal
-        format.html { redirect_to '/empresas?activacion=true', notice: "Empresa creada satisfactoriamente. Prefijo #{@empresa.prefijo} nombre:#{@empresa.nombre_empresa}." }
+
+        Auditoria.registrar_evento(session[:user_id],"Empresa", "Crear", Time.now, "Prefijo #{@empresa.prefijo}")
+        format.html { redirect_to '/empresas?activacion=true', notice: "Empresa con prefijo #{@empresa.prefijo} creada satisfactoriamente." }
+
       else
         format.html { render action: "new" }
       end

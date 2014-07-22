@@ -8,7 +8,7 @@ class DatosContacto < ActiveRecord::Base
 
   def self.modificar_etiqueta(parametros)
 
-  	contacto = DatosContacto.find(:first, :conditions => ["prefijo = ? and tipo = ?", parametros[:empresa_id], 'principal'])
+  	contacto = DatosContacto.find(:first, :conditions => ["prefijo = ? and tipo = ?", parametros[:empresa_id], 'PRINCIPAL (Rep. Legal)'])
   	contacto.contacto = parametros[:contacto]
   	contacto.nombre_contacto = parametros[:nombre_contacto]
   	contacto.cargo_contacto = parametros[:cargo_contacto]

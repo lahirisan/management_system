@@ -151,7 +151,7 @@ class ProductosController < ApplicationController
     estatus = Estatus.find(:first, :conditions => ["(descripcion = ?) and (alcance = ?)", "Activo", "Producto"])
     params[:producto][:id_estatus] = estatus.id
 
-    params[:producto][:codigo_prod] = params[:producto][:gtin][3..6] if params[:producto][:id_tipo_gtin] == '1'
+    
     params[:producto][:codigo_prod] = params[:producto][:gtin][7..11] if params[:producto][:id_tipo_gtin] == '3'
 
     params[:producto][:codigo_prod] = params[:producto][:gtin][8..12] if params[:producto][:id_tipo_gtin] == '4' or params[:producto][:id_tipo_gtin] == '6'

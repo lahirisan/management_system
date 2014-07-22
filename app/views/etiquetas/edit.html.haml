@@ -14,14 +14,14 @@
       %table
         %tr
           %td
-            Usuario
+            Nombre del contacto
           %td
-            =text_field_tag "nombre_contacto", "#{@contacto.nombre_contacto}"
+            =text_field_tag "nombre_contacto", "#{@contacto.nombre_contacto}", :size => "100"
         %tr
           %td
             Cargo
           %td
-            =text_field_tag "cargo_contacto", "#{@contacto.cargo_contacto}"
+            =text_field_tag "cargo_contacto", "#{@contacto.cargo_contacto}", :size => "100"
         %tr
           %td
             Teléfono
@@ -31,22 +31,22 @@
           %td
             Edificio
           %td
-            =text_field_tag "edificio", "#{@etiqueta.edificio}"
+            =text_field_tag "edificio", "#{@etiqueta.edificio}", :size => "100"
         %tr
           %td
             Calle 
           %td
-            =text_field_tag "calle", "#{@etiqueta.calle}"
+            =text_field_tag "calle", "#{@etiqueta.calle}", :size => "100"
         %tr
           %td
             Urbanización
           %td
-            =text_field_tag "urbanizacion", "#{@etiqueta.urbanizacion}"
+            =text_field_tag "urbanizacion", "#{@etiqueta.urbanizacion}", :size => "100"
         %tr
           %td
             Estado
           %td
-            =select_tag "id_estado", options_from_collection_for_select(Estado.all, :id, :nombre, @etiqueta.try(:id_estado)), :prompt => "-Seleccione-"
+            =select_tag "id_estado", options_from_collection_for_select(Estado.find(:all, :order => "nombre ASC"), :id, :nombre, @etiqueta.try(:id_estado)), :prompt => "-Seleccione-"
         %tr
           %td
             Ciudad
@@ -61,7 +61,9 @@
           %td
             Parroquia
           %td
-            =select_tag "id_parroquia", options_from_collection_for_select(Parroquia.all, :id, :nombre,@etqueta.try(:id_parroquia)), :prompt => "-Seleccione-"
+            /=select_tag "id_parroquia", options_from_collection_for_select(Parroquia.all, :id, :nombre,@etqueta.try(:id_parroquia)), :prompt => "-Seleccione-"
+            =text_field_tag "nombre_parroquia", "#{@etiqueta.nombre_parroquia}", :size => "100"
+
         %tr
           %td
             Código Postal
@@ -71,7 +73,7 @@
           %td
             Punto Referencia
           %td
-            =text_field_tag "punto_referencia", "#{@etiqueta.punto_referencia}"
+            =text_field_tag "punto_referencia", "#{@etiqueta.punto_referencia}", :size => "100"
           
       .actions
         %br

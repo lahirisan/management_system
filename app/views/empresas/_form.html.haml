@@ -194,11 +194,12 @@
                 Municipio
               %td
                 =fa.collection_select :id_municipio,  Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Municipio-'}
-            / %tr
-            /   %td
-            /     Parroquia
-            /   %td
-            /     =fa.text_field :id_parroquia
+            %tr
+              %td
+                Parroquia
+              %td
+                /=fa.text_field :id_parroquia
+                =fa.text_field :nombre_parroquia
             %tr
               %td
                 Código Postal

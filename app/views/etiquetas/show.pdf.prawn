@@ -1,4 +1,4 @@
-pdf.text "<font size='20'> #{@etiqueta.empresa.nombre_empresa} </font>",  :inline_format => true
+pdf.text "<font size='15'> #{@etiqueta.empresa.nombre_empresa} </font>",  :inline_format => true
 pdf.text "<font size='10'> Contacto: <b>#{@contacto.try(:nombre_contacto)}</b> </font>", :inline_format => true
 pdf.text "<font size='10'> Telf Contacto: <b>#{@contacto.try(:contacto)}</b> </font>", :inline_format => true
 pdf.text "<font size='10'>Cargo: <b>#{@contacto.try(:cargo_contacto)}</b></font>", :inline_format => true
