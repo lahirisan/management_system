@@ -250,9 +250,11 @@ class Producto < ActiveRecord::Base
       producto.id_estatus = 3
       producto.fecha_creacion = Time.now
       
+      # NO Se esta validando importar producto GTIN-8
+      
       if (tipo_gtin == '3') #tipo GTIN 13
         if spreadsheet.row(fila)[2].nil?
-          producto.codigo_prod = (tipo_gtin == '1') ? producto.gtin[3..6] : producto.gtin[7..11] # SI es GTIIN 8 los 4 caracateres antes del codigo de prod si es GTIN 13 los 5 caratteres antes del codigo de prod
+          producto.codigo_prod =  producto.gtin[7..11] 
         else
           producto.codigo_prod = spreadsheet.row(fila)[2]
         end

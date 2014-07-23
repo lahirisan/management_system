@@ -28,7 +28,12 @@
             =render 'footer_productos_eliminados'
     %br/
     %br/
-    %a.ui-state-default.ui-corner-all.regresar{:href => "javascript:window.history.back()", :title => "Regresar al listado de productos para esta Empresa"}
-        %span.ui-icon.ui-icon-arrowreturnthick-1-w
-        Regresar
+    -if params[:empresas_eliminadas]
+        %a.ui-state-default.ui-corner-all.regresar{:href => "/empresas?eliminadas=true", :title => "Regresar al listado de productos para esta Empresa"}
+            %span.ui-icon.ui-icon-arrowreturnthick-1-w
+            Regresar
+    -else
+        %a.ui-state-default.ui-corner-all.regresar{:href => "#{empresa_productos_path}", :title => "Regresar al listado de productos para esta Empresa"}
+            %span.ui-icon.ui-icon-arrowreturnthick-1-w
+            Regresar
    

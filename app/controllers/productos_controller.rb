@@ -21,7 +21,7 @@ class ProductosController < ApplicationController
                       @navegabilidad = @empresa.nombre_empresa + " > Productos Retirados"
                       render :template =>'/productos/productos_retirados.html.haml'
                     elsif params[:eliminar]
-                      @navegabilidad = @empresa.nombre_empresa + " > Eliminar Productos"
+                      @navegabilidad = @empresa.nombre_empresa + "> Productos Retirados > Eliminar Productos"
                       render :template =>'/productos/eliminar_productos.html.haml'
                     elsif params[:eliminados]
                       @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
@@ -29,7 +29,7 @@ class ProductosController < ApplicationController
                       @navegabilidad = @empresa.nombre_empresa + " > Productos Eliminados"
                       render :template =>'/productos/productos_eliminados.html.haml'
                     else
-                      @navegabilidad = @empresa.nombre_empresa + " > Productos > Listado"
+                      @navegabilidad = @empresa.nombre_empresa + " > Productos Activos > Listado"
                       render :template =>'/productos/index.html.haml'
 
                     end
@@ -153,8 +153,9 @@ class ProductosController < ApplicationController
 
     
     params[:producto][:codigo_prod] = params[:producto][:gtin][7..11] if params[:producto][:id_tipo_gtin] == '3'
-
-    params[:producto][:codigo_prod] = params[:producto][:gtin][8..12] if params[:producto][:id_tipo_gtin] == '4' or params[:producto][:id_tipo_gtin] == '6'
+    params[:producto][:codigo_prod] = params[:producto][:gtin][3..6] if params[:producto][:id_tipo_gtin] == '1'
+    params[:producto][:codigo_prod] = params[:producto][:gtin][9..12] if params[:producto][:id_tipo_gtin] == '4' 
+    params[:producto][:codigo_prod] = params[:producto][:gtin][8..12] if params[:producto][:id_tipo_gtin] == '6'
 
 
     @producto = Producto.new(params[:producto])

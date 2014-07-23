@@ -1,8 +1,8 @@
 class Usuario < ActiveRecord::Base
   self.table_name = "usuario_interno" # nombre de la tabla asociadoa en el sistema administrativo
   attr_accessible :email, :fecha_creacion, :id_cargo, :id_gerencia, :id_perfil, :password, :password_salt,  :nombre_apellido, :username, :password_confirmation
-  validates :email, :username,  :nombre_apellido,  :presence => {:message => "No puede estar en blanco"}
-  validates :password,  :presence => {:message => "No puede estar en blanco"}, :on => :create
+  validates :email, :username,  :nombre_apellido, :password, :password_confirmation,  :presence => {:message => "No puede estar en blanco"}
+  #validates :password,  :presence => {:message => "No puede estar en blanco"}, :on => :create
   validates :password,  :confirmation => true
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   before_save :encriptar_password
