@@ -9,7 +9,7 @@
                 %td
                     Tipo GTIN
                 %td
-                    =select_tag "tipo_gtin", options_from_collection_for_select(TipoGtin.find(:all, :conditions => ["id in (?)", [3]]), "id", "tipo"), prompt: "- Seleccione -"
+                    =select_tag "tipo_gtin", options_from_collection_for_select(TipoGtin.find(:all, :conditions => ["id in (?)", [3,4,6]]), "id", "tipo_gtin_base"), prompt: "- Seleccione -"
             %tr
                 %td
                     =submit_tag "Importar", :id => "importar_archivo"

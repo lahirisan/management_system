@@ -38,15 +38,15 @@ class Producto < ActiveRecord::Base
     estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Retirado', 'Producto'])
     empresa = Empresa.find(:first, :conditions => ["prefijo = ?", prefijo])
     empresa.producto.collect{|producto|
-      producto_ = Producto.find(:first, :conditions => ["gtin like ?", producto.gtin]);
-      producto_.id_estatus = estatus_producto.id;
-      producto_.save;
-      producto_retirado = ProductosRetirados.new; 
-      producto_retirado.gtin = producto_.gtin;
-      producto_retirado.fecha_retiro = Time.now;
-      producto_retirado.id_motivo_retiro = motivo_retiro;
-      producto_retirado.id_subestatus = sub_estatus;
-      producto_retirado.save 
+    producto_ = Producto.find(:first, :conditions => ["gtin like ?", producto.gtin]);
+    producto_.id_estatus = estatus_producto.id;
+    producto_.save;
+    producto_retirado = ProductosRetirados.new; 
+    producto_retirado.gtin = producto_.gtin;
+    producto_retirado.fecha_retiro = Time.now;
+    producto_retirado.id_motivo_retiro = motivo_retiro;
+    producto_retirado.id_subestatus = sub_estatus;
+    producto_retirado.save 
 
     }
     
@@ -92,9 +92,7 @@ class Producto < ActiveRecord::Base
 
   def self.crear_gtin(tipo_gtin, prefijo, gtin, codigo_producto) # El gtin solo se pasa en el caso de la creacion de GTIN tipo 14
     
-    
     tipo_gtin = TipoGtin.find(tipo_gtin)
-
 
     if tipo_gtin.tipo == "GTIN-8"             
      
@@ -111,7 +109,7 @@ class Producto < ActiveRecord::Base
     elsif tipo_gtin.tipo == "GTIN-13"
 
       secuencia =  codigo_producto.nil? ? "00001" : codigo_producto
-      gtin = prefijo.to_s + secuencia
+      gtin = prefijo.to_s + secuencia.to_s
       digito_verificacion = calcular_digito_verificacion(gtin.to_i, "GTIN-13")
       gtin_generado = gtin.to_s + digito_verificacion.to_s
       
@@ -131,6 +129,7 @@ class Producto < ActiveRecord::Base
       if tipo_gtin.base == "GTIN-13"
         
         productos = Producto.find(:all, :conditions => ["producto.id_tipo_gtin = ? and producto.gtin like ? and productos_empresa.prefijo = ?",tipo_gtin.id, "%#{gtin[0..11]}%", prefijo], :joins => :productos_empresa)
+
         numeracion_producto = productos.nil? ? 1 : (productos.size + 1)
         gtin_valido_generado = productos.nil? ? (numeracion_producto.to_s + gtin[0..11]) : (numeracion_producto.to_s + gtin[0..11])
         digito_verificacion = calcular_digito_verificacion(gtin_valido_generado.to_i, "GTIN-14") 
@@ -231,17 +230,15 @@ class Producto < ActiveRecord::Base
 
     (1..spreadsheet.last_row).each do |fila|
 
-      if (tipo_gtin == '3')  # Tipo GTIN 8 
+      if (tipo_gtin == '3')  # Tipo GTIN 13 
         if spreadsheet.row(fila)[2].nil?
           gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil, nil)
         else
-          gtin = Producto.crear_gtin(tipo_gtin, prefijo, nil, spreadsheet.row(fila)[2])
+          gtin = Producto.crear_gtin(tipo_gtin, prefijo, nil, spreadsheet.row(fila)[2].to_i)
         end
       elsif (tipo_gtin == '1')
         gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil, nil)
       end
-
-
 
       producto = new
       producto.gtin = gtin.to_s
@@ -256,7 +253,7 @@ class Producto < ActiveRecord::Base
         if spreadsheet.row(fila)[2].nil?
           producto.codigo_prod =  producto.gtin[7..11] 
         else
-          producto.codigo_prod = spreadsheet.row(fila)[2]
+          producto.codigo_prod = spreadsheet.row(fila)[2].to_i
         end
       
       end
@@ -271,6 +268,60 @@ class Producto < ActiveRecord::Base
 
   end
 
+
+  def self.import_gtin_14(file, tipo_gtin, prefijo)
+
+    spreadsheet = open_spreadsheet(file)
+
+    (1..spreadsheet.last_row).each do |fila|
+      
+      #TODO:verificar que el codigo de producto sea valido
+      gtin = Producto.crear_gtin_14(tipo_gtin,prefijo, spreadsheet.row(fila)[1].to_i, spreadsheet.row(fila)[0].to_i)
+
+      producto = new
+      producto.gtin = gtin.to_s
+      producto.descripcion = spreadsheet.row(fila)[3]
+      producto.marca = spreadsheet.row(fila)[2]
+      producto.id_estatus = 3
+      producto.fecha_creacion = Time.now
+      producto.codigo_prod = spreadsheet.row(fila)[0].to_i
+      producto.id_tipo_gtin = tipo_gtin.to_i
+      producto.save
+      
+      asociar_producto_empresa(prefijo,producto.gtin)
+
+    end
+
+
+  end
+
+  def self.crear_gtin_14(tipo_gtin, prefijo, secuencia , codigo_producto )
+    
+    tipo_gtin = TipoGtin.find(tipo_gtin)
+
+    if tipo_gtin.base == "GTIN-13"
+      
+      #productos = Producto.find(:all, :conditions => ["producto.id_tipo_gtin = ? and producto.gtin like ? and productos_empresa.prefijo = ?",tipo_gtin.id, "%#{gtin[0..11]}%", prefijo], :joins => :productos_empresa)
+      numeracion_producto = secuencia #TODO: validar la secuencia
+      gtin_valido_generado = numeracion_producto.to_s + prefijo.to_s + codigo_producto.to_s
+      digito_verificacion = calcular_digito_verificacion(gtin_valido_generado.to_i, "GTIN-14") 
+      gtin_generado = gtin_valido_generado.to_s + digito_verificacion.to_s
+
+    elsif tipo_gtin.base == "GTIN-8"
+      
+      productos = Producto.find(:all, :conditions => ["producto.id_tipo_gtin = ? and producto.gtin like ?",tipo_gtin.id, "%#{gtin[0..6]}%"])
+      numeracion_producto = productos.nil? ? 1 : (productos.size + 1)
+      gtin_valido_generado = (numeracion_producto.to_s + "00000" + gtin[0..6]) 
+      digito_verificacion = calcular_digito_verificacion(gtin_valido_generado.to_i, "GTIN-14")
+      gtin_generado = gtin_valido_generado.to_s + digito_verificacion.to_s 
+      
+    end
+
+    return gtin_generado
+
+  end
+
+
   def self.open_spreadsheet(file)
     case File.extname(file.original_filename)
       when ".csv" then Roo::Csv.new(file.path, nil, :ignore)
@@ -279,5 +330,6 @@ class Producto < ActiveRecord::Base
       else raise "Solo se permite importar archivo con extension '.xlsx', '.xls' : #{file.original_filename}"
     end
   end
+
 
 end

@@ -140,17 +140,15 @@ class ProductosController < ApplicationController
   # POST /productos.json
   def create
 
-
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
 
     @gtin = params[:gtin]  if params[:gtin] != ''
 
-    Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin], params[:producto][:codigo_prod])
+    #Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin], params[:producto][:codigo_prod])
     params[:producto][:gtin] = Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin], params[:producto][:codigo_prod])
     params[:producto][:fecha_creacion] = Time.now
     estatus = Estatus.find(:first, :conditions => ["(descripcion = ?) and (alcance = ?)", "Activo", "Producto"])
     params[:producto][:id_estatus] = estatus.id
-
     
     params[:producto][:codigo_prod] = params[:producto][:gtin][7..11] if params[:producto][:id_tipo_gtin] == '3'
     params[:producto][:codigo_prod] = params[:producto][:gtin][3..6] if params[:producto][:id_tipo_gtin] == '1'
@@ -214,9 +212,12 @@ class ProductosController < ApplicationController
 
   def import
     
-    Producto.import(params[:file], params[:tipo_gtin], params[:empresa_id])
-    redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "Los Productos fueron importados."
+    Producto.import_gtin_14(params[:file], params[:tipo_gtin], params[:empresa_id]) if params[:tipo_gtin] == '6' 
+    Producto.import(params[:file], params[:tipo_gtin], params[:empresa_id]) if params[:tipo_gtin] != '6'
+    redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "Los GTIN-13 fueron importados."
   end
+
+
 
   # DELETE /productos/1
   # DELETE /productos/1.json
