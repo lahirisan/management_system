@@ -276,7 +276,7 @@ class Producto < ActiveRecord::Base
     (1..spreadsheet.last_row).each do |fila|
       
       #TODO:verificar que el codigo de producto sea valido
-      gtin = Producto.crear_gtin_14(tipo_gtin,prefijo, spreadsheet.row(fila)[1].to_i, spreadsheet.row(fila)[0].to_i)
+      gtin = Producto.crear_gtin_14(tipo_gtin,prefijo, spreadsheet.row(fila)[1].to_i, spreadsheet.row(fila)[0])
 
       producto = new
       producto.gtin = gtin.to_s
@@ -284,7 +284,7 @@ class Producto < ActiveRecord::Base
       producto.marca = spreadsheet.row(fila)[2]
       producto.id_estatus = 3
       producto.fecha_creacion = Time.now
-      producto.codigo_prod = spreadsheet.row(fila)[0].to_i
+      producto.codigo_prod = spreadsheet.row(fila)[0].to_s
       producto.id_tipo_gtin = tipo_gtin.to_i
       producto.save
       
@@ -301,7 +301,6 @@ class Producto < ActiveRecord::Base
 
     if tipo_gtin.base == "GTIN-13"
       
-      #productos = Producto.find(:all, :conditions => ["producto.id_tipo_gtin = ? and producto.gtin like ? and productos_empresa.prefijo = ?",tipo_gtin.id, "%#{gtin[0..11]}%", prefijo], :joins => :productos_empresa)
       numeracion_producto = secuencia #TODO: validar la secuencia
       gtin_valido_generado = numeracion_producto.to_s + prefijo.to_s + codigo_producto.to_s
       digito_verificacion = calcular_digito_verificacion(gtin_valido_generado.to_i, "GTIN-14") 
@@ -309,12 +308,20 @@ class Producto < ActiveRecord::Base
 
     elsif tipo_gtin.base == "GTIN-8"
       
-      productos = Producto.find(:all, :conditions => ["producto.id_tipo_gtin = ? and producto.gtin like ?",tipo_gtin.id, "%#{gtin[0..6]}%"])
-      numeracion_producto = productos.nil? ? 1 : (productos.size + 1)
-      gtin_valido_generado = (numeracion_producto.to_s + "00000" + gtin[0..6]) 
-      digito_verificacion = calcular_digito_verificacion(gtin_valido_generado.to_i, "GTIN-14")
-      gtin_generado = gtin_valido_generado.to_s + digito_verificacion.to_s 
       
+      numeracion_producto = secuencia #TODO: validar la secuencia que des del 1 al 9 y que no se repita
+      gtin_8 = "759" + codigo_producto.to_s
+      digito_verificacion = calcular_digito_verificacion(gtin_8.to_i, "GTIN-8")
+      gtin_8_generado = gtin_8 + digito_verificacion.to_s
+      # Se verifica si el GTIN 8 Existe
+      producto = Producto.find(:first, :conditions => ["gtin = ? and id_tipo_gtin = ?", gtin_8_generado,1])
+
+      if (producto)
+        gtin_generado = secuencia.to_s + "00000" + gtin_8
+        digito_verificacion = calcular_digito_verificacion(gtin_generado.to_i, "GTIN-14")
+        gtin_generado = gtin_generado + digito_verificacion.to_s
+      end
+
     end
 
     return gtin_generado

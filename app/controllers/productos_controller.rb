@@ -211,10 +211,19 @@ class ProductosController < ApplicationController
   end
 
   def import
-    
-    Producto.import_gtin_14(params[:file], params[:tipo_gtin], params[:empresa_id]) if params[:tipo_gtin] == '6' 
-    Producto.import(params[:file], params[:tipo_gtin], params[:empresa_id]) if params[:tipo_gtin] != '6'
-    redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "Los GTIN-13 fueron importados."
+    tipo_gtin = TipoGtin.find(params[:tipo_gtin])
+
+    if (params[:tipo_gtin] == '6') or (params[:tipo_gtin] == '4') # Gtin14 base 8 or GTIN14 base 13
+      Producto.import_gtin_14(params[:file], params[:tipo_gtin], params[:empresa_id]) 
+      mensaje = "Los #{tipo_gtin.tipo} base #{tipo_gtin.base} fueron importados." 
+    else
+      Producto.import(params[:file], params[:tipo_gtin], params[:empresa_id]) 
+      mensaje = "Los #{tipo_gtin.tipo} fueron importados." 
+    end
+
+   
+    redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: mensaje 
+
   end
 
 
