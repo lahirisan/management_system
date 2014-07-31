@@ -154,11 +154,16 @@ class EmpresasController < ApplicationController
     params[:empresa][:fecha_inscripcion] +=  " " + time.hour.to_s + ":" + time.min.to_s + ":" + time.sec.to_s  if params[:empresa][:fecha_inscripcion] != ''
     @empresa = Empresa.new(params[:empresa])
 
+    params[:empresa][:id_tipo_usuario] = 3 if params[:empresa][:id_tipo_usuario] == '' # Si el usaurio no especifico el tipo de empresa
+
     respond_to do |format|
      
      if @empresa.save
 
-        Empresa.agregar_correo(params[:correo], @empresa.prefijo) if params[:correo]
+        Empresa.agregar_contacto(params[:telefono2], @empresa.prefijo, "telefono") if params[:telefono2]
+        Empresa.agregar_contacto(params[:telefono3], @empresa.prefijo, "telefono") if params[:telefono3]
+        Empresa.agregar_contacto(params[:fax], @empresa.prefijo, "telefono") if params[:fax]
+        Empresa.agregar_contacto(params[:email], @empresa.prefijo, "email") if params[:email]
         
         Gln.generar_legal(@empresa.prefijo.to_s) # Se genra GLN legal
 

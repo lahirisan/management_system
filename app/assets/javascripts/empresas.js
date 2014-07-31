@@ -439,9 +439,9 @@
 
             // Se valida el formato del correo
 
-            if ($('#correo').val() != '')
+            if ($('#email').val() != '') 
             {
-                if( !isValidEmailAddress( $('#correo').val() ) ) 
+                if( !isValidEmailAddress( $('#email').val() ) &&  (window.location.pathname.split('/')[2] == 'new') ) 
                 { 
                     alert('El formato en correo del contacto es inválido. Por favor verifique');
                     return false;

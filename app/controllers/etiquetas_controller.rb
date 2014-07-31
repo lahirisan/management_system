@@ -5,6 +5,7 @@ class EtiquetasController < ApplicationController
   
   def show
 
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:id]])
     @etiqueta = Correspondencia.find(:first, :conditions => ["prefijo = ?", params[:id]], :include => :empresa)
     @contacto = DatosContacto.find(:first, :conditions => ["prefijo = ? and tipo = ?", params[:empresa_id], 'telefono'])
     

@@ -12,12 +12,12 @@
       %td
         Nombre del contacto
       %td
-        =@contacto.try(:nombre_contacto) ?  @contacto.try(:nombre_contacto)  : "No tiene"
+        =@empresa.rep_legal
     %tr
       %td
         Cargo
       %td
-        =@contacto.try(:cargo_contacto) ? @contacto.try(:cargo_contacto) : "No tiene"
+        =@empresa.cargo_rep_legal
     %tr
       %td
         Teléfono Principal
