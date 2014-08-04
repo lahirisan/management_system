@@ -63,7 +63,7 @@ class EmpresasController < ApplicationController
                     @empresas = Empresa.where("estatus.descripcion like ?", "No Validado").includes(:estado, :ciudad, :estatus, :correspondencia, :clasificacion).order("empresa.fecha_inscripcion")
                     render "/empresas/activacion_empresas.xlsx.axlsx"
                   else
-                    @empresas = Empresa.includes(:estado, :ciudad, :estatus, :tipo_usuario_empresa, :clasificacion).order("empresa.fecha_inscripcion desc")
+                    @empresas = Empresa.includes(:estado, :ciudad, :estatus, :tipo_usuario_empresa, :clasificacion).where("estatus.descripcion = ?", 'Activa').order("empresa.fecha_inscripcion desc")
                     render  "/empresas/index.xlsx.axlsx"
                   end 
       }
@@ -87,13 +87,13 @@ class EmpresasController < ApplicationController
                   @empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, {:empresas_retiradas => :sub_estatus},{:empresas_retiradas => :motivo_retiro}).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("empresas_retiradas.fecha_retiro desc")
                   render "/empresas/empresas_retiradas.pdf.prawn"
                 elsif params[:eliminadas]
-                  @empresas = EmpresaEliminada.includes(:estado, :ciudad, :estatus, :clasificacion, :empresa_elim_detalle, :sub_estatus, :motivo_retiro).order("empresa_elim_detalle.fecha_eliminacion desc")
+                  @empresas = EmpresaEliminada.where("estatus.descripcion = ?", 'Eliminada').includes(:estado, :ciudad, :estatus, :clasificacion, :empresa_elim_detalle, :sub_estatus, :motivo_retiro).order("empresa_elim_detalle.fecha_eliminacion desc")
                   render "/empresas/empresas_eliminadas.pdf.prawn"
                 elsif params[:activacion]
                   @empresas = Empresa.where("estatus.descripcion like ?", "No Validado").includes(:estado, :ciudad, :estatus).order("empresa.fecha_inscripcion")
                   render "/empresas/activacion_empresas.pdf.prawn"
                 else
-                  @empresas = Empresa.includes(:estado, :ciudad, :estatus, :tipo_usuario_empresa, :clasificacion).order("empresa.fecha_inscripcion desc")
+                  @empresas = Empresa.includes(:estado, :ciudad, :estatus, :tipo_usuario_empresa, :clasificacion).where("estatus.descripcion = ?", 'Activa').order("empresa.fecha_inscripcion desc")
                   render "/empresas/index.pdf.prawn"
                 end
       } 
@@ -109,6 +109,7 @@ class EmpresasController < ApplicationController
     (params[:eliminados]) ? (@empresa = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:id]])) : (@empresa = Empresa.find(params[:id]))
     @datos_contactos = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
     @correspondencia = (params[:eliminados]) ? @empresa.correspondencia_eliminada : @empresa.correspondencia
+    
     #@empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:id]])
     
 
@@ -153,12 +154,22 @@ class EmpresasController < ApplicationController
     params[:empresa][:fecha_inscripcion] +=  " " + time.hour.to_s + ":" + time.min.to_s + ":" + time.sec.to_s  if params[:empresa][:fecha_inscripcion] != ''
     @empresa = Empresa.new(params[:empresa])
 
+    params[:empresa][:id_tipo_usuario] = 3 if params[:empresa][:id_tipo_usuario] == '' # Si el usaurio no especifico el tipo de empresa
+
     respond_to do |format|
+     
      if @empresa.save
 
+        Empresa.agregar_contacto(params[:telefono2], @empresa.prefijo, "telefono") if params[:telefono2]
+        Empresa.agregar_contacto(params[:telefono3], @empresa.prefijo, "telefono") if params[:telefono3]
+        Empresa.agregar_contacto(params[:fax], @empresa.prefijo, "telefono") if params[:fax]
+        Empresa.agregar_contacto(params[:email], @empresa.prefijo, "email") if params[:email]
+        
         Gln.generar_legal(@empresa.prefijo.to_s) # Se genra GLN legal
+
         Auditoria.registrar_evento(session[:user_id],"Empresa", "Crear", Time.now, "Prefijo #{@empresa.prefijo}")
-        format.html { redirect_to '/empresas?activacion=true', notice: "Empresa con prefijo #{@empresa.prefijo} creada satisfactoriamente." }
+        format.html { redirect_to '/empresas?activacion=true', notice: "Empresa creada satisfactoriamente. Prefijo:#{@empresa.prefijo}   Nombre:#{@empresa.nombre_empresa}" }
+
       else
         format.html { render action: "new" }
       end
@@ -168,7 +179,10 @@ class EmpresasController < ApplicationController
   # PUT /empresas/1
   # PUT /empresas/1.json
   def update
+
+
     @empresa = Empresa.find(params[:id])
+    @datos_contactos = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
 
     respond_to do |format|
       if @empresa.update_attributes(params[:empresa])

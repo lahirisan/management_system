@@ -14,14 +14,14 @@
       %table
         %tr
           %td
-            Nombre del contacto
+            Nombre del representante legal
           %td
-            =text_field_tag "nombre_contacto", "#{@contacto.nombre_contacto}", :size => "100"
+            =text_field_tag "nombre_contacto", "#{@empresa.rep_legal}", :size => "100"
         %tr
           %td
             Cargo
           %td
-            =text_field_tag "cargo_contacto", "#{@contacto.cargo_contacto}", :size => "100"
+            =text_field_tag "cargo_contacto", "#{@empresa.cargo_rep_legal}", :size => "100"
         %tr
           %td
             Teléfono

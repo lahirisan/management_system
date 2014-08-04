@@ -27,7 +27,7 @@ class Empresa < ActiveRecord::Base
   
   belongs_to :tipo_usuario_empresa, :foreign_key => "id_tipo_usuario"
   
-  validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo, :nombre_comercial , :id_clasificacion,  :presence => {:message => "No puede estar en blanco"}, :on => :create
+  validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo, :id_clasificacion,  :presence => {:message => "No puede estar en blanco"}, :on => :create
   validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{5,8})-([0-9]{1})$/, on: :create, :message => "El Formato del RIF es invalido"} # Validacion al crear
   validates :rif, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado. Por favor verifique."}
 
@@ -331,6 +331,20 @@ class Empresa < ActiveRecord::Base
     end
     
     return (prefijos[indice] + 1)
+
+  end
+
+  def self.agregar_contacto(contacto, empresa, tipo_contacto)
+  
+    empresa = Empresa.find(:first, :conditions => ["prefijo = ?", empresa])
+    datos =  empresa.datos_contacto.first
+    dato_contacto = DatosContacto.new 
+    dato_contacto.prefijo = empresa.prefijo
+    dato_contacto.tipo = tipo_contacto
+    dato_contacto.contacto = contacto
+    dato_contacto.nombre_contacto = datos.nombre_contacto
+    dato_contacto.cargo_contacto = datos.cargo_contacto
+    dato_contacto.save
 
   end
 

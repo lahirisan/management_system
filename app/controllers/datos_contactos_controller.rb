@@ -59,7 +59,7 @@ class DatosContactosController < ApplicationController
 
     respond_to do |format|
       if @datos_contacto.save
-        format.html { redirect_to "/empresas/#{params[:empresa_id]}#data_table_empresas_datos_contacto", notice: "El contacto fue agregado exitosamente."}        
+        format.html { redirect_to "/empresas/#{params[:empresa_id]}/edit?editar=true#data_table_empresas_datos_contacto", notice: "El contacto fue agregado exitosamente."}        
       else
         format.html { render action: "new" }
       end
@@ -74,7 +74,7 @@ class DatosContactosController < ApplicationController
 
     respond_to do |format|
       if @datos_contacto.update_attributes(params[:datos_contacto])
-        format.html { redirect_to "/empresas/#{params[:empresa_id]}#data_table_empresas_datos_contacto", notice: "El contacto fue editado exitosamente."}
+        format.html { redirect_to "/empresas/#{params[:empresa_id]}/edit?editar=true##data_table_empresas_datos_contacto", notice: "El contacto fue editado exitosamente."}
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

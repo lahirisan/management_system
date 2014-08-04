@@ -78,11 +78,11 @@
 
   %br
   %table
-    %tr
-      %td
-        Tipo de Usuario
-      %td
-        = @empresa.try(:tipo_usuario_empresa).try(:descripcion)
+    / %tr
+    /   %td
+    /     Tipo de Usuario
+    /   %td
+    /     = @empresa.try(:tipo_usuario_empresa).try(:descripcion)
     %tr
       %td
         Nombre Comercial
@@ -126,12 +126,13 @@
   %label.contexto=@empresa.nombre_empresa + " > Datos Correspondencia"
   %hr.contexto{:size => "1"}
   %br
+
   %table
     %tr
       %td
         Representante Técnico
       %td
-        =@correspondecia.try(:rep_tecnico)
+        =@correspondencia.try(:rep_tecnico)
     %tr
       %td
         Cargo Rep Técnico

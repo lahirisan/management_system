@@ -19,22 +19,13 @@
         %td    
           Tipo Contacto
         %td          
-          = f.select(:tipo, options_for_select(['EMAIL', 'FAX', 'OPCIONAL', 'PRINCIPAL (Rep. Legal)', 'SECUNDARIO'], @datos_contacto.tipo))
+          = f.select(:tipo, options_for_select(['email', 'fax', 'opcional', 'telefono', 'secundario'], @datos_contacto.tipo))
       %tr
         %td
-          Contacto
+          Detalle
         %td
           = f.text_field :contacto
-      %tr
-        %td
-          Nombre Contacto    
-        %td
-          = f.text_field :nombre_contacto
-      %tr
-        %td
-          Cargo Contacto
-        %td
-          = f.text_field :cargo_contacto
+      
     .actions
 
       %button#submit.ui-state-default.ui-corner-all.guardar_contacto{:type => "submit", :title => "Guardar cambios del contacto"}
