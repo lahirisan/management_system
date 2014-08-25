@@ -1,6 +1,6 @@
 %section.contexto
   %label.contexto 
-    =@gln.new_record? ? (@empresa.nombre_empresa + " > Registrar GLN") : (@empresa.nombre_empresa + " > Editar GLN")
+    =@gln.new_record? ? ("#{@empresa.prefijo} > "+@empresa.nombre_empresa + " > Registrar GLN") : ("#{@empresa.prefijo} > "+@empresa.nombre_empresa + " > Editar GLN > #{@gln.gln}")
   %hr.contexto{:size => "1"}
 
   %section.formulario

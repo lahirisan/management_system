@@ -1,10 +1,12 @@
 class ProductosController < ApplicationController
   before_filter :require_authentication
-  # GET /productos
-  # GET /productos.json
+  
   
   prawnto :prawn => { :top_margin => 10} 
 
+  # GET /productos
+  # GET /productos.json
+  
   def index
     
 
@@ -14,22 +16,17 @@ class ProductosController < ApplicationController
 
     respond_to do |format|
       format.html {
-                    if params[:retirar]
-                      @navegabilidad = @empresa.nombre_empresa + " > Retirar Productos" 
-                      render :template =>'/productos/retirar_productos.html.haml'
-                    elsif params[:retirados]
-                      @navegabilidad = @empresa.nombre_empresa + " > Productos Retirados"
-                      render :template =>'/productos/productos_retirados.html.haml'
-                    elsif params[:eliminar]
-                      @navegabilidad = @empresa.nombre_empresa + "> Productos Retirados > Eliminar Productos"
+                    
+                    if params[:eliminar]
+                      @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Productos Activos > Eliminar Productos"
                       render :template =>'/productos/eliminar_productos.html.haml'
                     elsif params[:eliminados]
                       @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
                       @empresa = @empresa ?  @empresa : EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
-                      @navegabilidad = @empresa.nombre_empresa + " > Productos Eliminados"
+                      @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Productos Eliminados"
                       render :template =>'/productos/productos_eliminados.html.haml'
                     else
-                      @navegabilidad = @empresa.nombre_empresa + " > Productos Activos > Listado"
+                      @navegabilidad = "#{@empresa.prefijo} > " +  @empresa.nombre_empresa + " > Productos Activos > Listado"
                       render :template =>'/productos/index.html.haml'
 
                     end

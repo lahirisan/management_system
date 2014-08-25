@@ -325,10 +325,19 @@ $(document).ready(function(){
                 var cod_producto = $('#producto_codigo_prod').val();
                 if ( !reg.test(cod_producto) )
                 {
-                    alert('Estimado usuario, el codigo producto debe ser un número de 5 dígitos. Por favor verifique');
+                    alert('Estimado usuario, el código producto debe ser un valor de 5 dígitos numéricos. Por favor verifique.');
                     return false;
                 }
+
+                if (cod_producto == '00000')
+                {
+                    alert('Estimado usuario, el código de producto debe ser un valor de 5 dígitos numéricos distinto de 00000. Por favor verifique.');
+                    return false;
+                }
+
             }
+
+
                     
         });
         

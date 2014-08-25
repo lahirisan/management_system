@@ -20,7 +20,22 @@ private
   def data
     glns.map do |empresa_gln|
         if params[:empresa_retirada] == 'false'
-          [ 
+          if (empresa_gln.try(:gln).try(:tipo_gln).try(:nombre) == 'Legal') # GLN legal no se edita
+            [ 
+            empresa_gln.try(:gln).try(:gln),
+            empresa_gln.try(:gln).try(:tipo_gln).try(:nombre),
+            empresa_gln.try(:gln).try(:codigo_localizacion),
+            empresa_gln.try(:gln).try(:descripcion),
+            empresa_gln.try(:gln).try(:estatus).try(:descripcion),
+            empresa_gln.try(:gln).try(:fecha_asignacion).strftime("%Y-%m-%d"),
+            empresa_gln.try(:gln).try(:estado).try(:nombre),
+            empresa_gln.try(:gln).try(:municipio).try(:nombre),
+            empresa_gln.try(:gln).try(:ciudad).try(:nombre),
+            "",
+            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de  GLN #{empresa_gln.try(:gln).try(:gln)}"})
+            ]
+          else
+            [ 
             empresa_gln.try(:gln).try(:gln),
             empresa_gln.try(:gln).try(:tipo_gln).try(:nombre),
             empresa_gln.try(:gln).try(:codigo_localizacion),
@@ -32,7 +47,9 @@ private
             empresa_gln.try(:gln).try(:ciudad).try(:nombre),
             link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}/edit",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar datos GLN #{empresa_gln.try(:gln).try(:gln)}"}),
             link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de  GLN #{empresa_gln.try(:gln).try(:gln)}"})
-          ]
+            ]
+          end
+          
         else
           [ 
             empresa_gln.try(:gln).try(:gln),

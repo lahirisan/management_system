@@ -1,6 +1,6 @@
 %section.contexto
   %label.contexto.titulo_contrato
-    Registrar Empresa
+    =@empresa.new_record? ? "Registrar Empresa" : "#{@empresa.prefijo} > #{@empresa.nombre_empresa} > Editar Empresa"
   
   %br
   %br
@@ -32,17 +32,21 @@
       
       %table
         %tr
-          %td
+          %td.prefijo
             Prefijo Asignado
-          %td
+          %td.prefijo
             -if @empresa.new_record?
-              =f.text_field :prefijo , :value => "#{@ultimo}", :readonly => :true, :class => 'campo_readonly'
+              =f.text_field :prefijo , :value => "#{@ultimo}", :readonly => :true, :class => 'campo_readonly prefijo'
             -else
-              =f.text_field :prefijo, :readonly => :true, :class => 'campo_readonly'
+              =f.text_field :prefijo, :readonly => :true, :class => 'campo_readonly prefijo'
+          -if @empresa.new_record?
+            %td
+              =link_to "Asignar Prefijo", "#"
+      %br
       %table
         %tr
           %td
-            Afiliación en Tipo
+            AFILIACION EN TIPO
           %td
             
             =f.collection_select :id_tipo_usuario, @empresa.new_record? ? TipoUsuarioEmpresa.find(:all, :conditions => ["descripcion in (?)", ['Usuario', 'No Usuario']]) : TipoUsuarioEmpresa.all, :id_tipo_usu_empresa, :descripcion, :prompt => "-Seleccione-"
@@ -52,12 +56,22 @@
       %table
         %tr
           %td
-            Nombre de la Empresa
+            NOMBRE DE LA EMPRESA
           %td
             =f.text_field :nombre_empresa
         %tr
           %td
-            Dirección Fiscal
+            Estado
+          %td
+            = f.collection_select :id_estado, Estado.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Estado-'}
+        %tr
+          %td
+            Ciudad
+          %td
+            = f.collection_select :id_ciudad, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
+        %tr
+          %td
+            DIRECCION FISCAL
           %td         
             =f.text_field :direccion_empresa, {:size => "80"}
 
@@ -75,12 +89,12 @@
                 %td
                   Teléfono 2 (58)
                 %td
-                  =text_field_tag "telefono2",'',  {:placeholder => "(0212) 123-45-67"}
+                  =text_field_tag "telefono2",'',  {:placeholder => "(0416) 123-45-67"}
               %tr
                 %td
                   Teléfono 3 (58)
                 %td
-                  =text_field_tag "telefono3",'',  {:placeholder => "(0212) 123-45-67"}
+                  =text_field_tag "telefono3",'',  {:placeholder => "(0242) 123-45-67"}
               %tr
                 %td
                   FAX (58)
@@ -88,105 +102,234 @@
                   =text_field_tag "fax",'',  {:placeholder => "(0212) 123-45-67"}
               %tr
                 %td
-                  Email
+                  E-mail
                 %td
-                  =text_field_tag "email",'',  {:placeholder => "correo@prueba.com"}
-          %tr
-            %td
-              RIF
-            %td
-              = f.text_field :rif, :placeholder => "J-12548785-4"    
-          %tr
-            %td
-              Nombre del RESPONSABLE LEGAL
-            %td
-              =f.text_field :rep_legal
-          %tr
-            %td
-              Cargo 
-            %td
-              =f.text_field :cargo_rep_legal
-          %tr
-            %td
-              Fecha de inscripción en Registro Mercantil
-            %td
-              = @empresa.new_record? ? f.text_field(:fecha_inscripcion) : f.text_field(:fecha_inscripcion, :readonly => :true, :value => "#{@empresa.fecha_inscripcion.strftime("%Y-%m-%d")}", :class => 'campo_readonly')
+                  =text_field_tag "email",'',  {:class => "email", :placeholder => "correo@prueba.com"}
+              %tr
+                %td
+                  Correo Secundario
+                %td
+                  =text_field_tag "email1",'',  {:class => "email", :placeholder => "correo@prueba.com"}
+        %tr
+          %td
+            Circunscripción Judicial del Registro Mercantil
+          %td
+            =f.text_field :circunscripcion_judicial
+        %tr
+          %td
+            Fecha de inscripción en Registro Mercantil
+          %td
+            = @empresa.new_record? ? f.text_field(:fecha_inscripcion) : f.text_field(:fecha_inscripcion, :value => "#{@empresa.fecha_inscripcion.strftime("%Y-%m-%d")}")
+        %tr
+          %td
+            Nº
+          %td
+            =f.text_field :numero_registro_mercantil
+        %tr
+          %td
+            Tomo Nº
+          %td
+            =f.text_field :tomo_registro_mercantil
+        %tr
+          %td
+            RIF
+          %td
+            = f.text_field :rif, :placeholder => "J-12548785-4"    
+        %tr
+          %td
+            NIT Nº
+          %td
+            =f.text_field :nit_registro_mercantil
+
+      %br
+
+      %table  
+        %tr
+          %td
+            NOMBRE RESPONSABLE LEGAL
+          %td
+            =f.text_field :rep_legal
+        %tr
+          %td
+            CARGO
+          %td
+            =f.text_field :cargo_rep_legal
+        %tr
+          %td
+            Nacionalidad
+          %td
+            =f.text_field :nacionalidad_responsable_legal
+        %tr
+          %td
+            Domiciliado en
+          %td
+            =f.text_field :domicilio_responsable_legal
+
+      %br
+      %table
+        %tr
+          Ventas Brutas Anuales
+        %tr
+
+          =f.select(:ventas_brutas_anuales, options_for_select(['0 a 200.000', 'De 200.001,00 a 2.000.000,00', 'De 2.000.001,00 a 4.500.000,00', 'De 4.500.001,00 a 6.000.000,00', 'De 6.000.0001,00 o más']), :prompt => "- Seleccione -")
+      %br
+
           
-          %tr
-            %td
-              Estado
-            %td
-              = f.collection_select :id_estado, Estado.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Estado-'}
-          %tr
-            %td
-              Ciudad
-            %td
-              = f.collection_select :id_ciudad, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
       -if !@empresa.new_record?
         =render 'datos_contacto'    
         
       %br/
       %label.contexto
         Dirección para envío de correspondencia de codificación de GS1
-      %hr.contexto{:size => "1"}  
-        =f.fields_for :correspondencia do |fa|
-          %table
-            %tr
-              %td
-                NOMBRE PERSONA CONTACTO
-              %td
-                = fa.text_field :rep_tecnico
-            %tr
-              %td
-                CARGO
-              %td
-                = fa.text_field :cargo_rep_tecnico
-            %tr
-              %td
-                Galpón / Edificio / Quinta
-              %td
-                = fa.text_field :edificio, :placeholder => "Piso / Nº - Ofic. / Apto"
-            %tr
-              %td
-                Av / Calle
-              %td
-                = fa.text_field :calle
-            %tr
-              %td
-                Urbanización / Barrio / Sector / Terraza
-              %td
-                = fa.text_field :urbanizacion
-            %tr
-              %td
-                Estado
-              %td
-                =fa.collection_select :id_estado, Estado.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Estado-'}
-            %tr
-              %td
-                Ciudad
-              %td
-                =fa.collection_select :id_ciudad,  Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
-            %tr
-              %td
-                Municipio
-              %td
-                =fa.collection_select :id_municipio,  Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Municipio-'}
-            %tr
-              %td
-                Parroquia
-              %td
-                /=fa.text_field :id_parroquia
-                =fa.text_field :nombre_parroquia
-            %tr
-              %td
-                Código Postal
-              %td
-                =fa.text_field :cod_postal
-            %tr
-              %td
-                Punto de Referencia
-              %td
-                =fa.text_field :punto_referencia 
+      %hr.contexto{:size => "1"}
+
+        %table
+          %tr
+            %td
+              NOMBRE PERSONA CONTACTO
+            %td
+              =text_field_tag :persona_contacto_codificacion
+          %tr
+            %td
+              CARGO
+            %td
+              =text_field_tag :cargo_codificacion
+          %tr
+            %td
+              =select_tag(:edificio_codificacion, options_for_select(['Galpón', 'Edificio', 'Quinta']), { :prompt => "- Galpón/Edificio/Quinta -"})
+            %td
+              =text_field_tag :detalle_edificio_codificacion
+          %tr
+            %td
+              =select_tag(:piso_codificacion, options_for_select(['Piso', 'Nº']), { :prompt => "- Piso/Nº -"})
+            %td
+              =text_field_tag :detalle_piso_codificacion
+          %tr
+            %td
+              =select_tag(:oficina_codificacion, options_for_select(['Oficina', 'Apartamento']), { :prompt => "-Oficina/Apartamento-"})
+            %td
+              =text_field_tag :detalle_oficina_codificacion
+          %tr
+            %td
+              =select_tag(:calle_codificacion, options_for_select(['Avenida', 'Calle']), { :prompt => "- Avenida/Calle -"})
+            %td
+              =text_field_tag :detalle_calle_codificacion
+          %tr
+            %td
+              =select_tag(:urbanizacion_codificacion, options_for_select(['Urbanización', 'Barrio', 'Sector', 'Terraza']), { :prompt => "- Urb./Barrio/Sector/Terraza -"})
+            %td
+              =text_field_tag :detalle_urbanizacion_codificacion
+          %tr
+            %td
+              =select_tag :estado_codificacion, options_from_collection_for_select(Estado.find(:all, :order => "nombre ASC"), :id, :nombre), {:prompt => '-Seleccione Estado-'}
+          %tr
+            %td
+              =select_tag :ciudad_codificacion,  options_from_collection_for_select(Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre), {:prompt => '-Seleccione Ciudad-'}
+          %tr
+            %td
+              =select_tag :municipio_codificacion,  options_from_collection_for_select(Municipio.find(:all, :order => "nombre ASC"), :id, :nombre), {:prompt => '-Seleccione Municipio-'}
+          %tr
+            %td
+              PARROQUIA
+            %td
+              =text_field_tag :parroquia_codificacion
+          %tr
+            %td
+              Punto Referencia
+            %td
+              =text_field_tag :punto_referencia_codificacion
+          %tr
+            %td
+              Código Postal
+            %td
+              =text_field_tag :codigo_postal_codificacion
+          %tr
+            %td
+              Teléfono 1 (58)
+            %td
+              =text_field_tag :telefono1_codificacion
+          %tr
+            %td
+              Teléfono 2 (58)
+            %td
+              =text_field_tag :telefono2_codificacion
+          %tr
+            %td
+              Teléfono 3 (58)
+            %td
+              =text_field_tag :telefono3_codificacion
+          %tr
+            %td
+              Fax (58)
+            %td
+              =text_field_tag :fax_codificacion
+          %tr
+            %td
+              E-mail
+            %td
+              =text_field_tag :email_codificacion, nil, {:class => "email"}
+
+
+
+        / =f.fields_for :correspondencia do |fa|
+        /   %table
+        /     %tr
+        /       %td
+        /         NOMBRE PERSONA CONTACTO
+        /       %td
+        /         = fa.text_field :rep_tecnico
+        /     %tr
+        /       %td
+        /         CARGO
+        /       %td
+        /         = fa.text_field :cargo_rep_tecnico
+        /     %tr
+        /       %td
+        /         Galpón / Edificio / Quinta
+        /       %td
+        /         = fa.text_field :edificio, :placeholder => "Piso / Nº - Ofic. / Apto"
+        /     %tr
+        /       %td
+        /         Av / Calle
+        /       %td
+        /         = fa.text_field :calle
+        /     %tr
+        /       %td
+        /         Urbanización / Barrio / Sector / Terraza
+        /       %td
+        /         = fa.text_field :urbanizacion
+        /     %tr
+        /       %td
+        /         Estado
+        /       %td
+        /         =fa.collection_select :id_estado, Estado.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Estado-'}
+        /     %tr
+        /       %td
+        /         Ciudad
+        /       %td
+        /         =fa.collection_select :id_ciudad,  Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
+        /     %tr
+        /       %td
+        /         Municipio
+        /       %td
+        /         =fa.collection_select :id_municipio,  Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Municipio-'}
+        /     %tr
+        /       %td
+        /         Parroquia
+        /       %td
+        /         /=fa.text_field :id_parroquia
+        /         =fa.text_field :nombre_parroquia
+        /     %tr
+        /       %td
+        /         Código Postal
+        /       %td
+        /         =fa.text_field :cod_postal
+        /     %tr
+        /       %td
+        /         Punto de Referencia
+        /       %td
+        /         =fa.text_field :punto_referencia
+        /   =fa.hidden_field :tipo_correspondencia 
       
       %br/
 

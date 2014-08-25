@@ -45,9 +45,9 @@ productos = [["Tipo GTIN", "GTIN", "Descripción", "Marca",  "Código Producto",
   productos << [producto.try(:tipo_gtin).try(:tipo), producto.gtin,producto.descripcion, producto.marca,  producto.codigo_prod, fecha,  producto.try(:productos_retirados).try(:sub_estatus).try(:descripcion), producto.try(:productos_retirados).try(:motivo_retiro).try(:descripcion),  fecha_retiro ]
 end
 
-image "#{Rails.root}/app/assets/images/gs1-logohome", :width => 200, :height => 50
-draw_text "#{@empresa.nombre_empresa}", :size => 8, :at => [380,735]
-draw_text "Productos Retirados", :size => 8, :at => [380,720]
-draw_text "Fecha:#{Time.now}", :size => 8, :at => [380,705]
+draw_text "Empresa: #{@empresa.nombre_empresa}", :size => 8, :at => [0,735]
+draw_text "Productos Activos", :size => 8, :at => [0,720]
+draw_text "Fecha:#{Time.now.strftime("%Y-%m-%d")}", :size => 8, :at => [0,705]
+move_down 50
 #number_pages "(<page>/<total>)", :size => 9, :at => [700, 550]
 table(productos,  :row_colors => ["FFFFFF", "DDDDDD"], :cell_style => { size: 8 }, :column_widths => [50,80,80,70,45,40])

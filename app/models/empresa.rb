@@ -4,12 +4,12 @@ class Empresa < ActiveRecord::Base
   
   # La Asociacion tienen  que ir primero si se utiliza accepts_nested_attributes
 
-  has_one :correspondencia, :foreign_key => "prefijo", :dependent => :destroy # elimina en cascada
+  has_many :correspondencia, :foreign_key => "prefijo", :dependent => :destroy # elimina en cascada
   has_many :datos_contacto, :foreign_key => "prefijo", :dependent => :destroy # elimina en cascada las correspondencia de la empresa si se elimina la empresa de manera de evitar data inconsistente
 
   accepts_nested_attributes_for :correspondencia, :allow_destroy => true # Maneja el modelo correspondencia en el formulario de empresa  
   accepts_nested_attributes_for :datos_contacto, :allow_destroy => true # Maneja el modelo correspondencia en el formulario de empresa  
-  attr_accessible :cargo_rep_legal, :categoria, :clase, :direccion_empresa, :division, :fecha_inscripcion, :grupo, :id_ciudad, :id_clasificacion, :id_estado, :id_estatus, :id_tipo_usuario, :nombre_comercial, :nombre_empresa, :rep_legal, :rif, :prefijo,  :correspondencia_attributes, :datos_contacto_attributes
+  attr_accessible :cargo_rep_legal, :categoria, :clase, :direccion_empresa, :division, :fecha_inscripcion, :grupo, :id_ciudad, :id_clasificacion, :id_estado, :id_estatus, :id_tipo_usuario, :nombre_comercial, :nombre_empresa, :rep_legal, :rif, :prefijo,  :correspondencia_attributes, :datos_contacto_attributes, :numero_registro_mercantil, :tomo_registro_mercantil, :nit_registro_mercantil, :nacionalidad_responsable_legal, :domicilio_responsable_legal, :cedula_responsable_legal, :circunscripcion_judicial, :ventas_brutas_anuales
   
   belongs_to :estado, :foreign_key =>  "id_estado"  # Se establece la clave foranea por la cual va a buscar la asociacion
   belongs_to :ciudad, :foreign_key =>  "id_ciudad"
@@ -27,7 +27,7 @@ class Empresa < ActiveRecord::Base
   
   belongs_to :tipo_usuario_empresa, :foreign_key => "id_tipo_usuario"
   
-  validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo, :id_clasificacion,  :presence => {:message => "No puede estar en blanco"}, :on => :create
+  validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo, :id_clasificacion, :rep_legal, :cargo_rep_legal,  :presence => {:message => "No puede estar en blanco"}, :on => :create
   validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{5,8})-([0-9]{1})$/, on: :create, :message => "El Formato del RIF es invalido"} # Validacion al crear
   validates :rif, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado. Por favor verifique."}
 
@@ -335,8 +335,11 @@ class Empresa < ActiveRecord::Base
   end
 
   def self.agregar_contacto(contacto, empresa, tipo_contacto)
-  
+    
+
     empresa = Empresa.find(:first, :conditions => ["prefijo = ?", empresa])
+
+    
     datos =  empresa.datos_contacto.first
     dato_contacto = DatosContacto.new 
     dato_contacto.prefijo = empresa.prefijo
@@ -345,6 +348,39 @@ class Empresa < ActiveRecord::Base
     dato_contacto.nombre_contacto = datos.nombre_contacto
     dato_contacto.cargo_contacto = datos.cargo_contacto
     dato_contacto.save
+
+  end
+
+
+  def self.agregar_correspondencia_codificacion_gs1(prefijo, persona_contacto, cargo, edificio, detalle_edificio,piso,  detalle_piso, oficina, detalle_oficina, calle, detalle_calle, urbanizacion, detalle_urbanizacion, estado, ciudad, municipio, parroquia, punto_referencia, codigo_postal, tipo_correspondencia, telefono1, telefono2,telefono3, fax, email)
+  
+  correspondencia = Correspondencia.new
+  correspondencia.prefijo = prefijo
+  correspondencia.rep_tecnico = persona_contacto
+  correspondencia.cargo_rep_tecnico = cargo
+  correspondencia.edificio = edificio
+  correspondencia.piso = piso
+  correspondencia.detalle_piso = detalle_piso
+  correspondencia.oficina
+  correspondencia.detalle_oficina
+  correspondencia.calle = calle
+  correspondencia.detalle_calle
+  correspondencia.urbanizacion = urbanizacion
+  correspondencia.detalle_urbanizacion = detalle_urbanizacion
+  correspondencia.id_estado = estado
+  correspondencia.id_ciudad = ciudad
+  correspondencia.id_municipio = municipio
+  correspondencia.nombre_parroquia = parroquia
+  correspondencia.cod_postal = codigo_postal
+  correspondencia.punto_referencia = punto_referencia
+  correspondencia.tipo_correspondencia = tipo_correspondencia
+  correspondencia.telefono1 = telefono1
+  correspondencia.telefono2 = telefono2
+  correspondencia.telefono3 = telefono3
+  correspondencia.fax = fax
+  correspondencia.email = email
+  correspondencia.save
+  raise correspondencia.errors.to_yaml if correspondencia.errors.any?
 
   end
 

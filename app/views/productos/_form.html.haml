@@ -1,6 +1,6 @@
 %section.contexto
   %label.contexto 
-    =@producto.new_record? ? (@empresa.nombre_empresa + " > Registrar Producto") : (@empresa.nombre_empresa + " > Editar Producto")
+    =@producto.new_record? ? ("#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Registrar Producto") : "#{@empresa.prefijo} > "+(@empresa.nombre_empresa + " > Editar Producto > #{@producto.gtin}")
   %hr.contexto{:size => "1"}
 
   %section.formulario

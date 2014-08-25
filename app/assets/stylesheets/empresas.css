@@ -59,9 +59,11 @@ color: #212121;}
 
 .boton_usuario  {margin-top:50px;}
 
-label.contexto {font-size: 18px;}
+label.contexto {font-size: 20px;}
 
 label.contexto.titulo_contrato {font-size: 24px;}
+
+.prefijo {font-size: 24px;}
 
 
 

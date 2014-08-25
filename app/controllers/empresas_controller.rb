@@ -125,7 +125,7 @@ class EmpresasController < ApplicationController
 
     @ultimo = Empresa.generar_prefijo_valido
     @empresa = Empresa.new
-    @empresa.build_correspondencia   #Para que maneje el modelo de correspondencia
+    #@empresa.correspondencia.build   #Para que maneje el modelo de correspondencia
     @empresa.datos_contacto.build   #Para que manejar los datos de la tabla empresa_contactos, mapeado por el modelo DatosContacto
     
 
@@ -157,21 +157,23 @@ class EmpresasController < ApplicationController
     params[:empresa][:id_tipo_usuario] = 3 if params[:empresa][:id_tipo_usuario] == '' # Si el usaurio no especifico el tipo de empresa
 
     respond_to do |format|
-     
+    
      if @empresa.save
-
+        
         Empresa.agregar_contacto(params[:telefono2], @empresa.prefijo, "telefono") if params[:telefono2]
         Empresa.agregar_contacto(params[:telefono3], @empresa.prefijo, "telefono") if params[:telefono3]
         Empresa.agregar_contacto(params[:fax], @empresa.prefijo, "telefono") if params[:fax]
         Empresa.agregar_contacto(params[:email], @empresa.prefijo, "email") if params[:email]
+        Empresa.agregar_contacto(params[:email1], @empresa.prefijo, "email") if params[:email1]
+        Empresa.agregar_correspondencia_codificacion_gs1(@empresa.prefijo, params[:persona_contacto_codificacion], params[:cargo_codificacion], params[:edificio_codificacion], params[:detalle_edificio_codificacion], params[:piso_codificacion], params[:detalle_piso_codificacion], params[:oficina_codificacion], params[:detalle_oficina_codificacion], params[:calle_codificacion], params[:detalle_calle_codificacion], params[:urbanizacion_codificacion], params[:detalle_urbanizacion_codificacion], params[:estado_codificacion], params[:ciudad_codificacion], params[:municipio_codificacion], params[:parroquia_codificacion], params[:punto_referencia_codificacion], params[:codigo_postal_codificacion], "CODIFICACION GS1", params[:telefono1_codificacion], params[:telefono2_codificacion], params[:telefono3_codificacion], params[:fax_codificacion], params[:email_codificacion]) if params[:persona_contacto_codificacion]
         
-        Gln.generar_legal(@empresa.prefijo.to_s) # Se genra GLN legal
+        Gln.generar_legal(@empresa.prefijo.to_s) # Se genera GLN legal
 
         Auditoria.registrar_evento(session[:user_id],"Empresa", "Crear", Time.now, "Prefijo #{@empresa.prefijo}")
         format.html { redirect_to '/empresas?activacion=true', notice: "Empresa creada satisfactoriamente. Prefijo:#{@empresa.prefijo}   Nombre:#{@empresa.nombre_empresa}" }
 
       else
-        format.html { render action: "new" }
+         format.html { render action: "new" }
       end
     end
   end

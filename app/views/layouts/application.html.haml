@@ -91,16 +91,6 @@
 						%span.ui-icon.ui-icon-circle-plus
 						Crear Producto
 
-				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Retirar Producto') 
-					
-					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?retirar=true", :title => "Retirar uno o más productos", :class => "ui-state-default ui-corner-all botones_menu"}
-						%span.ui-icon.ui-icon-circle-minus
-						Retirar Productos
-				
-					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?retirados=true", :title => "Listado de los productos retirados", :class => "ui-state-default ui-corner-all botones_menu"}
-						%span.ui-icon.ui-icon-folder-collapsed
-						Productos Retirados
-
 				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Producto') 
 					
 					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminar=true", :title => "ELiminar productos", :class => "ui-state-default ui-corner-all botones_menu"}

@@ -1,5 +1,5 @@
 %section.contexto
-  %label.contexto=@empresa.nombre_empresa + " > Datos Básicos"
+  %label.contexto= "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Datos Básicos"
   %hr.contexto{:size => "1"}
 
 %section#areaTrabajo.areaTrabajo{:style => "font: 82.5% 'Trebuchet MS', sans-serif"}
@@ -78,16 +78,16 @@
 
   %br
   %table
-    / %tr
-    /   %td
-    /     Tipo de Usuario
-    /   %td
-    /     = @empresa.try(:tipo_usuario_empresa).try(:descripcion)
     %tr
       %td
-        Nombre Comercial
+        Tipo de Usuario
       %td
-        = @empresa.nombre_comercial
+        = @empresa.try(:tipo_usuario_empresa).try(:descripcion)
+    %tr
+      / %td
+      /   Nombre Comercial
+      / %td
+      /   = @empresa.nombre_comercial
     %tr
       %td
         Clasificación
