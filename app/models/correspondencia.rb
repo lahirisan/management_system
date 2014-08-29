@@ -6,7 +6,7 @@ class Correspondencia < ActiveRecord::Base
    belongs_to :ciudad, :foreign_key => "id_ciudad"
    belongs_to :municipio, :foreign_key => "id_municipio"
    belongs_to :parroquia, :foreign_key => "id_parroquia"
-   validates :rep_tecnico, :cargo_rep_tecnico, :edificio, :calle, :urbanizacion, :id_estado, :id_ciudad , :cod_postal, :punto_referencia, :presence => {:message => "No puede estar en blanco"}, :on => :create
+   validates :rep_tecnico,   :presence => {:message => "No puede estar en blanco"}, :on => :create
 
    def self.modificar_etiqueta(parametros)
 
@@ -26,5 +26,69 @@ class Correspondencia < ActiveRecord::Base
    	DatosContacto.modificar_etiqueta(parametros)
 
    end
+
+  def self.agregar_correspondencia(prefijo, persona_contacto, cargo, edificio, detalle_edificio,piso,  detalle_piso, oficina, detalle_oficina, calle, detalle_calle, urbanizacion, detalle_urbanizacion, estado, ciudad, municipio, parroquia, punto_referencia, codigo_postal, tipo_correspondencia, telefono1, telefono2,telefono3, fax, email)
+  
+    correspondencia = Correspondencia.new
+    correspondencia.prefijo = prefijo
+    correspondencia.rep_tecnico = persona_contacto
+    correspondencia.cargo_rep_tecnico = cargo
+    correspondencia.edificio = edificio
+    correspondencia.detalle_edificio = detalle_edificio
+    correspondencia.piso = piso
+    correspondencia.detalle_piso = detalle_piso
+    correspondencia.oficina = oficina
+    correspondencia.detalle_oficina = detalle_oficina
+    correspondencia.calle = calle
+    correspondencia.detalle_calle = detalle_calle
+    correspondencia.urbanizacion = urbanizacion
+    correspondencia.detalle_urbanizacion = detalle_urbanizacion
+    correspondencia.id_estado = estado
+    correspondencia.id_ciudad = ciudad
+    correspondencia.id_municipio = municipio
+    correspondencia.nombre_parroquia = parroquia
+    correspondencia.cod_postal = codigo_postal
+    correspondencia.punto_referencia = punto_referencia
+    correspondencia.tipo_correspondencia = tipo_correspondencia
+    correspondencia.telefono1 = telefono1
+    correspondencia.telefono2 = telefono2
+    correspondencia.telefono3 = telefono3
+    correspondencia.fax = fax
+    correspondencia.email = email
+    correspondencia.save
+    raise correspondencia.errors.to_yaml if correspondencia.errors.any?
+
+  end
+
+  def self.modificar_correspondencia(prefijo, persona_contacto, cargo, edificio, detalle_edificio, piso, detalle_piso, oficina, detalle_oficina, calle, detalle_calle, urbanizacion, detalle_urbanizacion, estado, ciudad, municipio, parroquia, punto_referencia, codigo_postal, telefono1, telefono2, telefono3, fax, email, tipo)
+
+   correspondencia = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", prefijo, "CODIFICACION GS1"])
+
+   correspondencia.rep_tecnico = persona_contacto
+   correspondencia.cargo_rep_tecnico = cargo
+   correspondencia.edificio = edificio
+   correspondencia.detalle_edificio = detalle_edificio
+   correspondencia.piso = piso
+   correspondencia.detalle_piso = detalle_piso
+   correspondencia.oficina = oficina
+   correspondencia.detalle_oficina = detalle_oficina
+   correspondencia.calle = calle
+   correspondencia.detalle_calle = detalle_calle
+   correspondencia.urbanizacion = urbanizacion
+   correspondencia.detalle_urbanizacion = detalle_urbanizacion
+   correspondencia.id_estado = estado
+   correspondencia.id_ciudad = ciudad
+   correspondencia.id_municipio = municipio
+   correspondencia.cod_postal = codigo_postal
+   correspondencia.punto_referencia = punto_referencia
+   correspondencia.nombre_parroquia = parroquia
+   correspondencia.telefono1 = telefono1
+   correspondencia.telefono2 = telefono2
+   correspondencia.telefono3 = telefono3
+   correspondencia.fax = fax
+   correspondencia.email = email
+   correspondencia.save
+
+  end
   
 end

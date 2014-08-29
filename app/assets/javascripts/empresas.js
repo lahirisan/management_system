@@ -446,67 +446,68 @@
 
             // valida formato email
 
-            if ($('#email').val() != '') 
-            {
-                if( !isValidEmailAddress( $('#email').val() ) &&  (window.location.pathname.split('/')[2] == 'new') ) 
-                { 
-                    alert('El formato en Correo Principal es inválido. Por favor verifique.');
-                    return false;
-                }
+            // if ($('#email').val() != '') 
+            // {
+            //     if( !isValidEmailAddress( $('#email').val() ) &&  (window.location.pathname.split('/')[2] == 'new') ) 
+            //     { 
+            //         alert('El formato en Correo Principal es inválido. Por favor verifique.');
+            //         return false;
+            //     }
 
-            }
+            // }
 
-            if ($('#email1').val() != '') 
-            {
-                if( !isValidEmailAddress( $('#email1').val() ) &&  (window.location.pathname.split('/')[2] == 'new') ) 
-                { 
-                    alert('El formato en Correo Secundario es inválido. Por favor verifique.');
-                    return false;
-                }
+            // if ($('#email1').val() != '') 
+            // {
+            //     if( !isValidEmailAddress( $('#email1').val() ) &&  (window.location.pathname.split('/')[2] == 'new') ) 
+            //     { 
+            //         alert('El formato en Correo Secundario es inválido. Por favor verifique.');
+            //         return false;
+            //     }
 
-            }
+            // }
 
             // Validar el formato de los números de telefono (0212) 123-45-67
             
-            if ($('#empresa_datos_contacto_attributes_0_contacto').val() != '') // Validacion del primer número
-            {
-                if( !isValidNumberPhone($('#empresa_datos_contacto_attributes_0_contacto').val()))
-                {
-                    alert('El formato del Teléfono 1 es incorrecto. Por favor verifique.');
-                    return false;
-                }
+            // if ($('#empresa_datos_contacto_attributes_0_contacto').val() != '') // Validacion del primer número
+            // {
+            //     if( !isValidNumberPhone($('#empresa_datos_contacto_attributes_0_contacto').val()))
+            //     {
+            //         alert('El formato del Teléfono 1 es incorrecto. hghghg Por favor verifique.');
+            //         return false;
+            //     }
 
-            }
+            // }
 
-            if ($('#telefono2').val() != '') // Validacion del segundo numero
-            {
-                if( !isValidNumberPhone($('#telefono2').val()))
-                {
-                    alert('El formato del Teléfono 2 es incorrecto. Por favor verifique.');
-                    return false;
-                }
+           
+        //     if ($('#telefono2').val() != '') // Validacion del segundo numero
+        //     {
+        //         if( !isValidNumberPhone($('#telefono2').val()))
+        //         {
+        //             alert('El formato del Teléfono 2 es incorrecto. Por favor verifique.');
+        //             return false;
+        //         }
 
-            }
+        //     }
 
-            if ($('#telefono3').val() != '') // Validacion del segundo numero
-            {
-                if( !isValidNumberPhone($('#telefono3').val()))
-                {
-                    alert('El formato del Teléfono 3 es incorrecto. Por favor verifique.');
-                    return false;
-                }
+        //     if ($('#telefono3').val() != '') // Validacion del segundo numero
+        //     {
+        //         if( !isValidNumberPhone($('#telefono3').val()))
+        //         {
+        //             alert('El formato del Teléfono 3 es incorrecto. Por favor verifique.');
+        //             return false;
+        //         }
 
-            }
+        //     }
 
-            if ($('#fax').val() != '') // Validacion del segundo numero
-            {
-                if( !isValidNumberPhone($('#fax').val()))
-                {
-                    alert('El formato del Fax es incorrecto. Por favor verifique.');
-                    return false;
-                }
+        //     if ($('#fax').val() != '') // Validacion del segundo numero
+        //     {
+        //         if( !isValidNumberPhone($('#fax').val()))
+        //         {
+        //             alert('El formato del Fax es incorrecto. Por favor verifique.');
+        //             return false;
+        //         }
 
-            }
+        //     }
         
         });
 

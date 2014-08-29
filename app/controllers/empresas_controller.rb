@@ -109,8 +109,7 @@ class EmpresasController < ApplicationController
     (params[:eliminados]) ? (@empresa = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:id]])) : (@empresa = Empresa.find(params[:id]))
     @datos_contactos = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
     @correspondencia = (params[:eliminados]) ? @empresa.correspondencia_eliminada : @empresa.correspondencia
-    
-    #@empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:id]])
+
     
 
     respond_to do |format|
@@ -138,8 +137,11 @@ class EmpresasController < ApplicationController
   # GET /empresas/1/edit
   def edit
     @empresa = Empresa.find(params[:id])
-    @empresa.build_correspondencia  if @empresa.correspondencia.nil? # Si no tiene coorespondecia se crea el objeto
     @datos_contactos = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
+    @correspondencia_codificacion = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "CODIFICACION GS1"])
+    @correspondencia_sincronet = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "COMERCIO ELECTRONICO / SINCRONET"])
+    @correspondencia_seminarios = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "SEMINARIOS / CURSOS"])
+    @correspondencia_mercadeo = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "MERCADEO"])
 
   end
 
@@ -165,12 +167,16 @@ class EmpresasController < ApplicationController
         Empresa.agregar_contacto(params[:fax], @empresa.prefijo, "telefono") if params[:fax]
         Empresa.agregar_contacto(params[:email], @empresa.prefijo, "email") if params[:email]
         Empresa.agregar_contacto(params[:email1], @empresa.prefijo, "email") if params[:email1]
-        Empresa.agregar_correspondencia_codificacion_gs1(@empresa.prefijo, params[:persona_contacto_codificacion], params[:cargo_codificacion], params[:edificio_codificacion], params[:detalle_edificio_codificacion], params[:piso_codificacion], params[:detalle_piso_codificacion], params[:oficina_codificacion], params[:detalle_oficina_codificacion], params[:calle_codificacion], params[:detalle_calle_codificacion], params[:urbanizacion_codificacion], params[:detalle_urbanizacion_codificacion], params[:estado_codificacion], params[:ciudad_codificacion], params[:municipio_codificacion], params[:parroquia_codificacion], params[:punto_referencia_codificacion], params[:codigo_postal_codificacion], "CODIFICACION GS1", params[:telefono1_codificacion], params[:telefono2_codificacion], params[:telefono3_codificacion], params[:fax_codificacion], params[:email_codificacion]) if params[:persona_contacto_codificacion]
+
+        Correspondecia.agregar_correspondencia(@empresa.prefijo, params[:persona_contacto_codificacion], params[:cargo_codificacion], params[:edificio_codificacion], params[:detalle_edificio_codificacion], params[:piso_codificacion], params[:detalle_piso_codificacion], params[:oficina_codificacion], params[:detalle_oficina_codificacion], params[:calle_codificacion], params[:detalle_calle_codificacion], params[:urbanizacion_codificacion], params[:detalle_urbanizacion_codificacion], params[:estado_codificacion], params[:ciudad_codificacion], params[:municipio_codificacion], params[:parroquia_codificacion], params[:punto_referencia_codificacion], params[:codigo_postal_codificacion], "CODIFICACION GS1", params[:telefono1_codificacion], params[:telefono2_codificacion], params[:telefono3_codificacion], params[:fax_codificacion], params[:email_codificacion]) 
+        Correspondencia.agregar_correspondencia(@empresa.prefijo, params[:persona_contacto_sincronet], params[:cargo_sincronet], params[:edificio_sincronet], params[:detalle_edificio_sincronet], params[:piso_sincronet], params[:detalle_piso_sincronet], params[:oficina_sincronet], params[:detalle_oficina_sincronet], params[:calle_sincronet], params[:detalle_calle_sincronet], params[:urbanizacion_sincronet], params[:detalle_urbanizacion_sincronet], params[:estado_sincronet], params[:ciudad_sincronet], params[:municipio_sincronet], params[:parroquia_sincronet], params[:punto_referencia_sincronet], params[:codigo_postal_sincronet], "COMERCIO ELECTRONICO / SINCRONET", params[:telefono1_sincronet], params[:telefono2_sincronet], params[:telefono3_sincronet], params[:fax_sincronet], params[:email_sincronet]) 
+        Correspondencia.agregar_correspondencia(@empresa.prefijo, params[:persona_contacto_seminario], params[:cargo_seminario], params[:edificio_seminario], params[:detalle_edificio_seminario], params[:piso_seminario], params[:detalle_piso_seminario], params[:oficina_seminario], params[:detalle_oficina_seminario], params[:calle_seminario], params[:detalle_calle_seminario], params[:urbanizacion_seminario], params[:detalle_urbanizacion_seminario], params[:estado_seminario], params[:ciudad_seminario], params[:municipio_seminario], params[:parroquia_seminario], params[:punto_referencia_seminario], params[:codigo_postal_seminario], "SEMINARIOS / CURSOS", params[:telefono1_seminario], params[:telefono2_seminario], params[:telefono3_seminario], params[:fax_seminario], params[:email_seminario]) 
+        COrrespondencia.agregar_correspondencia(@empresa.prefijo, params[:persona_contacto_mercadeo], params[:cargo_mercadeo], params[:edificio_mercadeo], params[:detalle_edificio_mercadeo], params[:piso_mercadeo], params[:detalle_piso_mercadeo], params[:oficina_mercadeo], params[:detalle_oficina_mercadeo], params[:calle_mercadeo], params[:detalle_calle_mercadeo], params[:urbanizacion_mercadeo], params[:detalle_urbanizacion_mercadeo], params[:estado_mercadeo], params[:ciudad_mercadeo], params[:municipio_mercadeo], params[:parroquia_mercadeo], params[:punto_referencia_mercadeo], params[:codigo_postal_mercadeo], "MERCADEO", params[:telefono1_mercadeo], params[:telefono2_mercadeo], params[:telefono3_mercadeo], params[:fax_mercadeo], params[:email_mercadeo])
         
         Gln.generar_legal(@empresa.prefijo.to_s) # Se genera GLN legal
 
         Auditoria.registrar_evento(session[:user_id],"Empresa", "Crear", Time.now, "Prefijo #{@empresa.prefijo}")
-        format.html { redirect_to '/empresas?activacion=true', notice: "Empresa creada satisfactoriamente. Prefijo:#{@empresa.prefijo}   Nombre:#{@empresa.nombre_empresa}" }
+        format.html { redirect_to '/empresas?activacion=true', notice: "EMPRESA CREADA SATISFACTORIAMENTE. PREFIJO:#{@empresa.prefijo}   NOMBRE:#{@empresa.nombre_empresa}" }
 
       else
          format.html { render action: "new" }
@@ -188,7 +194,18 @@ class EmpresasController < ApplicationController
 
     respond_to do |format|
       if @empresa.update_attributes(params[:empresa])
-        format.html { redirect_to '/empresas', notice: "Empresa con prefijo #{@empresa.prefijo} actualizada satisfactoriamente." }
+
+        
+        sincronet = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "COMERCIO ELECTRONICO / SINCRONET"])
+        
+        if (sincronet) # Se verifica si existe el tipo de correspondencia
+          Correspondencia.modificar_correspondencia(@empresa.prefijo, params[:persona_contacto_codificacion], params[:cargo_codificacion], params[:edificio_codificacion], params[:detalle_edificio_codificacion], params[:piso_codificacion], params[:detalle_piso_codificacion], params[:oficina_codificacion], params[:detalle_oficina_codificacion], params[:calle_codificacion], params[:detalle_calle_codificacion], params[:urbanizacion_codificacion], params[:detalle_urbanizacion_codificacion], params[:estado_codificacion], params[:ciudad_codificacion], params[:municipio_codificacion], params[:parroquia_codificacion], params[:punto_referencia_codificacion], params[:codigo_postal_codificacion], params[:telefono1_codificacion], params[:telefono2_codificacion], params[:telefono3_codificacion], params[:fax_codificacion], params[:email_codificacion], "COMERCIO ELECTRONICO / SINCRONET")   
+        else
+          Correspondencia.agregar_correspondencia(@empresa.prefijo, params[:persona_contacto_sincronet], params[:cargo_sincronet], params[:edificio_sincronet], params[:detalle_edificio_sincronet], params[:piso_sincronet], params[:detalle_piso_sincronet], params[:oficina_sincronet], params[:detalle_oficina_sincronet], params[:calle_sincronet], params[:detalle_calle_sincronet], params[:urbanizacion_sincronet], params[:detalle_urbanizacion_sincronet], params[:estado_sincronet], params[:ciudad_sincronet], params[:municipio_sincronet], params[:parroquia_sincronet], params[:punto_referencia_sincronet], params[:codigo_postal_sincronet], "COMERCIO ELECTRONICO / SINCRONET", params[:telefono1_sincronet], params[:telefono2_sincronet], params[:telefono3_sincronet], params[:fax_sincronet], params[:email_sincronet]) 
+        end
+        
+
+        format.html { redirect_to '/empresas', notice: "EMPRESA CON PREFIJO #{@empresa.prefijo} ACTUALIZADA SATISFACTORIAMENTE." }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -198,13 +215,11 @@ class EmpresasController < ApplicationController
   end
 
   def update_multiple
-
     
     Empresa.validar_empresas(params[:activar_empresas]) if params[:activar_empresas] #Parametro que indica Validar Empresa       
     Empresa.retirar_empresas(params) if params[:retiro]
     Empresa.eliminar_empresas(params) if params[:eliminar]
     Empresa.reactivar_empresas_retiradas(params) if params[:reactivar]
-     
     
     @procesadas = ""
     params[:activar_empresas].collect{|prefijo| @procesadas += prefijo + " " } if params[:activar_empresas]
@@ -214,7 +229,7 @@ class EmpresasController < ApplicationController
 
     respond_to do |format|
           format.html { 
-          redirect_to '/empresas', notice: "Los Prefijos #{@procesadas} fueron activados."  if params[:activar_empresas]
+          redirect_to '/empresas', notice: "PREFIJO #{@procesadas} ACTIVADO"  if params[:activar_empresas]
           redirect_to '/empresas?retiradas=true', notice: "Los Prefijos #{@procesadas} fueron retirados."  if params[:retiro]
           redirect_to '/empresas?eliminadas=true', notice: "Los Prefijos #{@procesadas} fueron eliminados."  if params[:eliminar_empresas]
           redirect_to '/empresas', notice: "Los Prefijos #{@procesadas} fueron reactivados satisfactoriamente." if params[:reactivar]  # Empresasa eliminadas que se reactivan

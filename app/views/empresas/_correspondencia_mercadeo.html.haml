@@ -1,0 +1,44 @@
+%br
+  %label.contexto
+    d. DIRECCION PARA ENVIO DE INVITACIONES A EVENTOS ESPECIALES (MERCADEO)
+  %hr.contexto{:size => "1"}
+
+    %table
+      %tr
+        %td
+          NOMBRE PERSONA CONTACTO
+        %td
+          =@empresa.new_record? ? (text_field_tag :persona_contacto_mercadeo) : (text_field_tag :persona_contacto_mercadeo, @correspondencia_mercadeo.rep_tecnico)
+      %tr
+        %td
+          CARGO
+        %td
+          =@empresa.new_record? ? (text_field_tag :cargo_mercadeo) : (text_field_tag :persona_contacto_mercadeo, @correspondencia_mercadeo.cargo_rep_tecnico)
+      %tr
+        %td
+          Teléfono 1 (58)
+        %td
+          =@empresa.new_record? ? (text_field_tag :telefono1_mercadeo) : (text_field_tag :telefono1_mercadeo, @correspondencia_mercadeo.telefono1)
+      %tr
+        %td
+          Teléfono 2 (58)
+        %td
+          =@empresa.new_record? ? (text_field_tag :telefono2_mercadeo) : (text_field_tag :telefono2_mercadeo, @correspondencia_mercadeo.telefono2)
+          
+      %tr
+        %td
+          Teléfono 3 (58)
+        %td
+          =@empresa.new_record? ? (text_field_tag :telefono3_mercadeo) : (text_field_tag :telefono3_mercadeo, @correspondencia_mercadeo.telefono3)
+          
+      %tr
+        %td
+          Fax (58)
+        %td
+          =@empresa.new_record? ? (text_field_tag :fax_mercadeo) : (text_field_tag :fax_mercadeo, @correspondencia_mercadeo.fax)
+          
+      %tr
+        %td
+          E-mail
+        %td
+          =@empresa.new_record? ? (text_field_tag :email_mercadeo, nil, {:class => "email"}) : (text_field_tag :email_mercadeo, @correspondencia_mercadeo.email, {:class => "email"})

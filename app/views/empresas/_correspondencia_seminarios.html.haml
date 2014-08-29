@@ -1,0 +1,45 @@
+%br
+  %label.contexto
+    c. DIRECCION PARA ENVIO DE INFORMACION SOBRE SEMINARIOS Y CURSOS (RECURSOS HUMANOS)
+  %hr.contexto{:size => "1"}
+
+    %table
+      %tr
+        %td
+          NOMBRE PERSONA CONTACTO
+        %td
+          =@empresa.new_record? ? (text_field_tag :persona_contacto_seminario) : (text_field_tag :persona_contacto_seminario, @correspondencia_seminarios.rep_tecnico)
+      %tr
+        %td
+          CARGO
+        %td
+          =@empresa.new_record? ? (text_field_tag :cargo_seminario) : (text_field_tag :persona_contacto_seminario, @correspondencia_seminarios.cargo_rep_tecnico)
+      %tr
+        %td
+          Teléfono 1 (58)
+        %td
+          =@empresa.new_record? ? (text_field_tag :telefono1_seminario) : (text_field_tag :telefono1_seminario, @correspondencia_seminarios.telefono1)
+      %tr
+        %td
+          Teléfono 2 (58)
+        %td
+          =@empresa.new_record? ? (text_field_tag :telefono2_seminario) : (text_field_tag :telefono2_seminario, @correspondencia_seminarios.telefono2)
+          
+      %tr
+        %td
+          Teléfono 3 (58)
+        %td
+          =@empresa.new_record? ? (text_field_tag :telefono3_seminario) : (text_field_tag :telefono3_seminario, @correspondencia_seminarios.telefono3)
+          
+      %tr
+        %td
+          Fax (58)
+        %td
+          =@empresa.new_record? ? (text_field_tag :fax_seminario) : (text_field_tag :fax_seminario, @correspondencia_seminarios.fax)
+          
+      %tr
+        %td
+          E-mail
+        %td
+          =@empresa.new_record? ? (text_field_tag :email_seminario, nil, {:class => "email"}) : (text_field_tag :email_seminario, @correspondencia_seminarios.email, {:class => "email"})
+          

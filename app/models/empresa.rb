@@ -335,10 +335,8 @@ class Empresa < ActiveRecord::Base
   end
 
   def self.agregar_contacto(contacto, empresa, tipo_contacto)
-    
 
     empresa = Empresa.find(:first, :conditions => ["prefijo = ?", empresa])
-
     
     datos =  empresa.datos_contacto.first
     dato_contacto = DatosContacto.new 
@@ -348,39 +346,6 @@ class Empresa < ActiveRecord::Base
     dato_contacto.nombre_contacto = datos.nombre_contacto
     dato_contacto.cargo_contacto = datos.cargo_contacto
     dato_contacto.save
-
-  end
-
-
-  def self.agregar_correspondencia_codificacion_gs1(prefijo, persona_contacto, cargo, edificio, detalle_edificio,piso,  detalle_piso, oficina, detalle_oficina, calle, detalle_calle, urbanizacion, detalle_urbanizacion, estado, ciudad, municipio, parroquia, punto_referencia, codigo_postal, tipo_correspondencia, telefono1, telefono2,telefono3, fax, email)
-  
-  correspondencia = Correspondencia.new
-  correspondencia.prefijo = prefijo
-  correspondencia.rep_tecnico = persona_contacto
-  correspondencia.cargo_rep_tecnico = cargo
-  correspondencia.edificio = edificio
-  correspondencia.piso = piso
-  correspondencia.detalle_piso = detalle_piso
-  correspondencia.oficina
-  correspondencia.detalle_oficina
-  correspondencia.calle = calle
-  correspondencia.detalle_calle
-  correspondencia.urbanizacion = urbanizacion
-  correspondencia.detalle_urbanizacion = detalle_urbanizacion
-  correspondencia.id_estado = estado
-  correspondencia.id_ciudad = ciudad
-  correspondencia.id_municipio = municipio
-  correspondencia.nombre_parroquia = parroquia
-  correspondencia.cod_postal = codigo_postal
-  correspondencia.punto_referencia = punto_referencia
-  correspondencia.tipo_correspondencia = tipo_correspondencia
-  correspondencia.telefono1 = telefono1
-  correspondencia.telefono2 = telefono2
-  correspondencia.telefono3 = telefono3
-  correspondencia.fax = fax
-  correspondencia.email = email
-  correspondencia.save
-  raise correspondencia.errors.to_yaml if correspondencia.errors.any?
 
   end
 
