@@ -9,7 +9,7 @@
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',
             sAjaxSource: $('#data_table_empresas').data('source')
-        }).columnFilter({ aoColumns: [{ type: "text"}, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [{ type: "text"}, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}]});
 
         $('#data_table_empresas input').attr("placeholder", "Buscar");
 
@@ -23,7 +23,7 @@
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',
             sAjaxSource: $('#data_table_empresas_activacion').data('source')
-        }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}]});
 
         $('#data_table_empresas_activacion input').attr("placeholder", "Buscar");
 
@@ -82,7 +82,7 @@
         
         if (window.location.pathname.split('/')[3] != 'edit')
         {
-            $("#empresa_fecha_inscripcion").datepicker();
+            $("#empresa_fecha_registro_mercantil").datepicker();
         }
 
         // Actualizar la ciudad dependiendo del estado seleccionado - Datos Basicos
@@ -187,11 +187,13 @@
         });
 
         $('#activar_empresa').submit(function( event ) {
+            
+
             if ($(".activar_empresa:checked").length == 0)
             {
                 alert("Estimado usuario, no ha seleccionado ninguna empresa para ACTIVAR. Por favor verifique.");
                 return false;
-            } 
+            }
 
         });
 
@@ -358,10 +360,9 @@
                 '<input name="prefijo" type="hidden" value="'+$('tfoot tr th:nth-child(1) span input').val()+'">'+
                 '<input name="nombre_empresa" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
                 '<input name="fecha_inscripcion" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
-                '<input name="estado" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
-                '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
-                '<input name="rif" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
-                '<input name="estatus" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'
+                '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="rif" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'
+                
             );
 
         });
@@ -421,10 +422,8 @@
                 '<input name="prefijo" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
                 '<input name="nombre_empresa" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
                 '<input name="fecha_inscripcion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
-                '<input name="direccion_empresa" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
-                '<input name="estado" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
-                '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
-                '<input name="rif" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="rif" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
                 '<input name="activacion" type="hidden" value="true">'
             );
 

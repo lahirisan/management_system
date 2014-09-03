@@ -30,11 +30,10 @@ private
         empresa.prefijo,
         empresa.nombre_empresa,
         fecha,
-        empresa.direccion_empresa,
-        empresa.estado.nombre,
         empresa.ciudad.nombre,
         empresa.rif,
-        empresa.estatus.descripcion
+        empresa.estatus.descripcion.upcase,
+        empresa.try(:ventas_brutas_anuales) 
        
       ]
 
@@ -54,10 +53,8 @@ private
     if params[:sSearch].present? # Filtro de busqueda general
       empresas = empresas.where("empresa.nombre_empresa like :search or empresa.fecha_inscripcion like :search or empresa.direccion_empresa like :search or estados.nombre like :search or ciudad.nombre like :search or empresa.rif like :search or estatus.descripcion like :search or empresa.id_tipo_usuario like :search or empresa.nombre_comercial like :search or empresa.id_clasificacion like :search or empresa.categoria like :search or empresa.division like :search or empresa.grupo like :search or empresa.clase like :search or empresa.rep_legal like :search or empresa.cargo_rep_legal like :search", search: "%#{params[:sSearch]}%")
     end
-    
     if params[:sSearch_1].present? # Filtro de busqueda por nombre de la empresa
        empresas = empresas.where("empresa.prefijo like :search1", search1: "%#{params[:sSearch_1]}%" )
-      
     end
     if params[:sSearch_2].present? # Filtro fecha_inscripcion
       empresas = empresas.where("empresa.nombre_empresa like :search2", search2: "%#{params[:sSearch_2]}%" )
@@ -66,19 +63,10 @@ private
       empresas = empresas.where("empresa.fecha_inscripcion like :search3", search3: "%#{params[:sSearch_3]}%" )
     end
     if params[:sSearch_4].present?
-      empresas = empresas.where("empresa.direccion_empresa like :search4", search4: "%#{params[:sSearch_4]}%" )
+      empresas = empresas.where("ciudad.nombre like :search4", search4: "%#{params[:sSearch_4]}%" )
     end
     if params[:sSearch_5].present?
-      empresas = empresas.where("estados.nombre like :search5", search5: "%#{params[:sSearch_5]}%" )
-    end
-    if params[:sSearch_6].present?
-      empresas = empresas.where("ciudad.nombre like :search6", search6: "%#{params[:sSearch_6]}%" )
-    end
-    if params[:sSearch_7].present?
-      empresas = empresas.where("empresa.rif like :search7", search7: "%#{params[:sSearch_7]}%" )
-    end
-    if params[:sSearch_8].present?
-      empresas = empresas.where("estatus.descripcion like :search8", search8: "%#{params[:sSearch_8]}%" )
+      empresas = empresas.where("empresa.rif like :search5", search5: "%#{params[:sSearch_5]}%" )
     end
     
     empresas
@@ -94,7 +82,7 @@ private
 
   def sort_column
 
-     columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_inscripcion empresa.direccion_empresa estados.nombre ciudad.nombre empresa.rif  estatus.descripcion empresa.id_tipo_usuario empresa.nombre_comercial empresa.id_clasificacion empresa.categoria empresa.division empresa.grupo empresa.clase empresa.rep_legal empresa.cargo_rep_legal]
+     columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_inscripcion ciudad.nombre empresa.rif  estatus.descripcion empresa.id_tipo_usuario empresa.nombre_comercial empresa.id_clasificacion empresa.categoria empresa.division empresa.grupo empresa.clase empresa.rep_legal empresa.cargo_rep_legal]
      columns[params[:iSortCol_0].to_i]
   end
 

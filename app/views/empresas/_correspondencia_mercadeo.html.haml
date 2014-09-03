@@ -8,37 +8,58 @@
         %td
           NOMBRE PERSONA CONTACTO
         %td
-          =@empresa.new_record? ? (text_field_tag :persona_contacto_mercadeo) : (text_field_tag :persona_contacto_mercadeo, @correspondencia_mercadeo.rep_tecnico)
+          -if (@empresa.new_record?) or (@correspondencia_mercadeo.nil?)
+            =(text_field_tag :persona_contacto_mercadeo)
+          -else
+            =(text_field_tag :persona_contacto_mercadeo, @correspondencia_mercadeo.try(:rep_tecnico))
       %tr
         %td
           CARGO
         %td
-          =@empresa.new_record? ? (text_field_tag :cargo_mercadeo) : (text_field_tag :persona_contacto_mercadeo, @correspondencia_mercadeo.cargo_rep_tecnico)
+          -if (@empresa.new_record?) or (@correspondencia_mercadeo.nil?)
+            =(text_field_tag :cargo_mercadeo) 
+          -else
+            =(text_field_tag :cargo_mercadeo, @correspondencia_mercadeo.try(:cargo_rep_tecnico))
       %tr
         %td
           Teléfono 1 (58)
         %td
-          =@empresa.new_record? ? (text_field_tag :telefono1_mercadeo) : (text_field_tag :telefono1_mercadeo, @correspondencia_mercadeo.telefono1)
+          -if (@empresa.new_record?) or (@correspondencia_mercadeo.nil?)
+            =(text_field_tag :telefono1_mercadeo) 
+          -else
+            =(text_field_tag :telefono1_mercadeo, @correspondencia_mercadeo.try(:telefono1))
       %tr
         %td
           Teléfono 2 (58)
         %td
-          =@empresa.new_record? ? (text_field_tag :telefono2_mercadeo) : (text_field_tag :telefono2_mercadeo, @correspondencia_mercadeo.telefono2)
+          -if (@empresa.new_record?) or (@correspondencia_mercadeo.nil?)
+            =(text_field_tag :telefono2_mercadeo)
+          -else
+            =(text_field_tag :telefono2_mercadeo, @correspondencia_mercadeo.try(:telefono2))
           
       %tr
         %td
           Teléfono 3 (58)
         %td
-          =@empresa.new_record? ? (text_field_tag :telefono3_mercadeo) : (text_field_tag :telefono3_mercadeo, @correspondencia_mercadeo.telefono3)
+          -if (@empresa.new_record?) or (@correspondencia_mercadeo.nil?)
+            =(text_field_tag :telefono3_mercadeo) 
+          -else
+            =(text_field_tag :telefono3_mercadeo, @correspondencia_mercadeo.try(:telefono3))
           
       %tr
         %td
           Fax (58)
         %td
-          =@empresa.new_record? ? (text_field_tag :fax_mercadeo) : (text_field_tag :fax_mercadeo, @correspondencia_mercadeo.fax)
+          -if (@empresa.new_record?) or (@correspondencia_mercadeo.nil?)
+            =(text_field_tag :fax_mercadeo) 
+          -else
+            =(text_field_tag :fax_mercadeo, @correspondencia_mercadeo.try(:fax))
           
       %tr
         %td
           E-mail
         %td
-          =@empresa.new_record? ? (text_field_tag :email_mercadeo, nil, {:class => "email"}) : (text_field_tag :email_mercadeo, @correspondencia_mercadeo.email, {:class => "email"})
+          -if (@empresa.new_record?) or (@correspondencia_mercadeo.nil?)
+            =(text_field_tag :email_mercadeo, nil, {:class => "email"})
+          -else
+            =(text_field_tag :email_mercadeo, @correspondencia_mercadeo.try(:email), {:class => "email"})

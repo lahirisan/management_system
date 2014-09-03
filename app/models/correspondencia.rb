@@ -6,7 +6,7 @@ class Correspondencia < ActiveRecord::Base
    belongs_to :ciudad, :foreign_key => "id_ciudad"
    belongs_to :municipio, :foreign_key => "id_municipio"
    belongs_to :parroquia, :foreign_key => "id_parroquia"
-   validates :rep_tecnico,   :presence => {:message => "No puede estar en blanco"}, :on => :create
+   #validates :rep_tecnico,   :presence => {:message => "No puede estar en blanco"}, :on => :create
 
    def self.modificar_etiqueta(parametros)
 
@@ -62,7 +62,7 @@ class Correspondencia < ActiveRecord::Base
 
   def self.modificar_correspondencia(prefijo, persona_contacto, cargo, edificio, detalle_edificio, piso, detalle_piso, oficina, detalle_oficina, calle, detalle_calle, urbanizacion, detalle_urbanizacion, estado, ciudad, municipio, parroquia, punto_referencia, codigo_postal, telefono1, telefono2, telefono3, fax, email, tipo)
 
-   correspondencia = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", prefijo, "CODIFICACION GS1"])
+   correspondencia = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", prefijo, tipo])
 
    correspondencia.rep_tecnico = persona_contacto
    correspondencia.cargo_rep_tecnico = cargo

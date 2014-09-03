@@ -7,12 +7,6 @@ end
 if params[:fecha_inscripcion] != ''
   @empresas = @empresas.where("empresa.fecha_inscripcion like :search", search: "%#{params[:fecha_inscripcion]}%" )
 end
-if params[:direccion_empresa] != ''
-  @empresas = @empresas.where("empresa.direccion_empresa like :search", search: "%#{params[:direccion_empresa]}%" )
-end
-if params[:estado] != ''
-  @empresas = @empresas.where("estados.nombre like :search", search: "%#{params[:estado]}%" )
-end
 if params[:ciudad] != ''
   @empresas = @empresas.where("ciudad.nombre like :search", search: "%#{params[:ciudad]}%" )
 end

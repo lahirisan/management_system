@@ -32,87 +32,145 @@
             =text_field_tag :detalle_edificio_sincronet
           -else
             =text_field_tag :detalle_edificio_sincronet, @correspondencia_sincronet.try(:detalle_edificio)
-      / %tr
-      /   %td
-      /     =@empresa.new_record? ? (select_tag(:piso_sincronet, options_for_select(['Piso', 'Nº']), { :prompt => "- Piso/Nº -"})) : (select_tag(:piso_sincronet, options_for_select(['Piso', 'Nº'], @correspondencia_sincronet.piso), { :prompt => "- Piso/Nº -"})) 
+      %tr
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =select_tag(:piso_sincronet, options_for_select(['Piso', 'Nº']), { :prompt => "- Piso/Nº -"})
+          -else
+            =select_tag(:piso_sincronet, options_for_select(['Piso', 'Nº'], @correspondencia_sincronet.try(:piso)), { :prompt => "- Piso/Nº -"})
           
-      /   %td
-      /     =@empresa.new_record? ? (text_field_tag :detalle_piso_sincronet) : (text_field_tag :detalle_piso_sincronet, @correspondencia_sincronet.detalle_piso)
-      / %tr
-      /   %td
-      /     =@empresa.new_record? ? (select_tag(:oficina_sincronet, options_for_select(['Oficina', 'Apartamento']), { :prompt => "-Oficina/Apartamento-"})) : (select_tag(:oficina_sincronet, options_for_select(['Oficina', 'Apartamento'], @correspondencia_sincronet.oficina), { :prompt => "-Oficina/Apartamento-"}))
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =text_field_tag :detalle_piso_sincronet 
+          -else
+            =text_field_tag :detalle_piso_sincronet, @correspondencia_sincronet.try(:detalle_piso)
+      %tr
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =select_tag(:oficina_sincronet, options_for_select(['Oficina', 'Apartamento']), { :prompt => "-Oficina/Apartamento-"})
+          -else 
+            =select_tag(:oficina_sincronet, options_for_select(['Oficina', 'Apartamento'], @correspondencia_sincronet.try(:oficina)), { :prompt => "-Oficina/Apartamento-"})
           
-      /   %td
-      /     =@empresa.new_record? ? (text_field_tag :detalle_oficina_sincronet) : (text_field_tag :detalle_oficina_sincronet, @correspondencia_sincronet.detalle_oficina) 
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =text_field_tag :detalle_oficina_sincronet 
+          -else
+            =text_field_tag :detalle_oficina_sincronet, @correspondencia_sincronet.try(:detalle_oficina) 
           
-      / %tr
-      /   %td
-      /     =@empresa.new_record? ? (select_tag(:calle_sincronet, options_for_select(['Avenida', 'Calle']), { :prompt => "- Avenida/Calle -"})) : (select_tag(:calle_sincronet, options_for_select(['Avenida', 'Calle'], @correspondencia_sincronet.calle), { :prompt => "- Avenida/Calle -"}))
+      %tr
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =(select_tag(:calle_sincronet, options_for_select(['Avenida', 'Calle']), { :prompt => "- Avenida/Calle -"}))
+          -else
+            =(select_tag(:calle_sincronet, options_for_select(['Avenida', 'Calle'], @correspondencia_sincronet.try(:calle)), { :prompt => "- Avenida/Calle -"}))
           
-      /   %td
-      /     =@empresa.new_record? ? (text_field_tag :detalle_calle_sincronet) : (text_field_tag :detalle_calle_sincronet, @correspondencia_sincronet.detalle_calle)
-      / %tr
-      /   %td
-      /     =@empresa.new_record? ? ((select_tag(:urbanizacion_sincronet, options_for_select(['Urbanización', 'Barrio', 'Sector', 'Terraza']), { :prompt => "- Urb./Barrio/Sector/Terraza -"}))) : (select_tag(:urbanizacion_sincronet, options_for_select(['Urbanización', 'Barrio', 'Sector', 'Terraza'], @correspondencia_sincronet.urbanizacion), { :prompt => "- Urb./Barrio/Sector/Terraza -"}))
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =(text_field_tag :detalle_calle_sincronet)
+          -else
+            =(text_field_tag :detalle_calle_sincronet, @correspondencia_sincronet.try(:detalle_calle))
+      %tr
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =((select_tag(:urbanizacion_sincronet, options_for_select(['Urbanización', 'Barrio', 'Sector', 'Terraza']), { :prompt => "- Urb./Barrio/Sector/Terraza -"}))) 
+          -else
+            =(select_tag(:urbanizacion_sincronet, options_for_select(['Urbanización', 'Barrio', 'Sector', 'Terraza'], @correspondencia_sincronet.try(:urbanizacion)), { :prompt => "- Urb./Barrio/Sector/Terraza -"}))
           
-      /   %td
-      /     =@empresa.new_record? ? (text_field_tag :detalle_urbanizacion_sincronet) : (text_field_tag :detalle_urbanizacion_sincronet, @correspondencia_sincronet.detalle_urbanizacion)
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =(text_field_tag :detalle_urbanizacion_sincronet) 
+          -else
+            =(text_field_tag :detalle_urbanizacion_sincronet, @correspondencia_sincronet.try(:detalle_urbanizacion))
           
-      / %tr
-      /   %td
-      /     ESTADO
-      /   %td
-      /     =@empresa.new_record? ? (select_tag :estado_sincronet, options_from_collection_for_select(Estado.find(:all, :order => "nombre ASC"), :id, :nombre), {:prompt => '-Seleccione Estado-'}) : (select_tag :estado_sincronet, options_from_collection_for_select(Estado.find(:all, :order => "nombre ASC"), :id, :nombre, @correspondencia_sincronet.id_estado), {:prompt => '-Seleccione Estado-'})
-      / %tr
-      /   %td
-      /     CIUDAD
-      /   %td
-      /     =@empresa.new_record? ? (select_tag :ciudad_sincronet,  options_from_collection_for_select(Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre), {:prompt => '-Seleccione Ciudad-'}) : (select_tag :ciudad_sincronet,  options_from_collection_for_select(Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, @correspondencia_sincronet.id_ciudad), {:prompt => '-Seleccione Ciudad-'})
+      %tr
+        %td
+          ESTADO
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =(select_tag :estado_sincronet, options_from_collection_for_select(Estado.find(:all, :order => "nombre ASC"), :id, :nombre), {:prompt => '-Seleccione Estado-'}) 
+          -else
+            =(select_tag :estado_sincronet, options_from_collection_for_select(Estado.find(:all, :order => "nombre ASC"), :id, :nombre, @correspondencia_sincronet.try(:id_estado)), {:prompt => '-Seleccione Estado-'})
+      %tr
+        %td
+          CIUDAD
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =(select_tag :ciudad_sincronet,  options_from_collection_for_select(Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre), {:prompt => '-Seleccione Ciudad-'}) 
+          -else
+            =(select_tag :ciudad_sincronet,  options_from_collection_for_select(Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, @correspondencia_sincronet.try(:id_ciudad)), {:prompt => '-Seleccione Ciudad-'})
           
-      / %tr
-      /   %td
-      /     MUNICIPIO
-      /   %td
-      /     =@empresa.new_record? ? (select_tag :municipio_sincronet,  options_from_collection_for_select(Municipio.find(:all, :order => "nombre ASC"), :id, :nombre), {:prompt => '-Seleccione Municipio-'}) : (select_tag :municipio_sincronet,  options_from_collection_for_select(Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, @correspondencia_sincronet.id_municipio), {:prompt => '-Seleccione Municipio-'})
+      %tr
+        %td
+          MUNICIPIO
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =(select_tag :municipio_sincronet,  options_from_collection_for_select(Municipio.find(:all, :order => "nombre ASC"), :id, :nombre), {:prompt => '-Seleccione Municipio-'})
+          -else 
+            =(select_tag :municipio_sincronet,  options_from_collection_for_select(Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, @correspondencia_sincronet.try(:id_municipio)), {:prompt => '-Seleccione Municipio-'})
           
-      / %tr
-      /   %td
-      /     PARROQUIA
-      /   %td
-      /     =@empresa.new_record? ? (text_field_tag :parroquia_sincronet) : (text_field_tag :parroquia_sincronet, @correspondencia_sincronet.nombre_parroquia)
+      %tr
+        %td
+          PARROQUIA
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =(text_field_tag :parroquia_sincronet) 
+          -else
+            =(text_field_tag :parroquia_sincronet, @correspondencia_sincronet.try(:nombre_parroquia))
           
-      / %tr
-      /   %td
-      /     Punto Referencia
-      /   %td
-      /     =@empresa.new_record? ? (text_field_tag :punto_referencia_sincronet) : (text_field_tag :parroquia_sincronet, @correspondencia_sincronet.punto_referencia)
-      / %tr
-      /   %td
-      /     Código Postal
-      /   %td
-      /     =@empresa.new_record? ? (text_field_tag :codigo_postal_sincronet) : (text_field_tag :codigo_postal_sincronet, @correspondencia_sincronet.cod_postal)
-      / %tr
-      /   %td
-      /     Teléfono 1 (58)
-      /   %td
-      /     =@empresa.new_record? ? (text_field_tag :telefono1_sincronet) : (text_field_tag :codigo_postal_sincronet, @correspondencia_sincronet.telefono1)
-      / %tr
-      /   %td
-      /     Teléfono 2 (58)
-      /   %td
-      /     =@empresa.new_record? ? (text_field_tag :telefono2_sincronet) :  (text_field_tag :telefono2_sincronet, @correspondencia_sincronet.telefono2)
-      / %tr
-      /   %td
-      /     Teléfono 3 (58)
-      /   %td
-      /     =@empresa.new_record? ? (text_field_tag :telefono3_sincronet) : (text_field_tag :telefono3_sincronet, @correspondencia_sincronet.telefono3)
-      / %tr
-      /   %td
-      /     Fax (58)
-      /   %td
-      /     =@empresa.new_record? ? (text_field_tag :fax_sincronet) : (text_field_tag :fax_sincronet, @correspondencia_sincronet.fax)
-      / %tr
-      /   %td
-      /     E-mail
-      /   %td
-      /     =@empresa.new_record? ? (text_field_tag :email_sincronet, nil, {:class => "email"}) : (text_field_tag :email_sincronet, @correspondencia_sincronet.email, {:class => "email"})
+      %tr
+        %td
+          Punto Referencia
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =(text_field_tag :punto_referencia_sincronet)
+          -else
+            =(text_field_tag :punto_referencia_sincronet, @correspondencia_sincronet.try(:punto_referencia))
+      %tr
+        %td
+          Código Postal
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =(text_field_tag :codigo_postal_sincronet) 
+          -else
+            =(text_field_tag :codigo_postal_sincronet, @correspondencia_sincronet.try(:cod_postal))
+
+      %tr
+        %td
+          Teléfono 1 (58)
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =(text_field_tag :telefono1_sincronet)
+          -else
+            =(text_field_tag :telefono1_sincronet, @correspondencia_sincronet.try(:telefono1))
+      %tr
+        %td
+          Teléfono 2 (58)
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =(text_field_tag :telefono2_sincronet) 
+          -else
+            =(text_field_tag :telefono2_sincronet, @correspondencia_sincronet.try(:telefono2))
+      %tr
+        %td
+          Teléfono 3 (58)
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =(text_field_tag :telefono3_sincronet) 
+          -else
+            =(text_field_tag :telefono3_sincronet, @correspondencia_sincronet.try(:telefono3))
+      %tr
+        %td
+          Fax (58)
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =(text_field_tag :fax_sincronet) 
+          -else
+            =(text_field_tag :fax_sincronet, @correspondencia_sincronet.try(:fax))
+      %tr
+        %td
+          E-mail
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_sincronet.nil?)
+            =(text_field_tag :email_sincronet, nil, {:class => "email"})
+          -else
+            =(text_field_tag :email_sincronet, @correspondencia_sincronet.try(:email), {:class => "email"})

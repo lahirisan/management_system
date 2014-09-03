@@ -30,7 +30,6 @@ private
           empresa.prefijo,
           empresa.nombre_empresa,
           fecha,
-          empresa.estado.nombre,
           empresa.ciudad.nombre,
           empresa.rif,
           empresa.estatus.descripcion,
@@ -48,7 +47,6 @@ private
           empresa.prefijo,
           empresa.nombre_empresa,
           fecha,
-          empresa.estado.nombre,
           empresa.ciudad.nombre,
           empresa.rif,
           empresa.estatus.descripcion,
@@ -86,17 +84,15 @@ private
     if params[:sSearch_2].present? # Filtro fecha_inscripcion
       empresas = empresas.where("empresa.fecha_inscripcion like :search2", search2: "%#{params[:sSearch_2]}%" )
     end
+   
     if params[:sSearch_3].present?
-      empresas = empresas.where("estados.nombre like :search3", search3: "%#{params[:sSearch_3]}%" )
+      empresas = empresas.where("ciudad.nombre like :search3", search3: "%#{params[:sSearch_3]}%" )
     end
     if params[:sSearch_4].present?
-      empresas = empresas.where("ciudad.nombre like :search4", search4: "%#{params[:sSearch_4]}%" )
+      empresas = empresas.where("empresa.rif like :search4", search4: "%#{params[:sSearch_4]}%" )
     end
     if params[:sSearch_5].present?
-      empresas = empresas.where("empresa.rif like :search5", search5: "%#{params[:sSearch_5]}%" )
-    end
-    if params[:sSearch_6].present?
-      empresas = empresas.where("estatus.descripcion like :search6", search6: "%#{params[:sSearch_6]}%" )
+      empresas = empresas.where("estatus.descripcion like :search5", search5: "%#{params[:sSearch_5]}%" )
     end
 
     empresas
@@ -112,7 +108,7 @@ private
 
   def sort_column
 
-     columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_inscripcion estados.nombre ciudad.nombre empresa.rif  estatus.descripcion ]
+     columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_inscripcion ciudad.nombre empresa.rif  estatus.descripcion ]
      columns[params[:iSortCol_0].to_i]
   end
 

@@ -9,8 +9,5 @@ class ModificarEmpresa < ActiveRecord::Migration
     add_column :empresa, :cedula_responsable_legal, :string
     add_column :empresa, :ventas_brutas_anuales, :string
 
-    add_column :empresa, :created_at, :datetime
-    add_column :empresa, :updated_at, :datetime
-
   end
 end
