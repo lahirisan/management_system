@@ -9,7 +9,9 @@
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',
             sAjaxSource: $('#data_table_empresas').data('source')
-        }).columnFilter({ aoColumns: [{ type: "text"}, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [{ type: "text"}, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, null, {type: "text"}]});
+
+
 
         $('#data_table_empresas input').attr("placeholder", "Buscar");
 
@@ -23,9 +25,19 @@
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',
             sAjaxSource: $('#data_table_empresas_activacion').data('source')
-        }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
 
         $('#data_table_empresas_activacion input').attr("placeholder", "Buscar");
+
+        $("#data_table_empresas_sub_estatus").dataTable({
+            sPaginationType: "full_numbers",
+            aaSorting: [[ 2, "desc" ]],
+            bJQueryUI: true,
+            bProcessing: true,
+            bServerSide: true,
+            sDom: 'T<"clear">lfrtip',
+            sAjaxSource: $('#data_table_empresas_sub_estatus').data('source')
+        }).columnFilter({ aoColumns: [null, { type: "text"}, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, null, {type: "text"}]});
 
         // Datatable que maneja el listado para retirar empresas
         $("#data_table_empresas_retirar").dataTable({

@@ -24,7 +24,9 @@ class EmpresasController < ApplicationController
                   elsif params[:retiradas] 
                     render :template =>'/empresas/empresas_retiradas.html.haml'
                   elsif params[:reactivar]
-                    render :template =>'/empresas/empresas_reactivar.html.haml'   
+                    render :template =>'/empresas/empresas_reactivar.html.haml'
+                  elsif params[:sub_estatus]
+                    render :template =>'/empresas/sub_estatus.html.haml'
                   else
                     render :template =>'/empresas/index.html.haml'
                   end
@@ -45,6 +47,8 @@ class EmpresasController < ApplicationController
                       render json: (EmpresasRetiradasDatatable.new(view_context))
                     elsif (params[:reactivar] == 'true')
                       render json: (ReactivarEmpresasDatatable.new(view_context))
+                    elsif (params[:sub_estatus] == 'true')
+                      render json: (EmpresasSubEstatusDatatable.new(view_context))
                     else
                       render json: (EmpresasDatatable.new(view_context))
                     end
@@ -238,6 +242,8 @@ class EmpresasController < ApplicationController
   end
 
   def update_multiple
+
+    raise params.to_yaml
    
     Empresa.validar_empresas(params[:activar_empresas], params) if params[:activar_empresas] #Parametro que indica Validar Empresa       
     Empresa.retirar_empresas(params) if params[:retiro]

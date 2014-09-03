@@ -82,7 +82,7 @@ private
 
   def sort_column
 
-     columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_inscripcion ciudad.nombre empresa.rif  estatus.descripcion empresa.id_tipo_usuario empresa.nombre_comercial empresa.id_clasificacion empresa.categoria empresa.division empresa.grupo empresa.clase empresa.rep_legal empresa.cargo_rep_legal]
+     columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_inscripcion ciudad.nombre empresa.rif estatus.descripcion empresa.ventas_brutas_anuales]
      columns[params[:iSortCol_0].to_i]
   end
 
