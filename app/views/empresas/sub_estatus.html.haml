@@ -1,0 +1,40 @@
+%section.contexto
+    %label.contexto Empresas Activas > Listado > Sub Estatus
+    %hr.contexto{:size => "1"}
+%section#areaTrabajo.areaTrabajo
+    %p#notice= notice
+    
+    =render 'botones_exportar'
+
+    =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_sub_estatus_administrativo" do
+
+        %table#data_table_empresas_sub_estatus.display{:"data-source" => "/empresas.json?sub_estatus=true"}
+            %thead
+                %tr
+                    %th Selección
+                    %th Prefijo
+                    %th Nombre Empresa
+                    %th Fecha Activación
+                    %th Ciudad
+                    %th RIF
+                    %th Estatus
+                    %th Sub Estatus
+                    %th Detalle Empresa
+                    
+                   
+            %tbody
+            %tfoot
+                /=render 'footer'
+
+        %br
+        %br
+        =hidden_field_tag "sub_estatus", "true"
+        %button#submit.ui-state-default.ui-corner-all.retirar{:type => "submit", :id => "modificar_sub_estatus", :title => "Guarda sub estatus administrativo asignado"}
+            %span.ui-icon.ui-icon-folder-collapsed
+            Guardar
+
+        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
+            %span.ui-icon.ui-icon-arrowreturnthick-1-w
+            Regresar
+        
+    
