@@ -55,13 +55,13 @@
         // Datatable que maneja el listado para empresas retiradas
         $("#data_table_empresas_retiradas").dataTable({
             sPaginationType: "full_numbers",
-            aaSorting: [[ 5, "desc" ]],
+            aaSorting: [[ 4, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',
             sAjaxSource: $('#data_table_empresas_retiradas').data('source')
-        }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},null,null,null,null, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [{type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},null,null,null,null,  {type: "text"}]});
 
         $('#data_table_empresas_retiradas input').attr("placeholder", "Buscar");
 
@@ -224,13 +224,7 @@
             var seleccion_invalida;
 
             if ($('#retiro_masivo').is(':checked')) // retiro masivo
-            {       
-                if ($("#sub_estatus").val() == 1)
-                {
-                    alert('Estimado usuario, la aplicación detectó que desea retirar empresas MASIVAMENTE. Por favor, verifique que ha seleccionado el SUB ESTATUS que se asignará masivamente.');
-                    seleccion_invalida = true;
-                    return false;
-                }
+            {  
 
                 if ($("#motivo_retiro").val() == 1)
                 {
@@ -241,7 +235,7 @@
 
                 $('.retirar_empresa:checked').each(function() {
                     // Por cada empresa seleccionda se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
-                    $('#datos_empresas_retirar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
+                    $('#datos_empresas_retirar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#motivo_retiro").val()+ '">');
                 });   
             }
             else // múltiple selecccion de empresas a retirar
@@ -249,12 +243,6 @@
                 
                 $('.retirar_empresa:checked').each(function() {
                    
-                    if ($("#"+$(this).val()+"sub_estatus").val() == 1)
-                    {
-                        alert('Debe seleccionar un Sub Estatus para la empresa con prefijo ' + $(this).val());
-                        seleccion_invalida = true;
-                        return false;
-                    }
 
                     if ($("#"+$(this).val()+"motivo_ret").val() == 1)
                     {
@@ -264,7 +252,7 @@
                     }
 
                     // Por cada empresa seleccionda se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
-                    $('#datos_empresas_retirar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
+                    $('#datos_empresas_retirar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
                 });
             }
 

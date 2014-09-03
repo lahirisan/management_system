@@ -243,18 +243,20 @@ class EmpresasController < ApplicationController
 
   def update_multiple
 
-    raise params.to_yaml
    
-    Empresa.validar_empresas(params[:activar_empresas], params) if params[:activar_empresas] #Parametro que indica Validar Empresa       
+    Empresa.validar_empresas(params[:activar_empresas]) if params[:activar_empresas] #Parametro que indica Validar Empresa       
     Empresa.retirar_empresas(params) if params[:retiro]
     Empresa.eliminar_empresas(params) if params[:eliminar]
     Empresa.reactivar_empresas_retiradas(params) if params[:reactivar]
+    Empresa.cambiar_sub_estatus(params) if params[:sub_estatus]
+
     
     @procesadas = ""
     params[:activar_empresas].collect{|prefijo| @procesadas += prefijo + " " } if params[:activar_empresas]
     params[:retirar_empresas].collect{|prefijo| @procesadas += prefijo + " "} if params[:retirar_empresas]
     params[:eliminar_empresas].collect{|prefijo| @procesadas += prefijo + " "} if params[:eliminar_empresas]
     params[:reactivar_empresas].collect{|prefijo| @procesadas += prefijo + " "} if params[:reactivar_empresas]
+    params[:sub_estatus_empresas].collect{|prefijo| @procesadas += prefijo + " "} if params[:sub_estatus]
 
     respond_to do |format|
           format.html { 
@@ -262,6 +264,7 @@ class EmpresasController < ApplicationController
           redirect_to '/empresas?retiradas=true', notice: "Los Prefijos #{@procesadas} fueron retirados."  if params[:retiro]
           redirect_to '/empresas?eliminadas=true', notice: "Los Prefijos #{@procesadas} fueron eliminados."  if params[:eliminar_empresas]
           redirect_to '/empresas', notice: "Los Prefijos #{@procesadas} fueron reactivados satisfactoriamente." if params[:reactivar]  # Empresasa eliminadas que se reactivan
+          redirect_to '/empresas', notice: "Los Prefijos #{@procesadas} fueron modificados sus sub estatus." if params[:sub_estatus]  
         }
     end
   end

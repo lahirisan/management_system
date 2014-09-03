@@ -45,7 +45,7 @@ class Empresa < ActiveRecord::Base
     end 
   end
 
-  def self.validar_empresas(empresas, parametros) # Procedimiento para validar Empresas
+  def self.validar_empresas(empresas) # Procedimiento para validar Empresas
     @estatus_activa = Estatus.find(:first, :conditions => ["descripcion like ?", "Activa"]) # Se busca el ID de Estatus Activa
     @empresas = Empresa.find(:all, :conditions => ["prefijo in (?)", empresas.collect{|prefijo| prefijo}])
     subestatus = SubEstatus.find(:first, :conditions => ["descripcion = ?", "SOLVENTE"]) # La empresa esta solvente
@@ -53,11 +53,16 @@ class Empresa < ActiveRecord::Base
 
   end
 
+  def self.cambiar_sub_estatus(parametros)
+    parametros[:sub_estatus_empresas].collect{|empresa_seleccionada|  empresa = Empresa.find(empresa_seleccionada); empresa.id_subestatus = parametros[:"#{empresa.prefijo}"].to_i; empresa.save}
+
+  end
+
   def self.retirar_empresas(parametros)
     
     #En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
     # OJO: Esto se puede optimizar actualizando masivamente // Refrencia RailCast 198
-
+  
       for retirar_empresas in (0..parametros[:retirar_empresas].size-1)
        
         empresa_seleccionada = parametros[:retirar_empresas][retirar_empresas]
@@ -67,8 +72,7 @@ class Empresa < ActiveRecord::Base
         empresa_retirar.prefijo = retirar_datos.split('_')[0]
         fecha_retiro = Time.now
         empresa_retirar.fecha_retiro = fecha_retiro
-        empresa_retirar.id_motivo_retiro = retirar_datos.split('_')[2]
-        empresa_retirar.id_subestatus = retirar_datos.split('_')[1]
+        empresa_retirar.id_motivo_retiro = retirar_datos.split('_')[1]
         empresa_retirar.save
         
         empresa = Empresa.find(:first, :conditions => ["prefijo = ?", retirar_datos.split('_')[0]]) # La clave primaria es es prefijo
