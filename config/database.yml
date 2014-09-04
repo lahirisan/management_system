@@ -1,17 +1,14 @@
 # adaptador SQLServer
 development:
   adapter: sqlserver
-<<<<<<< HEAD
-  host: SERVLAHI
-=======
-  host: 192.168.1.14  
->>>>>>> 85fc79c11fc28297fc650b470b00759719449d36
+  host: 192.168.1.14
   database: administrativoGS1_
   username: sa
   password: Sc4nnv3n
   port: 1434
   pool: 5
   timeout: 5000
+  
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
