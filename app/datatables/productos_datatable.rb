@@ -68,7 +68,7 @@ private
 
   def fetch_productos
     
-    productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("#{sort_column} #{sort_direction}") 
+    productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin)
     productos = productos.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general

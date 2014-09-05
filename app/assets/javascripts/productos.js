@@ -76,61 +76,61 @@ $(document).ready(function(){
                 alert("Estimado usuario, no ha seleccionado ningún producto para ELIMINAR. Por favor verifique.");
                 return false;
             }
-            var seleccion_invalida = false;
+            // var seleccion_invalida = false;
 
-            if ($('#eliminar_masivo_productos').is(':checked')) // elimino masivo
-            {  
+            // if ($('#eliminar_masivo_productos').is(':checked')) // elimino masivo
+            // {  
                 
-                if ($('#sub_estatus').val() == 1)
-                {
-                    alert('Estimado usuario, no ha selecciona un SUB ESTATUS para asignar masivamente. Por favor verifique');
-                    seleccion_invalida = true;
-                    return false;
+            //     if ($('#sub_estatus').val() == 1)
+            //     {
+            //         alert('Estimado usuario, no ha selecciona un SUB ESTATUS para asignar masivamente. Por favor verifique');
+            //         seleccion_invalida = true;
+            //         return false;
 
-                }
+            //     }
 
-                if ($('#motivo_retiro').val() == 1)
-                {
-                    alert('Estimado usuario, no ha selecciona un MOTIVO RETIRO para asignar masivamente. Por favor verifique');
-                    seleccion_invalida = true;
-                    return false;
+            //     if ($('#motivo_retiro').val() == 1)
+            //     {
+            //         alert('Estimado usuario, no ha selecciona un MOTIVO RETIRO para asignar masivamente. Por favor verifique');
+            //         seleccion_invalida = true;
+            //         return false;
 
-                }
+            //     }
 
-                $('.eliminar_producto:checked').each(function() {
-                    // Por cada producto seleccionado se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
-                    $('#datos_productos_eliminar_productos').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
-                });   
-            }
-            else 
-            {
-                $('.eliminar_producto:checked').each(function() {
+            //     $('.eliminar_producto:checked').each(function() {
+            //         // Por cada producto seleccionado se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
+            //         $('#datos_productos_eliminar_productos').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
+            //     });   
+            // }
+            // else 
+            // {
+            //     $('.eliminar_producto:checked').each(function() {
 
-                    // Se valida que el usuario haya seleccion un subestatus para retirar el GTIN
-                    if ($('#'+$(this).val()+'sub_estatus').val() == 1)
-                    {
-                        alert('Estimado usuario, no ha seleccionado un SUB ESTATUS para el GTIN '+ $(this).val());
-                        seleccion_invalida = true;
-                        return false;
-                    }
+            //         // Se valida que el usuario haya seleccion un subestatus para retirar el GTIN
+            //         if ($('#'+$(this).val()+'sub_estatus').val() == 1)
+            //         {
+            //             alert('Estimado usuario, no ha seleccionado un SUB ESTATUS para el GTIN '+ $(this).val());
+            //             seleccion_invalida = true;
+            //             return false;
+            //         }
 
-                    // Se valida que el usaurio haya selccionado un motivo de retiro pra el GTIN
-                    if ($('#'+$(this).val()+'motivo_ret').val() == 1)
-                    {
-                        alert('Estimado usuario, no ha seleccionado un MOTIVO RETIRO para el GTIN '+ $(this).val());
-                        seleccion_invalida = true;
-                        return false;
-                    }
+            //         // Se valida que el usaurio haya selccionado un motivo de retiro pra el GTIN
+            //         if ($('#'+$(this).val()+'motivo_ret').val() == 1)
+            //         {
+            //             alert('Estimado usuario, no ha seleccionado un MOTIVO RETIRO para el GTIN '+ $(this).val());
+            //             seleccion_invalida = true;
+            //             return false;
+            //         }
 
 
-                    // Por cada producto selecciondo se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
-                    $('#datos_productos_eliminar_productos').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
-                });
-            }
+            //         // Por cada producto selecciondo se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
+            //         $('#datos_productos_eliminar_productos').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
+            //     });
+            // }
 
            
-            if (seleccion_invalida)
-                return false;
+            // if (seleccion_invalida)
+            //     return false;
 
             if (!(confirm('Esta seguro ELIMINAR los Productos seleccionados ?')))
                 return false;

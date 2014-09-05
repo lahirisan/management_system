@@ -31,9 +31,8 @@ private
           empresa_gln.try(:gln_eliminado).try(:municipio).try(:nombre),
           empresa_gln.try(:gln_eliminado).try(:fecha_eliminacion).strftime("%Y-%m-%d"),
           empresa_gln.try(:gln_eliminado).try(:estatus).try(:descripcion),
-          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe,"/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln_eliminado.gln}?eliminado=true",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle del GLN #{empresa_gln.try(:gln_eliminado).try(:gln)}"}),
-          empresa_gln.try(:gln_eliminado).try(:sub_estatus).try(:descripcion),
-          empresa_gln.try(:gln_eliminado).try(:motivo_retiro).try(:descripcion)
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe,"/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln_eliminado.gln}?eliminado=true",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle del GLN #{empresa_gln.try(:gln_eliminado).try(:gln)}"})
+         
         ]
     end
 

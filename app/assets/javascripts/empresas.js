@@ -55,13 +55,13 @@
         // Datatable que maneja el listado para empresas retiradas
         $("#data_table_empresas_retiradas").dataTable({
             sPaginationType: "full_numbers",
-            aaSorting: [[ 4, "desc" ]],
+            aaSorting: [[ 5, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',
             sAjaxSource: $('#data_table_empresas_retiradas').data('source')
-        }).columnFilter({ aoColumns: [{type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},null,null,null,null,  {type: "text"}]});
+        }).columnFilter({ aoColumns: [{type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},null,null,null,null]});
 
         $('#data_table_empresas_retiradas input').attr("placeholder", "Buscar");
 
@@ -74,7 +74,7 @@
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',
             sAjaxSource: $('#data_table_empresas_eliminar').data('source')
-        }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},null, null,null,null, {type: "text"}, {type: "text"}]});
+        }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},null, null,null,null, null]});
 
         $('#data_table_empresas_eliminar input').attr("placeholder", "Buscar");
 
@@ -112,6 +112,64 @@
            
 
 		});
+
+        $( "#estado_codificacion").change(function() {
+            
+            //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/ciudades.json?id_estado="+$(this).val(), function( data ) { 
+                var ciudades = $("#ciudad_codificacion");
+                ciudades.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    ciudades.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            });
+
+            //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/municipios.json?id_estado="+$(this).val(), function( data ) { 
+                var  municipios = $("#municipio_codificacion");
+                municipios.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    municipios.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            });
+ 
+            
+                      
+
+        });
+
+
+        $( "#estado_sincronet").change(function() {
+            
+            //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/ciudades.json?id_estado="+$(this).val(), function( data ) { 
+                var ciudades = $("#ciudad_sincronet");
+                ciudades.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    ciudades.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            });
+
+            //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/municipios.json?id_estado="+$(this).val(), function( data ) { 
+                var  municipios = $("#municipio_sincronet");
+                municipios.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    municipios.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            });
+ 
+            
+                      
+
+        });
+
+
+
 
         // Verificar el cambio del select  estado de la correspondencia
 		$( "#empresa_correspondencia_attributes_id_estado").change(function() {
@@ -266,7 +324,7 @@
 
         // Formulario eliminar empresa y formulario retiradas son iguales
 
-        $('#formulario_eliminar_empresa, #formulario_retiradas').submit(function( event ) { 
+        $('#formulario_eliminar_empresa').submit(function( event ) { 
 
 
             // Se valida que se haya seleccionado alguna empresa para retirar
@@ -275,72 +333,74 @@
                 alert("Estimado usuario, no ha seleccionado ninguna empresa para ELIMINAR. Por favor verifique.");
                 return false;
             }
-            
-            var seleccion_invalida;
 
-            if ($('#eliminar_masivo').is(':checked')) // Eliminacion masiva
-            {  
-                if ($("#sub_estatus").val() == 1)
-                {
-                    alert('Estimado usuario, la aplicación detectó que desea ELIMINAR empresas MASIVAMENTE. Por favor, verifique que ha seleccionado el SUB ESTATUS que se asignará masivamente.');
-                    seleccion_invalida = true;
-                    return false;
-                }
-
-                if ($("#motivo_retiro").val() == 1)
-                {
-                    alert('Estimado usuario, la aplicación detectó que desea ELIMINAR empresas MASIVAMENTE. Por favor, verifique que ha seleccionado el MOTIVO DE RETIRO que se asignará masivamente.');
-                    seleccion_invalida = true;
-                    return false;
-                }
-
-                $('.eliminar_empresa:checked').each(function() {
+            // $('.eliminar_empresa:checked').each(function() {
                     
-                    // Por cada empresa seleccionda se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
-                    $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
-                });  
-            }
-            else // múltiple selecccion de empresas a eliminar, no masivo
-            {
+            //     // Por cada empresa seleccionda se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
+            //     $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
+            // });  
+            
+            //var seleccion_invalida;
+
+            // if ($('#eliminar_masivo').is(':checked')) // Eliminacion masiva
+            // {  
+            //     // if ($("#sub_estatus").val() == 1)
+            //     // {
+            //     //     alert('Estimado usuario, la aplicación detectó que desea ELIMINAR empresas MASIVAMENTE. Por favor, verifique que ha seleccionado el SUB ESTATUS que se asignará masivamente.');
+            //     //     seleccion_invalida = true;
+            //     //     return false;
+            //     // }
+
+            //     // if ($("#motivo_retiro").val() == 1)
+            //     // {
+            //     //     alert('Estimado usuario, la aplicación detectó que desea ELIMINAR empresas MASIVAMENTE. Por favor, verifique que ha seleccionado el MOTIVO DE RETIRO que se asignará masivamente.');
+            //     //     seleccion_invalida = true;
+            //     //     return false;
+            //     // }
+
+                
+            // }
+            // else // múltiple selecccion de empresas a eliminar, no masivo
+            // {
 
                
-                $('.eliminar_empresa:checked').each(function() {
+            //     $('.eliminar_empresa:checked').each(function() {
 
-                    if ($("#"+$(this).val()+"sub_estatus").val() == 1)
-                    {
-                        alert('Debe seleccionar un Sub Estatus para la empresa con prefijo ' + $(this).val());
-                        seleccion_invalida = true;
-                        return false;
-                    }
+            //         if ($("#"+$(this).val()+"sub_estatus").val() == 1)
+            //         {
+            //             alert('Debe seleccionar un Sub Estatus para la empresa con prefijo ' + $(this).val());
+            //             seleccion_invalida = true;
+            //             return false;
+            //         }
 
-                    if ($("#"+$(this).val()+"motivo_ret").val() == 1)
-                    {
-                        alert('Debe seleccionar un Motivo Retiro para la empresa con prefijo ' + $(this).val());
-                        seleccion_invalida = true;
-                        return false;
-                    }
+            //         if ($("#"+$(this).val()+"motivo_ret").val() == 1)
+            //         {
+            //             alert('Debe seleccionar un Motivo Retiro para la empresa con prefijo ' + $(this).val());
+            //             seleccion_invalida = true;
+            //             return false;
+            //         }
                    
-                    // Por cada empresa seleccionda se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
-                    $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
-                });
-            }
+            //         // Por cada empresa seleccionda se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
+            //         $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
+            //     });
+            // }
 
-             if (seleccion_invalida)
-                return false;
+            //  if (seleccion_invalida)
+            //     return false;
             
             if (!confirm('¿ Estimado usuario, está seguro de ELIMINAR la(s) empresa(s) seleccionada(s) ?'))
                 return false;
         });
 
-        $('#formulario_eliminadas').submit(function( event ) { 
+        // $('#formulario_eliminadas').submit(function( event ) { 
 
-            if ($(".reactivar_empresa:checked").length == 0)
-            {
-                alert("Estimado usuario, no ha seleccionado ninguna empresa para REACTIVAR. Por favor verifique.");
-                return false;
-            }
+        //     if ($(".reactivar_empresa:checked").length == 0)
+        //     {
+        //         alert("Estimado usuario, no ha seleccionado ninguna empresa para REACTIVAR. Por favor verifique.");
+        //         return false;
+        //     }
 
-        });
+        // });
 
         
         // estilos de los botones exportar
@@ -443,70 +503,70 @@
 
         $('#formulario_crear_empresa').submit(function( event ) { 
 
-            // valida formato email
+            //valida formato email
 
-            // if ($('#email').val() != '') 
-            // {
-            //     if( !isValidEmailAddress( $('#email').val() ) &&  (window.location.pathname.split('/')[2] == 'new') ) 
-            //     { 
-            //         alert('El formato en Correo Principal es inválido. Por favor verifique.');
-            //         return false;
-            //     }
+            if ($('#email.email').val() != '') 
+            {
+                if( !isValidEmailAddress( $('#email').val() ) &&  (window.location.pathname.split('/')[2] == 'new') ) 
+                { 
+                    alert('El formato en Correo Principal es inválido. Por favor verifique.');
+                    return false;
+                }
 
-            // }
+            }
 
-            // if ($('#email1').val() != '') 
-            // {
-            //     if( !isValidEmailAddress( $('#email1').val() ) &&  (window.location.pathname.split('/')[2] == 'new') ) 
-            //     { 
-            //         alert('El formato en Correo Secundario es inválido. Por favor verifique.');
-            //         return false;
-            //     }
+            if ($('#email1').val() != '') 
+            {
+                if( !isValidEmailAddress( $('#email1').val() ) &&  (window.location.pathname.split('/')[2] == 'new') ) 
+                { 
+                    alert('El formato en Correo Secundario es inválido. Por favor verifique.');
+                    return false;
+                }
 
-            // }
+            }
 
             // Validar el formato de los números de telefono (0212) 123-45-67
             
-            // if ($('#empresa_datos_contacto_attributes_0_contacto').val() != '') // Validacion del primer número
-            // {
-            //     if( !isValidNumberPhone($('#empresa_datos_contacto_attributes_0_contacto').val()))
-            //     {
-            //         alert('El formato del Teléfono 1 es incorrecto. hghghg Por favor verifique.');
-            //         return false;
-            //     }
+            if (($('#empresa_datos_contacto_attributes_0_contacto').val() != '')  &&  (window.location.pathname.split('/')[2] == 'new') ) // Validacion del primer número
+            {
+                if( !isValidNumberPhone($('#empresa_datos_contacto_attributes_0_contacto').val()))
+                {
+                    alert('El formato del Teléfono 1 es incorrecto. Por favor verifique.');
+                    return false;
+                }
 
-            // }
+            }
 
            
-        //     if ($('#telefono2').val() != '') // Validacion del segundo numero
-        //     {
-        //         if( !isValidNumberPhone($('#telefono2').val()))
-        //         {
-        //             alert('El formato del Teléfono 2 es incorrecto. Por favor verifique.');
-        //             return false;
-        //         }
+            if (($('#telefono2').val() != '')   &&  (window.location.pathname.split('/')[2] == 'new') )// Validacion del segundo numero
+            {
+                if( !isValidNumberPhone($('#telefono2').val()))
+                {
+                    alert('El formato del Teléfono 2 es incorrecto. Por favor verifique.');
+                    return false;
+                }
 
-        //     }
+            }
 
-        //     if ($('#telefono3').val() != '') // Validacion del segundo numero
-        //     {
-        //         if( !isValidNumberPhone($('#telefono3').val()))
-        //         {
-        //             alert('El formato del Teléfono 3 es incorrecto. Por favor verifique.');
-        //             return false;
-        //         }
+            if (($('#telefono3').val() != '')   &&  (window.location.pathname.split('/')[2] == 'new') )// Validacion del segundo numero
+            {
+                if( !isValidNumberPhone($('#telefono3').val()))
+                {
+                    alert('El formato del Teléfono 3 es incorrecto. Por favor verifique.');
+                    return false;
+                }
 
-        //     }
+            }
 
-        //     if ($('#fax').val() != '') // Validacion del segundo numero
-        //     {
-        //         if( !isValidNumberPhone($('#fax').val()))
-        //         {
-        //             alert('El formato del Fax es incorrecto. Por favor verifique.');
-        //             return false;
-        //         }
+            if (($('#fax').val() != '')  &&  (window.location.pathname.split('/')[2] == 'new') )// Validacion del segundo numero
+            {
+                if( !isValidNumberPhone($('#fax').val()))
+                {
+                    alert('El formato del Fax es incorrecto. Por favor verifique.');
+                    return false;
+                }
 
-        //     }
+            }
         
         });
 

@@ -39,8 +39,7 @@ private
         link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe,empresa_productos_path(empresa, :eliminados => true, :empresas_eliminadas => true),{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),
         link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios?eliminados=true",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios asociados a la empresa #{empresa.nombre_empresa}"}),
         link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa, :eliminados => true),{:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"}),
-        empresa.sub_estatus.try(:descripcion),
-        empresa.motivo_retiro.try(:descripcion),
+        
       ]
   
     end
@@ -53,7 +52,7 @@ private
 
   def fetch_empresas
    
-    empresas = EmpresaEliminada.includes(:estado, :ciudad, :estatus, :clasificacion, :empresa_elim_detalle, :sub_estatus, :motivo_retiro).order("#{sort_column} #{sort_direction}")
+    empresas = EmpresaEliminada.includes(:estado, :ciudad, :estatus, :clasificacion, :empresa_elim_detalle, :sub_estatus, :motivo_retiro)
     
     empresas = empresas.page(page).per_page(per_page)
    
@@ -65,8 +64,7 @@ private
     empresas = empresas.where("ciudad.nombre like :search3", search3: "%#{params[:sSearch_3]}%" ) if params[:sSearch_3].present?
     empresas = empresas.where("empresa_eliminada.rif like :search4", search4: "%#{params[:sSearch_4]}%" ) if params[:sSearch_4].present?
     empresas = empresas.where("empresa_elim_detalle.fecha_eliminacion like :search5", search5: "%#{params[:sSearch_5]}%" ) if params[:sSearch_5].present?
-    empresas = empresas.where("sub_estatus.descripcion like :search10", search10: "%#{params[:sSearch_10]}%" ) if params[:sSearch_10].present?
-    empresas = empresas.where("motivo_retiro.descripcion like :search11", search11: "%#{params[:sSearch_11]}%" ) if params[:sSearch_11].present?
+    
     
     
     empresas

@@ -18,16 +18,16 @@ class Gln < ActiveRecord::Base
     for eliminar_gln in (0..parametros[:eliminar_glns].size-1)
       
       gln_seleccionado = parametros[:eliminar_glns][eliminar_gln]
-      eliminar_datos = parametros[:"#{gln_seleccionado}"]
-      gln_id = eliminar_datos.split('_')[0]
-      gln_ = Gln.find(:first, :conditions => ["gln = ? ", gln_id]) 
-      Gln.eliminar_gln(gln_,eliminar_datos.split('_')[1],eliminar_datos.split('_')[2])
+      #eliminar_datos = parametros[:"#{gln_seleccionado}"]
+      #gln_id = eliminar_datos.split('_')[0]
+      gln_ = Gln.find(:first, :conditions => ["gln = ? ", gln_seleccionado]) 
+      Gln.eliminar_gln(gln_)
     end
 
  end
 
 
- def self.eliminar_gln(gln, sub_estatus, motivo_retiro)
+ def self.eliminar_gln(gln)
 
     estatus_gln = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Eliminado', 'GLN'])
 
@@ -47,8 +47,8 @@ class Gln < ActiveRecord::Base
     gln_eliminado.urbanizacion = gln.urbanizacion
     gln_eliminado.punto_referencia = gln.punto_referencia
     gln_eliminado.cod_postal = gln.cod_postal
-    gln_eliminado.id_subestatus = sub_estatus
-    gln_eliminado.id_motivo_retiro = motivo_retiro 
+    #gln_eliminado.id_subestatus = sub_estatus
+    #gln_eliminado.id_motivo_retiro = motivo_retiro 
     gln_eliminado.fecha_eliminacion = Time.now 
     gln_eliminado.save
     gln.destroy

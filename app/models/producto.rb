@@ -55,15 +55,17 @@ class Producto < ActiveRecord::Base
 
   def self.eliminar(parametros)
   	
-  	estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Eliminado', 'Producto'])
+  	
+    estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Eliminado', 'Producto'])
     
     #Los productos se agrega a productos eliminados y productos_elim_detalle, se eliminan de productos
 
     for eliminar_producto in (0..parametros[:eliminar_productos].size-1)
 
       producto_seleccionado = parametros[:eliminar_productos][eliminar_producto]
-      eliminar_datos = parametros[:"#{producto_seleccionado}"]
-      gtin = eliminar_datos.split('_')[0]
+      
+      #eliminar_datos = parametros[:"#{producto_seleccionado}"]
+      gtin = producto_seleccionado
       producto = Producto.find(:first, :conditions => ["gtin like ?", gtin]) 
     	producto_eliminado = ProductoEliminado.new
       producto_eliminado.gtin = producto.gtin
@@ -80,8 +82,8 @@ class Producto < ActiveRecord::Base
       producto_elim_detalle = ProductoElimDetalle.new
     	producto_elim_detalle.gtin = producto.gtin
     	producto_elim_detalle.fecha_eliminacion = Time.now
-      producto_elim_detalle.id_subestatus = eliminar_datos.split('_')[1]
-      producto_elim_detalle.id_motivo_retiro = eliminar_datos.split('_')[2]
+      #producto_elim_detalle.id_subestatus = eliminar_datos.split('_')[1]
+      #producto_elim_detalle.id_motivo_retiro = eliminar_datos.split('_')[2]
     	producto_elim_detalle.save
       producto.destroy
       
