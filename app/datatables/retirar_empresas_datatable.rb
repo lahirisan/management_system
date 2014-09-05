@@ -52,7 +52,7 @@ private
   def fetch_empresas
     
    
-    empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, :empresas_retiradas).where("estatus.descripcion like ? and alcance like ?", 'Activa', 'Empresa').order("#{sort_column} #{sort_direction}")
+    empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, :empresas_retiradas).where("estatus.descripcion like ? and alcance like ?", 'Activa', 'Empresa')
    
     
     empresas = empresas.page(page).per_page(per_page)

@@ -33,9 +33,8 @@ private
         producto.try(:estatus).try(:descripcion),
         producto.codigo_prod,
         fecha,
-        producto.try(:producto_elim_detalle).try(:fecha_eliminacion).strftime("%Y-%m-%d"),
-        producto.try(:producto_elim_detalle).try(:sub_estatus).try(:descripcion),
-        producto.try(:producto_elim_detalle).try(:motivo_retiro).try(:descripcion)
+        producto.try(:producto_elim_detalle).try(:fecha_eliminacion).strftime("%Y-%m-%d")
+       
 
       ]
       
