@@ -40,13 +40,15 @@
 
 			-if params[:controller] == 'empresas' and params[:action] == 'index' and params[:activacion].nil? and params[:retirar].nil? and params[:eliminar].nil? and params[:eliminadas].nil? and params[:retiradas].nil? and params[:reactivar].nil?
 				
-				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Empresa')
+				- if session[:gerencia] == 'Comercial' or session[:perfil] == 'Administrador'
+				
 
 					%a.opcion{:href => "/empresas/new", :title => "Opción para Crear Empresa", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-circle-plus
 						&nbsp;Registrar
 					
-				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Validar Empresa')
+				- if session[:gerencia] == 'Administrativa' or session[:perfil] == 'Administrador'
+					/- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Validar Empresa')
 				
 					%a.opcion{:href => "/empresas?activacion=true", :title => "Opción para Activar Empresas creadas", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-circle-check
@@ -56,12 +58,13 @@
 						%span.ui-icon.ui-icon-folder-open
 						&nbsp;Sub Estatus 
 
-				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Retirar Empresa')
+				- if session[:gerencia] == 'Administrativa' or session[:perfil] == 'Administrador'
+					/- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Retirar Empresa')
 					%a.opcion{:href => "/empresas?retirar=true", :title => "Opción para retirar  Empresa", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-circle-minus
 						&nbsp;Retirar Empresa
-
-				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Reactivar Empresa')
+				- if session[:gerencia] == 'Administrativa' or session[:perfil] == 'Administrador'
+					/- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Reactivar Empresa')
 					%a.opcion{:href => "/empresas?reactivar=true", :title => "Opción que permite Reactivar Empresas Retiradas", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-refresh
 						&nbsp;Reactivar Empresa
