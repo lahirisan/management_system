@@ -13,17 +13,11 @@
       %tr
         %td
           ELiminar Masivo
-        %td
-          SubEstatus
-        %td
-          Motivo Retiro
+        
       %tr
         %td
           =check_box_tag "eliminar_masivo_gln"
-        %td
-          =select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
-        %td
-          =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
+       
 
 
     %table#data_table_eliminar_gln.display{:"data-source" => "#{empresa_glns_path}.json?eliminar=true"}
@@ -40,8 +34,7 @@
           %th Ciudad
           %th Estatus
           %th Detalle
-          %th Sub Estatus
-          %th Motivo Retiro
+          
           
       %tbody
       %tfoot

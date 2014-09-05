@@ -13,21 +13,21 @@ class EmpresaServicio < ActiveRecord::Base
   	def self.eliminar(parametros)
     
     	#Los servicios se agrega a la tabla empresa_servicios_eliminados y se elimina de empresa_servicios
-
+      
 	    for eliminar_servicio in (0..parametros[:eliminar_servicios].size-1)
 
 	      servicio_seleccionado = parametros[:eliminar_servicios][eliminar_servicio]
-	      eliminar_datos = parametros[:"#{servicio_seleccionado}"]
-	      id = eliminar_datos.split('_')[0]
-	      servicio_ = EmpresaServicio.find(id) 
-	      EmpresaServicio.servicio_eliminado(servicio_, eliminar_datos.split('_')[1], eliminar_datos.split('_')[2])
+	      #eliminar_datos = parametros[:"#{servicio_seleccionado}"]
+	      #id = eliminar_datos.split('_')[0]
+	      servicio_ = EmpresaServicio.find(servicio_seleccionado) 
+	      EmpresaServicio.servicio_eliminado(servicio_)
 
 	    end
 
 
 	end
 
-	def self.servicio_eliminado(servicio,motivo_retiro,subestatus)
+	def self.servicio_eliminado(servicio)
 	  
 	  servicio_eliminado = EmpresaServiciosEliminado.new;
     servicio_eliminado.prefijo = servicio.prefijo; 
@@ -39,8 +39,8 @@ class EmpresaServicio < ActiveRecord::Base
     servicio_eliminado.telefono = servicio.telefono.to_s;
     servicio_eliminado.email = servicio.email;
     servicio_eliminado.fecha_eliminacion = Time.now
-    servicio_eliminado.id_subestatus = subestatus
-    servicio_eliminado.id_motivo_retiro = motivo_retiro 
+    #servicio_eliminado.id_subestatus = subestatus
+    #servicio_eliminado.id_motivo_retiro = motivo_retiro 
     servicio_eliminado.save
     servicio.destroy
 

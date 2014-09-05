@@ -34,10 +34,8 @@ private
         producto.marca,
         producto.try(:estatus).try(:descripcion),
         producto.codigo_prod,
-        fecha,
-        select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion", producto.productos_retirados.try(:id_subestatus)), :id => "#{producto.gtin}sub_estatus"),
-        select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion", producto.productos_retirados.try(:id_motivo_retiro)), :id => "#{producto.gtin}motivo_ret"),
-        fecha_retiro
+        fecha
+        
       ]
 
     end
@@ -49,8 +47,10 @@ private
   end
 
   def fetch_productos
+
+    productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin)
    
-    productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance  like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
+    #productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance  like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
     productos = productos.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general

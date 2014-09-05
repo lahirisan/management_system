@@ -11,17 +11,11 @@
             %tr
                 %td
                     Eliminar Masivo
-                %td
-                    SubEstatus
-                %td
-                    Motivo Retiro
+              
             %tr
                 %td
                     =check_box_tag "eliminar_masivo_productos"
-                %td
-                    =select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
-                %td
-                    =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
+              
                     
         %table#data_table_eliminar_productos.display{:"data-source" => "#{empresa_productos_path}.json?eliminar=true"}
             %thead
@@ -35,9 +29,7 @@
                     %th Estatus
                     %th Código Prod
                     %th Fecha Creación
-                    %th Sub Estatus
-                    %th Motivo Retiro
-                    %th Fecha Retiro
+                    
                    
             %tbody
             %tfoot

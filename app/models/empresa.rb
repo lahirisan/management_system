@@ -4,10 +4,10 @@ class Empresa < ActiveRecord::Base
   
   # La Asociacion tienen  que ir primero si se utiliza accepts_nested_attributes
 
-  has_many :correspondencia, :foreign_key => "prefijo", :dependent => :destroy # elimina en cascada
+  #has_many :correspondencia, :foreign_key => "prefijo", :dependent => :destroy # elimina en cascada
   has_many :datos_contacto, :foreign_key => "prefijo", :dependent => :destroy # elimina en cascada las correspondencia de la empresa si se elimina la empresa de manera de evitar data inconsistente
 
-  accepts_nested_attributes_for :correspondencia, :allow_destroy => true # Maneja el modelo correspondencia en el formulario de empresa  
+  #accepts_nested_attributes_for :correspondencia, :allow_destroy => true # Maneja el modelo correspondencia en el formulario de empresa  
   accepts_nested_attributes_for :datos_contacto, :allow_destroy => true # Maneja el modelo correspondencia en el formulario de empresa  
   attr_accessible :cargo_rep_legal, :categoria, :clase, :direccion_empresa, :division, :fecha_inscripcion, :grupo, :id_ciudad, :id_clasificacion, :id_estado, :id_estatus, :id_tipo_usuario, :nombre_comercial, :nombre_empresa, :rep_legal, :rif, :prefijo,  :correspondencia_attributes, :datos_contacto_attributes, :numero_registro_mercantil, :tomo_registro_mercantil, :nit_registro_mercantil, :nacionalidad_responsable_legal, :domicilio_responsable_legal, :cedula_responsable_legal, :circunscripcion_judicial, :ventas_brutas_anuales, :fecha_registro_mercantil
   
@@ -54,6 +54,7 @@ class Empresa < ActiveRecord::Base
   end
 
   def self.cambiar_sub_estatus(parametros)
+    
     parametros[:sub_estatus_empresas].collect{|empresa_seleccionada|  empresa = Empresa.find(empresa_seleccionada); empresa.id_subestatus = parametros[:"#{empresa.prefijo}"].to_i; empresa.save}
 
   end
@@ -96,14 +97,16 @@ class Empresa < ActiveRecord::Base
     
     #En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
     # OJO: Esto se peude optimizar actualizando masivamente // RailsCast 198
+      
 
       for eliminar_empresas in (0..parametros[:eliminar_empresas].size-1)
         empresa_seleccionada = parametros[:eliminar_empresas][eliminar_empresas]
-        eliminar_datos = parametros[:"#{empresa_seleccionada}"]
-        eliminar_datos.split('_')[0] # eliminar_datos.split('_')[0] Prefijo de la empresa eliminar_datos.split('_')[1] id sub_estatus eliminar_datos.split('_')[2] id motivo_retiro
+        
+        #eliminar_datos = parametros[:"#{empresa_seleccionada}"]
+        #eliminar_datos.split('_')[0] # eliminar_datos.split('_')[0] Prefijo de la empresa eliminar_datos.split('_')[1] id sub_estatus eliminar_datos.split('_')[2] id motivo_retiro
         
         # Se busca la empresa para obtener todos sus datos
-        empresa_eliminar = Empresa.find(:first, :conditions => ["prefijo = ?",eliminar_datos.split('_')[0]])
+        empresa_eliminar = Empresa.find(empresa_seleccionada)
         estatus_empresa = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ? ", "Eliminada", 'Empresa'])
         
         empresa_eliminada =  EmpresaEliminada.new  # Se crear el registro de la empresa_eliminada
@@ -124,11 +127,13 @@ class Empresa < ActiveRecord::Base
         empresa_eliminada.clase = empresa_eliminar.try(:clase)
         empresa_eliminada.rep_legal = empresa_eliminar.try(:rep_legal)
         empresa_eliminada.cargo_rep_legal = empresa_eliminar.try(:cargo_rep_legal)
-        empresa_eliminada.id_motivo_retiro = eliminar_datos.split('_')[2]
-        empresa_eliminada.id_subestatus = eliminar_datos.split('_')[1]
+        #empresa_eliminada.id_motivo_retiro = eliminar_datos.split('_')[2]
+        #empresa_eliminada.id_subestatus = eliminar_datos.split('_')[1]
         empresa_eliminada.save
 
-        crear_correspondencia_eliminada(empresa_eliminar) if (empresa_eliminar.correspondencia) # Correspondencia
+        # OJO Pendiente la correspondencia de la eliminada
+
+        #crear_correspondencia_eliminada(empresa_eliminar) if (empresa_eliminar.correspondencia) # Correspondencia
 
         empresa_eliminada_detalle = EmpresaElimDetalle.new
         empresa_eliminada_detalle.prefijo = empresa_eliminada.prefijo
@@ -153,8 +158,8 @@ class Empresa < ActiveRecord::Base
           producto_eliminado.save; producto_elim_detalle = ProductoElimDetalle.new; 
           producto_elim_detalle.gtin = producto_empresa.try(:producto).try(:gtin); 
           producto_elim_detalle.fecha_eliminacion = Time.now;
-          producto_elim_detalle.id_motivo_retiro =  eliminar_datos.split('_')[2];
-          producto_elim_detalle.id_subestatus =  eliminar_datos.split('_')[1];
+         # producto_elim_detalle.id_motivo_retiro =  eliminar_datos.split('_')[2];
+         # producto_elim_detalle.id_subestatus =  eliminar_datos.split('_')[1];
 
           producto_elim_detalle.save}
 
@@ -166,6 +171,12 @@ class Empresa < ActiveRecord::Base
 
         # Se elimina el GLN
         empresa_eliminar.gln_empresa.collect{|gln_empresa| Gln.eliminar_gln(gln_empresa.gln,1,1)}
+
+        # OJO Antesd de hacer esto se debe guardar las corespondencicias
+
+        correspondencias = Correspondencia.find(:all, :conditions => ["prefijo = ?", empresa_eliminar.prefijo])
+        correspondencias.collect{|correspondencia| correspondencia.destroy}
+        
 
         empresa_eliminar.destroy
       end

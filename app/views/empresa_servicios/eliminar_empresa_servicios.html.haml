@@ -10,17 +10,11 @@
             %tr
                 %td
                     ELiminar Masivo
-                %td
-                    SubEstatus
-                %td
-                    Motivo Retiro
+               
             %tr
                 %td
                     =check_box_tag "eliminar_masivo_servicios"
-                %td
-                    =select_tag("eliminar_servicio_sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
-                %td
-                    =select_tag("eliminar_servicio_motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
+               
                     
         %table#data_table_eliminar_empresa_servicios.display{:"data-source" => "/empresas/#{params[:empresa_id]}/empresa_servicios.json?eliminar=true"}
             %thead
@@ -34,8 +28,7 @@
                     %th Cargo Contacto
                     %th Teléfono
                     %th Correo
-                    %th Motivo Retiro
-                    %th Sub Estatus
+                    
                    
             %tbody
             %tfoot

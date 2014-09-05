@@ -72,63 +72,63 @@ $( document ).ready(function() {
             return false;
         }
         
-        var seleccion_invalida = false;
+        // var seleccion_invalida = false;
          
-        if ($('#eliminar_masivo_servicios').is(':checked')) // elimino masivo
-        {  
-            if ($('#eliminar_servicio_sub_estatus').val() == 1)
-            {
-                alert('Estimado usuario, para ELIMINAR no ha selecciona un SUB ESTATUS para asignar masivamente. Por favor verifique');
-                seleccion_invalida = true;
-                return false;
+        // if ($('#eliminar_masivo_servicios').is(':checked')) // elimino masivo
+        // {  
+        //     if ($('#eliminar_servicio_sub_estatus').val() == 1)
+        //     {
+        //         alert('Estimado usuario, para ELIMINAR no ha selecciona un SUB ESTATUS para asignar masivamente. Por favor verifique');
+        //         seleccion_invalida = true;
+        //         return false;
 
-            }
+        //     }
 
-            if ($('#eliminar_servicio_motivo_retiro').val() == 1)
-            {
-                alert('Estimado usuario, para ELIMINAR no ha selecciona un MOTIVO RETIRO para asignar masivamente. Por favor verifique');
-                seleccion_invalida = true;
-                return false;
+        //     if ($('#eliminar_servicio_motivo_retiro').val() == 1)
+        //     {
+        //         alert('Estimado usuario, para ELIMINAR no ha selecciona un MOTIVO RETIRO para asignar masivamente. Por favor verifique');
+        //         seleccion_invalida = true;
+        //         return false;
 
-            }   
+        //     }   
             
-            $('.eliminar_servicio:checked').each(function() {
+        //     $('.eliminar_servicio:checked').each(function() {
                 
-                // Por cada servicio seleccionado se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
-                $('#datos_servicio_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$('#eliminar_servicio_sub_estatus').val()+'_'+$('#eliminar_servicio_motivo_retiro').val()+ '">');
-            });   
-        }
-        else 
-        {
-            $('.eliminar_servicio:checked').each(function() {
+        //         // Por cada servicio seleccionado se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
+        //         $('#datos_servicio_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$('#eliminar_servicio_sub_estatus').val()+'_'+$('#eliminar_servicio_motivo_retiro').val()+ '">');
+        //     });   
+        // }
+        // else 
+        // {
+        //     $('.eliminar_servicio:checked').each(function() {
 
 
 
-                // Se valida que el usuario haya seleccion un subestatus para retirar el GTIN
-                if ($('#'+$(this).val()+'sub_estatus').val() == 1)
-                {
-                    alert('Estimado usuario, no ha seleccionado un SUB ESTATUS para el SERVICIO ' + $('.clase'+$(this).val()).text());
-                    seleccion_invalida = true;
-                    return false;
-                }
+        //         // Se valida que el usuario haya seleccion un subestatus para retirar el GTIN
+        //         if ($('#'+$(this).val()+'sub_estatus').val() == 1)
+        //         {
+        //             alert('Estimado usuario, no ha seleccionado un SUB ESTATUS para el SERVICIO ' + $('.clase'+$(this).val()).text());
+        //             seleccion_invalida = true;
+        //             return false;
+        //         }
 
-                // Se valida que el usaurio haya selccionado un motivo de retiro pra el GTIN
-                if ($('#'+$(this).val()+'motivo_ret').val() == 1)
-                {
-                    alert('Estimado usuario, no ha seleccionado un MOTIVO RETIRO para el SERVICIO '+ $('.clase'+$(this).val()).text());
-                    seleccion_invalida = true;
-                    return false;
-                }
+        //         // Se valida que el usaurio haya selccionado un motivo de retiro pra el GTIN
+        //         if ($('#'+$(this).val()+'motivo_ret').val() == 1)
+        //         {
+        //             alert('Estimado usuario, no ha seleccionado un MOTIVO RETIRO para el SERVICIO '+ $('.clase'+$(this).val()).text());
+        //             seleccion_invalida = true;
+        //             return false;
+        //         }
 
-                // Por cada servicio selecciondo se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
-                $('#datos_servicio_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$('#'+$(this).val()+'sub_estatus').val()+'_'+$('#'+$(this).val()+'motivo_ret').val()+ '">');
-            });
-        }
+        //         // Por cada servicio selecciondo se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
+        //         $('#datos_servicio_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$('#'+$(this).val()+'sub_estatus').val()+'_'+$('#'+$(this).val()+'motivo_ret').val()+ '">');
+        //     });
+        // }
 
 
 
-        if (seleccion_invalida)
-                return false;
+        // if (seleccion_invalida)
+        //         return false;
 
         if (!(confirm('Esta seguro ELIMINAR los servicios seleccionados ?')))
             return false;

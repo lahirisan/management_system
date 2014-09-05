@@ -30,9 +30,8 @@ private
         empresa_servicio.nombre_contacto,
         empresa_servicio.cargo_contacto,
         empresa_servicio.telefono,
-        empresa_servicio.email,
-        select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"), :id => "#{empresa_servicio.id}motivo_ret"),
-        select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"), :id => "#{empresa_servicio.id}sub_estatus")
+        empresa_servicio.email
+       
       ]
 
     end

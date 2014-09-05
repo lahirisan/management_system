@@ -33,9 +33,8 @@ private
           empresa_gln.try(:gln).try(:municipio).try(:nombre),
           empresa_gln.try(:gln).try(:ciudad).try(:nombre),
           empresa_gln.try(:gln).try(:estatus).try(:descripcion),
-          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle del GLN #{empresa_gln.gln.gln}"}),
-          select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"), :id => "#{empresa_gln.gln.gln}sub_estatus"),
-          select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"), :id => "#{empresa_gln.gln.gln}motivo_ret")
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle del GLN #{empresa_gln.gln.gln}"})
+          
           
         ]
     end

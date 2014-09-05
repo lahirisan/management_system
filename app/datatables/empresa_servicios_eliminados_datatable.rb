@@ -32,8 +32,6 @@ private
           empresa_servicio_eliminado.cargo_contacto,
           empresa_servicio_eliminado.telefono,
           empresa_servicio_eliminado.email,
-          empresa_servicio_eliminado.try(:sub_estatus).try(:descripcion),
-          empresa_servicio_eliminado.try(:motivo_retiro).try(:descripcion),
           empresa_servicio_eliminado.fecha_eliminacion.strftime("%Y-%m-%d")
         ]
       
