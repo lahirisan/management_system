@@ -76,7 +76,7 @@ private
   def fetch_glns
 
     
-    glns = GlnEmpresa.where("gln_empresa.prefijo = ?", params[:empresa_id]).joins({:gln => :tipo_gln} , {:gln => :estatus}, {:gln => :estado}, {:gln => :municipio}, {:gln => :ciudad},  :empresa).order("#{sort_column} #{sort_direction}") 
+    glns = GlnEmpresa.where("gln_empresa.prefijo = ?", params[:empresa_id]).joins({:gln => :tipo_gln} , {:gln => :estatus}, :empresa).order("#{sort_column} #{sort_direction}") 
     glns = glns.page(page).per_page(per_page)
 
     

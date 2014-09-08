@@ -48,6 +48,7 @@
           %td
             AFILIACION EN TIPO
           %td
+          %td
             
             =f.collection_select :id_tipo_usuario, @empresa.new_record? ? TipoUsuarioEmpresa.find(:all, :conditions => ["descripcion in (?)", ['Usuario', 'No Usuario']]) : TipoUsuarioEmpresa.all, :id_tipo_usu_empresa, :descripcion, :prompt => "-Seleccione-"
       
@@ -55,20 +56,24 @@
           %td
             NOMBRE DE LA EMPRESA
           %td
+          %td
             =f.text_field :nombre_empresa
         %tr
           %td
             Estado
+          %td
           %td
             = f.collection_select :id_estado, Estado.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Estado-'}
         %tr
           %td
             Ciudad
           %td
+          %td
             = f.collection_select :id_ciudad, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
         %tr
           %td
             DIRECCION FISCAL
+          %td
           %td         
             =f.text_field :direccion_empresa, {:size => "80"}
 
@@ -79,91 +84,121 @@
                 %td
                   Teléfono 1 (58)
                 %td
-                  =fc.text_field :contacto, :placeholder => "(0212) 123-45-67"
+                
+                  =text_field_tag "codigo_telefono1", nil, :placeholder => "212", :size => "3"
+                %td
+                  =fc.text_field :contacto, :placeholder => "123-45-67"
                 %td
                   =fc.hidden_field(:tipo, :value => 'telefono') 
               %tr
                 %td
                   Teléfono 2 (58)
                 %td
-                  =text_field_tag "telefono2",'',  {:placeholder => "(0416) 123-45-67"}
+                  =text_field_tag "codigo_telefono2", nil, :placeholder => "416", :size => "3"
+                %td
+                  =text_field_tag "telefono2",'',  {:placeholder => "123-45-67"}
               %tr
                 %td
                   Teléfono 3 (58)
                 %td
-                  =text_field_tag "telefono3",'',  {:placeholder => "(0242) 123-45-67"}
+                  =text_field_tag "codigo_telefono3", nil, :placeholder => "412", :size => "3"
+                %td
+                  =text_field_tag "telefono3",'',  {:placeholder => "123-45-67"}
               %tr
                 %td
                   FAX (58)
                 %td
-                  =text_field_tag "fax",'',  {:placeholder => "(0212) 123-45-67"}
+                  =text_field_tag "codigo_telefono4", nil, :placeholder => "212", :size => "3"
+                %td
+                  =text_field_tag "fax",'',  {:placeholder => "123-45-67"}
               %tr
                 %td
                   E-mail
+                %td
                 %td
                   =text_field_tag "email",'',  {:class => "email", :placeholder => "correo@prueba.com"}
               %tr
                 %td
                   Correo Secundario
                 %td
+                %td
                   =text_field_tag "email1",'',  {:class => "email", :placeholder => "correo@prueba.com"}
         %tr
           %td
             Circunscripción Judicial del Registro Mercantil
+          %td
           %td
             =f.text_field :circunscripcion_judicial
         %tr
           %td
             Fecha de inscripción en Registro Mercantil
           %td
+          %td
             = @empresa.new_record? ? f.text_field(:fecha_registro_mercantil) : f.text_field(:fecha_inscripcion, :value => "#{@empresa.try(:fecha_registro_mercantil)}")
         %tr
           %td
             Nº
+          %td
           %td
             =f.text_field :numero_registro_mercantil
         %tr
           %td
             Tomo Nº
           %td
+          %td
             =f.text_field :tomo_registro_mercantil
         %tr
           %td
             RIF
           %td
-            = f.text_field :rif, :placeholder => "J-12548785-4"    
-        %tr
+            =select_tag "tipo_ref", "<option value='tipo'>tipo</option><option value='J'>J</option><option value='G'>G</option><option value='E'>E</option><option value='V'>V</option>".html_safe
           %td
-            NIT Nº
-          %td
-            =f.text_field :nit_registro_mercantil
+            = f.text_field :rif, :placeholder => "12548785-4"    
+        / %tr
+        /   %td
+        /     NIT Nº
+        /   %td
+        /     =f.text_field :nit_registro_mercantil
 
      
         %tr
           %td
             NOMBRE RESPONSABLE LEGAL
           %td
+          %td
             =f.text_field :rep_legal
         %tr
           %td
             CARGO
+          %td
           %td
             =f.text_field :cargo_rep_legal
         %tr
           %td
             Nacionalidad
           %td
+          %td
             =f.text_field :nacionalidad_responsable_legal
+        %tr
+          %td
+            Cédula Representante Legal
+          %td
+            
+          %td
+            =f.text_field :cedula_responsable_legal, :placeholder => "12345678"
+
+
         %tr
           %td
             Domiciliado en
           %td
+          %td
             =f.text_field :domicilio_responsable_legal
-
     
         %tr
           %td
-            Ventas Brutas Anuales
+            VENTAS BRUTAS ANUALES
+          %td
           %td
             =f.select(:ventas_brutas_anuales, options_for_select(['0 a 200.000', 'De 200.001,00 a 2.000.000,00', 'De 2.000.001,00 a 4.500.000,00', 'De 4.500.001,00 a 6.000.000,00', 'De 6.000.0001,00 o más'], @empresa.ventas_brutas_anuales), :prompt => "- Seleccione -")
       %br

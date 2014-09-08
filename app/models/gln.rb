@@ -59,13 +59,15 @@ class Gln < ActiveRecord::Base
  def self.generar_legal(prefijo_empresa)
 
   # OJO falta validar los casos cuando la empresa es de 9 digitos y de 6 digitos
-  
+
   empresa = Empresa.find(:first, :conditions => ["prefijo = ?", prefijo_empresa])
+
   gln_generado = "759" + prefijo_empresa[3..6] + "90000" 
 
   digito_verificacion = Producto.calcular_digito_verificacion(gln_generado.to_i,"GTIN-13")
   gln = gln_generado + digito_verificacion.to_s
-  
+
+
   tipo_gln = TipoGln.find(:first, :conditions => ["nombre = ?", "Legal"])
   estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?","Activo", "GLN"])
   pais = Pais.find(:first, :conditions => ["nombre = ?", "Venezuela"])
@@ -87,7 +89,8 @@ class Gln < ActiveRecord::Base
   # gln_legal.calle = "-"
   # gln_legal.urbanizacion = "-"
   # gln_legal.punto_referencia = "-"
-  gln_legal.save
+  #gln_legal.save
+
 
   raise gln_legal.errors.to_yaml if gln_legal.errors.any?
 
@@ -124,7 +127,9 @@ class Gln < ActiveRecord::Base
   empresa_gln = GlnEmpresa.new
   empresa_gln.prefijo = prefijo_empresa
   empresa_gln.id_gln = parametro_gln
-  empresa_gln.save
+  #empresa_gln.save
+
+
 
   raise empresa_gln.errors.to_yaml if empresa_gln.errors.any?
 
