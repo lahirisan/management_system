@@ -41,7 +41,7 @@
               =f.text_field :prefijo, :readonly => :true, :class => 'campo_readonly prefijo'
           -if @empresa.new_record?
             %td
-              =link_to "Asignar Prefijo", "#"
+              =link_to "Asignar Prefijo", "#", :id => "boton_abrir_ventana_prefijo_manual"
       %br
       %table
         %tr
@@ -151,7 +151,7 @@
           %td
             RIF
           %td
-            =select_tag "tipo_ref", "<option value='tipo'>tipo</option><option value='J'>J</option><option value='G'>G</option><option value='E'>E</option><option value='V'>V</option>".html_safe
+            =select_tag "tipo_rif", "<option value='tipo'>tipo</option><option value='J'>J</option><option value='G'>G</option><option value='E'>E</option><option value='V'>V</option>".html_safe
           %td
             = f.text_field :rif, :placeholder => "12548785-4"    
         / %tr
@@ -264,6 +264,12 @@
         %span.ui-icon.ui-icon-arrowreturnthick-1-w
         Regresar
 
+    #asignar_prefijo_manual
+      =render 'ventana_prefijo_manual'
+      
+
+
+          
       
 
 

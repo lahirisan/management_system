@@ -104,9 +104,9 @@
 						%span.ui-icon.ui-icon-circle-close
 						Eliminar Productos
 				
-					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminados=true", :title => "Listado de los productos eliminados", :class => "ui-state-default ui-corner-all botones_menu"}
-						%span.ui-icon.ui-icon-trash
-						Productos Eliminados
+					/ %a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminados=true", :title => "Listado de los productos eliminados", :class => "ui-state-default ui-corner-all botones_menu"}
+					/ 	%span.ui-icon.ui-icon-trash
+					/ 	Productos Eliminados
 
 			-if params[:controller] == 'empresa_servicios' and params[:action] == 'index'  and params[:eliminar].nil? and params[:eliminados].nil?
 				

@@ -11,12 +11,11 @@
             %tr
                 %th Prefijo
                 %th Nombre Empresa
-                %th Fecha Inscripción
+                %th Fecha Activación
                 %th Ciudad
                 %th RIF
                 %th Estatus
                 %th Sub Estatus
-                %th Detalle Empresa
                 - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Empresa')
                     %th Editar Empresa 
                 %th Productos

@@ -16,6 +16,7 @@ class Empresa < ActiveRecord::Base
   belongs_to :estatus, :foreign_key =>  "id_estatus"
   belongs_to :clasificacion, :foreign_key => "id_clasificacion"
   belongs_to :sub_estatus, :foreign_key => "id_subestatus"
+  belongs_to :tipo_usuario, :foreign_key => "id_tipo_usuario"
   has_one  :empresas_retiradas,  :foreign_key => "prefijo" , :dependent => :destroy   # Define una asociacion 1 a 1 con empresas_retiradas, eliminacion en cascada
   has_many :productos_empresa, :foreign_key => "prefijo" # Define una asociaicion 1 a N con productos_empresa
   has_many :producto, :through => :productos_empresa, :foreign_key => "prefijo", :dependent => :destroy# Define una asociaicion 1 a N con productos_empresa
@@ -49,7 +50,7 @@ class Empresa < ActiveRecord::Base
     @estatus_activa = Estatus.find(:first, :conditions => ["descripcion like ?", "Activa"]) # Se busca el ID de Estatus Activa
     @empresas = Empresa.find(:all, :conditions => ["prefijo in (?)", empresas.collect{|prefijo| prefijo}])
     subestatus = SubEstatus.find(:first, :conditions => ["descripcion = ?", "SOLVENTE"]) # La empresa esta solvente
-    @empresas.collect{|empresa_seleccionada| empresa = Empresa.find(empresa_seleccionada.prefijo); empresa.id_estatus = @estatus_activa.id; empresa.id_subestatus = subestatus.id; empresa.save}
+    @empresas.collect{|empresa_seleccionada| empresa = Empresa.find(empresa_seleccionada.prefijo); empresa.id_estatus = @estatus_activa.id; empresa.id_subestatus = subestatus.id; empresa.fecha_activacion = Time.now; empresa.save}
 
   end
 
@@ -364,6 +365,17 @@ class Empresa < ActiveRecord::Base
     dato_contacto.nombre_contacto = datos.nombre_contacto
     dato_contacto.cargo_contacto = datos.cargo_contacto
     dato_contacto.save
+
+  end
+
+
+  def self.utilizar_prefijo_no_validado(empresa_no_validada)
+
+    correspondencias = Correspondencia.find(:all, :conditions => ["prefijo = ?", empresa_no_validada.prefijo])
+    correspondencias.collect{|correspondencia| correspondencia.prefijo = Empresa.generar_prefijo_valido; correspondencia.save }
+    empresa_no_validada.prefijo = Empresa.generar_prefijo_valido
+    empresa_no_validada.save
+
 
   end
 

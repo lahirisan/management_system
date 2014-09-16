@@ -3,6 +3,7 @@
         // Datatable que maneja el listado de empresas
         $("#data_table_empresas").dataTable({
             sPaginationType: "full_numbers",
+            aoColumns: [ null,  null, null,  null, null, { "bSortable": false }, null, { "bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false }],
             aaSorting: [[ 2, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
@@ -19,13 +20,14 @@
          // Datatable que maneja el listado de empresas activacion
         $("#data_table_empresas_activacion").dataTable({
             sPaginationType: "full_numbers",
-            aaSorting: [[ 2, "desc" ]],
+            aoColumns: [ { "bSortable": false },  null, null,  null, null, null, null, null, null, null ],
+            aaSorting: [[ 3, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',
             sAjaxSource: $('#data_table_empresas_activacion').data('source')
-        }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null,{type: "text"}, {type: "text"} ]});
+        }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null,{type: "text"}, {type: "text"}, {type: "text"} ]});
 
         $('#data_table_empresas_activacion input').attr("placeholder", "Buscar");
 
@@ -419,9 +421,10 @@
             $('.parametros').html(
                 '<input name="prefijo" type="hidden" value="'+$('tfoot tr th:nth-child(1) span input').val()+'">'+
                 '<input name="nombre_empresa" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
-                '<input name="fecha_inscripcion" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="fecha_activacion" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
                 '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
-                '<input name="rif" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'
+                '<input name="rif" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="sub_estatus" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'
                 
             );
 
@@ -484,6 +487,9 @@
                 '<input name="fecha_inscripcion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
                 '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
                 '<input name="rif" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="tipo_usuario" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="ventas_brutas" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
+                '<input name="clasificacion" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
                 '<input name="activacion" type="hidden" value="true">'
             );
 
@@ -498,7 +504,6 @@
             var pattern_phone_number = new RegExp(/^(\([0-9]{4}\) )[0-9]{3}-[0-9]{2}-[0-9]{2}$/);
             return pattern_phone_number.test(phoneNumber);
         };
-
 
 
         $('#formulario_crear_empresa').submit(function( event ) { 
@@ -612,9 +617,50 @@
                 this.value = this.value.toUpperCase();
         });
 
+        $('#asignar_prefijo_manual').dialog({
+          autoOpen: false,
+          width: 900
+         
+        });
 
-        
 
+        // Botón para abrir el dialogo
+        $('#boton_abrir_ventana_prefijo_manual').click(function(w){
+          w.preventDefault(); // Deshabilita el hipervinculo el boton importar
+          
+
+          $('#prefijos_disponibles').dataTable({
+            bDestroy: true,
+            bJQueryUI: true
+          });
+          $('#asignar_prefijo_manual').dialog('open').attr('class', 'ventana_prefijo_manual');
+          
+        });
+
+        //cierra la ventana para asignar prefijo manual
+        $('#regresar_formulario_empresa').click(function(){
+            $('.ventana_prefijo_manual').dialog('close');
+            
+        });
+
+        // Accion del boton asignar prefijo en la ventana
+
+        $('.boton_asignar_prefijo_manual').click(function(){
+
+            if ($('#prefijo_manual').val() == '')
+            {
+                alert('Estimado usuario, no ha ingresado ningún PREFIJO para ser reutilizado');
+            }
+            else
+            {
+                $('#empresa_prefijo').val($('#prefijo_manual').val());
+                $('#empresa_id_clasificacion').val($('#'+ $('#prefijo_manual').val()).val()).change();
+                $('.ventana_prefijo_manual').dialog('close');
+            }
+
+            
+
+        });
 
 
     })   

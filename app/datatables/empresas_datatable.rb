@@ -23,7 +23,7 @@ private
 
       
       fecha = ""
-      fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
+      fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") if (empresa.fecha_activacion)
 
       if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Empresa')
         [ 
@@ -34,7 +34,6 @@ private
           empresa.rif,
           empresa.estatus.descripcion.upcase,
           empresa.sub_estatus.try(:descripcion),
-          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa),  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),        
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe, edit_empresa_path(empresa, :editar => "true"), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar la empresa #{empresa.nombre_empresa}"}),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, empresa_productos_path(empresa), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos de la empresa #{empresa.nombre_empresa}"}),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios", :class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios de la empresa #{empresa.nombre_empresa}"),
@@ -51,7 +50,6 @@ private
           empresa.ciudad.nombre,
           empresa.rif,
           empresa.estatus.descripcion,
-          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa),  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),        
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe,empresa_productos_path(empresa), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos de la empresa #{empresa.nombre_empresa}"}),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios", :class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios de la empresa #{empresa.nombre_empresa}"),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"}),  
@@ -74,7 +72,7 @@ private
     empresas = empresas.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general
-      empresas = empresas.where("empresa.prefijo like :search or  empresa.nombre_empresa like :search or empresa.fecha_inscripcion like :search or  ciudad.nombre like :search or empresa.rif like :search or sub_estatus.descripcion like :search ", search: "%#{params[:sSearch]}%")
+      empresas = empresas.where("empresa.prefijo like :search or  empresa.nombre_empresa like :search or empresa.fecha_activacion like :search or  ciudad.nombre like :search or empresa.rif like :search or sub_estatus.descripcion like :search ", search: "%#{params[:sSearch]}%")
     end
     if params[:sSearch_0].present? # Filtro de busqueda prefijo
       empresas = empresas.where("empresa.prefijo like :search0", search0: "%#{params[:sSearch_0]}%" )
@@ -82,8 +80,8 @@ private
     if params[:sSearch_1].present? # Filtro de busqueda por nombre de la empresa
       empresas = empresas.where("empresa.nombre_empresa like :search1", search1: "%#{params[:sSearch_1]}%" )
     end
-    if params[:sSearch_2].present? # Filtro fecha_inscripcion
-      empresas = empresas.where("empresa.fecha_inscripcion like :search2", search2: "%#{params[:sSearch_2]}%" )
+    if params[:sSearch_2].present? # Filtro fecha_activacion
+      empresas = empresas.where("empresa.fecha_activacion like :search2", search2: "%#{params[:sSearch_2]}%" )
     end
    
     if params[:sSearch_3].present?
@@ -111,7 +109,7 @@ private
 
   def sort_column
 
-     columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_inscripcion ciudad.nombre empresa.rif estatus.descripcion sub_estatus.descripcion]
+     columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_activacion ciudad.nombre empresa.rif estatus.descripcion sub_estatus.descripcion]
      columns[params[:iSortCol_0].to_i]
   end
 

@@ -3,43 +3,18 @@ $(document).ready(function(){
         // Datatable que maneja el listado de productos
         $("#data_table_productos").dataTable({
             sPaginationType: "full_numbers",
-            aaSorting: [[ 8, "desc" ]],
+            aoColumns: [ null,  null, null,  null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }],
+            aaSorting: [[ 1, "asc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_productos').data('source')
-        }).columnFilter({ aoColumns: [null, { type: "text"},{ type: "text"}, {type: "text" }, {type: "text"},  null, {type: "text"},null]});
+        }).columnFilter({ aoColumns: [{ type: "text"},{ type: "text"}, {type: "text" }, {type: "text"},  null, {type: "text"}, {type: "text"}, null, null]});
 
         $('#data_table_productos input').attr("placeholder", "Buscar");
 
-        // Datatable que maneja retirar productos
-        $("#data_table_retirar_productos").dataTable({
-            sPaginationType: "full_numbers",
-            aaSorting: [[ 9, "desc" ]],
-            bJQueryUI: true,
-            bProcessing: true,
-            bServerSide: true,
-            sDom: 'T<"clear">lfrtip',            
-            sAjaxSource: $('#data_table_retirar_productos').data('source')
-        }).columnFilter({ aoColumns: [null, null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, null, null]});
-
-        $('#data_table_retirar_productos input').attr("placeholder", "Buscar");
-
-        // Datatable que maneja retirar productos
-        $("#data_table_productos_retirados").dataTable({
-            sPaginationType: "full_numbers",
-            aaSorting: [[ 11, "desc" ]],
-            bJQueryUI: true,
-            bProcessing: true,
-            bServerSide: true,
-            sDom: 'T<"clear">lfrtip',            
-            sAjaxSource: $('#data_table_productos_retirados').data('source')
-        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
-
-        $('#data_table_productos_retirados input').attr("placeholder", "Buscar");
-
-        // Datatable que maneja retirar productos
+        // // Datatable que maneja retirar productos
         $("#data_table_productos_eliminados").dataTable({
             sPaginationType: "full_numbers",
               aaSorting: [[ 9, "desc" ]],
@@ -52,16 +27,18 @@ $(document).ready(function(){
 
         $('#data_table_productos_eliminados input').attr("placeholder", "Buscar");
 
+        // aoColumns: [ null,  null, null,  null, null, { "bSortable": false }, null, { "bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false }],
         // Datatable que maneja retirar productos
         $("#data_table_eliminar_productos").dataTable({
             sPaginationType: "full_numbers",
-             aaSorting: [[ 12, "desc" ]],
+            aaSorting: [[ 2, "desc" ]],
+            aoColumns: [{ "bSortable": false }, null,  null, null,  null, { "bSortable": false }, null,null],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_eliminar_productos').data('source')
-        }).columnFilter({ aoColumns: [null, null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"},  {type: "text"}, {type: "text"}, {type: "text"}  ]});
+        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"},  {type: "text"} ]});
 
         $('#data_table_eliminar_productos input').attr("placeholder", "Buscar");
 
@@ -276,7 +253,7 @@ $(document).ready(function(){
             if ($(this).val() == 3) // GTIN 13
             { 
                 $('td.texto_manual_automatico').html("Tipo de Creación");  
-                $('td.radio_manual_automatico').html('Automática<input id="tipo_creacion_automatica" name="tipo_creacion" type="radio" value="automatica">Manual<input id="tipo_creacion_manual" name="tipo_creacion" type="radio" value="manual">');  
+                $('td.radio_manual_automatico').html('Automática<input id="tipo_creacion_automatica" name="tipo_creacion" type="radio" value="automatica" checked>Manual<input id="tipo_creacion_manual" name="tipo_creacion" type="radio" value="manual">');  
 
                 $("input[name='tipo_creacion']" ).live('change', function() {
 
@@ -341,11 +318,7 @@ $(document).ready(function(){
                     
         });
         
-        // Se verifica el codigo de producto
-        $('#new_producto').submit(function( event ) {
-            return verificar_codigo_producto();
-        });
-
+        
         $(".exportar_productos").click(function() {
             
             $('.parametros').html(
@@ -425,9 +398,12 @@ $(document).ready(function(){
           
         });
 
-    
+        
 
 });
+
+
+;
 
 
 

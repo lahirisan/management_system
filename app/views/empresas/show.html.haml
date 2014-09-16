@@ -1,5 +1,5 @@
 %section.contexto
-  %label.contexto= "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Datos Básicos"
+  %label.contexto= "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Datos"
   %hr.contexto{:size => "1"}
 
 %section#areaTrabajo.areaTrabajo{:style => "font: 82.5% 'Trebuchet MS', sans-serif"}
@@ -12,31 +12,42 @@
         Prefijo
       %td
         =@empresa.prefijo
+    / %tr
+    /   %td
+    /     Tipo Usuario
+    /   %td
+    /     =@empresa.try(:tipo_usuario).try(:descripcion)
+
     %tr
       %td
         Nombre Empresa
       %td
         = @empresa.nombre_empresa
-    %tr
-      %td
-        Fecha Inscripción
-      %td
-        =@empresa.fecha_inscripcion.nil? ? "No Tiene" : @empresa.fecha_inscripcion.strftime("%Y-%m-%d")
-    %tr
-      %td
-        Dirección de la empresa
-      %td
-        = @empresa.direccion_empresa
+
     %tr
       %td
         Estado
       %td
-        =@empresa.estado.nombre
+        = @empresa.try(:estado).try(:nombre)
+
     %tr
       %td
         Ciudad
       %td
-        = @empresa.ciudad.nombre
+        = @empresa.try(:ciudad).try(:nombre)
+
+    
+    %tr
+      %td
+        Fecha Activación
+      %td
+        =@empresa.fecha_activacion.nil? ? "No Tiene" : @empresa.fecha_activacion.strftime("%Y-%m-%d")
+    %tr
+      %td
+        Dirección Fiscal
+      %td
+        = @empresa.direccion_empresa
+   
     %tr
       %td
         RIF
@@ -49,6 +60,12 @@
         =@empresa.try(:estatus).try(:descripcion)
     %tr
       %td
+        Sub Estatus
+      %td
+        =@empresa.try(:sub_estatus).try(:descripcion)
+      
+    %tr
+      %td
         Rep Legal
       %td
         = @empresa.rep_legal
@@ -57,17 +74,7 @@
         Cargo Rep Legal
       %td
         = @empresa.cargo_rep_legal
-    -if (@retirar)
-      %tr
-        %td
-          Sub Estatus
-        %td
-          =@empresa.try(:sub_estatus).try(:descripcion)
-      %tr
-        %td
-          Motivo Retiro
-        %td
-          =@empresa.try(:motivo_retiro).try(:descripcion)
+   
 
 
 
@@ -78,16 +85,7 @@
 
   %br
   %table
-    %tr
-      %td
-        Tipo de Usuario
-      %td
-        = @empresa.try(:tipo_usuario_empresa).try(:descripcion)
-    %tr
-      / %td
-      /   Nombre Comercial
-      / %td
-      /   = @empresa.nombre_comercial
+    
     %tr
       %td
         Clasificación
@@ -97,22 +95,22 @@
       %td
         Categoría
       %td
-        = @empresa.categoria
+        = @empresa.try(:clasificacion).try(:categoria)
     %tr
       %td
         División
       %td
-        = @empresa.division
+        = @empresa.try(:clasificacion).try(:division)
     %tr
       %td
         Grupo
       %td
-        = @empresa.grupo
+        = @empresa.try(:clasificacion).try(:grupo)
     %tr
       %td
         Clase
       %td
-        = @empresa.clase
+        = @empresa.try(:clasificacion).try(:clase)
   %br
   %br
   %label.contexto=@empresa.nombre_empresa +   " > Datos de Contacto"
@@ -127,66 +125,66 @@
   %hr.contexto{:size => "1"}
   %br
 
-  %table
-    %tr
-      %td
-        Representante Técnico
-      %td
-        =@correspondencia.try(:rep_tecnico)
-    %tr
-      %td
-        Cargo Rep Técnico
-      %td
-        =@correspondencia.try(:cargo_rep_tecnico)
-    %tr
-      %td
-        Edificio
-      %td
-        =@correspondencia.try(:edificio)
-    %tr
-      %td
-        Calle
-      %td
-        =@correspondencia.try(:calle)
-    %tr
-      %td
-        Urbanización
-      %td
-        =@correspondencia.try(:urbanizacion)
-    %tr
-      %td
-        Estado
-      %td
-        =@correspondencia.try(:estado).try(:nombre)
+  / %table
+  /   %tr
+  /     %td
+  /       Representante Técnico
+  /     %td
+  /       =@correspondencia.try(:rep_tecnico)
+  /   %tr
+  /     %td
+  /       Cargo Rep Técnico
+  /     %td
+  /       =@correspondencia.try(:cargo_rep_tecnico)
+  /   %tr
+  /     %td
+  /       Edificio
+  /     %td
+  /       =@correspondencia.try(:edificio)
+  /   %tr
+  /     %td
+  /       Calle
+  /     %td
+  /       =@correspondencia.try(:calle)
+  /   %tr
+  /     %td
+  /       Urbanización
+  /     %td
+  /       =@correspondencia.try(:urbanizacion)
+  /   %tr
+  /     %td
+  /       Estado
+  /     %td
+  /       =@correspondencia.try(:estado).try(:nombre)
     
-    %tr
-      %td
-        Ciudad
-      %td
-        =@correspondencia.try(:ciudad).try(:nombre)
-    %tr
-      %td
-        Municipio
-      %td
-        =@correspondencia.try(:municipio).try(:nombre)
-    %tr
-      %td
-        Parroquia
-      %td
-        =@correspondencia.try(:nombre_parroquia)
-    %tr
-      %td
-        Código Postal
-      %td
-        =@correspondencia.try(:cod_postal)
-    %tr
-      %td
-        Punto Referencia
-      %td
-        =@correspondencia.try(:punto_referencia)
-  %br
-  %br
-  %br
+  /   %tr
+  /     %td
+  /       Ciudad
+  /     %td
+  /       =@correspondencia.try(:ciudad).try(:nombre)
+  /   %tr
+  /     %td
+  /       Municipio
+  /     %td
+  /       =@correspondencia.try(:municipio).try(:nombre)
+  /   %tr
+  /     %td
+  /       Parroquia
+  /     %td
+  /       =@correspondencia.try(:nombre_parroquia)
+  /   %tr
+  /     %td
+  /       Código Postal
+  /     %td
+  /       =@correspondencia.try(:cod_postal)
+  /   %tr
+  /     %td
+  /       Punto Referencia
+  /     %td
+  /       =@correspondencia.try(:punto_referencia)
+  / %br
+  / %br
+  / %br
   
   %a.ui-state-default.ui-corner-all.regresar{:href => "javascript:window.history.back()"}
     %span.ui-icon.ui-icon-arrowreturnthick-1-w

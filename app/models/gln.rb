@@ -89,7 +89,7 @@ class Gln < ActiveRecord::Base
   # gln_legal.calle = "-"
   # gln_legal.urbanizacion = "-"
   # gln_legal.punto_referencia = "-"
-  #gln_legal.save
+  gln_legal.save
 
 
   raise gln_legal.errors.to_yaml if gln_legal.errors.any?
@@ -127,7 +127,7 @@ class Gln < ActiveRecord::Base
   empresa_gln = GlnEmpresa.new
   empresa_gln.prefijo = prefijo_empresa
   empresa_gln.id_gln = parametro_gln
-  #empresa_gln.save
+  empresa_gln.save
 
 
 

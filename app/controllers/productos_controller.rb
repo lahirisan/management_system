@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class ProductosController < ApplicationController
   before_filter :require_authentication
   
@@ -185,41 +186,32 @@ class ProductosController < ApplicationController
 
   def update_multiple
 
-    
-    if params[:retirar]
-      Producto.retirar(params) 
-      accion = "fueron retirados."
-      string_gtin = ""
-      params[:retirar_productos].collect{|gtin| string_gtin += gtin + " "} 
-    elsif params[:eliminar]
-      Producto.eliminar(params)
-      accion = "fueron eliminados."
-      string_gtin = ""
-      params[:eliminar_productos].collect{|gtin| string_gtin += gtin + " "} 
-    end
+    productos = Producto.eliminar(params)
+    string_gtin = ""
 
-
-
-    
     respond_to do |format|
-      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?retirados=true", notice: "Los GTIN #{string_gtin} #{accion}" } if params[:retirar]
-      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?eliminados=true", notice: "Los GTIN #{string_gtin} #{accion}" } if params[:eliminar]
+      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "Los GTIN #{productos.collect{|producto| producto.gtin}} fueron eliminados." }
     end
   end
 
   def import
+
     tipo_gtin = TipoGtin.find(params[:tipo_gtin])
 
-    if (params[:tipo_gtin] == '6') or (params[:tipo_gtin] == '4') # Gtin14 base 8 or GTIN14 base 13
-      Producto.import_gtin_14(params[:file], params[:tipo_gtin], params[:empresa_id]) 
+    if (params[:tipo_gtin] == '6') or (params[:tipo_gtin] == '4') # Gtin14 base 8  GTIN14 base 13
+      codigo_invalido = Producto.import_gtin_14(params[:file], params[:tipo_gtin], params[:empresa_id]) 
       mensaje = "Los #{tipo_gtin.tipo} base #{tipo_gtin.base} fueron importados." 
     else
       Producto.import(params[:file], params[:tipo_gtin], params[:empresa_id]) 
       mensaje = "Los #{tipo_gtin.tipo} fueron importados." 
     end
 
-   
-    redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: mensaje 
+    if codigo_invalido 
+
+      redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "No se pudo generar GTIN-14 para los siguientes codigo(s) [#{codigo_invalido}]. Por favor verifique que existan antes de intentar generar su GTIN-14.".upcase 
+    else
+      redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: mensaje.upcase 
+    end
 
   end
 
