@@ -265,7 +265,8 @@
         Regresar
 
     #asignar_prefijo_manual
-      =render 'ventana_prefijo_manual'
+      -if params[:action] == 'new'
+        =render 'ventana_prefijo_manual'
       
 
 
