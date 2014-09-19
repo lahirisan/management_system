@@ -406,10 +406,10 @@ class Empresa < ActiveRecord::Base
     nuevo_prefijo_empresa_no_validada.fecha_registro_mercantil = empresa_no_validada.try(:fecha_registro_mercantil)
     nuevo_prefijo_empresa_no_validada.id_subestatus = empresa_no_validada.try(:id_subestatus)
     nuevo_prefijo_empresa_no_validada.fecha_activacion = empresa_no_validada.try(:fecha_activacion)
-    Gln.generar_legal(Empresa.generar_prefijo_valido)  #
+    prefijo_valido = Empresa.generar_prefijo_valido
+    Gln.generar_legal(prefijo_valido.to_s)  
     empresa_no_validada.destroy
     nuevo_prefijo_empresa_no_validada.save
-    
 
   end
 

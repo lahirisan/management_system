@@ -178,10 +178,6 @@ class EmpresasController < ApplicationController
 
     params[:empresa][:id_tipo_usuario] = 3 if params[:empresa][:id_tipo_usuario] == '' # Si el usaurio no especifico el tipo de empresa
 
-
-
-    params[:empresa][:rif] = params[:tipo_rif] + "-" + params[:empresa][:rif]
-
     
     respond_to do |format|
     
@@ -204,7 +200,8 @@ class EmpresasController < ApplicationController
         Correspondencia.agregar_correspondencia(@empresa.prefijo, params[:persona_contacto_mercadeo], params[:cargo_mercadeo], params[:edificio_mercadeo], params[:detalle_edificio_mercadeo], params[:piso_mercadeo], params[:detalle_piso_mercadeo], params[:oficina_mercadeo], params[:detalle_oficina_mercadeo], params[:calle_mercadeo], params[:detalle_calle_mercadeo], params[:urbanizacion_mercadeo], params[:detalle_urbanizacion_mercadeo], params[:estado_mercadeo], params[:ciudad_mercadeo], params[:municipio_mercadeo], params[:parroquia_mercadeo], params[:punto_referencia_mercadeo], params[:codigo_postal_mercadeo], "MERCADEO", params[:telefono1_mercadeo], params[:telefono2_mercadeo], params[:telefono3_mercadeo], params[:fax_mercadeo], params[:email_mercadeo])
         
         # EL GLN OJO con esto  validar los casos GLN para empresa no validad y GLN de emrpresas eliminadas
-        Gln.generar_legal(@empresa.prefijo.to_s)
+        
+        Gln.generar_legal(@empresa.prefijo.to_s) if empresa_no_validada.nil?
 
         Auditoria.registrar_evento(session[:user_id],"Empresa", "Crear", Time.now, "Prefijo #{@empresa.prefijo}")
         format.html { redirect_to '/empresas?activacion=true', notice: "EMPRESA CREADA SATISFACTORIAMENTE. PREFIJO:#{@empresa.prefijo}   NOMBRE:#{@empresa.nombre_empresa}" }
