@@ -3,4 +3,5 @@ class ModificarTablaProducto < ActiveRecord::Migration
   #   change_column :producto, :codigo_prod, :string
     
   # end
+  
 end
