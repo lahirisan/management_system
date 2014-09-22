@@ -5,12 +5,13 @@
 				%td
 					Usuario
 				%td
-					=text_field_tag :usuario
+					=text_field_tag :usuario, nil, :class => "login"
 			%tr
 				%td
 					Clave
 				%td
-					=password_field_tag :clave
+					=password_field_tag :clave, nil,  :class => "login"
+					
 
 		%p.button
 			= submit_tag "Entrar"

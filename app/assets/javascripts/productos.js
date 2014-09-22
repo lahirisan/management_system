@@ -3,43 +3,18 @@ $(document).ready(function(){
         // Datatable que maneja el listado de productos
         $("#data_table_productos").dataTable({
             sPaginationType: "full_numbers",
-            aaSorting: [[ 8, "desc" ]],
+            aoColumns: [ null,  null, null,  null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }],
+            aaSorting: [[ 1, "asc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_productos').data('source')
-        }).columnFilter({ aoColumns: [null, { type: "text"},{ type: "text"}, {type: "text" }, {type: "text"},  null, {type: "text"},null]});
+        }).columnFilter({ aoColumns: [{ type: "text"},{ type: "text"}, {type: "text" }, {type: "text"},  null, {type: "text"}, {type: "text"}, null, null]});
 
         $('#data_table_productos input').attr("placeholder", "Buscar");
 
-        // Datatable que maneja retirar productos
-        $("#data_table_retirar_productos").dataTable({
-            sPaginationType: "full_numbers",
-            aaSorting: [[ 9, "desc" ]],
-            bJQueryUI: true,
-            bProcessing: true,
-            bServerSide: true,
-            sDom: 'T<"clear">lfrtip',            
-            sAjaxSource: $('#data_table_retirar_productos').data('source')
-        }).columnFilter({ aoColumns: [null, null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, null, null]});
-
-        $('#data_table_retirar_productos input').attr("placeholder", "Buscar");
-
-        // Datatable que maneja retirar productos
-        $("#data_table_productos_retirados").dataTable({
-            sPaginationType: "full_numbers",
-            aaSorting: [[ 11, "desc" ]],
-            bJQueryUI: true,
-            bProcessing: true,
-            bServerSide: true,
-            sDom: 'T<"clear">lfrtip',            
-            sAjaxSource: $('#data_table_productos_retirados').data('source')
-        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
-
-        $('#data_table_productos_retirados input').attr("placeholder", "Buscar");
-
-        // Datatable que maneja retirar productos
+        // // Datatable que maneja retirar productos
         $("#data_table_productos_eliminados").dataTable({
             sPaginationType: "full_numbers",
               aaSorting: [[ 9, "desc" ]],
@@ -52,16 +27,18 @@ $(document).ready(function(){
 
         $('#data_table_productos_eliminados input').attr("placeholder", "Buscar");
 
+        // aoColumns: [ null,  null, null,  null, null, { "bSortable": false }, null, { "bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false }],
         // Datatable que maneja retirar productos
         $("#data_table_eliminar_productos").dataTable({
             sPaginationType: "full_numbers",
-             aaSorting: [[ 12, "desc" ]],
+            aaSorting: [[ 2, "desc" ]],
+            aoColumns: [{ "bSortable": false }, null,  null, null,  null, { "bSortable": false }, null,null],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_eliminar_productos').data('source')
-        }).columnFilter({ aoColumns: [null, null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"},  {type: "text"}, {type: "text"}, {type: "text"}  ]});
+        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"},  {type: "text"} ]});
 
         $('#data_table_eliminar_productos input').attr("placeholder", "Buscar");
 
@@ -76,61 +53,61 @@ $(document).ready(function(){
                 alert("Estimado usuario, no ha seleccionado ningún producto para ELIMINAR. Por favor verifique.");
                 return false;
             }
-            var seleccion_invalida = false;
+            // var seleccion_invalida = false;
 
-            if ($('#eliminar_masivo_productos').is(':checked')) // elimino masivo
-            {  
+            // if ($('#eliminar_masivo_productos').is(':checked')) // elimino masivo
+            // {  
                 
-                if ($('#sub_estatus').val() == 1)
-                {
-                    alert('Estimado usuario, no ha selecciona un SUB ESTATUS para asignar masivamente. Por favor verifique');
-                    seleccion_invalida = true;
-                    return false;
+            //     if ($('#sub_estatus').val() == 1)
+            //     {
+            //         alert('Estimado usuario, no ha selecciona un SUB ESTATUS para asignar masivamente. Por favor verifique');
+            //         seleccion_invalida = true;
+            //         return false;
 
-                }
+            //     }
 
-                if ($('#motivo_retiro').val() == 1)
-                {
-                    alert('Estimado usuario, no ha selecciona un MOTIVO RETIRO para asignar masivamente. Por favor verifique');
-                    seleccion_invalida = true;
-                    return false;
+            //     if ($('#motivo_retiro').val() == 1)
+            //     {
+            //         alert('Estimado usuario, no ha selecciona un MOTIVO RETIRO para asignar masivamente. Por favor verifique');
+            //         seleccion_invalida = true;
+            //         return false;
 
-                }
+            //     }
 
-                $('.eliminar_producto:checked').each(function() {
-                    // Por cada producto seleccionado se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
-                    $('#datos_productos_eliminar_productos').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
-                });   
-            }
-            else 
-            {
-                $('.eliminar_producto:checked').each(function() {
+            //     $('.eliminar_producto:checked').each(function() {
+            //         // Por cada producto seleccionado se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
+            //         $('#datos_productos_eliminar_productos').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
+            //     });   
+            // }
+            // else 
+            // {
+            //     $('.eliminar_producto:checked').each(function() {
 
-                    // Se valida que el usuario haya seleccion un subestatus para retirar el GTIN
-                    if ($('#'+$(this).val()+'sub_estatus').val() == 1)
-                    {
-                        alert('Estimado usuario, no ha seleccionado un SUB ESTATUS para el GTIN '+ $(this).val());
-                        seleccion_invalida = true;
-                        return false;
-                    }
+            //         // Se valida que el usuario haya seleccion un subestatus para retirar el GTIN
+            //         if ($('#'+$(this).val()+'sub_estatus').val() == 1)
+            //         {
+            //             alert('Estimado usuario, no ha seleccionado un SUB ESTATUS para el GTIN '+ $(this).val());
+            //             seleccion_invalida = true;
+            //             return false;
+            //         }
 
-                    // Se valida que el usaurio haya selccionado un motivo de retiro pra el GTIN
-                    if ($('#'+$(this).val()+'motivo_ret').val() == 1)
-                    {
-                        alert('Estimado usuario, no ha seleccionado un MOTIVO RETIRO para el GTIN '+ $(this).val());
-                        seleccion_invalida = true;
-                        return false;
-                    }
+            //         // Se valida que el usaurio haya selccionado un motivo de retiro pra el GTIN
+            //         if ($('#'+$(this).val()+'motivo_ret').val() == 1)
+            //         {
+            //             alert('Estimado usuario, no ha seleccionado un MOTIVO RETIRO para el GTIN '+ $(this).val());
+            //             seleccion_invalida = true;
+            //             return false;
+            //         }
 
 
-                    // Por cada producto selecciondo se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
-                    $('#datos_productos_eliminar_productos').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
-                });
-            }
+            //         // Por cada producto selecciondo se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
+            //         $('#datos_productos_eliminar_productos').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
+            //     });
+            // }
 
            
-            if (seleccion_invalida)
-                return false;
+            // if (seleccion_invalida)
+            //     return false;
 
             if (!(confirm('Esta seguro ELIMINAR los Productos seleccionados ?')))
                 return false;
@@ -276,7 +253,7 @@ $(document).ready(function(){
             if ($(this).val() == 3) // GTIN 13
             { 
                 $('td.texto_manual_automatico').html("Tipo de Creación");  
-                $('td.radio_manual_automatico').html('Automática<input id="tipo_creacion_automatica" name="tipo_creacion" type="radio" value="automatica">Manual<input id="tipo_creacion_manual" name="tipo_creacion" type="radio" value="manual">');  
+                $('td.radio_manual_automatico').html('Automática<input id="tipo_creacion_automatica" name="tipo_creacion" type="radio" value="automatica" checked>Manual<input id="tipo_creacion_manual" name="tipo_creacion" type="radio" value="manual">');  
 
                 $("input[name='tipo_creacion']" ).live('change', function() {
 
@@ -325,18 +302,23 @@ $(document).ready(function(){
                 var cod_producto = $('#producto_codigo_prod').val();
                 if ( !reg.test(cod_producto) )
                 {
-                    alert('Estimado usuario, el codigo producto debe ser un número de 5 dígitos. Por favor verifique');
+                    alert('Estimado usuario, el código producto debe ser un valor de 5 dígitos numéricos. Por favor verifique.');
                     return false;
                 }
+
+                if (cod_producto == '00000')
+                {
+                    alert('Estimado usuario, el código de producto debe ser un valor de 5 dígitos numéricos distinto de 00000. Por favor verifique.');
+                    return false;
+                }
+
             }
+
+
                     
         });
         
-        // Se verifica el codigo de producto
-        $('#new_producto').submit(function( event ) {
-            return verificar_codigo_producto();
-        });
-
+        
         $(".exportar_productos").click(function() {
             
             $('.parametros').html(
@@ -416,9 +398,12 @@ $(document).ready(function(){
           
         });
 
-    
+        
 
 });
+
+
+;
 
 
 

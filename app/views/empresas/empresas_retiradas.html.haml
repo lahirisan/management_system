@@ -5,44 +5,32 @@
     %p#notice= notice
 
     = render 'botones_exportar_empresas_retiradas'
-    
-    =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retiradas" do
-        
-        - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Empresa')
-        
-            =render 'eliminar_masivo'
+    %br
        
-        %table#data_table_empresas_retiradas.display{:"data-source" => "/empresas.json?retiradas=true"}
-            %thead
-                %tr
-                    %th Selección
-                    %th Prefijo
-                    %th Nombre Empresa
-                    %th Fecha Inscripción
-                    %th Ciudad
-                    %th RIF
-                    %th Fecha Retiro
-                    %th Empresa Detalle
-                    %th Productos
-                    %th Servicios
-                    %th GLN
-                    %th Sub-estatus
-                    %th Motivo Retiro
+    %table#data_table_empresas_retiradas.display{:"data-source" => "/empresas.json?retiradas=true"}
+        %thead
+            %tr
+                %th Prefijo
+                %th Nombre Empresa
+                %th Fecha Inscripción
+                %th Ciudad
+                %th RIF
+                %th Fecha Retiro
+                %th Motivo Retiro
+                %th Empresa Detalle
+                %th Productos
+                %th Servicios
+                %th GLN
+                
 
-            %tbody
-            %tfoot
-                =render 'footer_retiradas'
-        %br/
-        %br/
-        #datos_empresas_eliminar
-        =hidden_field_tag "eliminar", "true"
-        - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Empresa')
-            %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit"}
-                %span.ui-icon.ui-icon-circle-minus
-                Eliminar
-        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
-            %span.ui-icon.ui-icon-arrowreturnthick-1-w
-            Regresar
+        %tbody
+        %tfoot
+            =render 'footer_retiradas'
+    %br/
+    %br/
+    %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
+        %span.ui-icon.ui-icon-arrowreturnthick-1-w
+        Regresar
         
         
     

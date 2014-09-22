@@ -12,17 +12,20 @@
                     %th Prefijo
                     %th Nombre Empresa
                     %th Fecha Inscripción
-                    %th Dirección empresa
-                    %th Estado
                     %th Ciudad
                     %th RIF
                     %th Estatus
+                    %th Tipo Usuario
+                    %th Ventas Brutas Anuales
+                    %th Clasificación
             %tbody
             %tfoot
                 =render 'footer_activacion'
         %br/
         %br/
         =hidden_field_tag "activacion", "true"
+        #datos_empresas_activar
+        
         %button#submit.ui-state-default.ui-corner-all.activar_empresa{:type => "submit", :title => "Activar empresas seleccionadas"}
             %span.ui-icon.ui-icon-circle-check
             Activar Empresa

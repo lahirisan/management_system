@@ -11,14 +11,14 @@ class EmpresaServiciosController < ApplicationController
     respond_to do |format|
       format.html {
                   if params[:eliminar]
-                    @navegabilidad = @empresa.nombre_empresa + " > Eliminar Servicios"
+                    @navegabilidad = "#{@empresa.prefijo} > " +  @empresa.nombre_empresa + " > Eliminar Servicios"
                     render :template =>'/empresa_servicios/eliminar_empresa_servicios.html.haml'
                   elsif params[:eliminados]
-                    @navegabilidad = @empresa.nombre_empresa + " > Servicios Eliminados"
+                    @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Servicios Eliminados"
                     render :template =>'/empresa_servicios/servicios_eliminados.html.haml'
                   else
                     @empresas_retiradas = params[:retirados].nil? ? false : true
-                    @navegabilidad = @empresa.nombre_empresa + " > Servicios Activos > Listado"
+                    @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Servicios Activos > Listado"
                     render :template =>'/empresa_servicios/index.html.haml'
                   end
                    

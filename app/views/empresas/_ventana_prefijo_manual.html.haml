@@ -1,0 +1,43 @@
+
+%h1
+  Listado de Prefijos que se pueden reutilizar:
+%br
+%table#prefijos_disponibles.display{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+  %thead
+    %tr
+      %td PREFIJO
+      %td NOMBRE EMPRESA
+      %td ESTATUS
+      %td CATEGORIA
+      %td DIVISION
+      %td GRUPO
+      %td CLASE
+      %td CLASIFICACION
+      %td
+    
+  %tbody
+    - @prefijos_disponibles.each do |empresa|
+      %tr
+        %td= empresa.prefijo
+        %td= empresa.nombre_empresa
+        %td= empresa.try(:estatus).try(:descripcion)
+        %td= empresa.try(:categoria)
+        %td= empresa.try(:division)
+        %td= empresa.try(:grupo)
+        %td= empresa.try(:clase)
+        %td= empresa.try(:clasificacion).try(:descripcion)
+        %td= hidden_field_tag "#{empresa.prefijo}", nil, :value => "#{empresa.try(:id_clasificacion)}"
+
+%br
+%br
+%table
+  %tr
+    %td
+      =text_field_tag "prefijo_manual", nil, :placeholder => "PREFIJO"
+    %td{:style => "width:20%"}
+      =button_tag 'Asignar Prefijo', :class => "boton_asignar_prefijo_manual"
+    %td{:style => "width:80%; text-align:right;"}
+      =button_tag 'Regresar', :id => "regresar_formulario_empresa"
+%br
+%br
+%br

@@ -4,17 +4,19 @@ class Empresa < ActiveRecord::Base
   
   # La Asociacion tienen  que ir primero si se utiliza accepts_nested_attributes
 
-  has_one :correspondencia, :foreign_key => "prefijo", :dependent => :destroy # elimina en cascada
+  #has_many :correspondencia, :foreign_key => "prefijo", :dependent => :destroy # elimina en cascada
   has_many :datos_contacto, :foreign_key => "prefijo", :dependent => :destroy # elimina en cascada las correspondencia de la empresa si se elimina la empresa de manera de evitar data inconsistente
 
-  accepts_nested_attributes_for :correspondencia, :allow_destroy => true # Maneja el modelo correspondencia en el formulario de empresa  
+  #accepts_nested_attributes_for :correspondencia, :allow_destroy => true # Maneja el modelo correspondencia en el formulario de empresa  
   accepts_nested_attributes_for :datos_contacto, :allow_destroy => true # Maneja el modelo correspondencia en el formulario de empresa  
-  attr_accessible :cargo_rep_legal, :categoria, :clase, :direccion_empresa, :division, :fecha_inscripcion, :grupo, :id_ciudad, :id_clasificacion, :id_estado, :id_estatus, :id_tipo_usuario, :nombre_comercial, :nombre_empresa, :rep_legal, :rif, :prefijo,  :correspondencia_attributes, :datos_contacto_attributes
+  attr_accessible :cargo_rep_legal, :categoria, :clase, :direccion_empresa, :division, :fecha_inscripcion, :grupo, :id_ciudad, :id_clasificacion, :id_estado, :id_estatus, :id_tipo_usuario, :nombre_comercial, :nombre_empresa, :rep_legal, :rif, :prefijo,  :correspondencia_attributes, :datos_contacto_attributes, :numero_registro_mercantil, :tomo_registro_mercantil, :nit_registro_mercantil, :nacionalidad_responsable_legal, :domicilio_responsable_legal, :cedula_responsable_legal, :circunscripcion_judicial, :ventas_brutas_anuales, :fecha_registro_mercantil
   
   belongs_to :estado, :foreign_key =>  "id_estado"  # Se establece la clave foranea por la cual va a buscar la asociacion
   belongs_to :ciudad, :foreign_key =>  "id_ciudad"
   belongs_to :estatus, :foreign_key =>  "id_estatus"
   belongs_to :clasificacion, :foreign_key => "id_clasificacion"
+  belongs_to :sub_estatus, :foreign_key => "id_subestatus"
+  belongs_to :tipo_usuario, :foreign_key => "id_tipo_usuario"
   has_one  :empresas_retiradas,  :foreign_key => "prefijo" , :dependent => :destroy   # Define una asociacion 1 a 1 con empresas_retiradas, eliminacion en cascada
   has_many :productos_empresa, :foreign_key => "prefijo" # Define una asociaicion 1 a N con productos_empresa
   has_many :producto, :through => :productos_empresa, :foreign_key => "prefijo", :dependent => :destroy# Define una asociaicion 1 a N con productos_empresa
@@ -27,9 +29,9 @@ class Empresa < ActiveRecord::Base
   
   belongs_to :tipo_usuario_empresa, :foreign_key => "id_tipo_usuario"
   
-  validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo, :id_clasificacion,  :presence => {:message => "No puede estar en blanco"}, :on => :create
-  validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{5,8})-([0-9]{1})$/, on: :create, :message => "El Formato del RIF es invalido"} # Validacion al crear
-  validates :rif, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado. Por favor verifique."}
+  validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo, :id_clasificacion, :rep_legal, :cargo_rep_legal,  :presence => {:message => "No puede estar en blanco"}, :on => :create
+  #validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{5,8})-([0-9]{1})$/, on: :create, :message => "El Formato del RIF es invalido"} # Validacion al crear
+  validates :rif, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado. Por favor verifique."}, :on => :create
 
   def self.to_csv # Se genera el CSV de Empresas
 
@@ -47,14 +49,22 @@ class Empresa < ActiveRecord::Base
   def self.validar_empresas(empresas) # Procedimiento para validar Empresas
     @estatus_activa = Estatus.find(:first, :conditions => ["descripcion like ?", "Activa"]) # Se busca el ID de Estatus Activa
     @empresas = Empresa.find(:all, :conditions => ["prefijo in (?)", empresas.collect{|prefijo| prefijo}])
-    @empresas.collect{|empresa_seleccionada| empresa = Empresa.find(empresa_seleccionada.prefijo); empresa.id_estatus = @estatus_activa.id; empresa.save}
+    subestatus = SubEstatus.find(:first, :conditions => ["descripcion = ?", "SOLVENTE"]) # La empresa esta solvente
+    @empresas.collect{|empresa_seleccionada| empresa = Empresa.find(empresa_seleccionada.prefijo); empresa.id_estatus = @estatus_activa.id; empresa.id_subestatus = subestatus.id; empresa.fecha_activacion = Time.now; empresa.save}
+
+  end
+
+  def self.cambiar_sub_estatus(parametros)
+    
+    parametros[:sub_estatus_empresas].collect{|empresa_seleccionada|  empresa = Empresa.find(empresa_seleccionada); empresa.id_subestatus = parametros[:"#{empresa.prefijo}"].to_i; empresa.save}
+
   end
 
   def self.retirar_empresas(parametros)
     
     #En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
     # OJO: Esto se puede optimizar actualizando masivamente // Refrencia RailCast 198
-
+  
       for retirar_empresas in (0..parametros[:retirar_empresas].size-1)
        
         empresa_seleccionada = parametros[:retirar_empresas][retirar_empresas]
@@ -64,8 +74,7 @@ class Empresa < ActiveRecord::Base
         empresa_retirar.prefijo = retirar_datos.split('_')[0]
         fecha_retiro = Time.now
         empresa_retirar.fecha_retiro = fecha_retiro
-        empresa_retirar.id_motivo_retiro = retirar_datos.split('_')[2]
-        empresa_retirar.id_subestatus = retirar_datos.split('_')[1]
+        empresa_retirar.id_motivo_retiro = retirar_datos.split('_')[1]
         empresa_retirar.save
         
         empresa = Empresa.find(:first, :conditions => ["prefijo = ?", retirar_datos.split('_')[0]]) # La clave primaria es es prefijo
@@ -89,14 +98,16 @@ class Empresa < ActiveRecord::Base
     
     #En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
     # OJO: Esto se peude optimizar actualizando masivamente // RailsCast 198
+      
 
       for eliminar_empresas in (0..parametros[:eliminar_empresas].size-1)
         empresa_seleccionada = parametros[:eliminar_empresas][eliminar_empresas]
-        eliminar_datos = parametros[:"#{empresa_seleccionada}"]
-        eliminar_datos.split('_')[0] # eliminar_datos.split('_')[0] Prefijo de la empresa eliminar_datos.split('_')[1] id sub_estatus eliminar_datos.split('_')[2] id motivo_retiro
+        
+        #eliminar_datos = parametros[:"#{empresa_seleccionada}"]
+        #eliminar_datos.split('_')[0] # eliminar_datos.split('_')[0] Prefijo de la empresa eliminar_datos.split('_')[1] id sub_estatus eliminar_datos.split('_')[2] id motivo_retiro
         
         # Se busca la empresa para obtener todos sus datos
-        empresa_eliminar = Empresa.find(:first, :conditions => ["prefijo = ?",eliminar_datos.split('_')[0]])
+        empresa_eliminar = Empresa.find(empresa_seleccionada)
         estatus_empresa = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ? ", "Eliminada", 'Empresa'])
         
         empresa_eliminada =  EmpresaEliminada.new  # Se crear el registro de la empresa_eliminada
@@ -117,11 +128,13 @@ class Empresa < ActiveRecord::Base
         empresa_eliminada.clase = empresa_eliminar.try(:clase)
         empresa_eliminada.rep_legal = empresa_eliminar.try(:rep_legal)
         empresa_eliminada.cargo_rep_legal = empresa_eliminar.try(:cargo_rep_legal)
-        empresa_eliminada.id_motivo_retiro = eliminar_datos.split('_')[2]
-        empresa_eliminada.id_subestatus = eliminar_datos.split('_')[1]
+        #empresa_eliminada.id_motivo_retiro = eliminar_datos.split('_')[2]
+        #empresa_eliminada.id_subestatus = eliminar_datos.split('_')[1]
         empresa_eliminada.save
 
-        crear_correspondencia_eliminada(empresa_eliminar) if (empresa_eliminar.correspondencia) # Correspondencia
+        # OJO Pendiente la correspondencia de la eliminada
+
+        #crear_correspondencia_eliminada(empresa_eliminar) if (empresa_eliminar.correspondencia) # Correspondencia
 
         empresa_eliminada_detalle = EmpresaElimDetalle.new
         empresa_eliminada_detalle.prefijo = empresa_eliminada.prefijo
@@ -146,8 +159,8 @@ class Empresa < ActiveRecord::Base
           producto_eliminado.save; producto_elim_detalle = ProductoElimDetalle.new; 
           producto_elim_detalle.gtin = producto_empresa.try(:producto).try(:gtin); 
           producto_elim_detalle.fecha_eliminacion = Time.now;
-          producto_elim_detalle.id_motivo_retiro =  eliminar_datos.split('_')[2];
-          producto_elim_detalle.id_subestatus =  eliminar_datos.split('_')[1];
+         # producto_elim_detalle.id_motivo_retiro =  eliminar_datos.split('_')[2];
+         # producto_elim_detalle.id_subestatus =  eliminar_datos.split('_')[1];
 
           producto_elim_detalle.save}
 
@@ -159,6 +172,12 @@ class Empresa < ActiveRecord::Base
 
         # Se elimina el GLN
         empresa_eliminar.gln_empresa.collect{|gln_empresa| Gln.eliminar_gln(gln_empresa.gln,1,1)}
+
+        # OJO Antesd de hacer esto se debe guardar las corespondencicias
+
+        correspondencias = Correspondencia.find(:all, :conditions => ["prefijo = ?", empresa_eliminar.prefijo])
+        correspondencias.collect{|correspondencia| correspondencia.destroy}
+        
 
         empresa_eliminar.destroy
       end
@@ -335,8 +354,9 @@ class Empresa < ActiveRecord::Base
   end
 
   def self.agregar_contacto(contacto, empresa, tipo_contacto)
-  
+
     empresa = Empresa.find(:first, :conditions => ["prefijo = ?", empresa])
+    
     datos =  empresa.datos_contacto.first
     dato_contacto = DatosContacto.new 
     dato_contacto.prefijo = empresa.prefijo
@@ -345,6 +365,51 @@ class Empresa < ActiveRecord::Base
     dato_contacto.nombre_contacto = datos.nombre_contacto
     dato_contacto.cargo_contacto = datos.cargo_contacto
     dato_contacto.save
+
+  end
+
+
+  def self.utilizar_prefijo_no_validado(empresa_no_validada)
+
+
+    correspondencias = Correspondencia.find(:all, :conditions => ["prefijo = ?", empresa_no_validada.prefijo])
+    correspondencias.collect{|correspondencia| correspondencia.prefijo = Empresa.generar_prefijo_valido; correspondencia.save }
+    
+    nuevo_prefijo_empresa_no_validada = Empresa.new
+    nuevo_prefijo_empresa_no_validada.prefijo = Empresa.generar_prefijo_valido
+    nuevo_prefijo_empresa_no_validada.nombre_empresa = empresa_no_validada.try(:nombre_empresa)
+    nuevo_prefijo_empresa_no_validada.fecha_inscripcion = empresa_no_validada.try(:fecha_inscripcion)
+    nuevo_prefijo_empresa_no_validada.direccion_empresa = empresa_no_validada.try(:direccion_empresa)
+    nuevo_prefijo_empresa_no_validada.id_estado = empresa_no_validada.try(:id_estado)
+    nuevo_prefijo_empresa_no_validada.id_ciudad = empresa_no_validada.try(:id_ciudad)
+    nuevo_prefijo_empresa_no_validada.rif = empresa_no_validada.try(:rif)
+    nuevo_prefijo_empresa_no_validada.id_estatus = empresa_no_validada.try(:id_estatus)
+    nuevo_prefijo_empresa_no_validada.id_tipo_usuario = empresa_no_validada.try(:id_tipo_usuario)
+    nuevo_prefijo_empresa_no_validada.nombre_comercial = empresa_no_validada.try(:nombre_comercial)
+    nuevo_prefijo_empresa_no_validada.id_clasificacion = empresa_no_validada.try(:id_clasificacion)
+    nuevo_prefijo_empresa_no_validada.categoria = empresa_no_validada.try(:categoria)
+    nuevo_prefijo_empresa_no_validada.division = empresa_no_validada.try(:division)
+    nuevo_prefijo_empresa_no_validada.grupo = empresa_no_validada.try(:grupo)
+    nuevo_prefijo_empresa_no_validada.clase = empresa_no_validada.try(:clase)
+    nuevo_prefijo_empresa_no_validada.rep_legal = empresa_no_validada.try(:rep_legal)
+    nuevo_prefijo_empresa_no_validada.cargo_rep_legal = empresa_no_validada.try(:cargo_rep_legal)
+    nuevo_prefijo_empresa_no_validada.circunscripcion_judicial = empresa_no_validada.try(:circunscripcion_judicial)
+    nuevo_prefijo_empresa_no_validada.numero_registro_mercantil = empresa_no_validada.try(:numero_registro_mercantil)
+    nuevo_prefijo_empresa_no_validada.tomo_registro_mercantil = empresa_no_validada.try(:tomo_registro_mercantil)
+    nuevo_prefijo_empresa_no_validada.nit_registro_mercantil = empresa_no_validada.try(:nit_registro_mercantil)
+    nuevo_prefijo_empresa_no_validada.nacionalidad_responsable_legal = empresa_no_validada.try(:nacionalidad_responsable_legal)
+    nuevo_prefijo_empresa_no_validada.domicilio_responsable_legal = empresa_no_validada.try(:domicilio_responsable_legal)
+    nuevo_prefijo_empresa_no_validada.cedula_responsable_legal = empresa_no_validada.try(:cedula_responsable_legal)
+    nuevo_prefijo_empresa_no_validada.created_at = empresa_no_validada.try(:created_at)
+    nuevo_prefijo_empresa_no_validada.updated_at = empresa_no_validada.try(:updated_at)
+    nuevo_prefijo_empresa_no_validada.ventas_brutas_anuales = empresa_no_validada.try(:ventas_brutas_anuales)
+    nuevo_prefijo_empresa_no_validada.fecha_registro_mercantil = empresa_no_validada.try(:fecha_registro_mercantil)
+    nuevo_prefijo_empresa_no_validada.id_subestatus = empresa_no_validada.try(:id_subestatus)
+    nuevo_prefijo_empresa_no_validada.fecha_activacion = empresa_no_validada.try(:fecha_activacion)
+    prefijo_valido = Empresa.generar_prefijo_valido
+    Gln.generar_legal(prefijo_valido.to_s)  
+    empresa_no_validada.destroy
+    nuevo_prefijo_empresa_no_validada.save
 
   end
 

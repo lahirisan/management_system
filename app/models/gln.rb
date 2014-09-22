@@ -9,8 +9,8 @@ class Gln < ActiveRecord::Base
   belongs_to :pais, :foreign_key => "id_pais"
   belongs_to :municipio, :foreign_key => "id_municipio"
 
-  validates :gln, :id_tipo_gln, :id_estado, :id_municipio, :id_ciudad, :descripcion,  :edificio, :calle, :urbanizacion, :punto_referencia, :cod_postal,  :presence => {:message => "No puede estar en blanco"}, :on => :create
-  validates :cod_postal, format: { with: /^[1-9]\d*$/, on: :create, :message => "El Formato del Codigo Postal es incorrecto"} # Validacion al crear
+  validates :gln, :id_tipo_gln,  :descripcion,  :presence => {:message => "No puede estar en blanco"}, :on => :create
+  #validates :cod_postal, format: { with: /^[1-9]\d*$/, on: :create, :message => "El Formato del Codigo Postal es incorrecto"} # Validacion al crear
 
 
  def self.eliminar(parametros)
@@ -18,16 +18,16 @@ class Gln < ActiveRecord::Base
     for eliminar_gln in (0..parametros[:eliminar_glns].size-1)
       
       gln_seleccionado = parametros[:eliminar_glns][eliminar_gln]
-      eliminar_datos = parametros[:"#{gln_seleccionado}"]
-      gln_id = eliminar_datos.split('_')[0]
-      gln_ = Gln.find(:first, :conditions => ["gln = ? ", gln_id]) 
-      Gln.eliminar_gln(gln_,eliminar_datos.split('_')[1],eliminar_datos.split('_')[2])
+      #eliminar_datos = parametros[:"#{gln_seleccionado}"]
+      #gln_id = eliminar_datos.split('_')[0]
+      gln_ = Gln.find(:first, :conditions => ["gln = ? ", gln_seleccionado]) 
+      Gln.eliminar_gln(gln_)
     end
 
  end
 
 
- def self.eliminar_gln(gln, sub_estatus, motivo_retiro)
+ def self.eliminar_gln(gln)
 
     estatus_gln = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Eliminado', 'GLN'])
 
@@ -47,8 +47,8 @@ class Gln < ActiveRecord::Base
     gln_eliminado.urbanizacion = gln.urbanizacion
     gln_eliminado.punto_referencia = gln.punto_referencia
     gln_eliminado.cod_postal = gln.cod_postal
-    gln_eliminado.id_subestatus = sub_estatus
-    gln_eliminado.id_motivo_retiro = motivo_retiro 
+    #gln_eliminado.id_subestatus = sub_estatus
+    #gln_eliminado.id_motivo_retiro = motivo_retiro 
     gln_eliminado.fecha_eliminacion = Time.now 
     gln_eliminado.save
     gln.destroy
@@ -59,35 +59,42 @@ class Gln < ActiveRecord::Base
  def self.generar_legal(prefijo_empresa)
 
   # OJO falta validar los casos cuando la empresa es de 9 digitos y de 6 digitos
-  
+
+
   empresa = Empresa.find(:first, :conditions => ["prefijo = ?", prefijo_empresa])
-  gln_generado = "759" + prefijo_empresa[3..6] + "00001" 
+  
+
+  gln_generado = "759" + prefijo_empresa[3..6] + "90000" 
 
   digito_verificacion = Producto.calcular_digito_verificacion(gln_generado.to_i,"GTIN-13")
   gln = gln_generado + digito_verificacion.to_s
-  
+
+
   tipo_gln = TipoGln.find(:first, :conditions => ["nombre = ?", "Legal"])
   estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?","Activo", "GLN"])
   pais = Pais.find(:first, :conditions => ["nombre = ?", "Venezuela"])
+
+
   
   gln_legal = Gln.new
   gln_legal.gln = gln
   gln_legal.id_tipo_gln = tipo_gln.id
-  gln_legal.codigo_localizacion = "00001"
+  gln_legal.codigo_localizacion = "90000"
   gln_legal.descripcion = "GLN Legal"
   gln_legal.id_estatus = estatus.id
   gln_legal.fecha_asignacion = Time.now
-  gln_legal.id_pais = pais.id
-  gln_legal.id_estado = empresa.id_estado
-  gln_legal.id_municipio = empresa.correspondencia.id_municipio # Al Legal se le esta pasando el id_municipio
-  gln_legal.id_ciudad = empresa.id_ciudad
-  gln_legal.edificio = "-"
-  gln_legal.calle = "-"
-  gln_legal.urbanizacion = "-"
-  gln_legal.punto_referencia = "-"
-  gln_legal.cod_postal = empresa.correspondencia.cod_postal
+  # gln_legal.id_pais = pais.id
+  # gln_legal.id_estado = empresa.id_estado
+  # gln_legal.id_municipio = empresa.id_municipio # Al Legal se le esta pasando el id_municipio
+  # gln_legal.id_ciudad = empresa.id_ciudad
+  # gln_legal.edificio = "-"
+  # gln_legal.calle = "-"
+  # gln_legal.urbanizacion = "-"
+  # gln_legal.punto_referencia = "-"
   gln_legal.save
 
+
+  raise gln_legal.errors.to_yaml if gln_legal.errors.any?
 
   Gln.asociar_gln_empresa(gln, prefijo_empresa)
 
@@ -123,6 +130,10 @@ class Gln < ActiveRecord::Base
   empresa_gln.prefijo = prefijo_empresa
   empresa_gln.id_gln = parametro_gln
   empresa_gln.save
+
+
+
+  raise empresa_gln.errors.to_yaml if empresa_gln.errors.any?
 
  end
 

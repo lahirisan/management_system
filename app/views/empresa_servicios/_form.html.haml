@@ -1,6 +1,6 @@
 %section.contexto
   %label.contexto 
-    =@empresa_servicio.new_record? ? (@empresa.nombre_empresa + " > Asociar Servicio") : (@empresa.nombre_empresa + " > Editar Servicio")
+    =@empresa_servicio.new_record? ? ("#{@empresa.prefijo} > "+@empresa.nombre_empresa + " > Asociar Servicio") : ("#{@empresa.prefijo} > "+@empresa.nombre_empresa + " > Editar Servicio")
     
   %hr.contexto{:size => "1"}
 
@@ -51,7 +51,7 @@
           %td
             Correo
           %td
-            =f.text_field :email, :placeholder => "correo@dominio.com"
+            =f.text_field :email, :placeholder => "correo@dominio.com", :class =>"email"
         
      
       .actions

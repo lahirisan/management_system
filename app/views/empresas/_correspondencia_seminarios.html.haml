@@ -1,0 +1,65 @@
+%br
+  %label.contexto
+    c. DIRECCION PARA ENVIO DE INFORMACION SOBRE SEMINARIOS Y CURSOS (RECURSOS HUMANOS)
+  %hr.contexto{:size => "1"}
+
+    %table
+      %tr
+        %td
+          NOMBRE PERSONA CONTACTO
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_seminarios.nil?)
+            =(text_field_tag :persona_contacto_seminario) 
+          -else
+            =(text_field_tag :persona_contacto_seminario, @correspondencia_seminarios.try(:rep_tecnico))
+      %tr
+        %td
+          CARGO
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_seminarios.nil?)
+            =(text_field_tag :cargo_seminario) 
+          -else
+            =(text_field_tag :cargo_seminario, @correspondencia_seminarios.try(:cargo_rep_tecnico))
+      %tr
+        %td
+          Teléfono 1 (58)
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_seminarios.nil?)
+            =(text_field_tag :telefono1_seminario) 
+          -else
+            =(text_field_tag :telefono1_seminario, @correspondencia_seminarios.try(:telefono1))
+      %tr
+        %td
+          Teléfono 2 (58)
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_seminarios.nil?)
+            =(text_field_tag :telefono2_seminario) 
+          -else
+            =(text_field_tag :telefono2_seminario, @correspondencia_seminarios.try(:telefono2))
+          
+      %tr
+        %td
+          Teléfono 3 (58)
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_seminarios.nil?)
+            =(text_field_tag :telefono3_seminario) 
+          -else
+            =(text_field_tag :telefono3_seminario, @correspondencia_seminarios.try(:telefono3))
+          
+      %tr
+        %td
+          Fax (58)
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_seminarios.nil?)
+            =(text_field_tag :fax_seminario) 
+          -else
+            =(text_field_tag :fax_seminario, @correspondencia_seminarios.try(:fax))
+      %tr
+        %td
+          E-mail
+        %td
+          -if (@empresa.new_record?) or (@correspondencia_seminarios.nil?)
+            =(text_field_tag :email_seminario, nil, {:class => "email"}) 
+          -else
+            =(text_field_tag :email_seminario, @correspondencia_seminarios.try(:email), {:class => "email"})
+    /       
