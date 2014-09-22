@@ -31,7 +31,7 @@ class Empresa < ActiveRecord::Base
   
   validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo, :id_clasificacion, :rep_legal, :cargo_rep_legal,  :presence => {:message => "No puede estar en blanco"}, :on => :create
   #validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{5,8})-([0-9]{1})$/, on: :create, :message => "El Formato del RIF es invalido"} # Validacion al crear
-  validates :rif, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado. Por favor verifique."}
+  validates :rif, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado. Por favor verifique."}, :on => :create
 
   def self.to_csv # Se genera el CSV de Empresas
 
@@ -371,11 +371,45 @@ class Empresa < ActiveRecord::Base
 
   def self.utilizar_prefijo_no_validado(empresa_no_validada)
 
+
     correspondencias = Correspondencia.find(:all, :conditions => ["prefijo = ?", empresa_no_validada.prefijo])
     correspondencias.collect{|correspondencia| correspondencia.prefijo = Empresa.generar_prefijo_valido; correspondencia.save }
-    empresa_no_validada.prefijo = Empresa.generar_prefijo_valido
-    empresa_no_validada.save
-
+    
+    nuevo_prefijo_empresa_no_validada = Empresa.new
+    nuevo_prefijo_empresa_no_validada.prefijo = Empresa.generar_prefijo_valido
+    nuevo_prefijo_empresa_no_validada.nombre_empresa = empresa_no_validada.try(:nombre_empresa)
+    nuevo_prefijo_empresa_no_validada.fecha_inscripcion = empresa_no_validada.try(:fecha_inscripcion)
+    nuevo_prefijo_empresa_no_validada.direccion_empresa = empresa_no_validada.try(:direccion_empresa)
+    nuevo_prefijo_empresa_no_validada.id_estado = empresa_no_validada.try(:id_estado)
+    nuevo_prefijo_empresa_no_validada.id_ciudad = empresa_no_validada.try(:id_ciudad)
+    nuevo_prefijo_empresa_no_validada.rif = empresa_no_validada.try(:rif)
+    nuevo_prefijo_empresa_no_validada.id_estatus = empresa_no_validada.try(:id_estatus)
+    nuevo_prefijo_empresa_no_validada.id_tipo_usuario = empresa_no_validada.try(:id_tipo_usuario)
+    nuevo_prefijo_empresa_no_validada.nombre_comercial = empresa_no_validada.try(:nombre_comercial)
+    nuevo_prefijo_empresa_no_validada.id_clasificacion = empresa_no_validada.try(:id_clasificacion)
+    nuevo_prefijo_empresa_no_validada.categoria = empresa_no_validada.try(:categoria)
+    nuevo_prefijo_empresa_no_validada.division = empresa_no_validada.try(:division)
+    nuevo_prefijo_empresa_no_validada.grupo = empresa_no_validada.try(:grupo)
+    nuevo_prefijo_empresa_no_validada.clase = empresa_no_validada.try(:clase)
+    nuevo_prefijo_empresa_no_validada.rep_legal = empresa_no_validada.try(:rep_legal)
+    nuevo_prefijo_empresa_no_validada.cargo_rep_legal = empresa_no_validada.try(:cargo_rep_legal)
+    nuevo_prefijo_empresa_no_validada.circunscripcion_judicial = empresa_no_validada.try(:circunscripcion_judicial)
+    nuevo_prefijo_empresa_no_validada.numero_registro_mercantil = empresa_no_validada.try(:numero_registro_mercantil)
+    nuevo_prefijo_empresa_no_validada.tomo_registro_mercantil = empresa_no_validada.try(:tomo_registro_mercantil)
+    nuevo_prefijo_empresa_no_validada.nit_registro_mercantil = empresa_no_validada.try(:nit_registro_mercantil)
+    nuevo_prefijo_empresa_no_validada.nacionalidad_responsable_legal = empresa_no_validada.try(:nacionalidad_responsable_legal)
+    nuevo_prefijo_empresa_no_validada.domicilio_responsable_legal = empresa_no_validada.try(:domicilio_responsable_legal)
+    nuevo_prefijo_empresa_no_validada.cedula_responsable_legal = empresa_no_validada.try(:cedula_responsable_legal)
+    nuevo_prefijo_empresa_no_validada.created_at = empresa_no_validada.try(:created_at)
+    nuevo_prefijo_empresa_no_validada.updated_at = empresa_no_validada.try(:updated_at)
+    nuevo_prefijo_empresa_no_validada.ventas_brutas_anuales = empresa_no_validada.try(:ventas_brutas_anuales)
+    nuevo_prefijo_empresa_no_validada.fecha_registro_mercantil = empresa_no_validada.try(:fecha_registro_mercantil)
+    nuevo_prefijo_empresa_no_validada.id_subestatus = empresa_no_validada.try(:id_subestatus)
+    nuevo_prefijo_empresa_no_validada.fecha_activacion = empresa_no_validada.try(:fecha_activacion)
+    prefijo_valido = Empresa.generar_prefijo_valido
+    Gln.generar_legal(prefijo_valido.to_s)  
+    empresa_no_validada.destroy
+    nuevo_prefijo_empresa_no_validada.save
 
   end
 

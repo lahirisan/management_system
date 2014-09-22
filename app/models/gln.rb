@@ -60,7 +60,9 @@ class Gln < ActiveRecord::Base
 
   # OJO falta validar los casos cuando la empresa es de 9 digitos y de 6 digitos
 
+
   empresa = Empresa.find(:first, :conditions => ["prefijo = ?", prefijo_empresa])
+  
 
   gln_generado = "759" + prefijo_empresa[3..6] + "90000" 
 

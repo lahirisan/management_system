@@ -121,6 +121,7 @@ class EmpresasController < ApplicationController
     
 
     respond_to do |format|
+      
       format.html {
 
         @prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus, :clasificacion],:select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion")
@@ -166,7 +167,6 @@ class EmpresasController < ApplicationController
 
     Empresa.utilizar_prefijo_no_validado(empresa_no_validada) if empresa_no_validada
 
-
     @ultimo =  Empresa.generar_prefijo_valido   # OJO con estoooooooooooooo
     params[:empresa][:id_estatus] = Estatus.empresa_inactiva()
     # Se completa la hora con los segundos para que pueda ordenar por la ultima creada
@@ -177,10 +177,6 @@ class EmpresasController < ApplicationController
     params[:empresa][:datos_contacto_attributes][:"0"][:contacto] = params[:codigo_telefono1] + "-" + params[:empresa][:datos_contacto_attributes][:"0"][:contacto]
 
     params[:empresa][:id_tipo_usuario] = 3 if params[:empresa][:id_tipo_usuario] == '' # Si el usaurio no especifico el tipo de empresa
-
-
-
-    params[:empresa][:rif] = params[:tipo_rif] + "-" + params[:empresa][:rif]
 
     
     respond_to do |format|
@@ -203,9 +199,11 @@ class EmpresasController < ApplicationController
         Correspondencia.agregar_correspondencia(@empresa.prefijo, params[:persona_contacto_seminario], params[:cargo_seminario], params[:edificio_seminario], params[:detalle_edificio_seminario], params[:piso_seminario], params[:detalle_piso_seminario], params[:oficina_seminario], params[:detalle_oficina_seminario], params[:calle_seminario], params[:detalle_calle_seminario], params[:urbanizacion_seminario], params[:detalle_urbanizacion_seminario], params[:estado_seminario], params[:ciudad_seminario], params[:municipio_seminario], params[:parroquia_seminario], params[:punto_referencia_seminario], params[:codigo_postal_seminario], "SEMINARIOS / CURSOS", params[:telefono1_seminario], params[:telefono2_seminario], params[:telefono3_seminario], params[:fax_seminario], params[:email_seminario]) 
         Correspondencia.agregar_correspondencia(@empresa.prefijo, params[:persona_contacto_mercadeo], params[:cargo_mercadeo], params[:edificio_mercadeo], params[:detalle_edificio_mercadeo], params[:piso_mercadeo], params[:detalle_piso_mercadeo], params[:oficina_mercadeo], params[:detalle_oficina_mercadeo], params[:calle_mercadeo], params[:detalle_calle_mercadeo], params[:urbanizacion_mercadeo], params[:detalle_urbanizacion_mercadeo], params[:estado_mercadeo], params[:ciudad_mercadeo], params[:municipio_mercadeo], params[:parroquia_mercadeo], params[:punto_referencia_mercadeo], params[:codigo_postal_mercadeo], "MERCADEO", params[:telefono1_mercadeo], params[:telefono2_mercadeo], params[:telefono3_mercadeo], params[:fax_mercadeo], params[:email_mercadeo])
         
-        Gln.generar_legal(@empresa.prefijo.to_s) # Se genera GLN legal
+        # EL GLN OJO con esto  validar los casos GLN para empresa no validad y GLN de emrpresas eliminadas
+        
+        Gln.generar_legal(@empresa.prefijo.to_s) if empresa_no_validada.nil?
 
-         Auditoria.registrar_evento(session[:user_id],"Empresa", "Crear", Time.now, "Prefijo #{@empresa.prefijo}")
+        Auditoria.registrar_evento(session[:user_id],"Empresa", "Crear", Time.now, "Prefijo #{@empresa.prefijo}")
         format.html { redirect_to '/empresas?activacion=true', notice: "EMPRESA CREADA SATISFACTORIAMENTE. PREFIJO:#{@empresa.prefijo}   NOMBRE:#{@empresa.nombre_empresa}" }
 
        else
