@@ -1,12 +1,12 @@
 class CamposMigracion < ActiveRecord::Migration
 
-  add_column :empresa, :contacto_tlf2, :string
-  add_column :empresa, :contacto_tlf3, :string
-  add_column :empresa, :contacto_fax,  :string
-  add_column :empresa, :contacto_email1, :string
-  add_column :empresa, :contacto_email2, :string
-  add_column :empresa, :user_ult_modificacion, :integer
-  add_column :empresa, :fecha_ultima_modificacion, :datetime
+  #add_column :empresa, :contacto_tlf2, :string
+  #add_column :empresa, :contacto_tlf3, :string
+  #add_column :empresa, :contacto_fax,  :string
+  #add_column :empresa, :contacto_email1, :string
+  #add_column :empresa, :contacto_email2, :string
+  #add_column :empresa, :user_ult_modificacion, :integer
+  #add_column :empresa, :fecha_ultima_modificacion, :datetime
   add_column :empresa, :user_crea, :datetime
   add_column :empresa, :rep_ean, :string
   add_column :empresa, :rep_ean_cargo, :string
