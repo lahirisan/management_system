@@ -10,6 +10,8 @@ class EmpresasController < ApplicationController
 
     # OJO: La llamada JSON y los parametro se establecen en el datatable desde el template.html.haml
 
+
+
     respond_to do |format|
       format.html{
                   
