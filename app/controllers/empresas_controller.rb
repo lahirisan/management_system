@@ -150,11 +150,13 @@ class EmpresasController < ApplicationController
   # GET /empresas/1/edit
   def edit
     @empresa = Empresa.find(params[:id])
-    @datos_contactos = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
-    @correspondencia_codificacion = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "CODIFICACION GS1"])
-    @correspondencia_sincronet = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "COMERCIO ELECTRONICO / SINCRONET"])
-    @correspondencia_seminarios = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "SEMINARIOS / CURSOS"])
-    @correspondencia_mercadeo = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "MERCADEO"])
+    @clasificacion_empresa = Clasificacion.find(:first, :conditions => "categoria = ? and division = ? and division = ? and grupo = ?", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase)
+
+    # @datos_contactos = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
+    # @correspondencia_codificacion = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "CODIFICACION GS1"])
+    # @correspondencia_sincronet = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "COMERCIO ELECTRONICO / SINCRONET"])
+    # @correspondencia_seminarios = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "SEMINARIOS / CURSOS"])
+    # @correspondencia_mercadeo = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "MERCADEO"])
 
   end
 
