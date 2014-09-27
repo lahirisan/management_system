@@ -86,7 +86,7 @@
           
             =text_field_tag "codigo_telefono1", nil, :placeholder => "212", :size => "3"
           %td
-            =f.text_field :contacto_tlf1,  :placeholder => "123-45-67"
+            =f.text_field :contacto_tlf1 :placeholder => "123-45-67"
           %td
             
         %tr
@@ -95,33 +95,33 @@
           %td
             =text_field_tag "codigo_telefono2", nil, :placeholder => "416", :size => "3"
           %td
-            =f.text_field "contacto_tlf2",  {:placeholder => "123-45-67"}
+            =f.text_field "contacto_tlf2",'',  {:placeholder => "123-45-67"}
         %tr
           %td
             Teléfono 3 (58)
           %td
             =text_field_tag "codigo_telefono3", nil, :placeholder => "412", :size => "3"
           %td
-            =f.text_field "contacto_tlf3",  {:placeholder => "123-45-67"}
+            =f.text_field "contacto_tlf3",'',  {:placeholder => "123-45-67"}
         %tr
           %td
             FAX (58)
           %td
             =text_field_tag "codigo_telefono4", nil, :placeholder => "212", :size => "3"
           %td
-            =f.text_field "contacto_fax",  {:placeholder => "123-45-67"}
+            =f.text_field "contacto_fax",'',  {:placeholder => "123-45-67"}
         %tr
           %td
             E-mail
           %td
           %td
-            =f.text_field "contacto_email1",  {:class => "email", :placeholder => "correo@prueba.com"}
+            =f.text_field "contacto_email1",'',  {:class => "email", :placeholder => "correo@prueba.com"}
         %tr
           %td
             Correo Secundario
           %td
           %td
-            =f.text_field "contacto_email2",  {:class => "email", :placeholder => "correo@prueba.com"}
+            =f.text_field_tag "contacto_email2",'',  {:class => "email", :placeholder => "correo@prueba.com"}
 
 
         %tr
@@ -221,57 +221,96 @@
             %td
               CARGO
             %td
-              =f.text_field :rep_ean_cargo
+              =f.text_field_tag :rep_ean_cargo
               
           %tr
             %td
               
               Dirección 1
-              
+                  
+              /=select_tag(:edificio_codificacion, options_for_select(['Galpón', 'Edificio', 'Quinta']), { :prompt => "- Galpón/Edificio/Quinta -"})
+              / -else
+              /   =select_tag(:edificio_codificacion, options_for_select(['Galpón', 'Edificio', 'Quinta'], @correspondencia_codificacion.try(:edificio)), { :prompt => "- Galpón/Edificio/Quinta -"})
+
             %td
-              
+              /-if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+                /=text_field_tag :detalle_edificio_codificacion
+              /-else
+                /=text_field_tag :detalle_edificio_codificacion, @correspondencia_codificacion.try(:detalle_edificio)
               =f.text_field :direccion_ean1
           %tr
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =select_tag(:piso_codificacion, options_for_select(['Piso', 'Nº']), { :prompt => "- Piso/Nº -"}) 
+              / -else
+              /   =select_tag(:piso_codificacion, options_for_select(['Piso', 'Nº'], @correspondencia_codificacion.try(:piso)), { :prompt => "- Piso/Nº -"}) 
               Dirección 2
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =text_field_tag :detalle_piso_codificacion
+              / -else
+              /   =text_field_tag :detalle_piso_codificacion, @correspondencia_codificacion.try(:detalle_piso)
               =f.text_field :direccion_ean1
 
           %tr
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =select_tag(:oficina_codificacion, options_for_select(['Oficina', 'Apartamento']), { :prompt => "-Oficina/Apartamento-"})
+              / -else
+              /   =select_tag(:oficina_codificacion, options_for_select(['Oficina', 'Apartamento'], @correspondencia_codificacion.try(:oficina)), { :prompt => "-Oficina/Apartamento-"})
               Dirección 3
               
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =text_field_tag :detalle_oficina_codificacion
+              / -else
+              /   =text_field_tag :detalle_oficina_codificacion, @correspondencia_codificacion.try(:detalle_oficina) 
               =f.text_field :direccion_ean3
               
           %tr
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =select_tag(:calle_codificacion, options_for_select(['Avenida', 'Calle']), { :prompt => "- Avenida/Calle -"})
+              / -else 
+              /   =select_tag(:calle_codificacion, options_for_select(['Avenida', 'Calle'], @correspondencia_codificacion.try(:calle)), { :prompt => "- Avenida/Calle -"})
               Dirección 4
               
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =text_field_tag :detalle_calle_codificacion
+              / -else
+              /   =text_field_tag :detalle_calle_codificacion, @correspondencia_codificacion.try(:detalle_calle)
               =f.text_field :direccion_ean4
           %tr
             %td
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =select_tag(:urbanizacion_codificacion, options_for_select(['Urbanización', 'Barrio', 'Sector', 'Terraza']), { :prompt => "- Urb./Barrio/Sector/Terraza -"})
+              / -else
+              /   =select_tag(:urbanizacion_codificacion, options_for_select(['Urbanización', 'Barrio', 'Sector', 'Terraza'], @correspondencia_codificacion.try(:urbanizacion)), { :prompt => "- Urb./Barrio/Sector/Terraza -"})
               
             %td
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =text_field_tag :detalle_urbanizacion_codificacion
+              / -else
+              /   =text_field_tag :detalle_urbanizacion_codificacion, @correspondencia_codificacion.try(:detalle_urbanizacion)
               
           %tr
             %td
               ESTADO
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =select_tag :estado_codificacion, options_from_collection_for_select(Estado.find(:all, :order => "nombre ASC"), :id, :nombre), {:prompt => '-Seleccione Estado-'} 
+              / -else
+              /   =select_tag :estado_codificacion, options_from_collection_for_select(Estado.find(:all, :order => "nombre ASC"), :id, :nombre, @correspondencia_codificacion.try(:id_estado)), {:prompt => '-Seleccione Estado-'}
               =select_tag :id_estado_ean, options_from_collection_for_select(Estado.find(:all, :order => "nombre ASC"), :id, :nombre), {:prompt => '-Seleccione Estado-'} 
           %tr
             %td
               CIUDAD
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =(select_tag :ciudad_codificacion,  options_from_collection_for_select(Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre), {:prompt => '-Seleccione Ciudad-'})
+              / -else 
+              /   =(select_tag :ciudad_codificacion,  options_from_collection_for_select(Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, @correspondencia_codificacion.try(:id_ciudad)), {:prompt => '-Seleccione Ciudad-'})
               =(select_tag :id_ciudad_ean,  options_from_collection_for_select(Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, @correspondencia_codificacion.try(:id_ciudad)), {:prompt => '-Seleccione Ciudad-'})
 
               
@@ -279,7 +318,11 @@
             %td
               MUNICIPIO
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =(select_tag :municipio_codificacion,  options_from_collection_for_select(Municipio.find(:all, :order => "nombre ASC"), :id, :nombre), {:prompt => '-Seleccione Municipio-'})
+              / -else
+              /   =(select_tag :municipio_codificacion,  options_from_collection_for_select(Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, @correspondencia_codificacion.try(:id_municipio)), {:prompt => '-Seleccione Municipio-'})
+
               =(select_tag :id_municipio_ean,  options_from_collection_for_select(Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, @correspondencia_codificacion.try(:id_municipio)), {:prompt => '-Seleccione Municipio-'})
 
 
@@ -287,60 +330,90 @@
             %td
               PARROQUIA
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =(text_field_tag :parroquia_codificacion) 
+              / -else
+              /   =(text_field_tag :parroquia_codificacion, @correspondencia_codificacion.try(:nombre_parroquia))
               =f.text_field :parroquia_ean
               
           %tr
             %td
               Punto Referencia
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =(text_field_tag :punto_referencia_codificacion) 
+              / -else
+              /   =(text_field_tag :punto_referencia_codificacion, @correspondencia_codificacion.try(:punto_referencia))
               =f.text_field :punto_ref_ean
           %tr
             %td
               Código Postal
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =(text_field_tag :codigo_postal_codificacion)
+              / -else
+              /   =(text_field_tag :codigo_postal_codificacion, @correspondencia_codificacion.try(:cod_postal))
               =f.text_field :cod_postal_ean
           %tr
             %td
               Teléfono 1 (58)
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =(text_field_tag :telefono1_codificacion)
+              / -else
+              /   =(text_field_tag :telefono1_codificacion, @correspondencia_codificacion.try(:telefono1))
               =f.text_field :telefono1_ean
 
           %tr
             %td
               Teléfono 2 (58)
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =(text_field_tag :telefono2_codificacion) 
+              / -else
+              /   =(text_field_tag :telefono2_codificacion, @correspondencia_codificacion.try(:telefono2))
               =f.text_field :telefono2_ean
 
           %tr
             %td
               Teléfono 3 (58)
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =(text_field_tag :telefono3_codificacion) 
+              / -else
+              /   =(text_field_tag :telefono3_codificacion, @correspondencia_codificacion.try(:telefono3))
               =f.text_field :telefono3_ean
           %tr
             %td
               Fax (58)
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =(text_field_tag :fax_codificacion)
+              / -else
+              /   =(text_field_tag :fax_codificacion, @correspondencia_codificacion.try(:fax))
               =f.text_field :fax_ean
           %tr
             %td
               E-mail 1
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =(text_field_tag :email_codificacion, nil, {:class => "email"})
+              / -else
+              /   =(text_field_tag :email_codificacion, @correspondencia_codificacion.try(:email), {:class => "email"})
               =f.text_field :email1_ean
           %tr
             %td
               E-mail 2
             %td
-              
+              / -if (@empresa.new_record?) or (@correspondencia_codificacion.nil?)
+              /   =(text_field_tag :email_codificacion, nil, {:class => "email"})
+              / -else
+              /   =(text_field_tag :email_codificacion, @correspondencia_codificacion.try(:email), {:class => "email"})
               =f.text_field :email2_ean
-      
+      /=render 'correspondencia_gs1'
+      / =render 'correspondencia_sincronet'
+      / =render 'correspondencia_seminarios'
+      / =render 'correspondencia_mercadeo'
       
       %br/
 
@@ -350,6 +423,18 @@
 
       %table
         %tr
+          / %td
+          /   Nombre Comercial
+          / %td
+          /   = f.text_field :nombre_comercial
+        / %tr
+        /   %td
+        /     Clasificación
+        /   %td
+        /     -if @empresa.new_record?
+        /       =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"})
+        /     -else
+        /       =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"})
            
             
         %tr
