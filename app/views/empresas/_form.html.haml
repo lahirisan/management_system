@@ -267,6 +267,7 @@
             %td
               =f.collection_select :id_estado_ean, Estado.all, :id, :nombre
               
+              
           %tr
             %td
               CIUDAD
@@ -280,7 +281,7 @@
               MUNICIPIO
             %td
               
-              =f.collection_select :id_municicipio_ean, Municipio.all, :id, :nombre
+              =f.collection_select :id_municipio_ean, Municipio.all, :id, :nombre
               
           %tr
             %td
