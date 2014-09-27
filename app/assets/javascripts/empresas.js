@@ -510,69 +510,69 @@
 
             //valida formato email
 
-            if ($('#email.email').val() != '') 
-            {
-                if( !isValidEmailAddress( $('#email').val() ) &&  (window.location.pathname.split('/')[2] == 'new') ) 
-                { 
-                    alert('El formato en Correo Principal es inválido. Por favor verifique.');
-                    return false;
-                }
+            // if ($('#email.email').val() != '') 
+            // {
+            //     if( !isValidEmailAddress( $('#email').val() ) &&  (window.location.pathname.split('/')[2] == 'new') ) 
+            //     { 
+            //         alert('El formato en Correo Principal es inválido. Por favor verifique.');
+            //         return false;
+            //     }
 
-            }
+            // }
 
-            if ($('#email1').val() != '') 
-            {
-                if( !isValidEmailAddress( $('#email1').val() ) &&  (window.location.pathname.split('/')[2] == 'new') ) 
-                { 
-                    alert('El formato en Correo Secundario es inválido. Por favor verifique.');
-                    return false;
-                }
+            // if ($('#email1').val() != '') 
+            // {
+            //     if( !isValidEmailAddress( $('#email1').val() ) &&  (window.location.pathname.split('/')[2] == 'new') ) 
+            //     { 
+            //         alert('El formato en Correo Secundario es inválido. Por favor verifique.');
+            //         return false;
+            //     }
 
-            }
+            // }
 
 
 
             // Validar el formato de los números de telefono (0212) 123-45-67
 
-            if ($('#codigo_telefono1').val() == '')
-            {
-                alert('El código del Teléfono 1 NO puede estar en blanco. Por favor verifique.');
-                return false;
-            }
+            // if ($('#codigo_telefono1').val() == '')
+            // {
+            //     alert('El código del Teléfono 1 NO puede estar en blanco. Por favor verifique.');
+            //     return false;
+            // }
             
-            if (($('#empresa_datos_contacto_attributes_0_contacto').val() == '')  &&  (window.location.pathname.split('/')[2] == 'new') ) // Validacion del primer número
-            {
-                //if( !isValidNumberPhone($('#empresa_datos_contacto_attributes_0_contacto').val()))
-                //{
-                    alert('El Teléfono 1 es obligatorio. Por favor verifique.');
-                    return false;
-                //}
+            // if (($('#empresa_datos_contacto_attributes_0_contacto').val() == '')  &&  (window.location.pathname.split('/')[2] == 'new') ) // Validacion del primer número
+            // {
+            //     //if( !isValidNumberPhone($('#empresa_datos_contacto_attributes_0_contacto').val()))
+            //     //{
+            //         alert('El Teléfono 1 es obligatorio. Por favor verifique.');
+            //         return false;
+            //     //}
 
-            }
+            // }
 
-            if (($('#telefono2').val() != '') && ($('#codigo_telefono2').val() == ''))
-            {
-                alert('El código del Teléfono2 es obligatorio. Por favor verifique.');
-                return false;
-            }
+            // if (($('#telefono2').val() != '') && ($('#codigo_telefono2').val() == ''))
+            // {
+            //     alert('El código del Teléfono2 es obligatorio. Por favor verifique.');
+            //     return false;
+            // }
 
-            if (($('#telefono3').val() != '') && ($('#codigo_telefono3').val() == ''))
-            {
-                alert('El código del Teléfono3 es obligatorio. Por favor verifique.');
-                return false;
-            }
+            // if (($('#telefono3').val() != '') && ($('#codigo_telefono3').val() == ''))
+            // {
+            //     alert('El código del Teléfono3 es obligatorio. Por favor verifique.');
+            //     return false;
+            // }
 
-            if (($('#fax').val() != '') && ($('#codigo_telefono4').val() == ''))
-            {
-                alert('El código del FAX del fax. Por favor verifique.');
-                return false;
-            }
+            // if (($('#fax').val() != '') && ($('#codigo_telefono4').val() == ''))
+            // {
+            //     alert('El código del FAX del fax. Por favor verifique.');
+            //     return false;
+            // }
 
-            if ($('#empresa_rif').val() == 'tipo')
-            {
-                alert('Para el campo RIF, debe seleccionar un valor para el campo desplegable tipo de RIF');
-                return false;
-            }
+            // if ($('#empresa_rif').val() == 'tipo')
+            // {
+            //     alert('Para el campo RIF, debe seleccionar un valor para el campo desplegable tipo de RIF');
+            //     return false;
+            // }
 
 
 
