@@ -266,7 +266,7 @@
               ESTADO
             %td
               =f.collection_select :id_estado_ean, Estado.all, :id, :nombre
-              
+
               
           %tr
             %td
@@ -439,6 +439,39 @@
               =f.text_field :email1_edi
       
       %br/
+
+      %br
+      %label.contexto
+        c. DIRECCION PARA ENVIO DE INFORMACION SOBRE SEMINARIOS Y CURSOS (RECURSOS HUMANOS)
+      %hr.contexto{:size => "1"}
+
+        %table
+          %tr
+            %td
+              NOMBRE PERSONA CONTACTO
+            %td
+              =f.text_field :rep_recursos
+          %tr
+            %td
+              CARGO
+            %td
+              =f.f.text_field :rep_recursos_cargo
+          %tr
+            %td
+              Teléfono 1 (58)
+            %td
+              =f.text_field :telefono1_recursos
+              
+          %tr
+            %td
+              Fax (58)
+            %td
+              =f.text_field :fax_recursos
+          %tr
+            %td
+              E-mail
+            %td
+              =f.text_field :email_recursos
 
       %label.contexto
         =@empresa.new_record? ? "Ramo de desempeño de la empresa" : @empresa.nombre_empresa + " > Ramo de desempeño de la empresa"
