@@ -117,7 +117,7 @@ class EmpresasController < ApplicationController
     @ultimo = Empresa.generar_prefijo_valido
     @empresa = Empresa.new
     
-    @empresa.datos_contacto.build   #Para que manejar los datos de la tabla empresa_contactos, mapeado por el modelo DatosContacto
+    #@empresa.datos_contacto.build   #Para que manejar los datos de la tabla empresa_contactos, mapeado por el modelo DatosContacto
     
 
     respond_to do |format|
@@ -140,7 +140,6 @@ class EmpresasController < ApplicationController
         
         end
 
-        raise @prefijos_disponibles.to_yaml
 
         render json: @prefijos_disponibles}
     end
@@ -163,7 +162,7 @@ class EmpresasController < ApplicationController
 
     
     empresa_no_validada = Empresa.find(:first, :include => [:estatus], :conditions => ["prefijo = ? and estatus.descripcion = ?", params[:empresa][:prefijo], 'No Validado'])
-    prefijo_eliminado = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa][:prefijo]])
+    #prefijo_eliminado = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa][:prefijo]])
 
     Empresa.utilizar_prefijo_no_validado(empresa_no_validada) if empresa_no_validada
 
@@ -174,7 +173,7 @@ class EmpresasController < ApplicationController
     params[:empresa][:fecha_inscripcion] = Time.now
     @empresa = Empresa.new(params[:empresa])
 
-    params[:empresa][:datos_contacto_attributes][:"0"][:contacto] = params[:codigo_telefono1] + "-" + params[:empresa][:datos_contacto_attributes][:"0"][:contacto]
+    #params[:empresa][:datos_contacto_attributes][:"0"][:contacto] = params[:codigo_telefono1] + "-" + params[:empresa][:datos_contacto_attributes][:"0"][:contacto]
 
     params[:empresa][:id_tipo_usuario] = 3 if params[:empresa][:id_tipo_usuario] == '' # Si el usaurio no especifico el tipo de empresa
 

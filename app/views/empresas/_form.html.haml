@@ -473,6 +473,43 @@
             %td
               =f.text_field :email_recursos
 
+      %br
+      %label.contexto
+        d. DIRECCION PARA ENVIO DE INVITACIONES A EVENTOS ESPECIALES (MERCADEO)
+      %hr.contexto{:size => "1"}
+
+        %table
+          %tr
+            %td
+              NOMBRE PERSONA CONTACTO
+            %td
+              =f.text_field :rep_mercadeo
+          %tr
+            %td
+              CARGO
+            %td
+              =f.text_field :rep_mercadeo_cargo
+          %tr
+            %td
+              Teléfono 1 (58)
+            %td
+              =f.text_field :telefono1_mercadeo
+          
+              
+          %tr
+            %td
+              Fax (58)
+            %td
+              =f.text_field :fax_mercadeo
+              
+          %tr
+            %td
+              E-mail
+            %td
+              =f.text_field :email_mercadeo
+
+      %br
+      %br
       %label.contexto
         =@empresa.new_record? ? "Ramo de desempeño de la empresa" : @empresa.nombre_empresa + " > Ramo de desempeño de la empresa"
       %hr.contexto{:size => "1"}
