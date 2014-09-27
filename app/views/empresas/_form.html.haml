@@ -229,43 +229,49 @@
             %td
               =f.text_field :rep_ean_cargo
               
-          %tr
-            %td
+          / %tr
+          /   %td
               
-              Dirección 1
+          /     Dirección 1
               
-            %td
+          /   %td
               
-              =f.text_field :direccion_ean1
-          %tr
-            %td
+          /     =f.text_field :direccion_ean1
+          / %tr
+          /   %td
               
-              Dirección 2
-            %td
+          /     Dirección 2
+          /   %td
               
-              =f.text_field :direccion_ean1
+          /     =f.text_field :direccion_ean1
+
+          / %tr
+          /   %td
+              
+          /     Dirección 3
+              
+          /   %td
+              
+          /     =f.text_field :direccion_ean3
+              
+          / %tr
+          /   %td
+              
+          /     Dirección 4
+              
+          /   %td
+              
+          /     =f.text_field :direccion_ean4
+          / %tr
+          /   %td
+              
+          /   %td
 
           %tr
             %td
-              
-              Dirección 3
-              
+              Dirección
             %td
-              
-              =f.text_field :direccion_ean3
-              
-          %tr
-            %td
-              
-              Dirección 4
-              
-            %td
-              
-              =f.text_field :direccion_ean4
-          %tr
-            %td
-              
-            %td
+              =f.text_field :direccion_ean
               
           %tr
             %td
@@ -363,24 +369,30 @@
               CARGO
             %td
               =f.text_field :rep_edi_cargo
+          / %tr
+          /   %td
+          /     Dirección 1
+              
+          /   %td
+          /     =f.text_field :direccion_edi1
+          / %tr
+          /   %td
+          /     Dirección 2
+              
+          /   %td
+          /     = f.text_field :direccion_edi2
+          / %tr
+          /   %td
+          /     Dirección 3
+              
+          /   %td
+          /     = f.text_field :direccion_edi3
+
           %tr
             %td
-              Dirección 1
-              
+              Dirección
             %td
-              =f.text_field :direccion_edi1
-          %tr
-            %td
-              Dirección 2
-              
-            %td
-              = f.text_field :direccion_edi2
-          %tr
-            %td
-              Dirección 3
-              
-            %td
-              = f.text_field :direccion_edi3 
+              =f.text_field :direccion_edi  
              
           %tr
             %td
