@@ -141,7 +141,11 @@
             Fecha de inscripción en Registro Mercantil
           %td
           %td
-            = @empresa.new_record? ? f.text_field(:fecha_registro_mercantil) : f.text_field(:fecha_inscripcion, :value => "#{@empresa.try(:fecha_registro_mercantil)}")
+            -if @empresa.new_record?
+
+              =f.text_field(:fecha_registro_mercantil) 
+            -else
+              =@empresa.fecha_inscripcion
         %tr
           %td
             Nº
