@@ -222,7 +222,7 @@ class EmpresasController < ApplicationController
 
     @empresa = Empresa.find(params[:id])
 
-    params[:empresa][:fecha_inscripcion] = params[:empresa][:fecha_inscripcion] + " 12:00:00"
+    
     #@datos_contactos = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
 
     respond_to do |format|

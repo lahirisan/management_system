@@ -138,14 +138,14 @@
             =f.text_field :circunscripcion_judicial
         %tr
           %td
-            Fecha de inscripción en Registro Mercantil
+            -if @empresa.new_record?
+              ="Fecha de inscripción en Registro Mercantil"
           %td
           %td
             -if @empresa.new_record?
 
               =f.text_field(:fecha_registro_mercantil) 
-            -else
-              =@empresa.fecha_inscripcion
+
         %tr
           %td
             Nº
