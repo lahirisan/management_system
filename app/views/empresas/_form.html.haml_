@@ -62,6 +62,11 @@
             =f.text_field :nombre_empresa
         %tr
           %td
+            Nombre Comercial
+          %td
+            =f.text_field :nombre_comercial
+        %tr
+          %td
             Estado
           %td
           %td
@@ -422,20 +427,12 @@
       %hr.contexto{:size => "1"}
 
       %table
+        
         %tr
-          / %td
-          /   Nombre Comercial
-          / %td
-          /   = f.text_field :nombre_comercial
-        / %tr
-        /   %td
-        /     Clasificación
-        /   %td
-        /     -if @empresa.new_record?
-        /       =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"})
-        /     -else
-        /       =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"})
-           
+          %td
+            Clasificación
+          %td
+            =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"})
             
         %tr
           %td
