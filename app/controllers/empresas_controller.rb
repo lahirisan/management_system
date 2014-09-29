@@ -167,6 +167,7 @@ class EmpresasController < ApplicationController
     
     empresa_no_validada = Empresa.find(:first, :include => [:estatus], :conditions => ["prefijo = ? and estatus.descripcion = ?", params[:empresa][:prefijo], 'No Validado'])
     #prefijo_eliminado = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa][:prefijo]])
+    
     Empresa.utilizar_prefijo_no_validado(empresa_no_validada) if empresa_no_validada
 
     @ultimo =  Empresa.generar_prefijo_valido   # OJO con estoooooooooooooo
