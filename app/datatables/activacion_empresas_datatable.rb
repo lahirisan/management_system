@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class ActivacionEmpresasDatatable < AjaxDatatablesRails
   delegate :params, :h, :link_to, :check_box_tag,   to: :@view
 
