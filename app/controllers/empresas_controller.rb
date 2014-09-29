@@ -1,3 +1,4 @@
+#encoding: UTF-8
 class EmpresasController < ApplicationController
   before_filter :require_authentication
   
