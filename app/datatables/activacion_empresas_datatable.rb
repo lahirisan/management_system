@@ -25,6 +25,7 @@ private
       fecha = ""
       fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
 
+      if session[:gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Administrador' or session[:perfil] == 'Super Usuario'
         [ 
         check_box_tag("activar_empresas[]", "#{empresa.id}", false, :class => "activar_empresa"),
         empresa.prefijo,
@@ -37,7 +38,24 @@ private
         empresa.try(:ventas_brutas_anuales),
         empresa.try(:clasificacion).try(:descripcion) 
        
-      ]
+        ]
+      else
+
+        [ 
+        check_box_tag("activar_empresas[]", "#{empresa.id}", false, :class => "activar_empresa"),
+        "",
+        empresa.nombre_empresa,
+        fecha,
+        empresa.ciudad.nombre,
+        empresa.rif,
+        empresa.estatus.descripcion.upcase,
+        empresa.try(:tipo_usuario_empresa).try(:descripcion),
+        empresa.try(:ventas_brutas_anuales),
+        empresa.try(:clasificacion).try(:descripcion) 
+       
+        ]
+
+      end
 
     end
 
