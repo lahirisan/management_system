@@ -207,7 +207,13 @@ class EmpresasController < ApplicationController
         Gln.generar_legal(@empresa.prefijo.to_s) if empresa_no_validada.nil?
 
         Auditoria.registrar_evento(session[:user_id],"Empresa", "Crear", Time.now, "Prefijo #{@empresa.prefijo}")
-        format.html { redirect_to '/empresas?activacion=true', notice: "EMPRESA CREADA SATISFACTORIAMENTE. PREFIJO:#{@empresa.prefijo}   NOMBRE:#{@empresa.nombre_empresa}" }
+        format.html { 
+         if session[gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Administrador' or session[:perfil] == 'Super Usuario'
+          redirect_to '/empresas?activacion=true', notice: "EMPRESA CREADA SATISFACTORIAMENTE. PREFIJO:#{@empresa.prefijo}   NOMBRE:#{@empresa.nombre_empresa}"
+         else
+          redirect_to '/empresas?activacion=true', notice: "EMPRESA CREADA SATISFACTORIAMENTE. NOMBRE:#{@empresa.nombre_empresa}"
+         end
+        }
 
        else
           format.html { render action: "new" }

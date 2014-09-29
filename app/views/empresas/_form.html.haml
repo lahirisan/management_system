@@ -29,19 +29,21 @@
               -else
                 %li=msg + '.'
               
-      
-      %table
-        %tr
-          %td.prefijo
-            Prefijo Asignado
-          %td.prefijo
-            -if @empresa.new_record?
-              =f.text_field :prefijo , :value => "#{@ultimo}", :readonly => :true, :class => 'campo_readonly prefijo'
-            -else
-              =f.text_field :prefijo, :readonly => :true, :class => 'campo_readonly prefijo'
-          -if @empresa.new_record?
+      -if (session[:gerencia] == 'Estandares y Consultoria' or session[:perfil] == 'Administrador' or session[:perfil] == 'Super Usuario')
+
+        %table
+          %tr
+            %td.prefijo
+              Prefijo Asignado
+            %td.prefijo
+              -if @empresa.new_record?
+                =f.text_field :prefijo , :value => "#{@ultimo}", :readonly => :true, :class => 'campo_readonly prefijo'
+              -else
+                =f.text_field :prefijo, :readonly => :true, :class => 'campo_readonly prefijo'
             %td
               =link_to "Asignar Prefijo", "#", :id => "boton_abrir_ventana_prefijo_manual"
+      -else
+        =f.hidden_field :prefijo, :value => "#{@ultimo}" 
       %br
       %table
         %tr
