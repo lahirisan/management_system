@@ -1,7 +1,7 @@
 development:
   adapter: sqlserver
   host: 192.168.1.10  
-  database: GS1_TEST
+  database: GS1_New
   username: sa
   password: Gs1vzla
   port: 1433
