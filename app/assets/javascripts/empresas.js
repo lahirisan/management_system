@@ -20,7 +20,7 @@
          // Datatable que maneja el listado de empresas activacion
         $("#data_table_empresas_activacion").dataTable({
             sPaginationType: "full_numbers",
-            aoColumns: [ { "bSortable": false },  null, null,  null, null, null, null, null, null, null ],
+            aoColumns: [ { "bSortable": false },  null, null,  null, null, null, null, null, null, null, { "bSortable": false } ],
             aaSorting: [[ 3, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
@@ -115,11 +115,12 @@
 
 		});
 
-        $( "#estado_codificacion").change(function() {
+        $( "#empresa_id_estado_ean").change(function() {
+            
             
             //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
             $.get("/ciudades.json?id_estado="+$(this).val(), function( data ) { 
-                var ciudades = $("#ciudad_codificacion");
+                var ciudades = $("#empresa_id_ciudad_ean");
                 ciudades.empty() // Se eliminan las opciones del select ciudades
                 
                 $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
@@ -129,25 +130,22 @@
 
             //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
             $.get("/municipios.json?id_estado="+$(this).val(), function( data ) { 
-                var  municipios = $("#municipio_codificacion");
+                var  municipios = $("#empresa_id_municipio_ean");
                 municipios.empty() // Se eliminan las opciones del select ciudades
                 
                 $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
                     municipios.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
                 });
-            });
- 
-            
-                      
+            });       
 
         });
 
 
-        $( "#estado_sincronet").change(function() {
+        $( "#empresa_id_estado_edi").change(function() {
             
             //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
             $.get("/ciudades.json?id_estado="+$(this).val(), function( data ) { 
-                var ciudades = $("#ciudad_sincronet");
+                var ciudades = $("#empresa_id_ciudad_edi");
                 ciudades.empty() // Se eliminan las opciones del select ciudades
                 
                 $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
@@ -157,7 +155,7 @@
 
             //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
             $.get("/municipios.json?id_estado="+$(this).val(), function( data ) { 
-                var  municipios = $("#municipio_sincronet");
+                var  municipios = $("#empresa_id_municipio_edi");
                 municipios.empty() // Se eliminan las opciones del select ciudades
                 
                 $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado

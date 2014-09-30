@@ -29,7 +29,7 @@ class Empresa < ActiveRecord::Base
   
   belongs_to :tipo_usuario_empresa, :foreign_key => "id_tipo_usuario"
   
-  validates :nombre_empresa, :fecha_inscripcion, :direccion_empresa, :id_estado, :id_ciudad, :rif, :prefijo,  :rep_legal, :cargo_rep_legal,  :presence => {:message => "No puede estar en blanco"}, :on => :create
+  validates :id_tipo_usuario, :nombre_empresa, :fecha_inscripcion,  :id_estado, :id_ciudad, :direccion_empresa, :contacto_tlf1, :contacto_email1,  :rif, :prefijo,  :rep_legal, :cargo_rep_legal,  :presence => {:message => "No puede estar en blanco"}, :on => :create
   #validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{5,8})-([0-9]{1})$/, on: :create, :message => "El Formato del RIF es invalido"} # Validacion al crear
   validates :rif, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado. Por favor verifique."}, :on => :create
 

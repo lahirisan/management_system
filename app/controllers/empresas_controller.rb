@@ -1,4 +1,5 @@
 #encoding: UTF-8
+
 class EmpresasController < ApplicationController
   before_filter :require_authentication
   
@@ -184,24 +185,14 @@ class EmpresasController < ApplicationController
 
     
     respond_to do |format|
-    
+      
+      params[:empresa][:contacto_tlf1] =  params[:codigo_telefono1] + "-" + params[:empresa][:contacto_tlf1] if params[:codigo_telefono1] != ""
+      params[:empresa][:contacto_tlf2] = params[:codigo_telefono2] + "-" + params[:empresa][:contacto_tlf2] if params[:codigo_telefono2] != ""
+      params[:empresa][:contacto_tlf3] = params[:codigo_telefono3] + "-" + params[:empresa][:contacto_tlf3] if params[:codigo_telefono3] != ""
+      params[:empresa][:contacto_fax] = params[:codigo_telefono4] + "-" + params[:empresa][:contacto_fax] if params[:codigo_telefono4] != ""
+      
       if @empresa.save
-        
-        params[:telefono2] = params[:codigo_telefono2] + "-" + params[:telefono2] if params[:telefono2]
-        params[:telefono3] = params[:codigo_telefono3] + "-" + params[:telefono3] if params[:telefono3]
-        params[:fax] = params[:codigo_telefono4] + "-" + params[:fax] if params[:fax]
-
-
-        #Empresa.agregar_contacto(params[:telefono2], @empresa.prefijo, "telefono") if params[:telefono2]
-        #Empresa.agregar_contacto(params[:telefono3], @empresa.prefijo, "telefono") if params[:telefono3]
-        #Empresa.agregar_contacto(params[:fax], @empresa.prefijo, "telefono") if params[:fax]
-        #Empresa.agregar_contacto(params[:email], @empresa.prefijo, "email") if params[:email]
-        #Empresa.agregar_contacto(params[:email1], @empresa.prefijo, "email") if params[:email1]
-
-        #Correspondencia.agregar_correspondencia(@empresa.prefijo, params[:persona_contacto_codificacion], params[:cargo_codificacion], params[:edificio_codificacion], params[:detalle_edificio_codificacion], params[:piso_codificacion], params[:detalle_piso_codificacion], params[:oficina_codificacion], params[:detalle_oficina_codificacion], params[:calle_codificacion], params[:detalle_calle_codificacion], params[:urbanizacion_codificacion], params[:detalle_urbanizacion_codificacion], params[:estado_codificacion], params[:ciudad_codificacion], params[:municipio_codificacion], params[:parroquia_codificacion], params[:punto_referencia_codificacion], params[:codigo_postal_codificacion], "CODIFICACION GS1", params[:telefono1_codificacion], params[:telefono2_codificacion], params[:telefono3_codificacion], params[:fax_codificacion], params[:email_codificacion]) 
-        #Correspondencia.agregar_correspondencia(@empresa.prefijo, params[:persona_contacto_sincronet], params[:cargo_sincronet], params[:edificio_sincronet], params[:detalle_edificio_sincronet], params[:piso_sincronet], params[:detalle_piso_sincronet], params[:oficina_sincronet], params[:detalle_oficina_sincronet], params[:calle_sincronet], params[:detalle_calle_sincronet], params[:urbanizacion_sincronet], params[:detalle_urbanizacion_sincronet], params[:estado_sincronet], params[:ciudad_sincronet], params[:municipio_sincronet], params[:parroquia_sincronet], params[:punto_referencia_sincronet], params[:codigo_postal_sincronet], "COMERCIO ELECTRONICO / SINCRONET", params[:telefono1_sincronet], params[:telefono2_sincronet], params[:telefono3_sincronet], params[:fax_sincronet], params[:email_sincronet]) 
-        #Correspondencia.agregar_correspondencia(@empresa.prefijo, params[:persona_contacto_seminario], params[:cargo_seminario], params[:edificio_seminario], params[:detalle_edificio_seminario], params[:piso_seminario], params[:detalle_piso_seminario], params[:oficina_seminario], params[:detalle_oficina_seminario], params[:calle_seminario], params[:detalle_calle_seminario], params[:urbanizacion_seminario], params[:detalle_urbanizacion_seminario], params[:estado_seminario], params[:ciudad_seminario], params[:municipio_seminario], params[:parroquia_seminario], params[:punto_referencia_seminario], params[:codigo_postal_seminario], "SEMINARIOS / CURSOS", params[:telefono1_seminario], params[:telefono2_seminario], params[:telefono3_seminario], params[:fax_seminario], params[:email_seminario]) 
-        #Correspondencia.agregar_correspondencia(@empresa.prefijo, params[:persona_contacto_mercadeo], params[:cargo_mercadeo], params[:edificio_mercadeo], params[:detalle_edificio_mercadeo], params[:piso_mercadeo], params[:detalle_piso_mercadeo], params[:oficina_mercadeo], params[:detalle_oficina_mercadeo], params[:calle_mercadeo], params[:detalle_calle_mercadeo], params[:urbanizacion_mercadeo], params[:detalle_urbanizacion_mercadeo], params[:estado_mercadeo], params[:ciudad_mercadeo], params[:municipio_mercadeo], params[:parroquia_mercadeo], params[:punto_referencia_mercadeo], params[:codigo_postal_mercadeo], "MERCADEO", params[:telefono1_mercadeo], params[:telefono2_mercadeo], params[:telefono3_mercadeo], params[:fax_mercadeo], params[:email_mercadeo])
+  
         
         # EL GLN OJO con esto  validar los casos GLN para empresa no validad y GLN de emrpresas eliminadas
         
@@ -212,7 +203,7 @@ class EmpresasController < ApplicationController
          if session[:gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Administrador' or session[:perfil] == 'Super Usuario'
           redirect_to '/empresas?activacion=true', notice: "EMPRESA CREADA SATISFACTORIAMENTE. PREFIJO:#{@empresa.prefijo}   NOMBRE:#{@empresa.nombre_empresa}"
          else
-          redirect_to '/empresas?activacion=true', notice: "EMPRESA CREADA SATISFACTORIAMENTE. NOMBRE:#{@empresa.nombre_empresa}"
+          redirect_to '/empresas?activacion=true', notice: "EMPRESA CREADA SATISFACTORIAMENTE. NOMBRE:#{@empresa.nombre_empresa} RIF:#{@empresa.rif}"
          end
         }
 
@@ -268,7 +259,15 @@ class EmpresasController < ApplicationController
 
         
 
-        format.html { redirect_to '/empresas', notice: "EMPRESA CON PREFIJO #{@empresa.prefijo} ACTUALIZADA SATISFACTORIAMENTE." }
+        format.html { 
+          if session[:gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Administrador' or session[:perfil] == 'Super Usuario'
+
+            redirect_to '/empresas', notice: "EMPRESA CON PREFIJO #{@empresa.prefijo} ACTUALIZADA SATISFACTORIAMENTE." 
+          else
+            redirect_to '/empresas?activacion=true', notice: "EMPRESA #{@empresa.nombre_empresa} ACTUALIZADA SATISFACTORIAMENTE." 
+          end
+        }
+
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

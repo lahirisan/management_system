@@ -47,12 +47,14 @@
 						%span.ui-icon.ui-icon-circle-plus
 						&nbsp;Registrar
 					
-				- if session[:gerencia] == 'Administrativa' or session[:perfil] == 'Administrador'
-					/- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Validar Empresa')
+				- if session[:gerencia] == 'Administrativa' or session[:perfil] == 'Administrador' or session[:gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Super Usuario' or session[:gerencia] == 'Comercial'
+					
 				
 					%a.opcion{:href => "/empresas?activacion=true", :title => "Opción para Activar Empresas creadas", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-circle-check
-						&nbsp;Activar Empresa
+						&nbsp;Activar / No Validada
+
+				- if session[:gerencia] == 'Administrativa' or session[:perfil] == 'Administrador' 
 
 					%a.opcion{:href => "/empresas?sub_estatus=true", :title => "Opción para modificar sub estatus administrativo", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-folder-open
@@ -69,19 +71,21 @@
 						%span.ui-icon.ui-icon-refresh
 						&nbsp;Reactivar Empresa
 					
-			
-				%a.opcion{:href => "/empresas?retiradas=true", :title => "Opción para Listar Empresas Retiradas", :class => "ui-state-default ui-corner-all botones_menu"}
-					%span.ui-icon.ui-icon-folder-collapsed
-					&nbsp;Empresas Retiradas
+				
+				-if session[:gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Super Usuario' or session[:perfil] == 'Administrador'
+					%a.opcion{:href => "/empresas?retiradas=true", :title => "Opción para Listar Empresas Retiradas", :class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-folder-collapsed
+						&nbsp;Empresas Retiradas
 					
 				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Empresa')
 					%a.opcion{:href => "/empresas?eliminar=true", :title => "Opción para Eliminar Empresa", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-circle-close
 						&nbsp;Eliminar Empresa
 				
-				%a.opcion{:href => "/empresas?eliminadas=true", :title => "Opción para Listar Empresas ELiminadas", :class => "ui-state-default ui-corner-all botones_menu"}
-					%span.ui-icon.ui-icon-trash
-					&nbsp;Empresas Eliminadas
+				-if session[:gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Super Usuario' or session[:perfil] == 'Administrador'
+					%a.opcion{:href => "/empresas?eliminadas=true", :title => "Opción para Listar Empresas ELiminadas", :class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-trash
+						&nbsp;Empresas Eliminadas
 
 			-if params[:controller] != 'empresas'
 
