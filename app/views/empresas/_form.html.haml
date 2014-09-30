@@ -1,6 +1,9 @@
 %section.contexto
   %label.contexto.titulo_contrato
-    =@empresa.new_record? ? "Registrar Empresa" : "#{@empresa.prefijo} > #{@empresa.nombre_empresa} > Editar Empresa"
+    -if params[:activacion]
+      =@empresa.new_record? ? "Registrar Empresa" : "#{@empresa.nombre_empresa} > Editar Empresa"
+    -else
+      =@empresa.new_record? ? "Registrar Empresa" : "#{@empresa.prefijo} > #{@empresa.nombre_empresa} > Editar Empresa"
   
   %br
   %br
@@ -14,18 +17,30 @@
           %ul
             // Customización de los mensajes de error para el formulario empresa
             -@empresa.errors.full_messages.each do |msg|
-              -if msg == 'Id estado no puede estar en blanco'
-                %li='Debe selecionar una opción para el Estado.'
-              -elsif msg == 'Id ciudad no puede estar en blanco'
-                %li='Debe selecionar una opción para la Ciudad.'
+              -if msg == 'Id tipo usuario No puede estar en blanco'
+                %li='Debe seleccionar un tipo de usuario.'
+              -elsif msg == 'Id estado No puede estar en blanco'
+                %li='Debe selecionar un Estado.'
+              -elsif msg == 'Id ciudad No puede estar en blanco'
+                %li='Debe selecionar una Ciudad.'
               -elsif msg == 'Id clasificación no puede estar en blanco'
                 %li='Debe seleccionar una clasificación.'
-              -elsif msg == 'Datos contacto contacto no puede estar en blanco'
-                %li='El campo Contacto no puede estar en blanco.'
-              -elsif msg == 'Datos contacto nombre contacto no puede estar en blanco'
-                %li='El campo Nombre Contacto no puede estar en blanco.'
-              -elsif msg == 'Datos contacto cargo contacto no puede estar en blanco'
-                %li='El campo Cargo Contacto no puede estar en blanco.'
+              -elsif msg == 'Direccion empresa No puede estar en blanco'
+                %li='Debe ingresar la Dirección Fiscal.'
+              -elsif msg == 'Contacto tlf1 No puede estar en blanco'
+                %li='Debe ingresar al menos el Teléfono 1.'
+              -elsif msg == 'Contacto email1 No puede estar en blanco'
+                %li='Debe ingresar un E-mail.'
+              -elsif msg == 'Rif No puede estar en blanco'
+                %li='Campo RIF no puede estar en blanco.'
+              -elsif msg == 'Rep legal No puede estar en blanco'
+                %li='NOMBRE RESPONSABLE LEGAL no puede estar en blanco.'
+              -elsif msg == 'Cargo rep legal No puede estar en blanco'
+                %li='CARGO Rep. Legal no puede estar en blanco.'
+
+
+              
+             
               -else
                 %li=msg + '.'
               
@@ -43,7 +58,11 @@
             %td
               =link_to "Asignar Prefijo", "#", :id => "boton_abrir_ventana_prefijo_manual"
       -else
-        =f.hidden_field :prefijo, :value => "#{@ultimo}" 
+        -if @empresa.new_record?
+          =f.hidden_field :prefijo , :value => "#{@ultimo}"
+        -else
+          =f.hidden_field :prefijo
+
       %br
       %table
         %tr
@@ -52,9 +71,9 @@
           %td
           %td
             -if @empresa.new_record?
-              =f.collection_select :id_tipo_usuario, TipoUsuarioEmpresa.find(:all, :conditions => ["descripcion in (?)", ['Usuario', 'No Usuario']]),:id_tipo_usu_empresa, :descripcion  
+              =f.collection_select :id_tipo_usuario, TipoUsuarioEmpresa.find(:all, :conditions => ["descripcion in (?)", ['Usuario', 'No Usuario']]),:id_tipo_usu_empresa, :descripcion, :prompt => "-Seleccione Tipo Usuario-"  
             -else
-              =f.collection_select :id_tipo_usuario, TipoUsuarioEmpresa.all, :id_tipo_usu_empresa, :descripcion, :prompt => "-Seleccione-"
+              =f.collection_select :id_tipo_usuario, TipoUsuarioEmpresa.all, :id_tipo_usu_empresa, :descripcion
       
         %tr
           %td
@@ -91,8 +110,8 @@
           %td
             Teléfono 1 (58)
           %td
-          
-            =text_field_tag "codigo_telefono1", nil, :placeholder => "212", :size => "3"
+            -if @empresa.new_record?
+              =text_field_tag "codigo_telefono1", nil, :placeholder => "212", :size => "3"
           %td
             =f.text_field :contacto_tlf1,  :placeholder => "123-45-67"
           %td
@@ -101,21 +120,24 @@
           %td
             Teléfono 2 (58)
           %td
-            =text_field_tag "codigo_telefono2", nil, :placeholder => "416", :size => "3"
+            -if @empresa.new_record?
+              =text_field_tag "codigo_telefono2", nil, :placeholder => "416", :size => "3"
           %td
             =f.text_field "contacto_tlf2",  {:placeholder => "123-45-67"}
         %tr
           %td
             Teléfono 3 (58)
           %td
-            =text_field_tag "codigo_telefono3", nil, :placeholder => "412", :size => "3"
+            -if @empresa.new_record?
+              =text_field_tag "codigo_telefono3", nil, :placeholder => "412", :size => "3"
           %td
             =f.text_field "contacto_tlf3",  {:placeholder => "123-45-67"}
         %tr
           %td
             FAX (58)
           %td
-            =text_field_tag "codigo_telefono4", nil, :placeholder => "212", :size => "3"
+            -if @empresa.new_record?
+              =text_field_tag "codigo_telefono4", nil, :placeholder => "212", :size => "3"
           %td
             =f.text_field "contacto_fax",  {:placeholder => "123-45-67"}
         %tr
@@ -235,43 +257,7 @@
             %td
               =f.text_field :rep_ean_cargo
               
-          / %tr
-          /   %td
-              
-          /     Dirección 1
-              
-          /   %td
-              
-          /     =f.text_field :direccion_ean1
-          / %tr
-          /   %td
-              
-          /     Dirección 2
-          /   %td
-              
-          /     =f.text_field :direccion_ean1
-
-          / %tr
-          /   %td
-              
-          /     Dirección 3
-              
-          /   %td
-              
-          /     =f.text_field :direccion_ean3
-              
-          / %tr
-          /   %td
-              
-          /     Dirección 4
-              
-          /   %td
-              
-          /     =f.text_field :direccion_ean4
-          / %tr
-          /   %td
-              
-          /   %td
+          
 
           %tr
             %td
@@ -283,7 +269,7 @@
             %td
               ESTADO
             %td
-              =f.collection_select :id_estado_ean, Estado.all, :id, :nombre
+              =f.collection_select :id_estado_ean, Estado.find(:all, :order => "nombre ASC"), :id, :nombre
 
               
           %tr
@@ -291,7 +277,7 @@
               CIUDAD
             %td
               
-              =f.collection_select :id_ciudad_ean, Ciudad.all, :id, :nombre
+              =f.collection_select :id_ciudad_ean, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre
               
               
           %tr
@@ -299,7 +285,7 @@
               MUNICIPIO
             %td
               
-              =f.collection_select :id_municipio_ean, Municipio.all, :id, :nombre
+              =f.collection_select :id_municipio_ean, Municipio.find(:all, :order => "nombre ASC"), :id, :nombre
               
           %tr
             %td
@@ -375,25 +361,7 @@
               CARGO
             %td
               =f.text_field :rep_edi_cargo
-          / %tr
-          /   %td
-          /     Dirección 1
-              
-          /   %td
-          /     =f.text_field :direccion_edi1
-          / %tr
-          /   %td
-          /     Dirección 2
-              
-          /   %td
-          /     = f.text_field :direccion_edi2
-          / %tr
-          /   %td
-          /     Dirección 3
-              
-          /   %td
-          /     = f.text_field :direccion_edi3
-
+          
           %tr
             %td
               Dirección
@@ -405,19 +373,19 @@
               ESTADO
             %td
               
-              =f.collection_select :id_estado_edi, Estado.all, :id, :nombre
+              =f.collection_select :id_estado_edi, Estado.find(:all, :order => "nombre ASC"), :id, :nombre
                 
           %tr
             %td
               CIUDAD
             %td
-              = f.collection_select :id_ciudad_edi, Ciudad.all, :id, :nombre
+              = f.collection_select :id_ciudad_edi, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre
               
           %tr
             %td
               MUNICIPIO
             %td
-              = f.collection_select :id_municipio_edi, Municipio.all, :id, :nombre
+              = f.collection_select :id_municipio_edi, Municipio.find(:all, :order => "nombre ASC"), :id, :nombre
               
           %tr
             %td
@@ -573,9 +541,16 @@
         %span.ui-icon.ui-icon-circle-plus
         Guardar
 
-      %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
-        %span.ui-icon.ui-icon-arrowreturnthick-1-w
-        Regresar
+      -if params[:activacion]
+        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas?activacion=true", :title => "Regresar al listado general de empresas NO VALIDADAS"}
+          %span.ui-icon.ui-icon-arrowreturnthick-1-w
+          Regresar
+
+      -else
+        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
+          %span.ui-icon.ui-icon-arrowreturnthick-1-w
+          Regresar
+        
 
     #asignar_prefijo_manual
       -if params[:action] == 'new'

@@ -37,7 +37,8 @@ private
         empresa.estatus.descripcion.upcase,
         empresa.try(:tipo_usuario_empresa).try(:descripcion),
         empresa.try(:ventas_brutas_anuales),
-        empresa.try(:clasificacion).try(:descripcion) 
+        empresa.try(:clasificacion).try(:descripcion),
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe, edit_empresa_path(empresa, :activacion => "true"), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar la empresa #{empresa.nombre_empresa}"})
        
         ]
       else
@@ -52,7 +53,8 @@ private
         empresa.estatus.descripcion.upcase,
         empresa.try(:tipo_usuario_empresa).try(:descripcion),
         empresa.try(:ventas_brutas_anuales),
-        empresa.try(:clasificacion).try(:descripcion) 
+        empresa.try(:clasificacion).try(:descripcion) ,
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe, edit_empresa_path(empresa, :activacion => "true"), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar la empresa #{empresa.nombre_empresa}"})
        
         ]
 
