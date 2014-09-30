@@ -73,61 +73,7 @@ $( document ).ready(function() {
                 return false;
             }
             
-            // var seleccion_invalida = false;
-
-            // if ($('#eliminar_masivo_gln').is(':checked')) // elimino masivo
-            // {  
-            //     if ($('#sub_estatus').val() == 1)
-            //     {
-            //         alert('Estimado usuario, no ha selecciona un SUB ESTATUS para asignar masivamente. Por favor verifique');
-            //         seleccion_invalida = true;
-            //         return false;
-            //     }
-
-            //     if ($('#motivo_retiro').val() == 1)
-            //     {
-            //         alert('Estimado usuario, no ha selecciona un MOTIVO RETIRO para asignar masivamente. Por favor verifique');
-            //         seleccion_invalida = true;
-            //         return false;
-            //     }
-
-
-            //     $('.eliminar_gln:checked').each(function() {
-            //         // Por cada producto seleccionado se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
-            //         $('#datos_eliminar_gln').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
-            //     });   
-            // }
-            // else 
-            // {
-                
-            //     $('.eliminar_gln:checked').each(function() {
-                    
-            //         // Se valida que el usuario haya seleccion un subestatus para retirar el GTIN
-            //         if ($('#'+$(this).val()+'sub_estatus').val() == 1)
-            //         {
-            //             alert('Estimado usuario, no ha seleccionado un SUB ESTATUS para el GLN '+ $(this).val());
-            //             seleccion_invalida = true;
-            //             return false;
-            //         }
-
-            //         // Se valida que el usaurio haya selccionado un motivo de retiro pra el GTIN
-            //         if ($('#'+$(this).val()+'motivo_ret').val() == 1)
-            //         {
-            //             alert('Estimado usuario, no ha seleccionado un MOTIVO RETIRO para el GLN '+ $(this).val());
-            //             seleccion_invalida = true;
-            //             return false;
-            //         }
-
-            //         // Por cada producto selecciondo se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
-            //         $('#datos_eliminar_gln').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
-            //     });
-
-            //     if (seleccion_invalida)
-            //     return false;
-
-                
-
-            // }
+            
 
             if (!(confirm('Esta seguro ELIMINAR los GLN seleccionados ?')))
                 return false; 
@@ -136,25 +82,25 @@ $( document ).ready(function() {
 
         // Manejo de la seleccion de estados municipios, ciudades
 
-        $('#gln_id_estado').change(function() {
+        $('#gln_estado').change(function() {
 
             //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
             $.get("/ciudades.json?id_estado="+$(this).val(), function( data ) { 
-                var ciudades = $("#gln_id_ciudad");
+                var ciudades = $("#gln_ciudad");
                 ciudades.empty() // Se eliminan las opciones del select ciudades
                 
                 $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
-                    ciudades.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                    ciudades.append('<option value="'+ value.nombre +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
                 });
             })
 
             //AJAX que obtiene las municpios dependiendo Que cumplen la condicion del estado seleccioando
             $.get("/municipios.json?id_estado="+$(this).val(), function( data ) { 
-                var municipios = $("#gln_id_municipio");
+                var municipios = $("#gln_municipio");
                 municipios.empty() // Se eliminan las opciones del select ciudades
                 
                 $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
-                    municipios.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                    municipios.append('<option value="'+ value.nombre +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
                 });
             })
 

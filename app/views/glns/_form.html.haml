@@ -36,17 +36,30 @@
           %td
             Estado
           %td
-            = f.collection_select :id_estado, Estado.find(:all, :order => "nombre ASC" ), :id, :nombre, :prompt => "-Seleccione-"
+            - if @gln.new_record?
+              = f.collection_select :estado, Estado.find(:all, :order => "nombre ASC" ), :id, :nombre, :prompt => "-Seleccione-"
+            -else
+              =f.text_field :estado
+
+
         %tr
           %td
             Municipio
           %td
-            = f.collection_select :id_municipio, Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
+            - if @gln.new_record?
+              = f.collection_select :municipio, Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
+            -else
+              = f.text_field :municipio
+
         %tr
           %td
             Ciudad
           %td
-            = f.collection_select :id_ciudad, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
+            - if @gln.new_record?
+              = f.collection_select :ciudad, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
+            -else
+              = f.text_field :ciudad
+
         %tr
           %td
             Edificio
@@ -54,9 +67,9 @@
             = f.text_field :edificio
         %tr
           %td
-            Calle
+            AV / Calle
           %td
-            = f.text_field :calle
+            = f.text_field :avenida
         %tr
           %td
             Urbanización
@@ -71,7 +84,7 @@
           %td
             Código Postal
           %td
-            = f.text_field :cod_postal, :placeholder => "1000"
+            = f.text_field :codigo_postal, :placeholder => "1000"
       .actions
         %button#submit.ui-state-default.ui-corner-all.guardar_producto{:type => "submit", :title =>"Guardar datos del GLN"}
           %span.ui-icon.ui-icon-circle-minus

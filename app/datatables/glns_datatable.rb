@@ -18,52 +18,41 @@ class GlnsDatatable < AjaxDatatablesRails
 private
 
   def data
+
+
     glns.map do |empresa_gln|
-        if params[:empresa_retirada] == 'false'
-          if (empresa_gln.try(:gln).try(:tipo_gln).try(:nombre) == 'Legal') # GLN legal no se edita
+       
+          if (empresa_gln.try(:tipo_gln).try(:nombre) == 'Legal') # GLN legal no se edita
             [ 
-            empresa_gln.try(:gln).try(:gln),
-            empresa_gln.try(:gln).try(:tipo_gln).try(:nombre),
-            empresa_gln.try(:gln).try(:codigo_localizacion),
-            empresa_gln.try(:gln).try(:descripcion),
-            empresa_gln.try(:gln).try(:estatus).try(:descripcion),
-            empresa_gln.try(:gln).try(:fecha_asignacion).strftime("%Y-%m-%d"),
-            empresa_gln.try(:gln).try(:estado).try(:nombre),
-            empresa_gln.try(:gln).try(:municipio).try(:nombre),
-            empresa_gln.try(:gln).try(:ciudad).try(:nombre),
+            empresa_gln.try(:gln),
+            empresa_gln.try(:tipo_gln).try(:nombre),
+            empresa_gln.try(:codigo_localizacion),
+            empresa_gln.try(:descripcion),
+            empresa_gln.try(:estatus).try(:descripcion),
+            empresa_gln.try(:fecha_asignacion),
+            empresa_gln.try(:estado),
+            empresa_gln.try(:municipio),
+            empresa_gln.try(:ciudad),
             "",
-            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de  GLN #{empresa_gln.try(:gln).try(:gln)}"})
+            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de  GLN #{empresa_gln.try(:gln)}"})
             ]
           else
             [ 
-            empresa_gln.try(:gln).try(:gln),
-            empresa_gln.try(:gln).try(:tipo_gln).try(:nombre),
-            empresa_gln.try(:gln).try(:codigo_localizacion),
-            empresa_gln.try(:gln).try(:descripcion),
-            empresa_gln.try(:gln).try(:estatus).try(:descripcion),
-            empresa_gln.try(:gln).try(:fecha_asignacion).strftime("%Y-%m-%d"),
-            empresa_gln.try(:gln).try(:estado).try(:nombre),
-            empresa_gln.try(:gln).try(:municipio).try(:nombre),
-            empresa_gln.try(:gln).try(:ciudad).try(:nombre),
-            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}/edit",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar datos GLN #{empresa_gln.try(:gln).try(:gln)}"}),
-            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de  GLN #{empresa_gln.try(:gln).try(:gln)}"})
+            empresa_gln.try(:gln),
+            empresa_gln.try(:tipo_gln).try(:nombre),
+            empresa_gln.try(:codigo_localizacion),
+            empresa_gln.try(:descripcion),
+            empresa_gln.try(:estatus).try(:descripcion),
+            empresa_gln.try(:fecha_asignacion),
+            empresa_gln.try(:estado),
+            empresa_gln.try(:municipio),
+            empresa_gln.try(:ciudad),
+            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln}/edit",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar datos GLN #{empresa_gln.try(:gln)}"}),
+            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de  GLN #{empresa_gln.try(:gln)}"})
             ]
           end
           
-        else
-          [ 
-            empresa_gln.try(:gln).try(:gln),
-            empresa_gln.try(:gln).try(:tipo_gln).try(:nombre),
-            empresa_gln.try(:gln).try(:codigo_localizacion),
-            empresa_gln.try(:gln).try(:descripcion),
-            empresa_gln.try(:gln).try(:estatus).try(:descripcion),
-            empresa_gln.try(:gln).try(:fecha_asignacion).strftime("%Y-%m-%d"),
-            empresa_gln.try(:gln).try(:estado).try(:nombre),
-            empresa_gln.try(:gln).try(:municipio).try(:nombre),
-            empresa_gln.try(:gln).try(:ciudad).try(:nombre),
-            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar datos GLN #{empresa_gln.try(:gln).try(:gln)}"}),
-          ]
-        end
+       
 
     end
 
@@ -76,16 +65,19 @@ private
   def fetch_glns
 
     
-    glns = GlnEmpresa.where("gln_empresa.prefijo = ?", params[:empresa_id]).joins({:gln => :tipo_gln} , {:gln => :estatus}, :empresa).order("#{sort_column} #{sort_direction}") 
+    glns = Gln.where("gln.prefijo = ?", params[:empresa_id]).includes(:tipo_gln ,  :estatus, :empresa).order("#{sort_column} #{sort_direction}") 
+
+    
+    
     glns = glns.page(page).per_page(per_page)
 
     
     if params[:sSearch].present? # Filtro de busqueda general
-      glns = glns.where("gln.glns like :search or tipo_gln.nombre like :search or gln.codigo_localizacion like :search or gln.descripcion like :search or estatus.descripcion like :search or gln.fecha_asignacion like :search or estados.nombre like :search or municipio.nombre like :search or ciudad.nombre like :search ", search: "%#{params[:sSearch]}%")
+      glns = glns.where("gln like :search or tipo_gln.nombre like :search or gln.codigo_localizacion like :search or gln.descripcion like :search or estatus.descripcion like :search or gln.fecha_asignacion like :search or estados.nombre like :search or municipio.nombre like :search or ciudad.nombre like :search ", search: "%#{params[:sSearch]}%")
     end
     
     if params[:sSearch_0].present? # Filtro de busqueda Nombre de la Empresa
-      glns = glns.where("gln.gln like :search0", search0: "%#{params[:sSearch_0]}%" )
+      glns = glns.where("gln like :search0", search0: "%#{params[:sSearch_0]}%" )
     end
     
     if params[:sSearch_1].present? # Filtro de busqueda por Tipo GTIN
@@ -93,11 +85,11 @@ private
     end
 
     if params[:sSearch_2].present? # Filtro GTIN
-      glns = glns.where("gln.codigo_localizacion like :search2", search2: "%#{params[:sSearch_2]}%" )
+      glns = glns.where("codigo_localizacion like :search2", search2: "%#{params[:sSearch_2]}%" )
     end
     
     if params[:sSearch_3].present?
-      glns = glns.where("gln.descripcion like :search3", search3: "%#{params[:sSearch_3]}%" )
+      glns = glns.where("descripcion like :search3", search3: "%#{params[:sSearch_3]}%" )
     end
 
     if params[:sSearch_4].present?
@@ -105,7 +97,7 @@ private
     end
 
     if params[:sSearch_5].present?
-      glns = glns.where("gln.fecha_asignacion like :search5", search5: "%#{params[:sSearch_5]}%" )
+      glns = glns.where("fecha_asignacion like :search5", search5: "%#{params[:sSearch_5]}%" )
     end
 
     if params[:sSearch_6].present?
