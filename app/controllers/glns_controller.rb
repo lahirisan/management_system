@@ -99,6 +99,8 @@ class GlnsController < ApplicationController
   # POST /glns.json
   def create
     
+    estado = Estado.find(params[:gln][:estado])
+    params[:gln][:estado] = estado.nombre
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]]) # para la validacion del formulario
 
     params[:gln][:gln] = Gln.generar(params[:empresa_id])
@@ -106,6 +108,7 @@ class GlnsController < ApplicationController
     estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Activo', 'GLN'])
     params[:gln][:id_estatus] = estatus.id
     params[:gln][:codigo_localizacion] = params[:gln][:gln][7..11]
+    params[:gln][:prefijo] = params[:empresa_id]
     @gln = Gln.new(params[:gln])
 
     respond_to do |format|

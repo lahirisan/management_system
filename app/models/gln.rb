@@ -1,13 +1,16 @@
 class Gln < ActiveRecord::Base
-  attr_accessible :calle, :cod_postal, :codigo_localizacion, :descripcion, :edificio, :fecha_asignacion, :id_ciudad, :id_estado, :id_estatus, :id_municipio, :id_pais, :punto_referencia, :id_tipo_gln, :urbanizacion, :gln
+  attr_accessible :avenida, :prefijo,  :codigo_postal, :codigo_localizacion, :descripcion, :edificio, :fecha_asignacion, :ciudad, :estado, :id_estatus, :municipio,  :punto_referencia, :id_tipo_gln, :urbanizacion, :gln
   self.table_name = "gln"
-  has_one :gln_empresa, :foreign_key => "id_gln"
+  self.primary_key = "gln"
+  
+  belongs_to :empresa, :foreign_key => "prefijo"
   belongs_to :estatus, :foreign_key => "id_estatus"
   belongs_to :tipo_gln, :foreign_key => "id_tipo_gln"
-  belongs_to :estado, :foreign_key => "id_estado"
-  belongs_to :ciudad, :foreign_key => "id_ciudad"
-  belongs_to :pais, :foreign_key => "id_pais"
-  belongs_to :municipio, :foreign_key => "id_municipio"
+
+  # belongs_to :estado, :foreign_key => "id_estado"
+  # belongs_to :ciudad, :foreign_key => "id_ciudad"s
+  # belongs_to :pais, :foreign_key => "id_pais"
+  # belongs_to :municipio, :foreign_key => "id_municipio"
 
   validates :gln, :id_tipo_gln,  :descripcion,  :presence => {:message => "No puede estar en blanco"}, :on => :create
   #validates :cod_postal, format: { with: /^[1-9]\d*$/, on: :create, :message => "El Formato del Codigo Postal es incorrecto"} # Validacion al crear
@@ -18,8 +21,6 @@ class Gln < ActiveRecord::Base
     for eliminar_gln in (0..parametros[:eliminar_glns].size-1)
       
       gln_seleccionado = parametros[:eliminar_glns][eliminar_gln]
-      #eliminar_datos = parametros[:"#{gln_seleccionado}"]
-      #gln_id = eliminar_datos.split('_')[0]
       gln_ = Gln.find(:first, :conditions => ["gln = ? ", gln_seleccionado]) 
       Gln.eliminar_gln(gln_)
     end
@@ -60,7 +61,6 @@ class Gln < ActiveRecord::Base
 
   # OJO falta validar los casos cuando la empresa es de 9 digitos y de 6 digitos
 
-
   empresa = Empresa.find(:first, :conditions => ["prefijo = ?", prefijo_empresa])
   
 
@@ -73,8 +73,6 @@ class Gln < ActiveRecord::Base
   tipo_gln = TipoGln.find(:first, :conditions => ["nombre = ?", "Legal"])
   estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?","Activo", "GLN"])
   pais = Pais.find(:first, :conditions => ["nombre = ?", "Venezuela"])
-
-
   
   gln_legal = Gln.new
   gln_legal.gln = gln
@@ -83,20 +81,10 @@ class Gln < ActiveRecord::Base
   gln_legal.descripcion = "GLN Legal"
   gln_legal.id_estatus = estatus.id
   gln_legal.fecha_asignacion = Time.now
-  # gln_legal.id_pais = pais.id
-  # gln_legal.id_estado = empresa.id_estado
-  # gln_legal.id_municipio = empresa.id_municipio # Al Legal se le esta pasando el id_municipio
-  # gln_legal.id_ciudad = empresa.id_ciudad
-  # gln_legal.edificio = "-"
-  # gln_legal.calle = "-"
-  # gln_legal.urbanizacion = "-"
-  # gln_legal.punto_referencia = "-"
+  gln_legal.prefijo = prefijo_empresa
   gln_legal.save
 
-
   raise gln_legal.errors.to_yaml if gln_legal.errors.any?
-
-  Gln.asociar_gln_empresa(gln, prefijo_empresa)
 
  end
  
@@ -110,7 +98,7 @@ class Gln < ActiveRecord::Base
     gln_generado = "759" + prefijo_empresa[3..6] + codigo_localizacion
     digito_verificacion = Producto.calcular_digito_verificacion(gln_generado.to_i, "GTIN-13")
     gln = gln_generado + digito_verificacion.to_s
-    Gln.asociar_gln_empresa(gln, prefijo_empresa)
+    
     return gln
 
  end
@@ -118,24 +106,11 @@ class Gln < ActiveRecord::Base
 
  def self.codigo_localizacion(prefijo_empresa)
 
-  ultimo_gln = GlnEmpresa.find(:first, :conditions => ["gln_empresa.prefijo = ? and estatus.descripcion = ?", prefijo_empresa, 'Activo'] , :joins => [{:gln => :estatus}], :order => "gln.fecha_asignacion desc")
-  secuencia = ultimo_gln.gln.gln[7..11]
+  ultimo_gln = Gln.find(:first, :conditions => ["prefijo = ? and estatus.descripcion = ?", prefijo_empresa, 'Activo'] , :include => [:estatus], :order => "gln.codigo_localizacion desc")
+  secuencia = ultimo_gln.gln[7..11]
   return Producto.completar_secuencia((secuencia.to_i + 1).to_s, "GTIN-13")
  end
 
-
- def self.asociar_gln_empresa(parametro_gln, prefijo_empresa)
-
-  empresa_gln = GlnEmpresa.new
-  empresa_gln.prefijo = prefijo_empresa
-  empresa_gln.id_gln = parametro_gln
-  empresa_gln.save
-
-
-
-  raise empresa_gln.errors.to_yaml if empresa_gln.errors.any?
-
- end
 
 
  def self.retirar(id_gln)

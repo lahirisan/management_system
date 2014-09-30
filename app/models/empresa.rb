@@ -23,8 +23,7 @@ class Empresa < ActiveRecord::Base
   has_many :empresa_servicio, :foreign_key => "prefijo", :dependent => :destroy
   
   # Asi es como se debe hacer con las asociaciones con tablas de por medio, para manejar correctamente los helper de los formularios
-  has_many :gln_empresa, :foreign_key => "prefijo"
-  has_many :gln, :through => :gln_empresa, :foreign_key => "prefijo"
+  has_many :gln, :foreign_key => "prefijo"
 
   
   belongs_to :tipo_usuario_empresa, :foreign_key => "id_tipo_usuario"
