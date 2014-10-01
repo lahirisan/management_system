@@ -513,7 +513,7 @@
             -if @empresa.new_record?
               =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"})
             -else
-              =@clasificacion_empresa.try(:descripcion)
+              =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion,  { :selected => @clasificacion_empresa.id,:style => "width:600px;"})
             
         %tr
           %td

@@ -154,11 +154,6 @@ class EmpresasController < ApplicationController
     @empresa = Empresa.find(params[:id])
     @clasificacion_empresa = Clasificacion.find(:first, :conditions => ["categoria = ? and division = ? and grupo = ? and clase = ?", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase])
 
-    # @datos_contactos = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
-    # @correspondencia_codificacion = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "CODIFICACION GS1"])
-    # @correspondencia_sincronet = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "COMERCIO ELECTRONICO / SINCRONET"])
-    # @correspondencia_seminarios = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "SEMINARIOS / CURSOS"])
-    # @correspondencia_mercadeo = Correspondencia.find(:first, :conditions => ["prefijo = ? and tipo_correspondencia = ?", @empresa.prefijo, "MERCADEO"])
 
   end
 
