@@ -20,29 +20,29 @@
           %td
             Usuario
           %td
-            = f.text_field :username
+            = f.text_field :username, :class => "clave"
         %tr
           %td
             Clave
           %td
-            /=@usuario.new_record? ? f.password_field(:password) : f.password_field(:password, :value => "password")
-            =f.password_field(:password)
+           
+            =f.password_field(:password, :class => "clave")
         %tr
           %td
             Confirmación Clave
           %td
-            /=@usuario.new_record? ? f.password_field(:password_confirmation): f.password_field(:password_confirmation, :value => "password")
-            =f.password_field(:password_confirmation)
+           
+            =f.password_field(:password_confirmation,  :class => "clave")
         %tr
           %td
             Nombre
           %td
-            =f.text_field :nombre_apellido
+            =f.text_field :nombre_apellido, :class=> "clave"
         %tr
           %td
             Correo
           %td
-            = f.text_field :email
+            = f.text_field :email, :class => "email"
         %tr
           %td
             Perfil

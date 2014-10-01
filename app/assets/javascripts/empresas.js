@@ -611,7 +611,7 @@
         // Se cambian todos los input a Mayusculas expceto login
         $('input').keyup(function() {
             
-            if (($(this).attr('class') != 'login') && ($(this).attr('class') != 'email'))
+            if (($(this).attr('class') != 'login') && ($(this).attr('class') != 'email') && ($(this).attr('class') != 'clave'))
                 this.value = this.value.toUpperCase();
         });
 
