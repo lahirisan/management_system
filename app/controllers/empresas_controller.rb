@@ -190,7 +190,7 @@ class EmpresasController < ApplicationController
         
         # EL GLN OJO con esto  validar los casos GLN para empresa no validad y GLN de emrpresas eliminadas
         
-        Gln.generar_legal(@empresa.prefijo.to_s) if empresa_no_validada.nil?
+        Gln.generar_legal(@empresa.prefijo.to_s) #if empresa_no_validada.nil?
 
         Auditoria.registrar_evento(session[:user_id],"Empresa", "Crear", Time.now, "Prefijo #{@empresa.prefijo}")
         format.html { 
