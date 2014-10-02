@@ -27,7 +27,7 @@
         =hidden_field_tag "activacion", "true"
         #datos_empresas_activar
         
-        -if session[:gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Administrador' or session[:perfil] == 'Super Usuario'
+        -if session[:gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Administrador' or session[:perfil] == 'Super Usuario' or session[:gerencia] == 'Administracion'
             %button#submit.ui-state-default.ui-corner-all.activar_empresa{:type => "submit", :title => "Activar empresas seleccionadas"}
                 %span.ui-icon.ui-icon-circle-check
                 Activar Empresa
