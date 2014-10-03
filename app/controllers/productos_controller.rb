@@ -11,9 +11,10 @@ class ProductosController < ApplicationController
   def index
     
 
-    productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("productos.fecha_inscripcion") 
+    #productos = Producto.where("prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("productos.fecha_inscripcion") 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
-    @empresa = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]]) if @empresa.nil?
+    #@empresa = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]]) if @empresa.nil?
+
 
     respond_to do |format|
       format.html {
@@ -27,6 +28,7 @@ class ProductosController < ApplicationController
                       @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Productos Eliminados"
                       render :template =>'/productos/productos_eliminados.html.haml'
                     else
+
                       @navegabilidad = "#{@empresa.prefijo} > " +  @empresa.nombre_empresa + " > Productos Activos > Listado"
                       render :template =>'/productos/index.html.haml'
 
@@ -50,6 +52,7 @@ class ProductosController < ApplicationController
                       render json: (ProductosEliminadosDatatable.new(view_context))
                     else
                       if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Producto')
+                        
                         render json: ProductosDatatable.new(view_context) 
                       else
                         render json: ProductosNotEditableDatatable.new(view_context) 
@@ -138,11 +141,11 @@ class ProductosController < ApplicationController
   # POST /productos.json
   def create
 
+
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
 
     @gtin = params[:gtin]  if params[:gtin] != ''
-
-    #Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin], params[:producto][:codigo_prod])
+    
     params[:producto][:gtin] = Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin], params[:producto][:codigo_prod])
     params[:producto][:fecha_creacion] = Time.now
     estatus = Estatus.find(:first, :conditions => ["(descripcion = ?) and (alcance = ?)", "Activo", "Producto"])
@@ -152,10 +155,14 @@ class ProductosController < ApplicationController
     params[:producto][:codigo_prod] = params[:producto][:gtin][3..6] if params[:producto][:id_tipo_gtin] == '1'
     params[:producto][:codigo_prod] = params[:producto][:gtin][9..12] if params[:producto][:id_tipo_gtin] == '4' 
     params[:producto][:codigo_prod] = params[:producto][:gtin][8..12] if params[:producto][:id_tipo_gtin] == '6'
+    params[:producto][:prefijo] = params[:empresa_id]
 
 
     @producto = Producto.new(params[:producto])
 
+    raise @producto.to_yaml
+
+    
     respond_to do |format|
       if @producto.save
         Producto.asociar_producto_empresa(params[:empresa_id],params[:producto][:gtin]) # Se asocia el producto con la empresa

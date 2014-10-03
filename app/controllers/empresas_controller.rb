@@ -117,7 +117,7 @@ class EmpresasController < ApplicationController
   # GET /empresas/new.json
   def new
 
-    @ultimo = Empresa.generar_prefijo_valido
+    #@ultimo = Empresa.generar_prefijo_valido
     @empresa = Empresa.new
     
     #@empresa.datos_contacto.build   #Para que manejar los datos de la tabla empresa_contactos, mapeado por el modelo DatosContacto
@@ -165,25 +165,24 @@ class EmpresasController < ApplicationController
     #prefijo_eliminado = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa][:prefijo]])
     
     #Empresa.utilizar_prefijo_no_validado(empresa_no_validada) if empresa_no_validada
-
-    @ultimo =  Empresa.generar_prefijo_valido   # OJO con estoooooooooooooo
+    
     params[:empresa][:id_estatus] = Estatus.empresa_inactiva()
     # Se completa la hora con los segundos para que pueda ordenar por la ultima creada
     time = Time.now
     params[:empresa][:fecha_inscripcion] = Time.now
-    @empresa = Empresa.new(params[:empresa])
-
-    #params[:empresa][:datos_contacto_attributes][:"0"][:contacto] = params[:codigo_telefono1] + "-" + params[:empresa][:datos_contacto_attributes][:"0"][:contacto]
-
+    params[:empresa][:prefijo] =  Empresa.generar_prefijo_valido
+    
     params[:empresa][:id_tipo_usuario] = 3 if params[:empresa][:id_tipo_usuario] == '' # Si el usaurio no especifico el tipo de empresa
+    params[:empresa][:contacto_tlf1] =  params[:codigo_telefono1] + "-" + params[:empresa][:contacto_tlf1] if params[:codigo_telefono1] != ""
+    params[:empresa][:contacto_tlf2] = params[:codigo_telefono2] + "-" + params[:empresa][:contacto_tlf2] if params[:codigo_telefono2] != ""
+    params[:empresa][:contacto_tlf3] = params[:codigo_telefono3] + "-" + params[:empresa][:contacto_tlf3] if params[:codigo_telefono3] != ""
+    params[:empresa][:contacto_fax] = params[:codigo_telefono4] + "-" + params[:empresa][:contacto_fax] if params[:codigo_telefono4] != ""
 
+    
+    @empresa = Empresa.new(params[:empresa])
     
     respond_to do |format|
       
-      params[:empresa][:contacto_tlf1] =  params[:codigo_telefono1] + "-" + params[:empresa][:contacto_tlf1] if params[:codigo_telefono1] != ""
-      params[:empresa][:contacto_tlf2] = params[:codigo_telefono2] + "-" + params[:empresa][:contacto_tlf2] if params[:codigo_telefono2] != ""
-      params[:empresa][:contacto_tlf3] = params[:codigo_telefono3] + "-" + params[:empresa][:contacto_tlf3] if params[:codigo_telefono3] != ""
-      params[:empresa][:contacto_fax] = params[:codigo_telefono4] + "-" + params[:empresa][:contacto_fax] if params[:codigo_telefono4] != ""
       
       if @empresa.save
   
