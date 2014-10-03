@@ -44,7 +44,7 @@
               -else
                 %li=msg + '.'
               
-      -if (session[:gerencia] == 'Estandares y Consultoria' or session[:perfil] == 'Administrador' or session[:perfil] == 'Super Usuario')
+      -if (session[:gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Administrador' or session[:perfil] == 'Super Usuario')
 
         %table
           %tr
@@ -52,9 +52,13 @@
               Prefijo Asignado
             %td.prefijo
               -if @empresa.new_record?
-                /=f.text_field :prefijo , :value => "#{@ultimo}", :readonly => :true, :class => 'campo_readonly prefijo'
+               
               -else
-                =f.text_field :prefijo
+                -if params[:activacion] and session[:gerencia] == 'Estandares y Consultoría'
+                  
+                  =f.text_field :prefijo, :value => ""
+                -else  
+                  =f.text_field :prefijo
             %td
               =link_to "Asignar Prefijo", "#", :id => "boton_abrir_ventana_prefijo_manual"
       -else
