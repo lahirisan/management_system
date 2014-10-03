@@ -1,6 +1,6 @@
 class Producto < ActiveRecord::Base
   self.table_name = "producto"  # El nombre de la tabla que se esta mapeando
-  attr_accessible :codigo_prod, :descripcion, :fecha_creacion, :gpc, :gtin, :id_estatus, :id_tipo_gtin, :marca, :prefijo, :codigo_upc, :fecha_retiro, :fecha_eliminacion
+  attr_accessible :codigo_prod, :descripcion, :fecha_creacion, :gpc, :gtin, :id_estatus, :id_tipo_gtin, :marca, :prefijo, :codigo_upc, :fecha_retiro
   
   #has_one :productos_empresa,  :primary_key => "gtin",  :foreign_key => "gtin" ,  :dependent => :destroy # busca los productos en productos_empresa a traves de gtin no del campo  id
   #belongs_to :productos_empresa, :primary_key => "gtin",  :foreign_key => "gtin" # busca los productos en productos_empresa a traves de gtin no del campo  id
@@ -72,10 +72,10 @@ class Producto < ActiveRecord::Base
 
       if producto.tipo_gtin.tipo == "GTIN-14" 
         
-        productos = ProductosEmpresa.find(:all, :joins => [:producto], :conditions => ["productos_empresa.prefijo = ? and producto.codigo_prod = ? and producto.id_tipo_gtin = ?",parametros[:empresa_id], producto.codigo_prod, producto.id_tipo_gtin], :select => "producto.*")  
+        productos = Producto.find(:all, :joins => [:producto], :conditions => ["prefijo = ? and codigo_prod = ? and id_tipo_gtin = ?",parametros[:empresa_id], producto.codigo_prod, producto.id_tipo_gtin], :select => "producto.*")  
       
       else
-        productos = ProductosEmpresa.find(:all, :joins => [:producto], :conditions => ["productos_empresa.prefijo = ? and producto.codigo_prod = ?",parametros[:empresa_id], producto.codigo_prod], :select => "producto.*")
+        productos = Producto.find(:all, :conditions => ["prefijo = ? and codigo_prod = ?",parametros[:empresa_id], producto.codigo_prod])
       end
 
       productos.collect{|producto| producto_elim_detalle = ProductoElimDetalle.new; producto_elim_detalle.gtin = producto.gtin; producto_elim_detalle.fecha_eliminacion = Time.now; producto_elim_detalle.save; productos_eliminados += producto.gtin; }
@@ -94,7 +94,7 @@ class Producto < ActiveRecord::Base
     	
       #producto.destroy
 
-      productos.map{|producto_empresa| producto_empresa.producto.destroy}
+      productos.map{|producto| producto.destroy}
       
     end
     return productos
@@ -111,17 +111,15 @@ class Producto < ActiveRecord::Base
      
       ultimo_gtin_asignado = Producto.find(:first, :conditions => ["producto.id_tipo_gtin = ?", tipo_gtin], :order => "producto.codigo_prod desc")
 
-      raise ultimo_gtin_asignado.to_yaml
       
-      if ultimo_gtin_asignado.nil? 
-        secuencia = "0001"
-      else
+      
+      
+      secuencia = ultimo_gtin_asignado.gtin[3..6]  # N-1 digitos primeros digitos del último gtin8 asignado
+      secuencia = (secuencia.to_i + 1) 
 
-        secuencia = ultimo_gtin_asignado.gtin[3..6]  # N-1 digitos primeros digitos del último gtin8 asignado
-        secuencia = (secuencia.to_i + 1) 
-      end
 
       secuencia_siguiente = completar_secuencia(secuencia, tipo_gtin.tipo) # Se completa con ceros a la izquierda si la secuecnia es menor 5 digitos
+      
       
       secuencia_completa = "759" + secuencia_siguiente.to_s 
       digito_verificacion = calcular_digito_verificacion(secuencia_completa.to_i, "GTIN-8")
@@ -130,7 +128,9 @@ class Producto < ActiveRecord::Base
 
     elsif tipo_gtin.tipo == "GTIN-13"
 
+
       producto =  Producto.find(:first, :conditions => ["id_tipo_gtin = ?", tipo_gtin], :order => "codigo_prod desc")
+
 
       if (producto.nil? or producto.codigo_prod.nil? or producto.codigo_prod == "" or producto.codigo_prod == "99999") and codigo_producto.nil?
 
@@ -142,10 +142,13 @@ class Producto < ActiveRecord::Base
 
 
       gtin = completar_secuencia(secuencia, tipo_gtin.tipo)
+     
       gtin = prefijo.to_s + gtin.to_s
+
 
       digito_verificacion = calcular_digito_verificacion(gtin.to_i, "GTIN-13")
       gtin_generado = gtin.to_s + digito_verificacion.to_s
+
 
       codigo_asignado = Producto.find(:first, :conditions => [" gtin = ? ", gtin_generado])
 
@@ -163,7 +166,7 @@ class Producto < ActiveRecord::Base
       
       if tipo_gtin.base == "GTIN-13"
         
-        productos = Producto.find(:all, :conditions => ["producto.id_tipo_gtin = ? and producto.gtin like ? and productos_empresa.prefijo = ?",tipo_gtin.id, "%#{gtin[0..11]}%", prefijo], :joins => :productos_empresa)
+        productos = Producto.find(:all, :conditions => ["id_tipo_gtin = ? and gtin like ? and prefijo = ?",tipo_gtin.id, "%#{gtin[0..11]}%", prefijo])
 
         numeracion_producto = productos.nil? ? 1 : (productos.size + 1)
         gtin_valido_generado = productos.nil? ? (numeracion_producto.to_s + gtin[0..11]) : (numeracion_producto.to_s + gtin[0..11])
@@ -209,16 +212,7 @@ class Producto < ActiveRecord::Base
 
   end
 
-  def self.asociar_producto_empresa(prefijo, gtin)
-
-
-    producto_empresa = ProductosEmpresa.new
-    producto_empresa.gtin = gtin
-    producto_empresa.prefijo = prefijo
-    producto_empresa.save
-
-  end
-
+  
   def self.completar_secuencia(secuencia, tipo_gtin)
      
 
@@ -279,11 +273,11 @@ class Producto < ActiveRecord::Base
       producto.marca = spreadsheet.row(fila)[1]
       producto.id_estatus = 3
       producto.fecha_creacion = Time.now
-      producto.codigo_prod =   producto.gtin[7..11].to_i
+      producto.codigo_prod = producto.gtin[7..11]
       producto.id_tipo_gtin = tipo_gtin.to_i
+      producto.prefijo = prefijo
       producto.save
       
-      asociar_producto_empresa(prefijo,producto.gtin)
 
     end
 
@@ -314,11 +308,12 @@ class Producto < ActiveRecord::Base
         producto.marca = spreadsheet.row(fila)[2]
         producto.id_estatus = 3
         producto.fecha_creacion = Time.now
-        producto.codigo_prod = ((tipo_gtin.base == "GTIN-13") ? producto.gtin[8..12].to_i : producto.gtin[9..12].to_i)
+        producto.codigo_prod = ((tipo_gtin.base == "GTIN-13") ? producto.gtin[8..12] : producto.gtin[9..12])
         producto.id_tipo_gtin = tipo_gtin_.to_i
+        producto.prefijo = prefijo
         producto.save
         
-        asociar_producto_empresa(prefijo,producto.gtin)
+        
       
       else
 
@@ -349,7 +344,7 @@ class Producto < ActiveRecord::Base
     digito_verificacion = calcular_digito_verificacion(gtin_generado.to_i, "GTIN-14")
     gtin_generado = gtin_generado + digito_verificacion.to_s
 
-    gtin_existente = ProductosEmpresa.find(:first, :conditions => ["prefijo = ? and gtin = ?", prefijo, gtin_generado])
+    gtin_existente = Producto.find(:first, :conditions => ["prefijo = ? and gtin = ?", prefijo, gtin_generado])
     return gtin_existente
   end
 

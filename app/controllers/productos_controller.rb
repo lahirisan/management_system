@@ -9,7 +9,8 @@ class ProductosController < ApplicationController
   # GET /productos.json
   
   def index
-    
+
+
 
     #productos = Producto.where("prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("productos.fecha_inscripcion") 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
@@ -32,6 +33,7 @@ class ProductosController < ApplicationController
                       @navegabilidad = "#{@empresa.prefijo} > " +  @empresa.nombre_empresa + " > Productos Activos > Listado"
                       render :template =>'/productos/index.html.haml'
 
+
                     end
                   }
       format.json { 
@@ -51,8 +53,10 @@ class ProductosController < ApplicationController
                     elsif params[:eliminados]
                       render json: (ProductosEliminadosDatatable.new(view_context))
                     else
+
+
                       if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Producto')
-                        
+                          
                         render json: ProductosDatatable.new(view_context) 
                       else
                         render json: ProductosNotEditableDatatable.new(view_context) 
@@ -147,6 +151,7 @@ class ProductosController < ApplicationController
     @gtin = params[:gtin]  if params[:gtin] != ''
     
     params[:producto][:gtin] = Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin], params[:producto][:codigo_prod])
+
     params[:producto][:fecha_creacion] = Time.now
     estatus = Estatus.find(:first, :conditions => ["(descripcion = ?) and (alcance = ?)", "Activo", "Producto"])
     params[:producto][:id_estatus] = estatus.id
@@ -160,12 +165,11 @@ class ProductosController < ApplicationController
 
     @producto = Producto.new(params[:producto])
 
-    raise @producto.to_yaml
 
     
     respond_to do |format|
       if @producto.save
-        Producto.asociar_producto_empresa(params[:empresa_id],params[:producto][:gtin]) # Se asocia el producto con la empresa
+       
         format.html { redirect_to empresa_productos_path, notice: "EL #{@producto.tipo_gtin.tipo} #{@producto.gtin} fue creado correctamente." }        
       else
         format.html { 

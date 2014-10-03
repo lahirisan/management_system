@@ -1,16 +1,60 @@
 $(document).ready(function(){
 
         // Datatable que maneja el listado de productos
-        $("#data_table_productos").dataTable({
+        oTable = $("#data_table_productos").dataTable({
             sPaginationType: "full_numbers",
             aoColumns: [ null,  null, null,  null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }],
-            aaSorting: [[ 1, "asc" ]],
+            aaSorting: [[ 6, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_productos').data('source')
-        }).columnFilter({ aoColumns: [{ type: "text"},{ type: "text"}, {type: "text" }, {type: "text"},  null, {type: "text"}, {type: "text"}, null, null]});
+        });
+
+        oTable.columnFilter({ aoColumns: [{ type: "text"},{ type: "text"}, {type: "text" }, {type: "text"},  null, {type: "text"}, {type: "text"}, null, null]});
+
+
+
+//         jQuery.fn.dataTableExt.oApi.fnSetFilteringDelay = function ( oSettings, iDelay ) {
+//             var _that = this;
+         
+//             if ( iDelay === undefined ) {
+//                 iDelay = 250;
+//             }
+         
+//             this.each( function ( i ) {
+//                 $.fn.dataTableExt.iApiIndex = i;
+//                 var
+//                     $this = this,
+//                     oTimerId = null,
+//                     sPreviousSearch = null,
+//                     anControl = $( 'input', _that.fnSettings().aanFeatures.f );
+         
+//                     anControl.unbind( 'keyup search input' ).bind( 'keyup search input', function() {
+//                     var $$this = $this;
+         
+//                     if (sPreviousSearch === null || sPreviousSearch != anControl.val()) {
+//                         window.clearTimeout(oTimerId);
+//                         sPreviousSearch = anControl.val();
+//                         oTimerId = window.setTimeout(function() {
+//                             $.fn.dataTableExt.iApiIndex = i;
+//                             _that.fnFilter( anControl.val() );
+//                         }, iDelay);
+//                     }
+//                 });
+         
+//                 return this;
+//             } );
+//             return this;
+//         };
+
+
+// oTable.fnSetFilteringDelay()
+
+
+
+
 
         $('#data_table_productos input').attr("placeholder", "Buscar");
 
@@ -53,61 +97,7 @@ $(document).ready(function(){
                 alert("Estimado usuario, no ha seleccionado ningún producto para ELIMINAR. Por favor verifique.");
                 return false;
             }
-            // var seleccion_invalida = false;
-
-            // if ($('#eliminar_masivo_productos').is(':checked')) // elimino masivo
-            // {  
-                
-            //     if ($('#sub_estatus').val() == 1)
-            //     {
-            //         alert('Estimado usuario, no ha selecciona un SUB ESTATUS para asignar masivamente. Por favor verifique');
-            //         seleccion_invalida = true;
-            //         return false;
-
-            //     }
-
-            //     if ($('#motivo_retiro').val() == 1)
-            //     {
-            //         alert('Estimado usuario, no ha selecciona un MOTIVO RETIRO para asignar masivamente. Por favor verifique');
-            //         seleccion_invalida = true;
-            //         return false;
-
-            //     }
-
-            //     $('.eliminar_producto:checked').each(function() {
-            //         // Por cada producto seleccionado se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
-            //         $('#datos_productos_eliminar_productos').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
-            //     });   
-            // }
-            // else 
-            // {
-            //     $('.eliminar_producto:checked').each(function() {
-
-            //         // Se valida que el usuario haya seleccion un subestatus para retirar el GTIN
-            //         if ($('#'+$(this).val()+'sub_estatus').val() == 1)
-            //         {
-            //             alert('Estimado usuario, no ha seleccionado un SUB ESTATUS para el GTIN '+ $(this).val());
-            //             seleccion_invalida = true;
-            //             return false;
-            //         }
-
-            //         // Se valida que el usaurio haya selccionado un motivo de retiro pra el GTIN
-            //         if ($('#'+$(this).val()+'motivo_ret').val() == 1)
-            //         {
-            //             alert('Estimado usuario, no ha seleccionado un MOTIVO RETIRO para el GTIN '+ $(this).val());
-            //             seleccion_invalida = true;
-            //             return false;
-            //         }
-
-
-            //         // Por cada producto selecciondo se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
-            //         $('#datos_productos_eliminar_productos').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
-            //     });
-            // }
-
-           
-            // if (seleccion_invalida)
-            //     return false;
+            
 
             if (!(confirm('Esta seguro ELIMINAR los Productos seleccionados ?')))
                 return false;
@@ -321,6 +311,8 @@ $(document).ready(function(){
         
         $(".exportar_productos").click(function() {
             
+            //alert($('tfoot tr th:nth-child(7) span input').datepicker({changeYear: true}));
+            //return false;
             $('.parametros').html(
                 '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
                 '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
@@ -397,6 +389,10 @@ $(document).ready(function(){
 
           
         });
+
+
+
+        
 
         
 
