@@ -52,9 +52,9 @@
               Prefijo Asignado
             %td.prefijo
               -if @empresa.new_record?
-                =f.text_field :prefijo , :value => "#{@ultimo}", :readonly => :true, :class => 'campo_readonly prefijo'
+                /=f.text_field :prefijo , :value => "#{@ultimo}", :readonly => :true, :class => 'campo_readonly prefijo'
               -else
-                =f.text_field :prefijo, :readonly => :true, :class => 'campo_readonly prefijo'
+                =f.text_field :prefijo
             %td
               =link_to "Asignar Prefijo", "#", :id => "boton_abrir_ventana_prefijo_manual"
       -else
@@ -269,7 +269,7 @@
             %td
               ESTADO
             %td
-              =f.collection_select :id_estado_ean, Estado.find(:all, :order => "nombre ASC"), :id, :nombre
+              =f.collection_select :id_estado_ean, Estado.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
 
               
           %tr
@@ -277,7 +277,7 @@
               CIUDAD
             %td
               
-              =f.collection_select :id_ciudad_ean, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre
+              =f.collection_select :id_ciudad_ean, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
               
               
           %tr
@@ -285,7 +285,7 @@
               MUNICIPIO
             %td
               
-              =f.collection_select :id_municipio_ean, Municipio.find(:all, :order => "nombre ASC"), :id, :nombre
+              =f.collection_select :id_municipio_ean, Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
               
           %tr
             %td
@@ -373,19 +373,19 @@
               ESTADO
             %td
               
-              =f.collection_select :id_estado_edi, Estado.find(:all, :order => "nombre ASC"), :id, :nombre
+              =f.collection_select :id_estado_edi, Estado.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
                 
           %tr
             %td
               CIUDAD
             %td
-              = f.collection_select :id_ciudad_edi, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre
+              = f.collection_select :id_ciudad_edi, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
               
           %tr
             %td
               MUNICIPIO
             %td
-              = f.collection_select :id_municipio_edi, Municipio.find(:all, :order => "nombre ASC"), :id, :nombre
+              = f.collection_select :id_municipio_edi, Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
               
           %tr
             %td

@@ -1,8 +1,11 @@
 class Producto < ActiveRecord::Base
   self.table_name = "producto"  # El nombre de la tabla que se esta mapeando
-  attr_accessible :codigo_prod, :descripcion, :fecha_creacion, :gpc, :gtin, :id_estatus, :id_tipo_gtin, :marca
-  has_one :productos_empresa,  :primary_key => "gtin",  :foreign_key => "gtin" ,  :dependent => :destroy # busca los productos en productos_empresa a traves de gtin no del campo  id
+  attr_accessible :codigo_prod, :descripcion, :fecha_creacion, :gpc, :gtin, :id_estatus, :id_tipo_gtin, :marca, :prefijo, :codigo_upc, :fecha_retiro, :fecha_eliminacion
+  
+  #has_one :productos_empresa,  :primary_key => "gtin",  :foreign_key => "gtin" ,  :dependent => :destroy # busca los productos en productos_empresa a traves de gtin no del campo  id
   #belongs_to :productos_empresa, :primary_key => "gtin",  :foreign_key => "gtin" # busca los productos en productos_empresa a traves de gtin no del campo  id
+  
+  belongs_to :empresa , :foreign_key => "prefijo"
   belongs_to :estatus, :foreign_key => "id_estatus"
   belongs_to :tipo_gtin, :foreign_key => "id_tipo_gtin"
   #has_one    :productos_retirados, :foreign_key => "gtin", :dependent => :destroy 
@@ -101,38 +104,60 @@ class Producto < ActiveRecord::Base
 
   def self.crear_gtin(tipo_gtin, prefijo, gtin, codigo_producto) # El gtin solo se pasa en el caso de la creacion de GTIN tipo 14
     
+    
     tipo_gtin = TipoGtin.find(tipo_gtin)
 
-    if tipo_gtin.tipo == "GTIN-8"             
+    if tipo_gtin.tipo == "GTIN-8"            
      
-      ultimo_gtin_asignado = Producto.find(:first, :conditions => ["producto.id_tipo_gtin = ?", tipo_gtin], :order => "producto.fecha_creacion desc")
-      
-      secuencia = ultimo_gtin_asignado.gtin[3..6]  # N-1 digitos primeros digitos del último gtin8 asignado
+      ultimo_gtin_asignado = Producto.find(:first, :conditions => ["producto.id_tipo_gtin = ?", tipo_gtin], :order => "producto.codigo_prod desc")
 
-      secuencia = (secuencia.to_i + 1)
+      raise ultimo_gtin_asignado.to_yaml
+      
+      if ultimo_gtin_asignado.nil? 
+        secuencia = "0001"
+      else
+
+        secuencia = ultimo_gtin_asignado.gtin[3..6]  # N-1 digitos primeros digitos del último gtin8 asignado
+        secuencia = (secuencia.to_i + 1) 
+      end
+
       secuencia_siguiente = completar_secuencia(secuencia, tipo_gtin.tipo) # Se completa con ceros a la izquierda si la secuecnia es menor 5 digitos
+      
       secuencia_completa = "759" + secuencia_siguiente.to_s 
       digito_verificacion = calcular_digito_verificacion(secuencia_completa.to_i, "GTIN-8")
       gtin_generado =  secuencia_completa.to_s + digito_verificacion.to_s # 759 + secuencia + verificacion
-    
+      
+
     elsif tipo_gtin.tipo == "GTIN-13"
 
-      secuencia =  codigo_producto.nil? ? "00001" : codigo_producto
+      producto =  Producto.find(:first, :conditions => ["id_tipo_gtin = ?", tipo_gtin], :order => "codigo_prod desc")
+
+      if (producto.nil? or producto.codigo_prod.nil? or producto.codigo_prod == "" or producto.codigo_prod == "99999") and codigo_producto.nil?
+
+        secuencia = "00001" 
+      else
+
+        secuencia = codigo_producto
+      end
+
+
       gtin = completar_secuencia(secuencia, tipo_gtin.tipo)
       gtin = prefijo.to_s + gtin.to_s
+
       digito_verificacion = calcular_digito_verificacion(gtin.to_i, "GTIN-13")
       gtin_generado = gtin.to_s + digito_verificacion.to_s
-      
-      codigo_asignado = ProductosEmpresa.find(:first, :conditions => [" gtin = ? and prefijo = ?", gtin_generado, prefijo])
 
-      while (codigo_asignado and codigo_producto.nil?) do
+      codigo_asignado = Producto.find(:first, :conditions => [" gtin = ? ", gtin_generado])
+
+      while (codigo_asignado and codigo_producto.nil?) do 
 
         gtin = gtin.to_i + 1
         digito_verificacion = calcular_digito_verificacion(gtin.to_i, "GTIN-13")
         gtin_generado = gtin.to_s + digito_verificacion.to_s
-        codigo_asignado = ProductosEmpresa.find(:first, :conditions => [" gtin = ? and prefijo = ?", gtin_generado, prefijo])
+        codigo_asignado = Producto.find(:first, :conditions => [" gtin = ? ", gtin_generado])
        
       end
+
 
     elsif tipo_gtin.tipo == "GTIN-14"
       

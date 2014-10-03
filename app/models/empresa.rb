@@ -5,7 +5,7 @@ class Empresa < ActiveRecord::Base
   # La Asociacion tienen  que ir primero si se utiliza accepts_nested_attributes
 
   #has_many :correspondencia, :foreign_key => "prefijo", :dependent => :destroy # elimina en cascada
-  has_many :datos_contacto, :foreign_key => "prefijo", :dependent => :destroy # elimina en cascada las correspondencia de la empresa si se elimina la empresa de manera de evitar data inconsistente
+  #has_many :datos_contacto, :foreign_key => "prefijo", :dependent => :destroy # elimina en cascada las correspondencia de la empresa si se elimina la empresa de manera de evitar data inconsistente
 
   #accepts_nested_attributes_for :correspondencia, :allow_destroy => true # Maneja el modelo correspondencia en el formulario de empresa  
   #accepts_nested_attributes_for :datos_contacto, :allow_destroy => true # Maneja el modelo correspondencia en el formulario de empresa  
@@ -18,8 +18,8 @@ class Empresa < ActiveRecord::Base
   belongs_to :sub_estatus, :foreign_key => "id_subestatus"
   belongs_to :tipo_usuario, :foreign_key => "id_tipo_usuario"
   has_one  :empresas_retiradas,  :foreign_key => "prefijo" , :dependent => :destroy   # Define una asociacion 1 a 1 con empresas_retiradas, eliminacion en cascada
-  has_many :productos_empresa, :foreign_key => "prefijo" # Define una asociaicion 1 a N con productos_empresa
-  has_many :producto, :through => :productos_empresa, :foreign_key => "prefijo", :dependent => :destroy# Define una asociaicion 1 a N con productos_empresa
+  #has_many :productos_empresa, :foreign_key => "prefijo" # Define una asociaicion 1 a N con productos_empresa
+  has_many :producto, :foreign_key => "prefijo", :dependent => :destroy# Define una asociaicion 1 a N con productos_empresa
   has_many :empresa_servicio, :foreign_key => "prefijo", :dependent => :destroy
   
   # Asi es como se debe hacer con las asociaciones con tablas de por medio, para manejar correctamente los helper de los formularios
