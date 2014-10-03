@@ -67,6 +67,7 @@ private
   def fetch_productos
     
     productos = Producto.where("prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes(:estatus, :tipo_gtin).order("#{sort_column} #{sort_direction}") 
+    raise productos.to_yaml
     
     productos = productos.page(page).per_page(per_page)
     
