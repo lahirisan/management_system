@@ -103,14 +103,19 @@ class EmpresasController < ApplicationController
   def show
 
     (params[:eliminados]) ? (@empresa = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:id]])) : (@empresa = Empresa.find(params[:id]))
-    @datos_contactos = (params[:eliminados]) ? @empresa.empresa_contacto_eliminada : @empresa.datos_contacto
-    #@correspondencia = (params[:eliminados]) ? @empresa.correspondencia_eliminada : @empresa.correspondencia
-
     
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @empresa }
+
+      format.pdf {
+          
+          prawnto :prawn => { :top_margin => 10, :page_layout => :portrait}
+          @gln_legal = Gln.find(:first,  :include => [:tipo_gln], :conditions =>["prefijo = ? and id_tipo_gln= ? ", @empresa.prefijo, 1])
+          
+          render "/empresas/carta_afiliacion.pdf.prawn"
+      }
+
     end
   end
 
@@ -121,9 +126,6 @@ class EmpresasController < ApplicationController
     
     @empresa = Empresa.new
     
-    #@empresa.datos_contacto.build   #Para que manejar los datos de la tabla empresa_contactos, mapeado por el modelo DatosContacto
-    
-
     respond_to do |format|
       
       format.html {
