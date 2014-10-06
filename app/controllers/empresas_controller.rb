@@ -118,7 +118,7 @@ class EmpresasController < ApplicationController
   # GET /empresas/new.json
   def new
 
-    #@ultimo = Empresa.generar_prefijo_valido
+    
     @empresa = Empresa.new
     
     #@empresa.datos_contacto.build   #Para que manejar los datos de la tabla empresa_contactos, mapeado por el modelo DatosContacto

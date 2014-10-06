@@ -259,24 +259,29 @@ class Producto < ActiveRecord::Base
 
     spreadsheet = open_spreadsheet(file)
 
-    (2..spreadsheet.last_row).each do |fila|  # EL indice 1 es para indicar los datos de cabecera MARCA, DESCRIPCION, ETC
+    (1..spreadsheet.last_row).each do |fila|  # EL indice 1 es para indicar los datos de cabecera MARCA, DESCRIPCION, ETC
        
-      if spreadsheet.row(fila)[0].nil?
+      if spreadsheet.column(1)[0].nil?
         gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil, nil)
-      else
+
+        else
         gtin = Producto.crear_gtin(tipo_gtin, prefijo, nil, spreadsheet.row(fila)[0].to_i)
+        
       end
 
       producto = new
       producto.gtin = gtin.to_s
-      producto.descripcion = spreadsheet.row(fila)[2]
-      producto.marca = spreadsheet.row(fila)[1]
+      producto.descripcion = spreadsheet.column(3)[fila]
+      producto.marca = spreadsheet.column(2)[fila]
       producto.id_estatus = 3
       producto.fecha_creacion = Time.now
+
       producto.codigo_prod = producto.gtin[7..11]
       producto.id_tipo_gtin = tipo_gtin.to_i
       producto.prefijo = prefijo
       producto.save
+
+      
       
 
     end

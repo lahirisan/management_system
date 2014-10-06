@@ -46,13 +46,15 @@
               
       -if (session[:gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Administrador' or session[:perfil] == 'Super Usuario')
 
+        
         %table
           %tr
             %td.prefijo
               Prefijo Asignado
             %td.prefijo
               -if @empresa.new_record?
-               
+                
+                =f.hidden_field :prefijo , :value => "#{@ultimo}"
               -else
                 -if params[:activacion] and session[:gerencia] == 'Estandares y Consultoría'
                   
