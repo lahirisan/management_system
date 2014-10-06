@@ -314,11 +314,11 @@ $(document).ready(function(){
             //alert($('tfoot tr th:nth-child(7) span input').datepicker({changeYear: true}));
             //return false;
             $('.parametros').html(
-                '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
-                '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
-                '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
-                '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
-                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'
+                '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(1) span input').val()+'">'+
+                '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
+                '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'
             );
         });
 

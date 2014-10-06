@@ -1,21 +1,15 @@
 if params[:tipo_gtin] != ''
   @productos = @productos.where("tipo_gtin.tipo like :search", search: "%#{params[:tipo_gtin]}%" )
 end
-
 if params[:gtin] != ''
   @productos = @productos.where("producto.gtin like :search", search: "%#{params[:gtin]}%" )
 end
-
 if params[:descripcion] != ''
   @productos = @productos.where("producto.descripcion like :search", search: "%#{params[:descripcion]}%" )
 end
-
 if params[:marca] != ''
   @productos = @productos.where("producto.marca like :search", search: "%#{params[:marca]}%" )
 end
-
-
-
 if params[:codigo_producto] != ''
   @productos = @productos.where("producto.codigo_prod like :search", search: "%#{params[:codigo_producto]}%" )
 end
