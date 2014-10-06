@@ -222,6 +222,9 @@ class EmpresasController < ApplicationController
       estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Activa', 'Empresa'])
       params[:empresa][:id_estatus] = estatus.id  # Empresa activa
 
+        # Ojo probar esto
+        Gln.where(:prefijo => @empresa.prefijo).update_all("prefijo = #{params[:empresa][:prefijo]}") 
+
        Empresa.where(:prefijo => @empresa.prefijo).update_all("prefijo = #{params[:empresa][:prefijo]}")
 
        

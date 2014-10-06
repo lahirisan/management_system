@@ -18,6 +18,10 @@ if params[:codigo_producto] != ''
   @productos = @productos.where("producto.codigo_prod like :search", search: "%#{params[:codigo_producto]}%" )
 end
 
+if params[:fecha_creacion] != ''
+	@productos = @productos.where("CONVERT(DATETIME, FLOOR(CONVERT(FLOAT, producto.fecha_creacion))) = '#{params[:fecha_creacion]}'")
+end
+
 xlsx_package = Axlsx::Package.new 
 wb = xlsx_package.workbook
 

@@ -29,7 +29,7 @@ private
       if session[:gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Administrador' or session[:perfil] == 'Super Usuario'
         [ 
         check_box_tag("activar_empresas[]", "#{empresa.id}", false, :class => "activar_empresa"),
-        empresa.prefijo,
+        "",
         empresa.nombre_empresa,
         fecha,
         empresa.ciudad.nombre,
