@@ -220,6 +220,8 @@ class EmpresasController < ApplicationController
     if session[:gerencia] == 'Estandares y Consultoría' 
       
       estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Activa', 'Empresa'])
+      estatus_administrativo = SubEstatus.find(:first, :conditions => ["descripcion = ?", 'SOLVENTE'])
+      params[:empresa][:id_subestatus] = estatus_administrativo.id
       params[:empresa][:id_estatus] = estatus.id  # Empresa activa
       params[:empresa][:fecha_activacion] = Time.now
 

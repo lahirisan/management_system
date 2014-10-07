@@ -29,6 +29,8 @@ end
 text ""
 move_down 10
 text "Fecha del Reporte:      #{Time.now.strftime("%d/%m/%Y")}", :size => 9, :align => :right
+
+
 move_down 30
 text ""
 text "#{@empresa.nombre_empresa.strip}", :size => 12, :align => :center
@@ -38,6 +40,8 @@ image "#{Rails.root}/app/assets/images/Gs1Vzla.png", :at => [0, 750], :height =>
 #number_pages "Pagina <page> de <total>", :size => 9, :at => [480, 720]
 move_down 10
  table(productos,  :row_colors => ["FFFFFF", "DDDDDD"], :cell_style => { size: 8, :align => :center }, :column_widths => [150,190,100,100], :header => true, :position => :center)
+	move_down 10
+ text "Total productos: #{@productos.size}", :size => 9, :align => :left
 
 
 #repeat :all do
