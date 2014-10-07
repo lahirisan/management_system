@@ -26,12 +26,16 @@ productos = [["Marca", "Descripción", "Código Producto", "Tipo Código"]]
   productos << [ producto.marca, producto.descripcion, producto.gtin, producto.try(:tipo_gtin).try(:tipo)]
 end
 
+text ""
 text "Fecha del Reporte:      #{Time.now.strftime("%d/%m/%Y")}", :size => 9, :align => :right
+text ""
+text ""
+text ""
 text ""
 text ""
 text "#{@empresa.nombre_empresa.strip}", :size => 12, :align => :center
 
-image "#{Rails.root}/app/assets/images/Gs1Vzla.png", :at => [0, 730], :height => 50
+image "#{Rails.root}/app/assets/images/Gs1Vzla.png", :at => [0, 730], :height => 40
 
 #draw_text "Listado Productos Activos", :size => 8, :at => [0,720]
 
