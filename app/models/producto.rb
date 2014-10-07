@@ -128,27 +128,47 @@ class Producto < ActiveRecord::Base
 
     elsif tipo_gtin.tipo == "GTIN-13"
 
+      
 
-      producto =  Producto.find(:first, :conditions => ["id_tipo_gtin = ?", tipo_gtin], :order => "codigo_prod desc")
+      
+      if (codigo_producto.nil?) #No estan pasando el codigo de producto
 
+        producto =  Producto.find(:first, :conditions => ["id_tipo_gtin = ? and prefijo = ?", tipo_gtin, prefijo], :order => "codigo_prod desc")
 
-      if (producto.nil? or producto.codigo_prod.nil? or producto.codigo_prod == "" or producto.codigo_prod == "99999") and codigo_producto.nil?
+        if (producto) 
 
-        secuencia = "00001" 
+          if producto.codigo_prod == '99999'
+            
+            secuencia = "00001"
+          
+          else
+            secuencia = producto.codigo_prod
+          end
+
+        else
+
+          secuencia = "00001"
+
+        end
+
+        
       else
+          
 
-        secuencia = codigo_producto
+          secuencia = codigo_producto
+         
+        
       end
 
+      
 
       gtin = completar_secuencia(secuencia, tipo_gtin.tipo)
-     
       gtin = prefijo.to_s + gtin.to_s
+
 
 
       digito_verificacion = calcular_digito_verificacion(gtin.to_i, "GTIN-13")
       gtin_generado = gtin.to_s + digito_verificacion.to_s
-
 
       codigo_asignado = Producto.find(:first, :conditions => [" gtin = ? ", gtin_generado])
 
@@ -259,20 +279,24 @@ class Producto < ActiveRecord::Base
 
     spreadsheet = open_spreadsheet(file)
 
-    (1..spreadsheet.last_row).each do |fila|  # EL indice 1 es para indicar los datos de cabecera MARCA, DESCRIPCION, ETC
+    
+    (2..spreadsheet.last_row).each do |fila|  # EL indice 1 es para indicar los datos de cabecera MARCA, DESCRIPCION, ETC
        
-      if spreadsheet.column(1)[0].nil?
+      
+      if spreadsheet.empty?(fila,1) # Se verifica SI ESTA EL CODIGO DE PRODUCTO
+        
         gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil, nil)
 
-        else
+      else
+
         gtin = Producto.crear_gtin(tipo_gtin, prefijo, nil, spreadsheet.row(fila)[0].to_i)
         
       end
-
+      
       producto = new
       producto.gtin = gtin.to_s
-      producto.descripcion = spreadsheet.column(3)[fila]
-      producto.marca = spreadsheet.column(2)[fila]
+      producto.descripcion = spreadsheet.row(fila)[2]  #spreadsheet.empty?(fila,1) ? spreadsheet.row(fila)[1] :  spreadsheet.row(fila)[2]
+      producto.marca =  spreadsheet.row(fila)[1]   #spreadsheet.empty?(fila,1) ? spreadsheet.row(fila)[0] :  spreadsheet.row(fila)[1] 
       producto.id_estatus = 3
       producto.fecha_creacion = Time.now
 
@@ -281,8 +305,6 @@ class Producto < ActiveRecord::Base
       producto.prefijo = prefijo
       producto.save
 
-      
-      
 
     end
 
