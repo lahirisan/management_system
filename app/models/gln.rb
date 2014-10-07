@@ -77,7 +77,7 @@ class Gln < ActiveRecord::Base
   gln_legal = Gln.new
   gln_legal.gln = gln
   gln_legal.id_tipo_gln = tipo_gln.id
-  gln_legal.codigo_localizacion = "90000"
+  gln_legal.codigo_localizacion = "90001"
   gln_legal.descripcion = "GLN Legal"
   gln_legal.id_estatus = estatus.id
   gln_legal.fecha_asignacion = Time.now
