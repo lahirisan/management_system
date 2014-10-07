@@ -19,7 +19,7 @@ if params[:fecha_creacion] != ''
 end
 
 productos = Array.new
-productos = [["Marca", "Descripción", "Código Producto", "Tipo Código"]]
+productos = [["MARCA", "DESCRIPCION", "CODIGO", "TIPO CODIGO"]]
 
 @productos.each do |producto| 
   
@@ -27,20 +27,40 @@ productos = [["Marca", "Descripción", "Código Producto", "Tipo Código"]]
 end
 
 text ""
+move_down 10
 text "Fecha del Reporte:      #{Time.now.strftime("%d/%m/%Y")}", :size => 9, :align => :right
-text ""
-text ""
-text ""
-text ""
+move_down 30
 text ""
 text "#{@empresa.nombre_empresa.strip}", :size => 12, :align => :center
 
 image "#{Rails.root}/app/assets/images/Gs1Vzla.png", :at => [0, 750], :height => 40
 
-#draw_text "Listado Productos Activos", :size => 8, :at => [0,720]
+#number_pages "Pagina <page> de <total>", :size => 9, :at => [480, 720]
+move_down 10
+ table(productos,  :row_colors => ["FFFFFF", "DDDDDD"], :cell_style => { size: 8, :align => :center }, :column_widths => [150,190,100,100], :header => true, :position => :center)
 
-#number_pages "(<page>/<total>)", :size => 9, :at => [700, 550]
-text ""
-text ""
-#table(productos,  :row_colors => ["FFFFFF", "DDDDDD"], :cell_style => { size: 8 }, :column_widths => [150,150,100,100])
 
+#repeat :all do
+    # header
+
+    #bounding_box [bounds.left, bounds.top], :width  => bounds.width do
+      #  font "Helvetica"
+      #  text "Here's My Fancy Header", :align => :center, :size => 25
+       # stroke_horizontal_rule
+      
+        
+    #end
+    
+
+    # footer
+    #bounding_box [bounds.left, bounds.bottom + 25], :width  => bounds.width do
+     #   font "Helvetica"
+        #stroke_horizontal_rule
+      #  move_down(5)
+      #  text "And here's a sexy footer", :size => 16
+    #end
+
+
+ # end
+
+  
