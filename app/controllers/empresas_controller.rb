@@ -217,10 +217,11 @@ class EmpresasController < ApplicationController
     @empresa = Empresa.find(params[:id])
 
     
-    if session[:gerencia] == 'Estandares y Consultoría'
+    if session[:gerencia] == 'Estandares y Consultoría' 
       
       estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Activa', 'Empresa'])
       params[:empresa][:id_estatus] = estatus.id  # Empresa activa
+      params[:empresa][:fecha_activacion] = Time.now
 
         # Ojo probar esto
         Gln.where(:prefijo => @empresa.prefijo).update_all("prefijo = #{params[:empresa][:prefijo]}") 
