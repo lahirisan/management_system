@@ -19,11 +19,11 @@ if params[:fecha_creacion] != ''
 end
 
 productos = Array.new
-productos = [["Tipo GTIN", "GTIN", "Descripción", "Marca",  "Estatus", "Código Producto", "Fecha Creación"]]
+productos = [["Marca", "Descripción", "Código Producto", "Tipo Código"]]
 
 @productos.each do |producto| 
-  fecha =   producto.fecha_creacion.nil? ? "" : producto.fecha_creacion.strftime("%Y-%m-%d")
-  productos << [ producto.try(:tipo_gtin).try(:tipo), producto.gtin,producto.descripcion, producto.marca, producto.try(:estatus).try(:descripcion), producto.codigo_prod, fecha]
+  
+  productos << [ producto.marca, producto.descripcion, producto.gtin, producto.try(:tipo_gtin).try(:tipo)]
 end
 
 text "Fecha del Reporte:      #{Time.now.strftime("%d/%m/%Y")}", :size => 9, :align => :right
@@ -34,5 +34,5 @@ text "#{@empresa.nombre_empresa.strip}", :size => 12, :align => :center
 #draw_text "Listado Productos Activos", :size => 8, :at => [0,720]
 
 #number_pages "(<page>/<total>)", :size => 9, :at => [700, 550]
-table(productos,  :row_colors => ["FFFFFF", "DDDDDD"], :cell_style => { size: 8 }, :column_widths => [50,80,80,70,45,40])
+table(productos,  :row_colors => ["FFFFFF", "DDDDDD"], :cell_style => { size: 8 }, :column_widths => [80,80,50,50], :align => :center)
 
