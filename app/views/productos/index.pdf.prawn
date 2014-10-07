@@ -34,5 +34,5 @@ text "#{@empresa.nombre_empresa.strip}", :size => 12, :align => :center
 #draw_text "Listado Productos Activos", :size => 8, :at => [0,720]
 
 #number_pages "(<page>/<total>)", :size => 9, :at => [700, 550]
-table(productos,  :row_colors => ["FFFFFF", "DDDDDD"], :cell_style => { size: 8 }, :column_widths => [80,80,50,50])
+table(productos,  :row_colors => ["FFFFFF", "DDDDDD"], :cell_style => { size: 8 }, :column_widths => [150,150,100,100])
 
