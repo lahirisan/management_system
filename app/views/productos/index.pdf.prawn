@@ -31,6 +31,8 @@ text ""
 text ""
 text "#{@empresa.nombre_empresa.strip}", :size => 12, :align => :center
 
+image "#{Rails.root}/app/assets/images/Gs1Vzla.png", :at => [0, 730]
+
 #draw_text "Listado Productos Activos", :size => 8, :at => [0,720]
 
 #number_pages "(<page>/<total>)", :size => 9, :at => [700, 550]
