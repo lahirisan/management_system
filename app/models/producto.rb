@@ -295,12 +295,11 @@ class Producto < ActiveRecord::Base
       
 
 
-      raise spreadsheet.empty?(fila,1).to_yaml
 
       producto = new
       producto.gtin = gtin.to_s
-      producto.descripcion = spreadsheet.row(fila)[2]  #spreadsheet.empty?(fila,1) ? spreadsheet.row(fila)[1] :  spreadsheet.row(fila)[2]
-      producto.marca =  spreadsheet.row(fila)[1]   #spreadsheet.empty?(fila,1) ? spreadsheet.row(fila)[0] :  spreadsheet.row(fila)[1] 
+      producto.descripcion =   spreadsheet.empty?(fila,1) ? spreadsheet.row(fila)[1] :  spreadsheet.row(fila)[2]
+      producto.marca =   spreadsheet.empty?(fila,1) ? spreadsheet.row(fila)[0] :  spreadsheet.row(fila)[1] 
       producto.id_estatus = 3
       producto.fecha_creacion = Time.now
 
