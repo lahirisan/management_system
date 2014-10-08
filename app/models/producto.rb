@@ -172,7 +172,7 @@ class Producto < ActiveRecord::Base
 
       elsif prefijo.to_s.size == 9 and prefijo.to_s[3..5] == "400" # GTIN artesanal
         
-        gtin = prefijo.to_s = secuencia
+        gtin = prefijo.to_s + secuencia
       
       end
 
@@ -318,7 +318,7 @@ class Producto < ActiveRecord::Base
         producto.codigo_prod = producto.gtin[9..11]
 
       end
-      
+
       producto.id_tipo_gtin = tipo_gtin.to_i
       producto.prefijo = prefijo
       producto.save
