@@ -293,6 +293,10 @@ class Producto < ActiveRecord::Base
         
       end
       
+
+
+      raise spreadsheet.row(fila).to_yaml
+
       producto = new
       producto.gtin = gtin.to_s
       producto.descripcion = spreadsheet.row(fila)[2]  #spreadsheet.empty?(fila,1) ? spreadsheet.row(fila)[1] :  spreadsheet.row(fila)[2]
@@ -306,7 +310,6 @@ class Producto < ActiveRecord::Base
       producto.save
 
 
-      raise producto.errors.to_yaml
 
 
     end
