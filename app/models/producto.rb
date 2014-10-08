@@ -295,7 +295,7 @@ class Producto < ActiveRecord::Base
       
 
 
-      raise spreadsheet.row(fila).to_yaml
+      raise spreadsheet.empty?(fila,1).to_yaml
 
       producto = new
       producto.gtin = gtin.to_s
