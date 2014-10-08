@@ -306,6 +306,9 @@ class Producto < ActiveRecord::Base
       producto.save
 
 
+      raise producto.errors.to_yaml
+
+
     end
 
 
