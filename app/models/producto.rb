@@ -137,9 +137,13 @@ class Producto < ActiveRecord::Base
 
         if (producto) 
 
-          if producto.codigo_prod == '99999'
+          if producto.codigo_prod == '99999' and producto.gtin.size == 7
             
             secuencia = "00001"
+
+          elsif producto.codigo_prod == '999' and producto.gtin.size == 9
+            
+            secuencia = "001"  # GTIN ARtesanal
           
           else
             secuencia = producto.codigo_prod
@@ -147,30 +151,35 @@ class Producto < ActiveRecord::Base
 
         else
 
-          secuencia = "00001"
+          if prefijo.to_s.size == 7
+            secuencia = "00001"
+          elsif prefijo.to_s.size == 9 and prefijo.to_s[3..5] == "400" # GTIN artesanal
+            secuencia = "001"
+          end
 
         end
-
         
-      else
-          
-
-          secuencia = codigo_producto
-         
+      else # ASignacion manual del codigo de producto
         
+        secuencia = codigo_producto
       end
-
       
+      if prefijo.to_s.size == 7
 
-      gtin = completar_secuencia(secuencia, tipo_gtin.tipo)
-      gtin = prefijo.to_s + gtin.to_s
+        gtin = completar_secuencia(secuencia, tipo_gtin.tipo) 
 
+        gtin = prefijo.to_s + gtin.to_s
 
+      elsif prefijo.to_s.size == 9 and prefijo.to_s[3..5] == "400" # GTIN artesanal
+        
+        gtin = prefijo.to_s = secuencia
+      
+      end
 
       digito_verificacion = calcular_digito_verificacion(gtin.to_i, "GTIN-13")
       gtin_generado = gtin.to_s + digito_verificacion.to_s
 
-      codigo_asignado = Producto.find(:first, :conditions => [" gtin = ? ", gtin_generado])
+      codigo_asignado = Producto.find(:first, :conditions => ["gtin = ? ", gtin_generado])
 
       while (codigo_asignado and codigo_producto.nil?) do 
 
@@ -292,9 +301,6 @@ class Producto < ActiveRecord::Base
         gtin = Producto.crear_gtin(tipo_gtin, prefijo, nil, spreadsheet.row(fila)[0].to_i)
         
       end
-      
-
-
 
       producto = new
       producto.gtin = gtin.to_s
@@ -303,12 +309,19 @@ class Producto < ActiveRecord::Base
       producto.id_estatus = 3
       producto.fecha_creacion = Time.now
 
-      producto.codigo_prod = producto.gtin[7..11]
+      if prefijo.to_s.size == 7 
+
+        producto.codigo_prod = producto.gtin[7..11]
+
+      elsif prefijo.to_s.size == 9 and prefijo.to_s[3..5] == "400" # GTIN artesanal
+
+        producto.codigo_prod = producto.gtin[9..11]
+
+      end
+      
       producto.id_tipo_gtin = tipo_gtin.to_i
       producto.prefijo = prefijo
       producto.save
-
-
 
 
     end
