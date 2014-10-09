@@ -286,7 +286,8 @@ $(document).ready(function(){
                return false;
            }
             
-            if (($("input[type='radio'][name='tipo_creacion']:checked").val() == 'manual') && ($('#producto_id_tipo_gtin').val() == 3))
+
+            if (($("input[type='radio'][name='tipo_creacion']:checked").val() == 'manual') && ($('#producto_id_tipo_gtin').val() == 3) &&  (window.location.pathname.split('/')[2].length == 7))
             {   
                 var reg = /^[0-9]{5}$/;
                 var cod_producto = $('#producto_codigo_prod').val();
@@ -304,6 +305,25 @@ $(document).ready(function(){
 
             }
 
+            
+            if (($("input[type='radio'][name='tipo_creacion']:checked").val() == 'manual') && ($('#producto_id_tipo_gtin').val() == 3) &&  (window.location.pathname.split('/')[2].length == 9) && (window.location.pathname.split('/')[2].substring(3, 6) == '400'))
+            {   
+                var reg = /^[0-9]{3}$/;
+                var cod_producto = $('#producto_codigo_prod').val();
+                if ( !reg.test(cod_producto) )
+                {
+                    alert('Estimado usuario, el código producto debe ser un valor de 3 dígitos numéricos. Por favor verifique.');
+                    return false;
+                }
+                
+                if (cod_producto == '000')
+                {
+                    alert('Estimado usuario, el código de producto debe ser un valor de 3 dígitos numéricos distinto de 00000. Por favor verifique.');
+                    return false;
+                }
+
+            }
+    
 
                     
         });
