@@ -191,18 +191,35 @@ class Producto < ActiveRecord::Base
 
 
     elsif tipo_gtin.tipo == "GTIN-14"
-
-
       
       
       if tipo_gtin.base == "GTIN-13"
         
-        productos = Producto.find(:all, :conditions => ["id_tipo_gtin = ? and gtin like ? and prefijo = ?",tipo_gtin.id, "%#{gtin[0..11]}%", prefijo])
+        #productos = Producto.find(:all, :conditions => ["id_tipo_gtin = ? and gtin like ? and prefijo = ?",tipo_gtin.id, "%#{gtin[0..11]}%", prefijo])
 
-        numeracion_producto = productos.nil? ? 1 : (productos.size + 1)
-        gtin_valido_generado = productos.nil? ? (numeracion_producto.to_s + gtin[0..11]) : (numeracion_producto.to_s + gtin[0..11])
+        indicador = 1
+
+        #numeracion_producto = productos.nil? ? 1 : (productos.size + 1)
+
+        gtin_valido_generado = indicador.to_s + gtin[0..11]
+
+        #raise numeracion_producto.to_yaml
+        #gtin_valido_generado = productos.nil? ? (numeracion_producto.to_s + gtin[0..11]) : (numeracion_producto.to_s + gtin[0..11])
+        
+        
         digito_verificacion = calcular_digito_verificacion(gtin_valido_generado.to_i, "GTIN-14") 
         gtin_generado = gtin_valido_generado.to_s + digito_verificacion.to_s
+
+
+        while (Producto.find(:first, :conditions => ["id_tipo_gtin = ? and gtin = ? and prefijo = ?",tipo_gtin.id, gtin_generado, prefijo])) do 
+
+          indicador +=  1
+          gtin_valido_generado = indicador.to_s + gtin[0..11]
+          digito_verificacion = calcular_digito_verificacion(gtin_valido_generado.to_i, "GTIN-14") 
+          gtin_generado = gtin_valido_generado.to_s + digito_verificacion.to_s
+          
+        end
+
 
       elsif tipo_gtin.base == "GTIN-8"
         
