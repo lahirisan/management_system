@@ -146,7 +146,7 @@ class Producto < ActiveRecord::Base
             secuencia = "001"  # GTIN ARtesanal
           
           else
-            secuencia = producto.codigo_prod
+            secuencia = producto.codigo_prod.strip
           end
 
         else
@@ -163,6 +163,8 @@ class Producto < ActiveRecord::Base
         
         secuencia = codigo_producto
       end
+
+
       
       if prefijo.to_s.size == 7
 
@@ -175,6 +177,7 @@ class Producto < ActiveRecord::Base
         gtin = prefijo.to_s + secuencia
       
       end
+
 
       digito_verificacion = calcular_digito_verificacion(gtin.to_i, "GTIN-13")
       gtin_generado = gtin.to_s + digito_verificacion.to_s
@@ -189,7 +192,6 @@ class Producto < ActiveRecord::Base
         codigo_asignado = Producto.find(:first, :conditions => [" gtin = ? ", gtin_generado])
        
       end
-
 
     elsif tipo_gtin.tipo == "GTIN-14"
       
@@ -291,8 +293,7 @@ class Producto < ActiveRecord::Base
     
     (2..spreadsheet.last_row).each do |fila|  # EL indice 1 es para indicar los datos de cabecera MARCA, DESCRIPCION, ETC
        
-      
-      if spreadsheet.empty?(fila,1) # Se verifica SI ESTA EL CODIGO DE PRODUCTO
+      if spreadsheet.empty?(fila,1) # EL codigo de producto no viene en el Excel
         
         gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil, nil)
 

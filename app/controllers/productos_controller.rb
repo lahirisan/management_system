@@ -33,7 +33,6 @@ class ProductosController < ApplicationController
                       @navegabilidad = "#{@empresa.prefijo} > " +  @empresa.nombre_empresa + " > Productos Activos > Listado"
                       render :template =>'/productos/index.html.haml'
 
-
                     end
                   }
       format.json { 

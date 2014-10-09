@@ -2,7 +2,7 @@ class ProductosDatatable < AjaxDatatablesRails
   delegate :params, :h, :link_to,  to: :@view
 
    def initialize(view)
-
+    
     @view = view
    end
 
@@ -69,10 +69,8 @@ private
   def fetch_productos
     
     productos = Producto.where("prefijo = ?", params[:empresa_id]).includes(:estatus, :tipo_gtin).order("#{sort_column} #{sort_direction}") 
-
+    
     productos = productos.page(page).per_page(per_page)
-
-
 
 
     if params[:sSearch].present? # Filtro de busqueda general
@@ -105,6 +103,8 @@ private
       productos = productos.where("CONVERT(DATETIME, FLOOR(CONVERT(FLOAT, producto.fecha_creacion))) = '#{params[:sSearch_6]}'")
     end
 
+
+
     productos
   end
 
@@ -113,6 +113,8 @@ private
   end
 
   def per_page
+
+
     params[:iDisplayLength].to_i > 0 ? params[:iDisplayLength].to_i : 100
   end
 
