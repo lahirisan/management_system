@@ -128,9 +128,7 @@ class Producto < ActiveRecord::Base
 
     elsif tipo_gtin.tipo == "GTIN-13"
 
-      
 
-      
       if (codigo_producto.nil?) #No estan pasando el codigo de producto
 
         producto =  Producto.find(:first, :conditions => ["id_tipo_gtin = ? and prefijo = ?", tipo_gtin, prefijo], :order => "codigo_prod desc")
@@ -164,7 +162,6 @@ class Producto < ActiveRecord::Base
         secuencia = codigo_producto
       end
 
-
       
       if prefijo.to_s.size == 7
 
@@ -177,7 +174,6 @@ class Producto < ActiveRecord::Base
         gtin = prefijo.to_s + secuencia
       
       end
-
 
       digito_verificacion = calcular_digito_verificacion(gtin.to_i, "GTIN-13")
       gtin_generado = gtin.to_s + digito_verificacion.to_s
@@ -193,7 +189,11 @@ class Producto < ActiveRecord::Base
        
       end
 
+
     elsif tipo_gtin.tipo == "GTIN-14"
+
+
+      
       
       if tipo_gtin.base == "GTIN-13"
         

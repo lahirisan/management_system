@@ -55,7 +55,7 @@ class ProductosController < ApplicationController
 
 
                       if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Producto')
-                          
+
                         render json: ProductosDatatable.new(view_context) 
                       else
                         render json: ProductosNotEditableDatatable.new(view_context) 
@@ -155,7 +155,8 @@ class ProductosController < ApplicationController
     estatus = Estatus.find(:first, :conditions => ["(descripcion = ?) and (alcance = ?)", "Activo", "Producto"])
     params[:producto][:id_estatus] = estatus.id
     
-    params[:producto][:codigo_prod] = params[:producto][:gtin][7..11] if params[:producto][:id_tipo_gtin] == '3'
+    params[:producto][:codigo_prod] = params[:producto][:gtin][7..11] if params[:producto][:id_tipo_gtin] == '3' and @empresa.prefijo.to_s.size == 7
+    params[:producto][:codigo_prod] = params[:producto][:gtin][9..11] if params[:producto][:id_tipo_gtin] == '3' and @empresa.prefijo.to_s.size == 9 and @empresa.prefijo.to_s[3..5] == "400"
     params[:producto][:codigo_prod] = params[:producto][:gtin][3..6] if params[:producto][:id_tipo_gtin] == '1'
     params[:producto][:codigo_prod] = params[:producto][:gtin][9..12] if params[:producto][:id_tipo_gtin] == '4' 
     params[:producto][:codigo_prod] = params[:producto][:gtin][8..12] if params[:producto][:id_tipo_gtin] == '6'
