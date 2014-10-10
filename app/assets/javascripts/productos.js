@@ -273,16 +273,23 @@ $(document).ready(function(){
 
        
         $('#new_producto').submit(function( event ) {
-          
+            
+           
+            if ($('#exceso_productos').val())
+            {
+                alert('Estimado usuario, esta empresa ya llego al límite de productos GTIN-13 que puede codificar. Por favor verifique.');
+                return false;
+            }
+
            if ($('#producto_id_tipo_gtin').val() == '')
            {
-               alert('Estimado usuario, debe seleccionar el Tipo de GTIN para poder continuar.')
+               alert('Estimado usuario, debe seleccionar el Tipo de GTIN para poder continuar.');
                return false;
            }
 
            if (($('#producto_descripcion').val() == '') || ($('#producto_marca').val() == '') || ($('#producto_gpc').val() == ''))
            {
-               alert('Estimado usuario, todos los campos son obligatorios para poder continuar.')
+               alert('Estimado usuario, todos los campos son obligatorios para poder continuar.');
                return false;
            }
             
