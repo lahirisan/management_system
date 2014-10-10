@@ -64,7 +64,9 @@
             -elsif @producto.errors.messages[:gtin]
               =f.text_field :codigo_prod
         
+      
       =hidden_field_tag "gtin", "#{@gtin}"
+      =hidden_field_tag "exceso_productos", "#{@excede_gtin13}"
      
       %button#submit.ui-state-default.ui-corner-all.guardar_producto{:type => "submit", :title => "Guardar producto"}
         %span.ui-icon.ui-icon-disk
