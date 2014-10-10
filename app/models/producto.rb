@@ -343,7 +343,7 @@ class Producto < ActiveRecord::Base
 
     spreadsheet = open_spreadsheet(file)
 
-    codigo_invalido = ""
+    codigo_invalido = nil
 
     (2..spreadsheet.last_row).each do |fila|
 
@@ -365,7 +365,7 @@ class Producto < ActiveRecord::Base
         producto.save
         
         
-      
+        
       else
 
         codigo_invalido += " "+  spreadsheet.row(fila)[0].to_i.to_s
