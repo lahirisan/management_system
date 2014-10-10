@@ -287,7 +287,7 @@ $(document).ready(function(){
            }
             
 
-            if (($("input[type='radio'][name='tipo_creacion']:checked").val() == 'manual') && ($('#producto_id_tipo_gtin').val() == 3) &&  (window.location.pathname.split('/')[2].length == 7))
+            if (($("input[type='radio'][name='tipo_creacion']:checked").val() == 'manual') && ($('#producto_id_tipo_gtin').val() == 3) &&  ((window.location.pathname.split('/')[2].length == 7) || (window.location.pathname.split('/')[2].length == 5)))
             {   
                 var reg = /^[0-9]{5}$/;
                 var cod_producto = $('#producto_codigo_prod').val();
@@ -302,7 +302,6 @@ $(document).ready(function(){
                     alert('Estimado usuario, el código de producto debe ser un valor de 5 dígitos numéricos distinto de 00000. Por favor verifique.');
                     return false;
                 }
-
             }
 
             

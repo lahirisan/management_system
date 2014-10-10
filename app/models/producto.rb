@@ -79,21 +79,7 @@ class Producto < ActiveRecord::Base
       end
 
       productos.collect{|producto| producto_elim_detalle = ProductoElimDetalle.new; producto_elim_detalle.gtin = producto.gtin; producto_elim_detalle.fecha_eliminacion = Time.now; producto_elim_detalle.save; productos_eliminados += producto.gtin; }
-      
-
-    	# producto_eliminado = ProductoEliminado.new
-     #  producto_eliminado.gtin = producto.gtin
-    	# producto_eliminado.descripcion = producto.descripcion 
-    	# producto_eliminado.marca = producto.marca 
-    	# producto_eliminado.gpc = producto.gpc
-    	# producto_eliminado.id_estatus = estatus_producto.id
-    	# producto_eliminado.codigo_prod = producto.codigo_prod
-    	# producto_eliminado.fecha_creacion = Time.now
-    	# producto_eliminado.id_tipo_gtin =producto.id_tipo_gtin
-    	# producto_eliminado.save
-    	
-      #producto.destroy
-
+    
       productos.map{|producto| producto.destroy}
       
     end
@@ -128,18 +114,17 @@ class Producto < ActiveRecord::Base
 
     elsif tipo_gtin.tipo == "GTIN-13"
 
-
       if (codigo_producto.nil?) #No estan pasando el codigo de producto
 
         producto =  Producto.find(:first, :conditions => ["id_tipo_gtin = ? and prefijo = ?", tipo_gtin, prefijo], :order => "codigo_prod desc")
 
         if (producto) 
 
-          if producto.codigo_prod == '99999' and producto.gtin.size == 7
+          if producto.codigo_prod == '99999' and (prefijo.to_s.size == 7 or prefijo.to_s.size == 5)
             
             secuencia = "00001"
 
-          elsif producto.codigo_prod == '999' and producto.gtin.size == 9
+          elsif producto.codigo_prod == '999' and prefijo.to_s.size == 9
             
             secuencia = "001"  # GTIN ARtesanal
           
@@ -147,9 +132,9 @@ class Producto < ActiveRecord::Base
             secuencia = producto.codigo_prod.strip
           end
 
-        else
+        else # La empresa no tiene productos
 
-          if prefijo.to_s.size == 7
+          if prefijo.to_s.size == 7 or prefijo.to_s.size == 5
             secuencia = "00001"
           elsif prefijo.to_s.size == 9 and prefijo.to_s[3..5] == "400" # GTIN artesanal
             secuencia = "001"
@@ -172,8 +157,13 @@ class Producto < ActiveRecord::Base
       elsif prefijo.to_s.size == 9 and prefijo.to_s[3..5] == "400" # GTIN artesanal
         
         gtin = prefijo.to_s + secuencia
-      
+
+      elsif prefijo.to_s.size == 5
+        
+        gtin = "7599000" + secuencia
+
       end
+
 
       digito_verificacion = calcular_digito_verificacion(gtin.to_i, "GTIN-13")
       gtin_generado = gtin.to_s + digito_verificacion.to_s
@@ -188,8 +178,7 @@ class Producto < ActiveRecord::Base
         codigo_asignado = Producto.find(:first, :conditions => [" gtin = ? ", gtin_generado])
        
       end
-
-
+      
     elsif tipo_gtin.tipo == "GTIN-14"
       
       
@@ -305,8 +294,8 @@ class Producto < ActiveRecord::Base
 
   def self.import(file, tipo_gtin, prefijo) #Importar GTIN 13
 
-    spreadsheet = open_spreadsheet(file)
 
+    spreadsheet = open_spreadsheet(file)
     
     (2..spreadsheet.last_row).each do |fila|  # EL indice 1 es para indicar los datos de cabecera MARCA, DESCRIPCION, ETC
        
@@ -358,8 +347,7 @@ class Producto < ActiveRecord::Base
 
     (2..spreadsheet.last_row).each do |fila|
 
-      gtin_existente =  verificar_gtin_existente(tipo_gtin.base, prefijo,spreadsheet.row(fila)[0].to_i ) 
-      
+      gtin_existente =  verificar_gtin_existente(tipo_gtin.base, prefijo,spreadsheet.row(fila)[0].to_i )
 
       if (gtin_existente)
 
