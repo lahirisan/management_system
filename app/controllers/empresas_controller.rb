@@ -225,8 +225,12 @@ class EmpresasController < ApplicationController
       params[:empresa][:id_estatus] = estatus.id  # Empresa activa
       params[:empresa][:fecha_activacion] = Time.now
 
-        # Ojo probar esto
-        Gln.where(:prefijo => @empresa.prefijo).update_all("prefijo = #{params[:empresa][:prefijo]}") 
+     
+        gln = params[:empresa][:prefijo] + "90001"
+        digito_verificacion = Producto.calcular_digito_verificacion(gln.to_i, "GTIN-13")
+        gln = gln +  digito_verificacion.to_s
+
+        Gln.where(:prefijo => @empresa.prefijo).update_all("prefijo = #{params[:empresa][:prefijo]}, gln = #{gln}") 
 
        Empresa.where(:prefijo => @empresa.prefijo).update_all("prefijo = #{params[:empresa][:prefijo]}")
 
