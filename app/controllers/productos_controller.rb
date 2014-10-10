@@ -116,9 +116,13 @@ class ProductosController < ApplicationController
   # GET /productos/new
   # GET /productos/new.json
   def new
-    
 
     @empresa =  Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]] )
+
+    @productos_gtin_13 = Producto.find(:all, :conditions => ["tipo_gtin.tipo = ? and prefijo = ?", "GTIN-13", params[:empresa_id]], :include => [:tipo_gtin]) if params[:empresa_id].size == 5
+    
+    @excede_gtin13 = true if (@productos_gtin_13.size >= 10) 
+
     @producto = @empresa.producto.build  # Se crea el form_for
     
     @gtin = params[:gtin] if params[:gtin] != ''# SI esta gtin  es para crear gtin tipo 14 base 8 o gtin 14 base 13
