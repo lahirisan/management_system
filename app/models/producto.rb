@@ -97,15 +97,10 @@ class Producto < ActiveRecord::Base
      
       ultimo_gtin_asignado = Producto.find(:first, :conditions => ["producto.id_tipo_gtin = ?", tipo_gtin], :order => "producto.codigo_prod desc")
 
-      
-      
-      
       secuencia = ultimo_gtin_asignado.gtin[3..6]  # N-1 digitos primeros digitos del último gtin8 asignado
       secuencia = (secuencia.to_i + 1) 
 
-
       secuencia_siguiente = completar_secuencia(secuencia, tipo_gtin.tipo) # Se completa con ceros a la izquierda si la secuecnia es menor 5 digitos
-      
       
       secuencia_completa = "759" + secuencia_siguiente.to_s 
       digito_verificacion = calcular_digito_verificacion(secuencia_completa.to_i, "GTIN-8")
@@ -159,8 +154,9 @@ class Producto < ActiveRecord::Base
         gtin = prefijo.to_s + secuencia
 
       elsif prefijo.to_s.size == 5
-        
-        gtin = "7599000" + secuencia
+
+        secuencia = completar_secuencia(secuencia, tipo_gtin.tipo) 
+        gtin = "7599000" + secuencia.to_s
 
       end
 
@@ -298,9 +294,13 @@ class Producto < ActiveRecord::Base
     spreadsheet = open_spreadsheet(file)
     
     (2..spreadsheet.last_row).each do |fila|  # EL indice 1 es para indicar los datos de cabecera MARCA, DESCRIPCION, ETC
-       
+      
+      productos_gtin_13_codificados = @productos_gtin_13 = Producto.find(:all, :conditions => ["tipo_gtin.tipo = ? and prefijo = ?", "GTIN-13", prefijo], :include => [:tipo_gtin]) if prefijo.to_s.size == 5
+
+      break if productos_gtin_13_codificados.size >= 10
+
       if spreadsheet.empty?(fila,1) # EL codigo de producto no viene en el Excel
-        
+
         gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil, nil)
 
       else
@@ -309,6 +309,7 @@ class Producto < ActiveRecord::Base
         
       end
 
+
       producto = new
       producto.gtin = gtin.to_s
       producto.descripcion =   spreadsheet.empty?(fila,1) ? spreadsheet.row(fila)[1] :  spreadsheet.row(fila)[2]
@@ -316,7 +317,7 @@ class Producto < ActiveRecord::Base
       producto.id_estatus = 3
       producto.fecha_creacion = Time.now
 
-      if prefijo.to_s.size == 7 
+      if prefijo.to_s.size == 7 or prefijo.to_s.size == 5
 
         producto.codigo_prod = producto.gtin[7..11]
 
@@ -330,6 +331,10 @@ class Producto < ActiveRecord::Base
       producto.prefijo = prefijo
       producto.save
 
+      
+
+
+      
 
     end
 
