@@ -121,7 +121,11 @@ class ProductosController < ApplicationController
 
     @productos_gtin_13 = Producto.find(:all, :conditions => ["tipo_gtin.tipo = ? and prefijo = ?", "GTIN-13", params[:empresa_id]], :include => [:tipo_gtin]) if params[:empresa_id].size == 5
     
-    @excede_gtin13 = true if (@productos_gtin_13.size >= 10) 
+    if params[:empresa_id].size == 5
+
+      @excede_gtin13 = true if (@productos_gtin_13.size >= 10) 
+
+    end
 
     @producto = @empresa.producto.build  # Se crea el form_for
     
