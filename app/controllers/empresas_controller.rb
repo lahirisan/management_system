@@ -13,7 +13,6 @@ class EmpresasController < ApplicationController
     # OJO: La llamada JSON y los parametro se establecen en el datatable desde el template.html.haml
 
 
-
     respond_to do |format|
       format.html{
                   
@@ -130,24 +129,12 @@ class EmpresasController < ApplicationController
       
       format.html {
 
-        @prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus, :clasificacion],:select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion")
-        @prefijos_disponibles1 = Empresa.find(:all, :conditions => ["estatus.descripcion = ?", 'No Validado'], :include => [:estatus,:clasificacion], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion")
-        @prefijos_disponibles = @prefijos_disponibles.zip(@prefijos_disponibles1).flatten.compact
-
+        
       }
 
-      format.json {
+      format.json {}
 
-        if params[:id_clasificacion]
-
-          @prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus, :clasificacion],:select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion", :conditions => ["empresa_clasificacion.id = ?", params[:id_clasificacion]])
-          @prefijos_disponibles1 = Empresa.find(:all, :conditions => ["estatus.descripcion = ?", 'No Validado'], :include => [:estatus,:clasificacion], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion", :conditions => ["empresa_clasificacion.id = ?", params[:id_clasificacion]])
-          @prefijos_disponibles = @prefijos_disponibles.zip(@prefijos_disponibles1).flatten.compact
         
-        end
-
-
-        render json: @prefijos_disponibles}
     end
   end
 
@@ -155,7 +142,8 @@ class EmpresasController < ApplicationController
   def edit
     @empresa = Empresa.find(params[:id])
     @clasificacion_empresa = Clasificacion.find(:first, :conditions => ["categoria = ? and division = ? and grupo = ? and clase = ?", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase])
-
+    @prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus], :conditions => ["categoria = ? or division = ? or grupo = ? or clase = ?", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion", :order => "fecha_eliminacion asc")
+    
 
   end
 
@@ -217,7 +205,7 @@ class EmpresasController < ApplicationController
     @empresa = Empresa.find(params[:id])
 
     
-    if session[:gerencia] == 'Estandares y Consultoría' 
+    if (session[:gerencia] == 'Estandares y Consultoría')  and (params[:empresa][:prefijo] != @empresa.prefijo)
       
       estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Activa', 'Empresa'])
       estatus_administrativo = SubEstatus.find(:first, :conditions => ["descripcion = ?", 'SOLVENTE'])
@@ -230,7 +218,7 @@ class EmpresasController < ApplicationController
         digito_verificacion = Producto.calcular_digito_verificacion(gln.to_i, "GTIN-13")
         gln = gln +  digito_verificacion.to_s
 
-        Gln.where(:prefijo => @empresa.prefijo).update_all("prefijo = #{params[:empresa][:prefijo]}, gln = #{gln}") 
+       Gln.where(:prefijo => @empresa.prefijo).update_all("prefijo = #{params[:empresa][:prefijo]}, gln = #{gln}")  
 
        Empresa.where(:prefijo => @empresa.prefijo).update_all("prefijo = #{params[:empresa][:prefijo]}")
 
