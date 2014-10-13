@@ -218,7 +218,7 @@ class ProductosController < ApplicationController
       mensaje = "Los #{tipo_gtin.tipo} fueron importados." 
     end
 
-    if codigo_invalido 
+    if (codigo_invalido == "")
 
       redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "No se pudo generar GTIN-14 para los siguientes codigo(s) [#{codigo_invalido}]. Por favor verifique que existan antes de intentar generar su GTIN-14.".upcase 
     else

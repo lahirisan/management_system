@@ -349,10 +349,9 @@ class Producto < ActiveRecord::Base
   def self.import_gtin_14(file, tipo_gtin_, prefijo) #Importar GTIN 14
 
     tipo_gtin = TipoGtin.find(tipo_gtin_)
-
     spreadsheet = open_spreadsheet(file)
 
-    codigo_invalido = nil
+    codigo_invalido = ""
 
     (2..spreadsheet.last_row).each do |fila|
 
@@ -372,8 +371,6 @@ class Producto < ActiveRecord::Base
         producto.id_tipo_gtin = tipo_gtin_.to_i
         producto.prefijo = prefijo
         producto.save
-        
-        
         
       else
 
