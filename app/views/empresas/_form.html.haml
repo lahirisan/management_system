@@ -3,7 +3,7 @@
     -if params[:activacion]
       =@empresa.new_record? ? "Registrar Empresa" : "#{@empresa.nombre_empresa} > Editar Empresa"
     -else
-      =@empresa.new_record? ? "Registrar Empresa" : "#{@empresa.prefijo} > #{@empresa.nombre_empresa} > Editar Empresa"
+      =@empresa.new_record? ? "Registrar Empresa" : "#{@empresa.nombre_empresa} > Editar Empresa"
   
   %br
   %br
@@ -37,8 +37,6 @@
                 %li='NOMBRE RESPONSABLE LEGAL no puede estar en blanco.'
               -elsif msg == 'Cargo rep legal No puede estar en blanco'
                 %li='CARGO Rep. Legal no puede estar en blanco.'
-
-
               
              
               -else
@@ -62,7 +60,8 @@
                 -else  
                   =f.text_field :prefijo
             %td
-              =link_to "Asignar Prefijo", "#", :id => "boton_abrir_ventana_prefijo_manual"
+              -if (session[:perfil] == 'Super Usuario' and session[:gerencia] == 'Estandares y Consultoría') or (session[:perfil] == 'Administrador' and session[:gerencia] == 'Estandares y Consultoría')
+                =link_to "Reasignar Prefijo", "#", :id => "boton_abrir_ventana_prefijo_manual"
       -else
         -if @empresa.new_record?
           =f.hidden_field :prefijo , :value => "#{@ultimo}"
@@ -559,7 +558,7 @@
         
 
     #asignar_prefijo_manual
-      -if params[:action] == 'new'
+      -if params[:action] == 'edit'
         =render 'ventana_prefijo_manual'
       
 
