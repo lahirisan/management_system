@@ -96,7 +96,8 @@
         
         if (window.location.pathname.split('/')[3] != 'edit')
         {
-            $("#empresa_fecha_registro_mercantil").datepicker({changeYear: true});
+            $("#empresa_fecha_registro_mercantil").datepicker({yearRange: "-100:+0",
+                changeYear: true});
         }
 
         // Actualizar la ciudad dependiendo del estado seleccionado - Datos Basicos
