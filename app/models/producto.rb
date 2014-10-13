@@ -297,7 +297,11 @@ class Producto < ActiveRecord::Base
       
       productos_gtin_13_codificados = @productos_gtin_13 = Producto.find(:all, :conditions => ["tipo_gtin.tipo = ? and prefijo = ?", "GTIN-13", prefijo], :include => [:tipo_gtin]) if prefijo.to_s.size == 5
 
-      break if (productos_gtin_13_codificados.size >= 10) and (prefijo.to_s.size == 5)
+      if (prefijo.to_s.size == 5)
+
+        break if (productos_gtin_13_codificados.size >= 10)  
+
+      end
 
       if spreadsheet.empty?(fila,1) # EL codigo de producto no viene en el Excel
 
