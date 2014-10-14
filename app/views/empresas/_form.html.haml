@@ -56,10 +56,11 @@
                 -if ((params[:activacion]) and ((session[:gerencia] == 'Estandares y Consultoría' and session[:perfil] == 'Super Usuario') or (session[:gerencia] == 'Estandares y Consultoría' and session[:perfil] == 'Administrador'))) 
                   =f.text_field :prefijo
                 -else  
-                  =f.text_field :prefijo, :value => ""
+                  =f.text_field :prefijo, :readonly => :true, :class => "campo_readonly"
             %td
-              -if (session[:perfil] == 'Super Usuario' and session[:gerencia] == 'Estandares y Consultoría') or (session[:perfil] == 'Administrador' and session[:gerencia] == 'Estandares y Consultoría')
+              -if ((session[:perfil] == 'Super Usuario' and session[:gerencia] == 'Estandares y Consultoría') or (session[:perfil] == 'Administrador' and session[:gerencia] == 'Estandares y Consultoría') and params[:activacion])
                 =link_to "Reasignar Prefijo", "#", :id => "boton_abrir_ventana_prefijo_manual"
+              
       -else
         -if @empresa.new_record?
           =f.hidden_field :prefijo , :value => "#{@ultimo}"
@@ -557,7 +558,7 @@
 
     #asignar_prefijo_manual
       -if params[:action] == 'edit'
-        /=render 'ventana_prefijo_manual'
+        =render 'ventana_prefijo_manual'
       
 
 

@@ -148,8 +148,10 @@ class EmpresasController < ApplicationController
     if (session[:perfil] == 'Super Usuario' and session[:gerencia] == 'Estandares y Consultoría') or (session[:perfil] == 'Administrador' and session[:gerencia] == 'Estandares y Consultoría')
       
       @clasificacion_empresa = Clasificacion.find(:first, :conditions => ["categoria = ? and division = ? and grupo = ? and clase = ?", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase])
-      #@prefijos_retirados_activos = Empresa.find(:all, :include => [:estatus], :conditions => ["estatus.descripcion in (?) and estatus.alcance = ?", ['Activa', 'Retirada'], 'Empresa'], :select => "empresa.prefijo")
-      #@prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus], :conditions => ["(categoria = ? or division = ? or grupo = ? or clase = ?) and prefijo not in (?)", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase, @prefijos_retirados_activos.collect{|empresa| empresa.prefijo}], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion")
+      
+      @prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus], :conditions => ["(categoria = ? or division = ? or grupo = ? or clase = ?) and no_elejible is ?", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase, nil], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion")
+
+      
 
     end
     
@@ -159,12 +161,7 @@ class EmpresasController < ApplicationController
   # POST /empresas
   # POST /empresas.json
   def create
-
     
-    #empresa_no_validada = Empresa.find(:first, :include => [:estatus], :conditions => ["prefijo = ? and estatus.descripcion = ?", params[:empresa][:prefijo], 'No Validado'])
-    #prefijo_eliminado = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa][:prefijo]])
-    
-    #Empresa.utilizar_prefijo_no_validado(empresa_no_validada) if empresa_no_validada
     
     params[:empresa][:id_estatus] = Estatus.empresa_inactiva()
     # Se completa la hora con los segundos para que pueda ordenar por la ultima creada
@@ -233,18 +230,18 @@ class EmpresasController < ApplicationController
 
        # registro en una tabla de historico eliminadas
 
-       # eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa][:prefijo]])
+        eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa][:prefijo]])
 
-       # historico_eliminada = HistoricoEliminada.new
-       # historico_eliminada.prefijo = eliminada.prefijo
-       # historico_eliminada.nombre_empresa = eliminada.nombre_empresa
-       # historico_eliminada.rif = eliminada.rif
-       # historico_eliminada.rep_legal = eliminada.rep_legal
-       # historico_eliminada.contacto_tlf1 = eliminada.contacto_tlf1
-       # historico_eliminada.contacto_email1 = eliminada.contacto_email1
-       # historico_eliminada.fecha_liberacion_prefijo = Time.now
-       # historico_eliminada.save
-       # eliminada.destroy
+       historico_eliminada = HistoricoEliminada.new
+       historico_eliminada.prefijo = eliminada.prefijo
+       historico_eliminada.nombre_empresa = eliminada.nombre_empresa
+       historico_eliminada.rif = eliminada.rif
+       historico_eliminada.rep_legal = eliminada.rep_legal
+       historico_eliminada.contacto_tlf1 = eliminada.contacto_tlf1
+       historico_eliminada.contacto_email1 = eliminada.contacto_email1
+       historico_eliminada.fecha_liberacion_prefijo = Time.now
+       historico_eliminada.save
+       eliminada.destroy
 
        
     end
