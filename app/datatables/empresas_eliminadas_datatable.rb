@@ -61,7 +61,7 @@ private
     empresas = EmpresaEliminada.includes(:estatus, :motivo_retiro, :tipo_usuario_empresa)
     empresas = empresas.page(page).per_page(per_page)
    
-    empresas = empresas.where("empresa_eliminada.prefijo like :search or empresa_eliminada.nombre_empresa like :search  empresa_eliminada.rif like :search ", search: "%#{params[:sSearch]}%")  if params[:sSearch].present? # Filtro de busqueda general
+    empresas = empresas.where("empresa_eliminada.prefijo like :search or empresa_eliminada.nombre_empresa like :search or  empresa_eliminada.rif like :search ", search: "%#{params[:sSearch]}%")  if params[:sSearch].present? # Filtro de busqueda general
   
     # empresas = empresas.where("empresa_eliminada.prefijo like :search0", search0: "%#{params[:sSearch_0]}%" )   if params[:sSearch_0].present? # Filtro de busqueda por nombre de la empresa
     # empresas = empresas.where("empresa_eliminada.nombre_empresa like :search1", search1: "%#{params[:sSearch_1]}%" )  if params[:sSearch_1].present? # Filtro fecha_inscripcion
