@@ -142,12 +142,16 @@ class EmpresasController < ApplicationController
 
   # GET /empresas/1/edit
   def edit
+    
     @empresa = Empresa.find(params[:id])
     
-    @clasificacion_empresa = Clasificacion.find(:first, :conditions => ["categoria = ? and division = ? and grupo = ? and clase = ?", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase])
-    @prefijos_retirados_activos = Empresa.find(:all, :include => [:estatus], :conditions => ["estatus.descripcion in (?) and estatus.alcance = ?", ['Activa', 'Retirada'], 'Empresa'], :select => "empresa.prefijo")
+    if (session[:perfil] == 'Super Usuario' and session[:gerencia] == 'Estandares y Consultoría') or (sessio[:perfil] == 'Administrador' and session[:gerencia] == 'Estandares y Consultoría')
+      
+      @clasificacion_empresa = Clasificacion.find(:first, :conditions => ["categoria = ? and division = ? and grupo = ? and clase = ?", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase])
+      @prefijos_retirados_activos = Empresa.find(:all, :include => [:estatus], :conditions => ["estatus.descripcion in (?) and estatus.alcance = ?", ['Activa', 'Retirada'], 'Empresa'], :select => "empresa.prefijo")
+      @prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus], :conditions => ["(categoria = ? or division = ? or grupo = ? or clase = ?) and prefijo not in (?)", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase, @prefijos_retirados_activos.collect{|empresa| empresa.prefijo}], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion")
 
-    @prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus], :conditions => ["(categoria = ? or division = ? or grupo = ? or clase = ?) and prefijo not in (?)", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase, @prefijos_retirados_activos.collect{|empresa| empresa.prefijo}], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion", :order => "fecha_eliminacion asc")
+    end
     
 
   end
@@ -226,6 +230,21 @@ class EmpresasController < ApplicationController
        Gln.where(:prefijo => @empresa.prefijo).update_all("prefijo = #{params[:empresa][:prefijo]}, gln = #{gln}")  
 
        Empresa.where(:prefijo => @empresa.prefijo).update_all("prefijo = #{params[:empresa][:prefijo]}")
+
+       # registro en una tabla de historico eliminadas
+
+       eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa][:prefijo]])
+
+       historico_eliminada = HistoricoEliminada.new
+       historico_eliminada.prefijo = eliminada.prefijo
+       historico_eliminada.nombre_empresa = eliminada.nombre_empresa
+       historico_eliminada.rif = eliminada.rif
+       historico_eliminada.rep_legal = eliminada.rep_legal
+       historico_eliminada.contacto_tlf1 = eliminada.contacto_tlf1
+       historico_eliminada.contacto_email1 = eliminada.contacto_email1
+       historico_eliminada.fecha_liberacion_prefijo = Time.now
+       historico_eliminada.save
+       eliminada.destroy
 
        
     end

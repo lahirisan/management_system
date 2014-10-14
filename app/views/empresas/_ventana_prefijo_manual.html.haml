@@ -6,6 +6,8 @@
 %table{:border => "1"}
   %tr
     %td{:align => "center"}
+      Empresa
+    %td{:align => "center"}
       Ramo de desempeño de la Empresa
     
     %td
@@ -17,6 +19,8 @@
     %td
       Clase
   %tr
+    %td{:align => "center"}
+      =@empresa.nombre_empresa
     %td
       =@clasificacion_empresa.descripcion
     %td{:align => "center"}
@@ -36,7 +40,7 @@
       %td PREFIJO
       %td NOMBRE EMPRESA
       %td ESTATUS
-      %td FEC. ELIMINACION
+      %td FECHA ELIMINACION
       %td CATEGORIA
       %td DIVISION
       %td GRUPO
@@ -45,11 +49,14 @@
     
   %tbody
     - @prefijos_disponibles.each do |empresa|
+      -fecha = empresa.try(:fecha_eliminacion) 
+      -fecha = fecha.strftime("%Y-%m-%d") if fecha
+
       %tr
         %td= empresa.prefijo
         %td= empresa.nombre_empresa
         %td= empresa.try(:estatus).try(:descripcion)
-        %td= empresa.try(:fecha_eliminacion)
+        %td= fecha
         %td= empresa.try(:categoria)
         %td= empresa.try(:division)
         %td= empresa.try(:grupo)
