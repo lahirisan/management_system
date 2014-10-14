@@ -655,7 +655,10 @@
             else
             {
                 $('#empresa_prefijo').val($('#prefijo_manual').val());
-                $('#empresa_id_clasificacion').val($('#'+ $('#prefijo_manual').val()).val()).change();
+
+                //$.get("/clasificaciones.json?clasificacion="+$(this).val()+"&categoria=", function( data ) { 
+
+                //$('#empresa_id_clasificacion').val($('#'+ $('#prefijo_manual').val()).val()).change();
                 $('.ventana_prefijo_manual').dialog('close');
             }
 
