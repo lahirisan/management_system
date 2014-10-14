@@ -148,8 +148,8 @@ class EmpresasController < ApplicationController
     if (session[:perfil] == 'Super Usuario' and session[:gerencia] == 'Estandares y Consultoría') or (sessio[:perfil] == 'Administrador' and session[:gerencia] == 'Estandares y Consultoría')
       
       @clasificacion_empresa = Clasificacion.find(:first, :conditions => ["categoria = ? and division = ? and grupo = ? and clase = ?", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase])
-      @prefijos_retirados_activos = Empresa.find(:all, :include => [:estatus], :conditions => ["estatus.descripcion in (?) and estatus.alcance = ?", ['Activa', 'Retirada'], 'Empresa'], :select => "empresa.prefijo")
-      @prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus], :conditions => ["(categoria = ? or division = ? or grupo = ? or clase = ?) and prefijo not in (?)", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase, @prefijos_retirados_activos.collect{|empresa| empresa.prefijo}], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion")
+      #@prefijos_retirados_activos = Empresa.find(:all, :include => [:estatus], :conditions => ["estatus.descripcion in (?) and estatus.alcance = ?", ['Activa', 'Retirada'], 'Empresa'], :select => "empresa.prefijo")
+      #@prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus], :conditions => ["(categoria = ? or division = ? or grupo = ? or clase = ?) and prefijo not in (?)", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase, @prefijos_retirados_activos.collect{|empresa| empresa.prefijo}], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion")
 
     end
     
