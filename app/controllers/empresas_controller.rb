@@ -233,18 +233,18 @@ class EmpresasController < ApplicationController
 
        # registro en una tabla de historico eliminadas
 
-       eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa][:prefijo]])
+       # eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa][:prefijo]])
 
-       historico_eliminada = HistoricoEliminada.new
-       historico_eliminada.prefijo = eliminada.prefijo
-       historico_eliminada.nombre_empresa = eliminada.nombre_empresa
-       historico_eliminada.rif = eliminada.rif
-       historico_eliminada.rep_legal = eliminada.rep_legal
-       historico_eliminada.contacto_tlf1 = eliminada.contacto_tlf1
-       historico_eliminada.contacto_email1 = eliminada.contacto_email1
-       historico_eliminada.fecha_liberacion_prefijo = Time.now
-       historico_eliminada.save
-       eliminada.destroy
+       # historico_eliminada = HistoricoEliminada.new
+       # historico_eliminada.prefijo = eliminada.prefijo
+       # historico_eliminada.nombre_empresa = eliminada.nombre_empresa
+       # historico_eliminada.rif = eliminada.rif
+       # historico_eliminada.rep_legal = eliminada.rep_legal
+       # historico_eliminada.contacto_tlf1 = eliminada.contacto_tlf1
+       # historico_eliminada.contacto_email1 = eliminada.contacto_email1
+       # historico_eliminada.fecha_liberacion_prefijo = Time.now
+       # historico_eliminada.save
+       # eliminada.destroy
 
        
     end
