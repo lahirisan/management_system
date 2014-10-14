@@ -37,8 +37,9 @@ private
         empresa.division,
         empresa.grupo,
         empresa.clase,
-        empresa.tipo_usuario_empresa.descripcion,
-        empresa.estatus.descripcion,
+        empresa.try(:tipo_usuario_empresa).try(:descripcion),
+        
+        empresa.try(:estatus).try(:descripcion),
         empresa.rep_legal,
         empresa.contacto_tlf1,
         empresa.contacto_email1,
