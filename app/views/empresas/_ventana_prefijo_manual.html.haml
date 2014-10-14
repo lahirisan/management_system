@@ -2,18 +2,46 @@
 %h1
   Listado de Prefijos que se pueden reutilizar:
 %br
+
+%table{:border => "1"}
+  %tr
+    %td{:align => "center"}
+      Ramo de desempeño de la Empresa
+    
+    %td
+      Categoría
+    %td
+      División
+    %td
+      Grupo
+    %td
+      Clase
+  %tr
+    %td
+      =@clasificacion_empresa.descripcion
+    %td{:align => "center"}
+      =@empresa.categoria
+    %td{:align => "center"}
+      =@empresa.division
+    %td{:align => "center"}
+      =@empresa.grupo
+    %td{:align => "center"}
+      =@empresa.clase
+%br
+%br
+
 %table#prefijos_disponibles.display{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
   %thead
     %tr
       %td PREFIJO
       %td NOMBRE EMPRESA
       %td ESTATUS
+      %td FEC. ELIMINACION
       %td CATEGORIA
       %td DIVISION
       %td GRUPO
       %td CLASE
-      %td CLASIFICACION
-      %td
+      
     
   %tbody
     - @prefijos_disponibles.each do |empresa|
@@ -21,12 +49,12 @@
         %td= empresa.prefijo
         %td= empresa.nombre_empresa
         %td= empresa.try(:estatus).try(:descripcion)
+        %td= empresa.try(:fecha_eliminacion)
         %td= empresa.try(:categoria)
         %td= empresa.try(:division)
         %td= empresa.try(:grupo)
         %td= empresa.try(:clase)
-        %td= empresa.try(:clasificacion).try(:descripcion)
-        %td= hidden_field_tag "#{empresa.prefijo}", nil, :value => "#{empresa.try(:id_clasificacion)}"
+        //%td= hidden_field_tag "#{empresa.prefijo}", nil, :value => "#{empresa.try(:id_clasificacion)}"
 
 %br
 %br

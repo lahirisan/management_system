@@ -132,7 +132,9 @@ class EmpresasController < ApplicationController
         
       }
 
-      format.json {}
+      format.json {
+
+      }
 
         
     end
@@ -141,8 +143,11 @@ class EmpresasController < ApplicationController
   # GET /empresas/1/edit
   def edit
     @empresa = Empresa.find(params[:id])
+    
     @clasificacion_empresa = Clasificacion.find(:first, :conditions => ["categoria = ? and division = ? and grupo = ? and clase = ?", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase])
-    @prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus], :conditions => ["categoria = ? or division = ? or grupo = ? or clase = ?", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion", :order => "fecha_eliminacion asc")
+    @prefijos_retirados_activos = Empresa.find(:all, :include => [:estatus], :conditions => ["estatus.descripcion in (?) and estatus.alcance = ?", ['Activa', 'Retirada'], 'Empresa'], :select => "empresa.prefijo")
+
+    @prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus], :conditions => ["(categoria = ? or division = ? or grupo = ? or clase = ?) and prefijo not in (?)", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase, @prefijos_retirados_activos.collect{|empresa| empresa.prefijo}], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion", :order => "fecha_eliminacion asc")
     
 
   end

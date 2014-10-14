@@ -96,6 +96,7 @@
         
         if (window.location.pathname.split('/')[3] != 'edit')
         {
+            // Datepicker los ultimos 100 anhos
             $("#empresa_fecha_registro_mercantil").datepicker({yearRange: "-100:+0",
                 changeYear: true});
         }
@@ -622,7 +623,6 @@
          
         });
 
-
         // Botón para abrir el dialogo
         $('#boton_abrir_ventana_prefijo_manual').click(function(w){
           w.preventDefault(); // Deshabilita el hipervinculo el boton importar
@@ -630,7 +630,9 @@
 
           $('#prefijos_disponibles').dataTable({
             bDestroy: true,
-            bJQueryUI: true
+            bJQueryUI: true,
+            aaSorting: [[ 3, "asc" ]],
+
           });
           $('#asignar_prefijo_manual').dialog('open').attr('class', 'ventana_prefijo_manual');
           

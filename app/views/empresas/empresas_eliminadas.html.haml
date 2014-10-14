@@ -3,7 +3,6 @@
     %hr.contexto{:size => "1"}
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
-    
     = render 'botones_exportar_empresas_eliminadas'
     =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_eliminadas" do
         %table#data_table_empresas_eliminadas.display{:"data-source" => "/empresas.json?eliminadas=true"}
@@ -11,18 +10,27 @@
                 %tr
                     %th Prefijo
                     %th Nombre Empresa
-                    %th Fecha Inscripción
-                    %th Ciudad
                     %th RIF
+                    %th Categoría
+                    %th División
+                    %th Grupo
+                    %th Clase
+                    %th Tipo Usuario Empresa
+                    %th Estatus
+                    %th Representante Legal
+                    %th Telefono Contacto
+                    %th Correo Contacto
+                    %th Motivo Retiro
+                    %th Fecha Retiro
                     %th Fecha Eliminación
-                    %th Detalle
-                    %th Productos
-                    %th Servicios
-                    %th GLN
+                    //%th Detalle
+                    //%th Productos
+                    //%th Servicios
+                    //%th GLN
                    
             %tbody
             %tfoot
-                =render 'footer_eliminadas'
+                //=render 'footer_eliminadas'
         %br/
         %br/
         
