@@ -23,7 +23,6 @@ private
       
         fecha = ""
         fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
-
         [ 
         check_box_tag("eliminar_productos[]", "#{producto.gtin}", false, :class=>"eliminar_producto"),
         producto.try(:tipo_gtin).try(:tipo),
@@ -46,7 +45,7 @@ private
 
   def fetch_productos
 
-    productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("#{sort_column} #{sort_direction}")
+    productos = Producto.where("prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes(:estatus, :tipo_gtin).order("#{sort_column} #{sort_direction}")
     
     productos = productos.page(page).per_page(per_page)
     

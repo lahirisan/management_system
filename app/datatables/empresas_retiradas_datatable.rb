@@ -24,9 +24,9 @@ private
       
       fecha = ""
       fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
-      sub_estatus = empresa.empresas_retiradas.try(:sub_estatus).try(:descripcion).nil? ? 'No Tiene' : empresa.empresas_retiradas.try(:sub_estatus).try(:descripcion)
-      motivo_retiro = empresa.empresas_retiradas.try(:motivo_retiro).try(:descripcion).nil? ? 'No Tiene' : empresa.empresas_retiradas.try(:motivo_retiro).try(:descripcion)
-      fecha_retiro = empresa.empresas_retiradas.try(:fecha_retiro).nil? ? '' : empresa.empresas_retiradas.fecha_retiro.strftime("%Y-%m-%d")
+      sub_estatus = empresa.try(:sub_estatus).try(:descripcion).nil? ? 'No Tiene' : empresa.try(:sub_estatus).try(:descripcion)
+      motivo_retiro = empresa.try(:motivo_retiro).try(:descripcion).nil? ? 'No Tiene' : empresa.try(:motivo_retiro).try(:descripcion)
+      fecha_retiro = empresa.try(:fecha_retiro).nil? ? '' : empresa.fecha_retiro.strftime("%Y-%m-%d")
 
         [ 
         empresa.prefijo,
@@ -35,11 +35,11 @@ private
         empresa.ciudad.nombre,
         empresa.rif,
         fecha_retiro,
-        empresa.empresas_retiradas.try(:motivo_retiro).try(:descripcion),
+        empresa.try(:motivo_retiro).try(:descripcion),
         link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa, :retirar => true), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
-        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, empresa_productos_path(empresa, :retirados => "true"), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),
-        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios?retirados=true", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios asociados a la empresa #{empresa.nombre_empresa}"}),
-        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa, :retirados => "true"), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"})
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, "/empresas/#{empresa.prefijo}/productos?empresa_retirada=true", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios asociados a la empresa #{empresa.nombre_empresa}"}),
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, "/empresas/#{empresa.prefijo}/glns?empresa_retirada=true", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"})
         
       ]
   
@@ -54,7 +54,8 @@ private
   def fetch_empresas
     
     
-    empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, {:empresas_retiradas => :sub_estatus},{:empresas_retiradas => :motivo_retiro}).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa')
+    empresas = Empresa.includes(:estado, :ciudad, :estatus,  :motivo_retiro).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("#{sort_column} #{sort_direction}")  
+    
     empresas = empresas.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general
@@ -78,7 +79,7 @@ private
       empresas = empresas.where("empresa.rif like :search4", search4: "%#{params[:sSearch_4]}%" )
     end
     if params[:sSearch_5].present?
-       empresas = empresas.where("empresas_retiradas.fecha_retiro like :search5", search5: "%#{params[:sSearch_5]}%" )
+       empresas = empresas.where("fecha_retiro like :search5", search5: "%#{params[:sSearch_5]}%" )
     end
    
    
@@ -96,7 +97,7 @@ private
 
   def sort_column
 
-     columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_inscripcion  ciudad.nombre empresa.rif empresas_retiradas.fecha_retiro motivo_retiro.descripcion]
+     columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_inscripcion  ciudad.nombre empresa.rif empresa.fecha_retiro motivo_retiro.descripcion]
      columns[params[:iSortCol_0].to_i]
   end
 

@@ -7,8 +7,8 @@ class Gln < ActiveRecord::Base
   belongs_to :estatus, :foreign_key => "id_estatus"
   belongs_to :tipo_gln, :foreign_key => "id_tipo_gln"
 
-  # belongs_to :estado, :foreign_key => "id_estado"
-  # belongs_to :ciudad, :foreign_key => "id_ciudad"s
+  #belongs_to :estado, :foreign_key => "id_estado"
+  #belongs_to :ciudad, :foreign_key => "id_ciudad"
   # belongs_to :pais, :foreign_key => "id_pais"
   # belongs_to :municipio, :foreign_key => "id_municipio"
 
@@ -30,28 +30,28 @@ class Gln < ActiveRecord::Base
 
  def self.eliminar_gln(gln)
 
-    estatus_gln = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Eliminado', 'GLN'])
+    #estatus_gln = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Eliminado', 'GLN'])
 
-    gln_eliminado = GlnEliminado.new
-    gln_eliminado.gln = gln.gln
-    gln_eliminado.id_tipo_gln = gln.id_tipo_gln
-    gln_eliminado.codigo_localizacion = gln.codigo_localizacion
-    gln_eliminado.descripcion = gln.descripcion
-    gln_eliminado.id_estatus = estatus_gln.id
-    gln_eliminado.fecha_asignacion = gln.fecha_asignacion
-    gln_eliminado.id_pais = gln.id_pais
-    gln_eliminado.id_estado = gln.id_estado
-    gln_eliminado.id_municipio = gln.id_municipio
-    gln_eliminado.id_ciudad = gln.id_ciudad
-    gln_eliminado.edificio = gln.edificio
-    gln_eliminado.calle = gln.calle
-    gln_eliminado.urbanizacion = gln.urbanizacion
-    gln_eliminado.punto_referencia = gln.punto_referencia
-    gln_eliminado.cod_postal = gln.cod_postal
-    #gln_eliminado.id_subestatus = sub_estatus
-    #gln_eliminado.id_motivo_retiro = motivo_retiro 
-    gln_eliminado.fecha_eliminacion = Time.now 
-    gln_eliminado.save
+    # gln_eliminado = GlnEliminado.new
+    # gln_eliminado.gln = gln.gln
+    # gln_eliminado.id_tipo_gln = gln.id_tipo_gln
+    # gln_eliminado.codigo_localizacion = gln.codigo_localizacion
+    # gln_eliminado.descripcion = gln.descripcion
+    # gln_eliminado.id_estatus = estatus_gln.id
+    # gln_eliminado.fecha_asignacion = gln.fecha_asignacion
+    # gln_eliminado.id_pais = gln.id_pais
+    # gln_eliminado.id_estado = gln.id_estado
+    # gln_eliminado.id_municipio = gln.id_municipio
+    # gln_eliminado.id_ciudad = gln.id_ciudad
+    # gln_eliminado.edificio = gln.edificio
+    # gln_eliminado.calle = gln.calle
+    # gln_eliminado.urbanizacion = gln.urbanizacion
+    # gln_eliminado.punto_referencia = gln.punto_referencia
+    # gln_eliminado.cod_postal = gln.cod_postal
+    # #gln_eliminado.id_subestatus = sub_estatus
+    # #gln_eliminado.id_motivo_retiro = motivo_retiro 
+    # gln_eliminado.fecha_eliminacion = Time.now 
+    # gln_eliminado.save
     gln.destroy
 
  end
@@ -113,12 +113,15 @@ class Gln < ActiveRecord::Base
 
 
 
- def self.retirar(id_gln)
+ def self.retirar(prefijo)
 
     estatus_retirado = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", "Retirado", "GLN"])
-    gln = Gln.find(:first, :conditions => ["gln = ?", id_gln])
-    gln.id_estatus = estatus_retirado.id
-    gln.save
+    glns = Gln.find(:all, :conditions => ["prefijo = ?", prefijo])
+    
+    glns.collect{|gln|
+      gln.id_estatus = estatus_retirado.id; 
+      gln.save
+    }
     
  end
 

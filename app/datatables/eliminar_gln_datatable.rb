@@ -20,20 +20,20 @@ private
 
   def data
 
-    glns.map do |empresa_gln|
+    glns.map do |gln|
       
         [ 
-          check_box_tag("eliminar_glns[]", "#{empresa_gln.gln.gln}", false, :class=>"eliminar_gln"),
-          empresa_gln.gln.gln,
-          empresa_gln.try(:gln).try(:tipo_gln).try(:nombre),
-          empresa_gln.try(:gln).try(:codigo_localizacion),
-          empresa_gln.try(:gln).try(:descripcion),
-          empresa_gln.try(:gln).try(:fecha_asignacion).strftime("%Y-%m-%d"),
-          empresa_gln.try(:gln).try(:estado).try(:nombre),
-          empresa_gln.try(:gln).try(:municipio).try(:nombre),
-          empresa_gln.try(:gln).try(:ciudad).try(:nombre),
-          empresa_gln.try(:gln).try(:estatus).try(:descripcion),
-          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle del GLN #{empresa_gln.gln.gln}"})
+          check_box_tag("eliminar_glns[]", "#{gln.gln}", false, :class=>"eliminar_gln"),
+          gln.gln,
+          gln.try(:tipo_gln).try(:nombre),
+          gln.try(:codigo_localizacion),
+          gln.try(:descripcion),
+          gln.try(:fecha_asignacion),
+          gln.try(:estado),
+          gln.try(:municipio),
+          gln.try(:ciudad),
+          gln.try(:estatus).try(:descripcion),
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle del GLN #{gln.gln}"})
           
           
         ]
@@ -47,11 +47,11 @@ private
 
   def fetch_glns
 
-    glns = GlnEmpresa.where("gln_empresa.prefijo = ? and tipo_gln.nombre in (?)", params[:empresa_id], ['Operativo','Físico']).joins({:gln => :tipo_gln}, {:gln => :estado}, {:gln => :municipio}, {:gln => :ciudad}, {:gln => :estatus},  :empresa).order("#{sort_column} #{sort_direction}")  
+    glns = Gln.where("prefijo = ? and tipo_gln.nombre in (?)", params[:empresa_id], ['Operativo','Físico']).joins(:tipo_gln,  :estatus).order("#{sort_column} #{sort_direction}")  
     glns = glns.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general
-      glns = glns.where("gln.gln like :search or tipo_gln.nombre like :search or gln.codigo_localizacion like :search or gln.descripcion like :search or gln.fecha_asignacion like :search or estados.nombre like :search or municipio.nombre like :search or estatus.descripcion like :search or ciudad.nombre like :search ", search: "%#{params[:sSearch]}%")
+      glns = glns.where("gln like :search or tipo_gln.nombre like :search or codigo_localizacion like :search or gln.descripcion like :search or gln.fecha_asignacion like :search or estados.nombre like :search or municipio.nombre like :search or estatus.descripcion like :search or ciudad.nombre like :search ", search: "%#{params[:sSearch]}%")
     end
     
     if params[:sSearch_1].present? # Filtro de busqueda por GLN

@@ -18,11 +18,13 @@
       Grupo
     %td
       Clase
+    %td
+      Descripción Clasificación
   %tr
     %td{:align => "center"}
       =@empresa.nombre_empresa
     %td
-      =@clasificacion_empresa.descripcion
+      =@clasificacion_empresa.try(:descripcion)
     %td{:align => "center"}
       =@empresa.categoria
     %td{:align => "center"}
@@ -57,11 +59,14 @@
         %td= empresa.nombre_empresa
         %td= empresa.try(:estatus).try(:descripcion)
         %td= fecha
-        %td= empresa.try(:categoria)
-        %td= empresa.try(:division)
-        %td= empresa.try(:grupo)
-        %td= empresa.try(:clase)
-        //%td= hidden_field_tag "#{empresa.prefijo}", nil, :value => "#{empresa.try(:id_clasificacion)}"
+        %td{:id => "#{empresa.prefijo}_categoria"}
+          = empresa.try(:categoria)
+        %td{:id => "#{empresa.prefijo}_division"}
+          = empresa.try(:division)
+        %td{:id => "#{empresa.prefijo}_grupo"}
+          = empresa.try(:grupo)
+        %td{:id => "#{empresa.prefijo}_clase"}
+          = empresa.try(:clase)
 
 %br
 %br

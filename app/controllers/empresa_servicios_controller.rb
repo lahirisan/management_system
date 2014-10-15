@@ -141,7 +141,7 @@ class EmpresaServiciosController < ApplicationController
     
     EmpresaServicio.eliminar(params) if params[:eliminar]
     respond_to do |format|
-      format.html { redirect_to "/empresas/#{params[:empresa_id]}/empresa_servicios?eliminados=true", notice: "Los servicios #{servicios} fueron eliminados."}
+      format.html { redirect_to "/empresas/#{params[:empresa_id]}/empresa_servicios", notice: "Los servicios #{servicios} fueron eliminados."}
     end
   end
 end

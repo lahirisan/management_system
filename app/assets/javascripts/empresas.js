@@ -656,9 +656,12 @@
             {
                 $('#empresa_prefijo').val($('#prefijo_manual').val());
 
-                //$.get("/clasificaciones.json?clasificacion="+$(this).val()+"&categoria=", function( data ) { 
+                $.get("/clasificaciones.json?categoria="+$('#'+$('#prefijo_manual').val()+'_categoria').text()+"&division="+$('#'+$('#prefijo_manual').val()+'_division').text()+"&grupo="+$('#'+$('#prefijo_manual').val()+'_grupo').text()+"&clase="+$('#'+$('#prefijo_manual').val()+'_clase').text(), function( data ) { 
 
-                //$('#empresa_id_clasificacion').val($('#'+ $('#prefijo_manual').val()).val()).change();
+                    $('#empresa_id_clasificacion').val(data.id).change(); // Se modifica la clasificacion de la empresa
+                
+                });
+                
                 $('.ventana_prefijo_manual').dialog('close');
             }
 

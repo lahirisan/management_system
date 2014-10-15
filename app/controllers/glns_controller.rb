@@ -146,7 +146,7 @@ class GlnsController < ApplicationController
     params[:eliminar_glns].collect{|gln_| gln += gln_ + " "} if params[:eliminar_glns]
 
     respond_to do |format|
-      format.html { redirect_to "#{empresa_glns_path}?eliminados=true", notice: "GLN Eliminado(s): #{gln}"}
+      format.html { redirect_to "#{empresa_glns_path}", notice: "GLN Eliminado(s): #{gln}"}
       format.json { head :no_content }
     end
   end
