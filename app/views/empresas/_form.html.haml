@@ -557,7 +557,7 @@
         
 
     #asignar_prefijo_manual
-      -if params[:action] == 'edit'
+      -if params[:action] == 'edit' and ((session[:perfil] == 'Super Usuario' and session[:gerencia] == 'Estandares y Consultoría') or (session[:perfil] == 'Administrador' and  session[:gerencia] == 'Estandares y Consultoría'))
         =render 'ventana_prefijo_manual'
       
 
