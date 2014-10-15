@@ -35,10 +35,10 @@ private
         empresa.estatus.descripcion,
         empresa.sub_estatus.try(:descripcion),
         link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa, :retirar => true), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
-        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, empresa_productos_path(empresa), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, "/empresas/#{empresa.prefijo}/productos", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),
         link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe,  "/empresas/#{empresa.prefijo}/empresa_servicios",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios asociados a la empresa #{empresa.nombre_empresa}"}),
-        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa),  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociado a la empresa #{empresa.nombre_empresa}"}),
-        select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion", empresa.empresas_retiradas.try(:id_motivo_retiro)), :id => "#{empresa.prefijo}motivo_ret")
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, "/empresas/#{empresa.prefijo}/glns",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociado a la empresa #{empresa.nombre_empresa}"}),
+        select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion", empresa.try(:id_motivo_retiro)), :id => "#{empresa.prefijo}motivo_ret")
       ]
   
     end
@@ -52,7 +52,7 @@ private
   def fetch_empresas
     
    
-    empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, :empresas_retiradas).where("estatus.descripcion like ? and alcance like ?", 'Activa', 'Empresa')
+    empresas = Empresa.includes(:estado, :ciudad, :estatus).where("estatus.descripcion like ? and alcance like ?", 'Activa', 'Empresa')
    
     
     empresas = empresas.page(page).per_page(per_page)
@@ -80,33 +80,33 @@ private
     if params[:sSearch_6].present?
       empresas = empresas.where("estatus.descripcion like :search6", search6: "%#{params[:sSearch_6]}%" )
     end
-    if params[:sSearch_7].present?
-      empresas = empresas.where("empresa.id_tipo_usuario like :search7", search7: "%#{params[:sSearch_7]}%" )
-    end
-    if params[:sSearch_8].present?
-      empresas = empresas.where("empresa.nombre_comercial like :search8", search8: "%#{params[:sSearch_8]}%" )
-    end
-    if params[:sSearch_9].present?
-      empresas = empresas.where("empresa.id_clasificacion like :search9", search9: "%#{params[:sSearch_9]}%" )
-    end
-    if params[:sSearch_10].present?
-      empresas = empresas.where("empresa.categoria like :search10", search10: "%#{params[:sSearch_10]}%" )
-    end
-    if params[:sSearch_11].present?
-      empresas = empresas.where("empresa.division like :search11", search11: "%#{params[:sSearch_11]}%" )
-    end
-    if params[:sSearch_12].present?
-      empresas = empresas.where("empresa.grupo like :search12", search12: "%#{params[:sSearch_12]}%" )
-    end
-    if params[:sSearch_13].present? 
-      empresas = empresas.where("empresa.clase like :search13", search13: "%#{params[:sSearch_13]}%" )
-    end
-    if params[:sSearch_14].present?
-      empresas = empresas.where("empresa.rep_legal like :search14", search14: "%#{params[:sSearch_14]}%" )
-    end
-    if params[:sSearch_15].present?
-      empresas = empresas.where("empresa.cargo_rep_legal like :search15", search15: "%#{params[:sSearch_15]}%" )
-    end
+    # if params[:sSearch_7].present?
+    #   empresas = empresas.where("empresa.id_tipo_usuario like :search7", search7: "%#{params[:sSearch_7]}%" )
+    # end
+    # if params[:sSearch_8].present?
+    #   empresas = empresas.where("empresa.nombre_comercial like :search8", search8: "%#{params[:sSearch_8]}%" )
+    # end
+    # if params[:sSearch_9].present?
+    #   empresas = empresas.where("empresa.id_clasificacion like :search9", search9: "%#{params[:sSearch_9]}%" )
+    # end
+    # if params[:sSearch_10].present?
+    #   empresas = empresas.where("empresa.categoria like :search10", search10: "%#{params[:sSearch_10]}%" )
+    # end
+    # if params[:sSearch_11].present?
+    #   empresas = empresas.where("empresa.division like :search11", search11: "%#{params[:sSearch_11]}%" )
+    # end
+    # if params[:sSearch_12].present?
+    #   empresas = empresas.where("empresa.grupo like :search12", search12: "%#{params[:sSearch_12]}%" )
+    # end
+    # if params[:sSearch_13].present? 
+    #   empresas = empresas.where("empresa.clase like :search13", search13: "%#{params[:sSearch_13]}%" )
+    # end
+    # if params[:sSearch_14].present?
+    #   empresas = empresas.where("empresa.rep_legal like :search14", search14: "%#{params[:sSearch_14]}%" )
+    # end
+    # if params[:sSearch_15].present?
+    #   empresas = empresas.where("empresa.cargo_rep_legal like :search15", search15: "%#{params[:sSearch_15]}%" )
+    # end
     empresas
   end
 

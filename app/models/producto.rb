@@ -37,22 +37,17 @@ class Producto < ActiveRecord::Base
   
   end
 
-  def self.retirar_productos_empresa(prefijo, motivo_retiro, sub_estatus) # Retira todos los producctos de una empresa dado su prefijo
+  def self.retirar_productos(prefijo) # Retira todos los producctos de una empresa dado su prefijo
     
     estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Retirado', 'Producto'])
-    empresa = Empresa.find(:first, :conditions => ["prefijo = ?", prefijo])
-    empresa.producto.collect{|producto|
-    producto_ = Producto.find(:first, :conditions => ["gtin like ?", producto.gtin]);
-    producto_.id_estatus = estatus_producto.id;
-    producto_.save;
-    producto_retirado = ProductosRetirados.new; 
-    producto_retirado.gtin = producto_.gtin;
-    producto_retirado.fecha_retiro = Time.now;
-    producto_retirado.id_motivo_retiro = motivo_retiro;
-    producto_retirado.id_subestatus = sub_estatus;
-    producto_retirado.save 
-    }
+   
+    productos = Producto.find(:all, :conditions => ["prefijo = ?", prefijo])
+    productos.collect{|producto|
+    producto.id_estatus = estatus_producto.id;
+    producto.fecha_retiro = Time.now;
+    producto.save
     
+    }
 
   end
 
@@ -78,8 +73,8 @@ class Producto < ActiveRecord::Base
         productos = Producto.find(:all, :conditions => ["prefijo = ? and codigo_prod = ?",parametros[:empresa_id], producto.codigo_prod])
       end
 
-      productos.collect{|producto| producto_elim_detalle = ProductoElimDetalle.new; producto_elim_detalle.gtin = producto.gtin; producto_elim_detalle.fecha_eliminacion = Time.now; producto_elim_detalle.save; productos_eliminados += producto.gtin; }
-    
+      # TODO: La traza de la infromacion del usaurio y los producvtos que esta eliminando
+      
       productos.map{|producto| producto.destroy}
       
     end
@@ -295,7 +290,7 @@ class Producto < ActiveRecord::Base
     
     (2..spreadsheet.last_row).each do |fila|  # EL indice 1 es para indicar los datos de cabecera MARCA, DESCRIPCION, ETC
       
-      productos_gtin_13_codificados = @productos_gtin_13 = Producto.find(:all, :conditions => ["tipo_gtin.tipo = ? and prefijo = ?", "GTIN-13", prefijo], :include => [:tipo_gtin]) if prefijo.to_s.size == 5
+      productos_gtin_13_codificados = Producto.find(:all, :conditions => ["tipo_gtin.tipo = ? and prefijo = ?", "GTIN-13", prefijo], :include => [:tipo_gtin]) if prefijo.to_s.size == 5
 
       if (prefijo.to_s.size == 5)
 
@@ -305,6 +300,7 @@ class Producto < ActiveRecord::Base
 
       if spreadsheet.empty?(fila,1) # EL codigo de producto no viene en el Excel
 
+        
         gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil, nil)
 
       else
@@ -348,6 +344,7 @@ class Producto < ActiveRecord::Base
 
   def self.import_gtin_14(file, tipo_gtin_, prefijo) #Importar GTIN 14
 
+    
     tipo_gtin = TipoGtin.find(tipo_gtin_)
     spreadsheet = open_spreadsheet(file)
 
@@ -356,6 +353,8 @@ class Producto < ActiveRecord::Base
     (2..spreadsheet.last_row).each do |fila|
 
       gtin_existente =  verificar_gtin_existente(tipo_gtin.base, prefijo,spreadsheet.row(fila)[0].to_i )
+
+      raise gtin_existente.to_yaml
 
       if (gtin_existente)
 
@@ -374,6 +373,7 @@ class Producto < ActiveRecord::Base
         
       else
 
+        raise spreadsheet.row(fila)[0].to_i.to_s.to_yaml
         codigo_invalido += " "+  spreadsheet.row(fila)[0].to_i.to_s
        
       end
