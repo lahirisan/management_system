@@ -75,7 +75,7 @@ $(document).ready(function(){
         // Datatable que maneja retirar productos
         $("#data_table_eliminar_productos").dataTable({
             sPaginationType: "full_numbers",
-            aaSorting: [[ 2, "desc" ]],
+            aaSorting: [[ 7, "desc" ]],
             aoColumns: [{ "bSortable": false }, null,  null, null,  null, { "bSortable": false }, null,null],
             bJQueryUI: true,
             bProcessing: true,

@@ -104,7 +104,7 @@
 						%span.ui-icon.ui-icon-circle-plus
 						Crear Producto
 
-				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Producto') and params[:empresa_retirada].nil?
+				- if (UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Producto') and params[:empresa_retirada].nil?) or (((session[:perfil] == 'Super Usuario' or session[:perfil] == 'Usuario Operativo' or session[:perfil] == 'Administrador') and session[:gerencia] == 'Estandares y Consultoría')  and params[:empresa_retirada].nil?)
 					
 					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminar=true", :title => "ELiminar productos", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-circle-close
