@@ -333,9 +333,6 @@ class Producto < ActiveRecord::Base
       producto.prefijo = prefijo
       producto.save
 
-
-
-
       
 
     end

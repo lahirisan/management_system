@@ -7,69 +7,69 @@
   %p#notice= notice
 
   %table
+    %tr
+      %td
+        Dirección de Correspondencia
+      %td
+        =select_tag "tipo_correspondencia_etiqueta",  "<option value='ean'>Codifificación GS1</option><option value='edi'>Comercio Electrónico Y Sincronet</option>".html_safe
+
+  
+  %br
+  %br
+  %table
 
     %tr
       %td
-        Nombre del contacto
-      %td
-        =@empresa.rep_legal
+        Contacto
+      %td.etiqueta_nombre_contacto
+        =@empresa.rep_ean
     %tr
       %td
         Cargo
-      %td
-        =@empresa.cargo_rep_legal
+      %td.etiqueta_cargo
+        =@empresa.rep_ean_cargo
     %tr
       %td
-        Teléfono Principal
-      %td
-        =@contacto.try(:contacto) ? @contacto.try(:contacto) : "No tiene"
+        Teléfono
+      %td.etiqueta_telefono
+        =@empresa.telefono1_ean
     %tr
       %td
-        Edificio
-      %td
-        =@etiqueta.try(:edificio)
-    %tr
-      %td
-        Calle
-      %td
-        =@etiqueta.try(:calle)
-    %tr
-      %td
-        Urbanización
-      %td
-        =@etiqueta.try(:urbanizacion)
+        Dirección
+      %td.etiqueta_direccion
+        =@empresa.try(:direccion_ean)
     %tr
       %td
         Estado
-      %td 
-        =@etiqueta.try(:estado).try(:nombre)
+      %td.etiqueta_estado 
+        //=@empresa.try(:estado_ean).try(:nombre)
     %tr
       %td
         Ciudad
-      %td
-        =@etiqueta.try(:ciudad).try(:nombre)
+      %td.etiqueta_ciudad
+        =@ciudad_ean.try(:nombre)
     %tr
       %td
         Municipio
-      %td
+      %td.etiqueta_municipio
       
-        =@etiqueta.try(:municipio).try(:nombre)
+        =@municipio_ean.try(:nombre)
     %tr
       %td
         Parroquia
-      %td
-        /=@etiqueta.try(:parroquia).try(:nombre)
-        =@etiqueta.try(:nombre_parroquia)
+      %td.etiqueta_parroquia
+        
+        =@empresa.try(:parroquia_ean)
     %tr
       %td
-        Código Postal
-      %td
-        =@etiqueta.try(:cod_postal)
+        Cod. Postal
+      %td.etiqueta_cod_postal
+        =@empresa.try(:cod_postal_ean)
     %tr
       %td
-        Punto Referencia
-      %td
-        =@etiqueta.try(:punto_referencia)
+        Pto. Referencia
+      %td.etiqueta_punto_ref
+        =@empresa.try(:punto_ref_ean)
   
   
   %br

@@ -6,12 +6,12 @@ class EtiquetasController < ApplicationController
   def show
 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:id]])
-    @etiqueta = Correspondencia.find(:first, :conditions => ["prefijo = ?", params[:id]], :include => :empresa)
-    @contacto = DatosContacto.find(:first, :conditions => ["prefijo = ? and tipo = ?", params[:empresa_id], 'telefono'])
-    
-    @navegabilidad = @etiqueta.try(:empresa).try(:prefijo).to_s+" > "+@etiqueta.try(:empresa).try(:nombre_empresa) 
-    @navegabilidad = @navegabilidad ? @navegabilidad += " > Etiqueta" : ""
 
+    @ciudad_ean = Ciudad.find(@empresa.id_ciudad_ean) if @empresa.id_ciudad_ean
+    @municipio_ean = Municipio.find(@empresa.id_municipio_ean) if @empresa.id_municipio_ean
+
+    @navegabilidad = @empresa.try(:prefijo).to_s+" > "+@empresa.try(:nombre_empresa) + " > Etiqueta"
+    
     respond_to do |format|
       format.html # show.html.haml
       format.pdf{}

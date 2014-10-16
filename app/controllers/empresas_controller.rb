@@ -101,11 +101,18 @@ class EmpresasController < ApplicationController
   # GET /empresas/1.json
   def show
 
-    (params[:eliminados]) ? (@empresa = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:id]])) : (@empresa = Empresa.find(params[:id]))
+    #(params[:eliminados]) ? (@empresa = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:id]])) : (@empresa = Empresa.find(params[:id]))
     
+    @empresa = Empresa.find(params[:id])
+
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @empresa }
+      
+      format.json {
+
+        render json: @empresa 
+
+      }
 
       format.pdf {
           
@@ -211,7 +218,8 @@ class EmpresasController < ApplicationController
     @empresa = Empresa.find(params[:id])
 
     
-    if (session[:gerencia] == 'Estandares y Consultoría')  and (params[:empresa][:prefijo] != @empresa.prefijo)
+    
+    if (session[:gerencia] == 'Estandares y Consultoría')  and (params[:empresa][:prefijo].to_i != @empresa.prefijo)
       
       estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Activa', 'Empresa'])
       estatus_administrativo = SubEstatus.find(:first, :conditions => ["descripcion = ?", 'SOLVENTE'])
