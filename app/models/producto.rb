@@ -65,17 +65,19 @@ class Producto < ActiveRecord::Base
 
       producto = Producto.find(:first, :conditions => ["gtin like ?", producto_seleccionado])
 
-      if producto.tipo_gtin.tipo == "GTIN-14" 
+      if producto
+        if producto.tipo_gtin.tipo == "GTIN-14" 
+          
+          productos = Producto.find(:all,  :conditions => ["prefijo = ? and codigo_prod = ? and id_tipo_gtin = ?",parametros[:empresa_id], producto.codigo_prod, producto.id_tipo_gtin], :select => "producto.*")  
         
-        productos = Producto.find(:all, :joins => [:producto], :conditions => ["prefijo = ? and codigo_prod = ? and id_tipo_gtin = ?",parametros[:empresa_id], producto.codigo_prod, producto.id_tipo_gtin], :select => "producto.*")  
-      
-      else
-        productos = Producto.find(:all, :conditions => ["prefijo = ? and codigo_prod = ?",parametros[:empresa_id], producto.codigo_prod])
-      end
+        else
+          productos = Producto.find(:all, :conditions => ["prefijo = ? and codigo_prod = ?",parametros[:empresa_id], producto.codigo_prod])
+        end
 
-      # TODO: La traza de la infromacion del usaurio y los producvtos que esta eliminando
-      
-      productos.map{|producto| producto.destroy}
+        # TODO: La traza de la infromacion del usaurio y los producvtos que esta eliminando
+        
+        productos.map{|producto| producto.destroy}
+      end
       
     end
     return productos
