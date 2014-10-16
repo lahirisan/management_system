@@ -9,6 +9,7 @@ class EtiquetasController < ApplicationController
 
     @ciudad_ean = Ciudad.find(@empresa.id_ciudad_ean) if @empresa.id_ciudad_ean
     @municipio_ean = Municipio.find(@empresa.id_municipio_ean) if @empresa.id_municipio_ean
+    @estado_ean = Estado.find(@empresa.id_estado_ean) if @empresa.id_estado_ean
 
     @navegabilidad = @empresa.try(:prefijo).to_s+" > "+@empresa.try(:nombre_empresa) + " > Etiqueta"
     
