@@ -356,7 +356,7 @@ class Producto < ActiveRecord::Base
 
       gtin_existente =  verificar_gtin_existente(tipo_gtin.base, prefijo,spreadsheet.row(fila)[0].to_i )
 
-      raise gtin_existente.to_yaml
+      
 
       if (gtin_existente)
 
