@@ -98,40 +98,34 @@
 			-if params[:controller] == 'productos' and params[:action] == 'index' and params[:retirar].nil? and params[:retirados].nil? and params[:eliminar].nil? and params[:eliminados].nil?
 			
 
-				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Producto') and params[:empresa_retirada].nil?
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Producto') and params[:empresa_retirada].nil? and params[:insolvente].nil?
 					
 					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos/new", :title => "Crear producto", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-circle-plus
 						Crear Producto
 
-				- if (UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Producto') and params[:empresa_retirada].nil?) or (((session[:perfil] == 'Super Usuario' or session[:perfil] == 'Usuario Operativo' or session[:perfil] == 'Administrador') and session[:gerencia] == 'Estandares y Consultoría')  and params[:empresa_retirada].nil?)
+				- if (UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Producto') and params[:empresa_retirada].nil? and params[:insolvente].nil?) or (((session[:perfil] == 'Super Usuario' or session[:perfil] == 'Usuario Operativo' or session[:perfil] == 'Administrador') and session[:gerencia] == 'Estandares y Consultoría')  and params[:empresa_retirada].nil? and params[:insolvente].nil?)
 					
 					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminar=true", :title => "ELiminar productos", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-circle-close
 						Eliminar Productos
 				
-					/ %a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminados=true", :title => "Listado de los productos eliminados", :class => "ui-state-default ui-corner-all botones_menu"}
-					/ 	%span.ui-icon.ui-icon-trash
-					/ 	Productos Eliminados
 
 			-if params[:controller] == 'empresa_servicios' and params[:action] == 'index'  and params[:eliminar].nil? and params[:eliminados].nil?
 				
-				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Servicio')
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Servicio') and params[:empresa_retirada].nil? and params[:insolvente].nil?
 					
 					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios/new", :title => "Opción que permite crear servicio",:class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-circle-plus
 						Crear Servicio
-				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Servicio')
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Servicio') and params[:empresa_retirada].nil? and params[:insolvente].nil?
 					
 					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios?eliminar=true", :title => "Opción que permite eliminar un servicio asociado",:class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-circle-minus
 						Eliminar Servicios
 				
-					/ %a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/empresa_servicios?eliminados=true", :title => "Lista los servicios eliminados",:class => "ui-state-default ui-corner-all botones_menu"}
-					/ 	%span.ui-icon.ui-icon-trash
-					/ 	Servicios Eliminados
-
-			-if params[:controller] == 'glns' and params[:action] == 'index'  and params[:empresa_retirada].nil?
+				
+			-if params[:controller] == 'glns' and params[:action] == 'index' and  params[:empresa_retirada].nil? and params[:insolvente].nil?
 		
 				%a.opcion{:href => "#{new_empresa_gln_path}", :title => "Opción que permite crear GLN",:class => "ui-state-default ui-corner-all botones_menu"}
 					%span.ui-icon.ui-icon-circle-plus
@@ -140,11 +134,6 @@
 				%a.opcion{:href => "#{empresa_glns_path}?eliminar=true", :title => "ELiminar GLN",:class => "ui-state-default ui-corner-all botones_menu"}
 					%span.ui-icon.ui-icon-circle-minus
 					Eliminar GLN
-			
-				/ %a.opcion{:href => "#{empresa_glns_path}?eliminados=true", :title => "GLN eliminados",:class => "ui-state-default ui-corner-all botones_menu"}
-				/ 	%span.ui-icon.ui-icon-trash
-				/ 	GLN Eliminados
-			
 			
 			
 			-if params[:controller] == 'empresas' and params[:action] == 'index' and params[:retirar].nil? and params[:retiradas].nil? and params[:eliminar].nil? and params[:eliminadas].nil? and params[:reactivar].nil? and params[:activacion].nil?

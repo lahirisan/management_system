@@ -208,6 +208,7 @@ class ProductosController < ApplicationController
 
   def import
 
+    
     tipo_gtin = TipoGtin.find(params[:tipo_gtin])
 
     if (params[:tipo_gtin] == '6') or (params[:tipo_gtin] == '4') # Gtin14 base 8  GTIN14 base 13

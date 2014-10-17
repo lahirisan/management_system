@@ -364,4 +364,24 @@ class Empresa < ActiveRecord::Base
  end
 
 
+ def self.sincronizar_solventes_desde_excel ## Procedimiento para sincronizar el estatus de las empresas  SOLVENTES
+
+  spreadsheet = Roo::Excelx.new("/home/lahiri/Descargas/SOLVENTES1.xlsx", nil, :ignore)
+
+    (2..spreadsheet.last_row).each do |fila|
+
+       empresa_solvente = Empresa.find(spreadsheet.cell(fila,1))
+     
+         raise "No se encontro el prefijo #{spreadsheet.cell(fila,1)}".to_yaml if empresa_solvente.nil?
+         empresa_solvente.id_subestatus = 1
+         empresa_solvente.save
+     
+
+    end
+
+
+ end
+
+
+
 end
