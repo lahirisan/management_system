@@ -57,6 +57,7 @@
         // Datatable que maneja el listado para empresas retiradas
         $("#data_table_empresas_retiradas").dataTable({
             sPaginationType: "full_numbers",
+            aoColumns: [ null,  null, null,  null, null, null, null ,{ "bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false }],
             aaSorting: [[ 5, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
