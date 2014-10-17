@@ -119,7 +119,11 @@ class EmpresasController < ApplicationController
           prawnto :prawn => { :top_margin => 10, :page_layout => :portrait}
           @gln_legal = Gln.find(:first,  :include => [:tipo_gln], :conditions =>["prefijo = ? and id_tipo_gln= ? ", @empresa.prefijo, 1])
           
-          render "/empresas/carta_afiliacion.pdf.prawn"
+          if params[:retiro_individual]
+            render "empresas/retiro_voluntario.pdf.prawn"
+          else
+            render "/empresas/carta_afiliacion.pdf.prawn"
+          end
       }
 
     end
