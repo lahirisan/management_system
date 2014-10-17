@@ -366,7 +366,7 @@ class Empresa < ActiveRecord::Base
 
  def self.sincronizar_solventes_desde_excel ## Procedimiento para sincronizar el estatus de las empresas  SOLVENTES
 
-  spreadsheet = Roo::Excelx.new("/home/lahiri/Descargas/SOLVENTES1.xlsx", nil, :ignore)
+  spreadsheet = Roo::Excelx.new("C:\Users\jgacosta\Downloads\SOLVENTES.xlsx", nil, :ignore)
 
     (2..spreadsheet.last_row).each do |fila|
 
