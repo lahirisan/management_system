@@ -371,8 +371,7 @@ class Producto < ActiveRecord::Base
         producto.save
         
       else
-
-        raise spreadsheet.row(fila)[0].to_i.to_s.to_yaml
+        
         codigo_invalido += " "+  spreadsheet.row(fila)[0].to_i.to_s
        
       end
