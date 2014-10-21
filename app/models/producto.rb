@@ -364,8 +364,23 @@ class Producto < ActiveRecord::Base
         producto.descripcion = spreadsheet.row(fila)[3]
         producto.marca = spreadsheet.row(fila)[2]
         producto.id_estatus = 3
-        producto.fecha_creacion = Time.now
-        producto.codigo_prod = ((tipo_gtin.base == "GTIN-13") ? producto.gtin[8..12] : producto.gtin[9..12])
+        producto.fecha_creacion = Time.now 
+        
+        if (tipo_gtin.base == "GTIN-13" and prefijo.to_s.size == 7)
+
+          producto.codigo_prod =  producto.gtin[8..12]  
+
+        elsif  (tipo_gtin.base == "GTIN-8" and prefijo.to_s.size == 7)
+
+          producto.codigo_prod = producto.gtin[9..12]
+
+        elsif (tipo_gtin.base == "GTIN-13" and prefijo.to_s.size == 9 and prefijo.to_s[3..5] == "400") # GTIN artesanal
+
+          producto.codigo_prod = producto.gtin[10..12]
+
+        end
+        
+
         producto.id_tipo_gtin = tipo_gtin_.to_i
         producto.prefijo = prefijo
         producto.save
@@ -385,11 +400,16 @@ class Producto < ActiveRecord::Base
   
   def self.verificar_gtin_existente(base, prefijo,codigo_producto)
 
-    codigo_interno = completar_secuencia(codigo_producto, base)
+    if prefijo.to_s.size == 7 or prefijo.to_s.size == 5
+      codigo_interno = completar_secuencia(codigo_producto, base) 
+    else
+      codigo_interno = codigo_producto
+    end
 
     if base == "GTIN-13"
 
       gtin_generado =  prefijo.to_s + codigo_interno.to_s
+      
     
     elsif base == "GTIN-8"
       gtin_8 = "759" + codigo_interno.to_s
