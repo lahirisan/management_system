@@ -343,7 +343,6 @@ class Producto < ActiveRecord::Base
 
   def self.import_gtin_14(file, tipo_gtin_, prefijo) #Importar GTIN 14
 
-    
     tipo_gtin = TipoGtin.find(tipo_gtin_)
     spreadsheet = open_spreadsheet(file)
 
@@ -352,8 +351,6 @@ class Producto < ActiveRecord::Base
     (2..spreadsheet.last_row).each do |fila|
 
       gtin_existente =  verificar_gtin_existente(tipo_gtin.base, prefijo,spreadsheet.row(fila)[0].to_i )
-
-      
 
       if (gtin_existente)
 
@@ -400,16 +397,19 @@ class Producto < ActiveRecord::Base
   
   def self.verificar_gtin_existente(base, prefijo,codigo_producto)
 
+    
     if prefijo.to_s.size == 7 or prefijo.to_s.size == 5
       codigo_interno = completar_secuencia(codigo_producto, base) 
     else
+      codigo_producto = "00" + codigo_producto.to_s if codigo_producto.to_s.size == 1
+      codigo_producto = "0" + codigo_producto.to_s if codigo_producto.to_s.size == 2
       codigo_interno = codigo_producto
+
     end
 
     if base == "GTIN-13"
 
-      gtin_generado =  prefijo.to_s + codigo_interno.to_s
-      
+    gtin_generado =  prefijo.to_s + codigo_interno.to_s
     
     elsif base == "GTIN-8"
       gtin_8 = "759" + codigo_interno.to_s
