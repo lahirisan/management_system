@@ -337,74 +337,13 @@
                 return false;
             }
 
-            // $('.eliminar_empresa:checked').each(function() {
-                    
-            //     // Por cada empresa seleccionda se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
-            //     $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#sub_estatus").val()+'_'+$("#motivo_retiro").val()+ '">');
-            // });  
             
-            //var seleccion_invalida;
-
-            // if ($('#eliminar_masivo').is(':checked')) // Eliminacion masiva
-            // {  
-            //     // if ($("#sub_estatus").val() == 1)
-            //     // {
-            //     //     alert('Estimado usuario, la aplicación detectó que desea ELIMINAR empresas MASIVAMENTE. Por favor, verifique que ha seleccionado el SUB ESTATUS que se asignará masivamente.');
-            //     //     seleccion_invalida = true;
-            //     //     return false;
-            //     // }
-
-            //     // if ($("#motivo_retiro").val() == 1)
-            //     // {
-            //     //     alert('Estimado usuario, la aplicación detectó que desea ELIMINAR empresas MASIVAMENTE. Por favor, verifique que ha seleccionado el MOTIVO DE RETIRO que se asignará masivamente.');
-            //     //     seleccion_invalida = true;
-            //     //     return false;
-            //     // }
-
-                
-            // }
-            // else // múltiple selecccion de empresas a eliminar, no masivo
-            // {
-
-               
-            //     $('.eliminar_empresa:checked').each(function() {
-
-            //         if ($("#"+$(this).val()+"sub_estatus").val() == 1)
-            //         {
-            //             alert('Debe seleccionar un Sub Estatus para la empresa con prefijo ' + $(this).val());
-            //             seleccion_invalida = true;
-            //             return false;
-            //         }
-
-            //         if ($("#"+$(this).val()+"motivo_ret").val() == 1)
-            //         {
-            //             alert('Debe seleccionar un Motivo Retiro para la empresa con prefijo ' + $(this).val());
-            //             seleccion_invalida = true;
-            //             return false;
-            //         }
-                   
-            //         // Por cada empresa seleccionda se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
-            //         $('#datos_empresas_eliminar').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
-            //     });
-            // }
-
-            //  if (seleccion_invalida)
-            //     return false;
             
             if (!confirm('¿ Estimado usuario, está seguro de ELIMINAR la(s) empresa(s) seleccionada(s) ?'))
                 return false;
         });
 
-        // $('#formulario_eliminadas').submit(function( event ) { 
-
-        //     if ($(".reactivar_empresa:checked").length == 0)
-        //     {
-        //         alert("Estimado usuario, no ha seleccionado ninguna empresa para REACTIVAR. Por favor verifique.");
-        //         return false;
-        //     }
-
-        // });
-
+        
         
         // estilos de los botones exportar
         $('.etiqueta_regresar_empresas,.etiqueta_regresar_empresas_editar, .etiqueta_regresar_empresas_exportar, .regresar_empresas_sin_espacio, .regresar_empresas, .datos_contacto, .botones_menu, .exportar_empresas_no_validadas, .exportar_empresas_eliminadas, .exportar, .regresar, .retirar, .reactivar, .eliminar, .activar_empresa, .reactivar, .crear_empresa, .retirar_empresa_exportar, .empresas_retiradas_exportar').hover(
@@ -509,105 +448,7 @@
 
         $('#formulario_crear_empresa').submit(function( event ) { 
 
-            //valida formato email
-
-            // if ($('#email.email').val() != '') 
-            // {
-            //     if( !isValidEmailAddress( $('#email').val() ) &&  (window.location.pathname.split('/')[2] == 'new') ) 
-            //     { 
-            //         alert('El formato en Correo Principal es inválido. Por favor verifique.');
-            //         return false;
-            //     }
-
-            // }
-
-            // if ($('#email1').val() != '') 
-            // {
-            //     if( !isValidEmailAddress( $('#email1').val() ) &&  (window.location.pathname.split('/')[2] == 'new') ) 
-            //     { 
-            //         alert('El formato en Correo Secundario es inválido. Por favor verifique.');
-            //         return false;
-            //     }
-
-            // }
-
-
-
-            // Validar el formato de los números de telefono (0212) 123-45-67
-
-            // if ($('#codigo_telefono1').val() == '')
-            // {
-            //     alert('El código del Teléfono 1 NO puede estar en blanco. Por favor verifique.');
-            //     return false;
-            // }
-            
-            // if (($('#empresa_datos_contacto_attributes_0_contacto').val() == '')  &&  (window.location.pathname.split('/')[2] == 'new') ) // Validacion del primer número
-            // {
-            //     //if( !isValidNumberPhone($('#empresa_datos_contacto_attributes_0_contacto').val()))
-            //     //{
-            //         alert('El Teléfono 1 es obligatorio. Por favor verifique.');
-            //         return false;
-            //     //}
-
-            // }
-
-            // if (($('#telefono2').val() != '') && ($('#codigo_telefono2').val() == ''))
-            // {
-            //     alert('El código del Teléfono2 es obligatorio. Por favor verifique.');
-            //     return false;
-            // }
-
-            // if (($('#telefono3').val() != '') && ($('#codigo_telefono3').val() == ''))
-            // {
-            //     alert('El código del Teléfono3 es obligatorio. Por favor verifique.');
-            //     return false;
-            // }
-
-            // if (($('#fax').val() != '') && ($('#codigo_telefono4').val() == ''))
-            // {
-            //     alert('El código del FAX del fax. Por favor verifique.');
-            //     return false;
-            // }
-
-            // if ($('#empresa_rif').val() == 'tipo')
-            // {
-            //     alert('Para el campo RIF, debe seleccionar un valor para el campo desplegable tipo de RIF');
-            //     return false;
-            // }
-
-
-
-
            
-            // if (($('#telefono2').val() != '')   &&  (window.location.pathname.split('/')[2] == 'new') )// Validacion del segundo numero
-            // {
-            //     if( !isValidNumberPhone($('#telefono2').val()))
-            //     {
-            //         alert('El formato del Teléfono 2 es incorrecto. Por favor verifique.');
-            //         return false;
-            //     }
-
-            // }
-
-            // if (($('#telefono3').val() != '')   &&  (window.location.pathname.split('/')[2] == 'new') )// Validacion del segundo numero
-            // {
-            //     if( !isValidNumberPhone($('#telefono3').val()))
-            //     {
-            //         alert('El formato del Teléfono 3 es incorrecto. Por favor verifique.');
-            //         return false;
-            //     }
-
-            // }
-
-            // if (($('#fax').val() != '')  &&  (window.location.pathname.split('/')[2] == 'new') )// Validacion del segundo numero
-            // {
-            //     if( !isValidNumberPhone($('#fax').val()))
-            //     {
-            //         alert('El formato del Fax es incorrecto. Por favor verifique.');
-            //         return false;
-            //     }
-
-            // }
         
         });
 
@@ -618,57 +459,7 @@
                 this.value = this.value.toUpperCase();
         });
 
-        $('#asignar_prefijo_manual').dialog({
-          autoOpen: false,
-          width: 900
-         
-        });
-
-        // Botón para abrir el dialogo
-        $('#boton_abrir_ventana_prefijo_manual').click(function(w){
-          w.preventDefault(); // Deshabilita el hipervinculo el boton importar
-          
-
-          $('#prefijos_disponibles').dataTable({
-            bDestroy: true,
-            bJQueryUI: true,
-            aaSorting: [[ 3, "asc" ]],
-
-          });
-          $('#asignar_prefijo_manual').dialog('open').attr('class', 'ventana_prefijo_manual');
-          
-        });
-
-        //cierra la ventana para asignar prefijo manual
-        $('#regresar_formulario_empresa').click(function(){
-            $('.ventana_prefijo_manual').dialog('close');
-            
-        });
-
-        // Accion del boton asignar prefijo en la ventana
-
-        $('.boton_asignar_prefijo_manual').click(function(){
-
-            if ($('#prefijo_manual').val() == '')
-            {
-                alert('Estimado usuario, no ha ingresado ningún PREFIJO para ser reutilizado');
-            }
-            else
-            {
-                $('#empresa_prefijo').val($('#prefijo_manual').val());
-
-                $.get("/clasificaciones.json?categoria="+$('#'+$('#prefijo_manual').val()+'_categoria').text()+"&division="+$('#'+$('#prefijo_manual').val()+'_division').text()+"&grupo="+$('#'+$('#prefijo_manual').val()+'_grupo').text()+"&clase="+$('#'+$('#prefijo_manual').val()+'_clase').text(), function( data ) { 
-
-                    $('#empresa_id_clasificacion').val(data.id).change(); // Se modifica la clasificacion de la empresa
-                
-                });
-                
-                $('.ventana_prefijo_manual').dialog('close');
-            }
-
-            
-
-        });
+        
 
 
     })   

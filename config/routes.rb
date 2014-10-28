@@ -5,6 +5,12 @@ GS1::Application.routes.draw do
   get "perfil/index"
   get "logout" => "sessions#destroy", :as => "logout"
 
+  resources :empresa_registradas do
+    collection do
+      put 'update_multiple', :action => 'update_multiple', :as => 'update_multiple' # La ruta update_multiple para empresas
+    end
+  end
+
   resources :usuarios 
 
   resources :productos do #/empresas/1/productos

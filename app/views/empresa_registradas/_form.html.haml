@@ -1,22 +1,22 @@
 %section.contexto
   %label.contexto.titulo_contrato
     -if params[:activacion]
-      =@empresa.new_record? ? "Registrar Empresa" : "#{@empresa.nombre_empresa} > Editar Empresa"
+      =@empresa_registrada.new_record? ? "Registrar Empresa" : "#{@empresa_registrada.nombre_empresa} > Editar Empresa"
     -else
-      =@empresa.new_record? ? "Registrar Empresa" : "#{@empresa.nombre_empresa} > Editar Empresa"
+      =@empresa_registrada.new_record? ? "Registrar Empresa" : "#{@empresa_registrada.nombre_empresa} > Editar Empresa"
   
   %br
   %br
   
   %section.formulario
-    = form_for(@empresa, :html => {:id => "formulario_crear_empresa"}) do |f|
+    = form_for(@empresa_registrada, :html => {:id => "formulario_crear_empresa"}) do |f|
 
-      -if @empresa.errors.any? 
+      -if @empresa_registrada.errors.any? 
         #error_explanation
-          %h2= pluralize(@empresa.errors.count, "errore")
+          %h2= pluralize(@empresa_registrada.errors.count, "errore")
           %ul
             // Customización de los mensajes de error para el formulario empresa
-            -@empresa.errors.full_messages.each do |msg|
+            -@empresa_registrada.errors.full_messages.each do |msg|
               -if msg == 'Id tipo usuario No puede estar en blanco'
                 %li='Debe seleccionar un tipo de usuario.'
               -elsif msg == 'Id estado No puede estar en blanco'
@@ -41,29 +41,29 @@
              
               -else
                 %li=msg + '.'
-              
-      -if (session[:gerencia] == 'Estandares y Consultoría' and session[:perfil] == 'Super Usuario') or session[:perfil] == 'Administrador'
-        
-        
+      
+      -if ((session[:gerencia] == 'Estandares y Consultoría'  and session[:perfil] == 'Super Usuario') or session[:perfil] == 'Administrador') and !@empresa_registrada.new_record? 
+
         %table
           %tr
             %td.prefijo
               Prefijo Asignado
             %td.prefijo
-              =f.text_field :prefijo, :readonly => :true, :class => "campo_readonly"
+            
+              -if (params[:activacion]) 
+                =f.text_field :prefijo, :value => "#{@prefijo}"
+              -else  
+                =f.text_field :prefijo, :readonly => :true, :class => "campo_readonly"
             %td
-              
-              /=link_to "Reasignar Prefijo", "#", :id => "boton_abrir_ventana_prefijo_manual"
-        
-        
-      %br
+              =link_to "Reasignar Prefijo", "#", :id => "boton_abrir_ventana_prefijo_manual"
+      
       %table
         %tr
           %td
             AFILIACION EN TIPO
           %td
           %td
-            -if @empresa.new_record?
+            -if @empresa_registrada.new_record?
               =f.collection_select :id_tipo_usuario, TipoUsuarioEmpresa.find(:all, :conditions => ["descripcion in (?)", ['Usuario', 'No Usuario']]),:id_tipo_usu_empresa, :descripcion, :prompt => "-Seleccione Tipo Usuario-"  
             -else
               =f.collection_select :id_tipo_usuario, TipoUsuarioEmpresa.all, :id_tipo_usu_empresa, :descripcion
@@ -103,7 +103,7 @@
           %td
             Teléfono 1 (58)
           %td
-            -if @empresa.new_record?
+            -if @empresa_registrada.new_record?
               =text_field_tag "codigo_telefono1", nil, :placeholder => "212", :size => "3"
           %td
             =f.text_field :contacto_tlf1,  :placeholder => "123-45-67"
@@ -113,7 +113,7 @@
           %td
             Teléfono 2 (58)
           %td
-            -if @empresa.new_record?
+            -if @empresa_registrada.new_record?
               =text_field_tag "codigo_telefono2", nil, :placeholder => "416", :size => "3"
           %td
             =f.text_field "contacto_tlf2",  {:placeholder => "123-45-67"}
@@ -121,7 +121,7 @@
           %td
             Teléfono 3 (58)
           %td
-            -if @empresa.new_record?
+            -if @empresa_registrada.new_record?
               =text_field_tag "codigo_telefono3", nil, :placeholder => "412", :size => "3"
           %td
             =f.text_field "contacto_tlf3",  {:placeholder => "123-45-67"}
@@ -129,7 +129,7 @@
           %td
             FAX (58)
           %td
-            -if @empresa.new_record?
+            -if @empresa_registrada.new_record?
               =text_field_tag "codigo_telefono4", nil, :placeholder => "212", :size => "3"
           %td
             =f.text_field "contacto_fax",  {:placeholder => "123-45-67"}
@@ -155,11 +155,11 @@
             =f.text_field :circunscripcion_judicial
         %tr
           %td
-            -if @empresa.new_record?
+            -if @empresa_registrada.new_record?
               ="Fecha de inscripción en Registro Mercantil"
           %td
           %td
-            -if @empresa.new_record?
+            -if @empresa_registrada.new_record?
 
               =f.text_field(:fecha_registro_mercantil) 
 
@@ -227,7 +227,14 @@
             VENTAS BRUTAS ANUALES
           %td
           %td
-            =f.select(:ventas_brutas_anuales, options_for_select(['0 a 200.000', 'De 200.001,00 a 2.000.000,00', 'De 2.000.001,00 a 4.500.000,00', 'De 4.500.001,00 a 6.000.000,00', 'De 6.000.0001,00 o más'], @empresa.ventas_brutas_anuales), :prompt => "- Seleccione -")
+            =f.select(:ventas_brutas_anuales, options_for_select(['0 a 200.000', 'De 200.001,00 a 2.000.000,00', 'De 2.000.001,00 a 4.500.000,00', 'De 4.500.001,00 a 6.000.000,00', 'De 6.000.0001,00 o más'], @empresa_registrada.ventas_brutas_anuales), :prompt => "- Seleccione -")
+        %tr
+          %td
+            Aporte Mantenimiento
+          %td
+          %td
+            =f.text_field(:aporte_mantenimiento)
+
       %br
 
       %br
@@ -495,7 +502,7 @@
 
 
       %label.contexto
-        =@empresa.new_record? ? "Ramo de desempeño de la empresa" : @empresa.nombre_empresa + " > Ramo de desempeño de la empresa"
+        =@empresa_registrada.new_record? ? "Ramo de desempeño de la empresa" : @empresa_registrada.nombre_empresa + " > Ramo de desempeño de la empresa"
       %hr.contexto{:size => "1"}
 
       %table
@@ -503,7 +510,7 @@
           %td
             Clasificación
           %td
-            -if @empresa.new_record? or @clasificacion_empresa.nil?
+            -if @empresa_registrada.new_record? or @clasificacion_empresa.nil?
               =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"})
             -else
               =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion,  { :selected => @clasificacion_empresa.id,:style => "width:600px;"})
@@ -529,23 +536,20 @@
           %td
             = f.text_field :clase, :readonly => :true, :class => 'campo_readonly'
 
+      =hidden_field_tag "activacion", true
       
       %button#submit.ui-state-default.ui-corner-all.crear_empresa{:type => "submit"}
         %span.ui-icon.ui-icon-circle-plus
         Guardar
-
-      -if params[:activacion]
-        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas?activacion=true", :title => "Regresar al listado general de empresas NO VALIDADAS"}
-          %span.ui-icon.ui-icon-arrowreturnthick-1-w
-          Regresar
-
-      -else
-        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
-          %span.ui-icon.ui-icon-arrowreturnthick-1-w
-          Regresar
+ 
+      %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresa_registradas", :title => "Regresar al listado de nuevas empresas"}
+        %span.ui-icon.ui-icon-arrowreturnthick-1-w
+        Regresar
         
 
-    
+    #asignar_prefijo_manual
+      -if params[:action] == 'edit' and ((session[:perfil] == 'Super Usuario' and session[:gerencia] == 'Estandares y Consultoría') or (session[:perfil] == 'Administrador' and  session[:gerencia] == 'Estandares y Consultoría'))
+        =render 'ventana_prefijo_manual'
       
 
 

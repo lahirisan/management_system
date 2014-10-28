@@ -1,6 +1,4 @@
-if params[:prefijo] != ''
-  @empresas = @empresas.where("empresa.prefijo like :search", search: "%#{params[:prefijo]}%" )
-end
+
 if params[:nombre_empresa] != ''
   @empresas = @empresas.where("empresa.nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%" )
 end

@@ -132,23 +132,7 @@ class EmpresasController < ApplicationController
   # GET /empresas/new
   # GET /empresas/new.json
   def new
-
-    
-    @empresa = Empresa.new
-    
-    respond_to do |format|
-      
-      format.html {
-
-        
-      }
-
-      format.json {
-
-      }
-
-        
-    end
+     # la creacion de empresa es por empresa_registrada_controller
   end
 
   # GET /empresas/1/edit
@@ -156,62 +140,13 @@ class EmpresasController < ApplicationController
     
     @empresa = Empresa.find(params[:id])
     
-    if (session[:perfil] == 'Super Usuario' and session[:gerencia] == 'Estandares y Consultoría') or (session[:perfil] == 'Administrador' and session[:gerencia] == 'Estandares y Consultoría')
-      
-      @clasificacion_empresa = Clasificacion.find(:first, :conditions => ["categoria = ? and division = ? and grupo = ? and clase = ?", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase])
-      
-      @prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus], :conditions => ["(categoria = ? or division = ? or grupo = ? or clase = ?) and no_elejible is ? and prefijo >= 7590000 and prefijo <= 7599999", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase, nil], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion")
-
-      
-
-    end
     
-
   end
 
   # POST /empresas
   # POST /empresas.json
   def create
-    
-    
-    params[:empresa][:id_estatus] = Estatus.empresa_inactiva()
-    # Se completa la hora con los segundos para que pueda ordenar por la ultima creada
-    time = Time.now
-    params[:empresa][:fecha_inscripcion] = Time.now
-    params[:empresa][:prefijo] =  Empresa.generar_prefijo_valido
-    
-    params[:empresa][:id_tipo_usuario] = 3 if params[:empresa][:id_tipo_usuario] == '' # Si el usaurio no especifico el tipo de empresa
-    params[:empresa][:contacto_tlf1] =  params[:codigo_telefono1] + "-" + params[:empresa][:contacto_tlf1] if params[:codigo_telefono1] != ""
-    params[:empresa][:contacto_tlf2] = params[:codigo_telefono2] + "-" + params[:empresa][:contacto_tlf2] if params[:codigo_telefono2] != ""
-    params[:empresa][:contacto_tlf3] = params[:codigo_telefono3] + "-" + params[:empresa][:contacto_tlf3] if params[:codigo_telefono3] != ""
-    params[:empresa][:contacto_fax] = params[:codigo_telefono4] + "-" + params[:empresa][:contacto_fax] if params[:codigo_telefono4] != ""
-
-    
-    @empresa = Empresa.new(params[:empresa])
-    
-    respond_to do |format|
-      
-      
-      if @empresa.save
-  
-        
-        # EL GLN OJO con esto  validar los casos GLN para empresa no validad y GLN de emrpresas eliminadas
-        
-        Gln.generar_legal(@empresa.prefijo.to_s) #if empresa_no_validada.nil?
-
-        Auditoria.registrar_evento(session[:user_id],"Empresa", "Crear", Time.now, "Prefijo #{@empresa.prefijo}")
-        format.html { 
-         if session[:gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Administrador' or session[:perfil] == 'Super Usuario'
-          redirect_to '/empresas?activacion=true', notice: "EMPRESA CREADA SATISFACTORIAMENTE. PREFIJO:#{@empresa.prefijo}   NOMBRE:#{@empresa.nombre_empresa}"
-         else
-          redirect_to '/empresas?activacion=true', notice: "EMPRESA CREADA SATISFACTORIAMENTE. NOMBRE:#{@empresa.nombre_empresa} RIF:#{@empresa.rif}"
-         end
-        }
-
-       else
-          format.html { render action: "new" }
-       end
-    end
+    # La creacion de empresa es por empresa_registrada_controller
   end
 
   # PUT /empresas/1
@@ -220,48 +155,17 @@ class EmpresasController < ApplicationController
 
 
     @empresa = Empresa.find(params[:id])
-
     
     
-    if (session[:gerencia] == 'Estandares y Consultoría')  and (params[:empresa][:prefijo].to_i != @empresa.prefijo)
-      
-      estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Activa', 'Empresa'])
-      estatus_administrativo = SubEstatus.find(:first, :conditions => ["descripcion = ?", 'SOLVENTE'])
-      params[:empresa][:id_subestatus] = estatus_administrativo.id
-      params[:empresa][:id_estatus] = estatus.id  # Empresa activa
-      params[:empresa][:fecha_activacion] = Time.now
-
-     
-        gln = params[:empresa][:prefijo] + "90001"
-        digito_verificacion = Producto.calcular_digito_verificacion(gln.to_i, "GTIN-13")
-        gln = gln +  digito_verificacion.to_s
-
-       Gln.where(:prefijo => @empresa.prefijo).update_all("prefijo = #{params[:empresa][:prefijo]}, gln = #{gln}")  
-
-       Empresa.where(:prefijo => @empresa.prefijo).update_all("prefijo = #{params[:empresa][:prefijo]}")
-
-       # registro en una tabla de historico eliminadas
-
-        eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa][:prefijo]])
-
-        Empresa.registrar_historico_eliminada(eliminada)
-
-    end
-
-
-
+  
     respond_to do |format|
        
       if @empresa.update_attributes(params[:empresa])
 
-
         format.html { 
-          if session[:gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Administrador' or session[:perfil] == 'Super Usuario'
-
-            redirect_to '/empresas', notice: "EMPRESA CON PREFIJO #{@empresa.prefijo} ACTUALIZADA SATISFACTORIAMENTE." 
-          else
-            redirect_to '/empresas?activacion=true', notice: "EMPRESA #{@empresa.nombre_empresa} ACTUALIZADA SATISFACTORIAMENTE." 
-          end
+          
+          redirect_to '/empresas', notice: "EMPRESA #{@empresa.nombre_empresa} PREFIJO:#{@empresa.prefijo}  ACTUALIZADA SATISFACTORIAMENTE." 
+          
         }
 
         format.json { head :no_content }

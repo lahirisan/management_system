@@ -1,0 +1,31 @@
+%section.contexto
+    %label.contexto Nuevas Empresas > Listado
+    %hr.contexto{:size => "1"}
+%section#areaTrabajo.areaTrabajo
+    %p#notice= notice
+    
+    /=render 'botones_exportar'
+
+    =form_tag "empresa_registradas/update_multiple", :method => "put", :id => "activar_solvencia" do
+        %table#data_table_empresa_registradas_activar_solvencia.display{:"data-source" => "/empresa_registradas.json?activar_solvencia=true"}
+            %thead
+                %tr 
+                    %th
+                    %th RIF
+                    %th Nombre Empresa
+                    %th Fecha Registro
+                    %th Ciudad
+                    %th Sub Estatus
+                    %th Ventas Brutas Anuales
+            %tbody
+            %tfoot
+                =render 'footer_activar_solvencia'
+        -if (session[:gerencia] == 'Estandares y Consultoría' and (session[:perfil] == 'Super Usuario' or session[:perfil] == 'Administrador')) or (session[:gerencia] == 'Administracion' and session[:perfil] == 'Usuario Validador')
+
+            %br
+            %br
+            %button#submit.ui-state-default.ui-corner-all.nuevo_registro_activar_solvencia{:type => "submit", :title => "Asigna como SOLVENTE a las empresas seleccionadas"}
+                %span.ui-icon.ui-icon-circle-check
+                Marcar SOLVENTE
+    
+   
