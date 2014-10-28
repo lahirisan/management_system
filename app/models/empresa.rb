@@ -423,7 +423,7 @@ class Empresa < ActiveRecord::Base
   empresa.domicilio_responsable_legal = empresa_registrada.domicilio_responsable_legal
   empresa.cedula_responsable_legal = empresa_registrada.cedula_responsable_legal
   empresa.ventas_brutas_anuales = empresa_registrada.ventas_brutas_anuales
-  empresa.aporte_mantenimiento = empresa_registrada.aporte_mantenimiento
+  empresa.aporte_mantenimiento_bs = empresa_registrada.aporte_mantenimiento_bs
   empresa.fecha_registro_mercantil = empresa_registrada.fecha_registro_mercantil
   empresa.id_parroquia_empresa = empresa_registrada.id_parroquia_empresa
   empresa.parroquia_empresa = empresa_registrada.parroquia_empresa
