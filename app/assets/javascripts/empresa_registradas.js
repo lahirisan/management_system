@@ -16,26 +16,26 @@ $( document ).ready(function() {
 	$('#empresa_registrada_ventas_brutas_anuales').change(function() {
 
 		if (($(this).val() == '0 a 200.000') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
-			$('#empresa_registrada_aporte_mantenimiento').val('3400.00');
+			$('#empresa_registrada_aporte_mantenimiento_bs').val('3400.00');
 		if (($(this).val() == 'De 200.001,00 a 2.000.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
-		 	$('#empresa_registrada_aporte_mantenimiento').val('5700.00');
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('5700.00');
 		if (($(this).val() == 'De 2.000.001,00 a 4.500.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
-		 	$('#empresa_registrada_aporte_mantenimiento').val('12500.00');
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('12500.00');
 		if (($(this).val() == 'De 4.500.001,00 a 6.000.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
-		 	$('#empresa_registrada_aporte_mantenimiento').val('21700.00');
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('21700.00');
 		if (($(this).val() == 'De 6.000.0001,00 o más') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
-		 	$('#empresa_registrada_aporte_mantenimiento').val('27000.00');
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('27000.00');
 
 		if (($(this).val() == '0 a 200.000') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
-			$('#empresa_registrada_aporte_mantenimiento').val('3400.00');
+			$('#empresa_registrada_aporte_mantenimiento_bs').val('3400.00');
 		if (($(this).val() == 'De 200.001,00 a 2.000.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
-		 	$('#empresa_registrada_aporte_mantenimiento').val('3400.00');
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('3400.00');
 		if (($(this).val() == 'De 2.000.001,00 a 4.500.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
-		 	$('#empresa_registrada_aporte_mantenimiento').val('4500.00');
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('4500.00');
 		if (($(this).val() == 'De 4.500.001,00 a 6.000.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
-		 	$('#empresa_registrada_aporte_mantenimiento').val('7900.00');
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('7900.00');
 		if (($(this).val() == 'De 6.000.0001,00 o más') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
-		 	$('#empresa_registrada_aporte_mantenimiento').val('21700.00');
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('21700.00');
 
 	});
 
@@ -126,6 +126,84 @@ $( document ).ready(function() {
             }
 
         });
+
+         // Actualizar la ciudad dependiendo del estado seleccionado - Datos Basicos
+        $( "#empresa_registrada_id_estado").change(function() {
+            
+            //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/ciudades.json?id_estado="+$(this).val(), function( data ) { 
+                var ciudades = $("#empresa_registrada_id_ciudad");
+                ciudades.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    ciudades.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            });
+           
+
+        });
+
+        // Lod datos de correspondencia
+
+        $( "#empresa_registrada_id_estado_ean").change(function() {
+            
+            
+            //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/ciudades.json?id_estado="+$(this).val(), function( data ) { 
+                var ciudades = $("#empresa_registrada_id_ciudad_ean");
+                ciudades.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    ciudades.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            });
+
+            //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/municipios.json?id_estado="+$(this).val(), function( data ) { 
+                var  municipios = $("#empresa_registrada_id_municipio_ean");
+                municipios.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    municipios.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            });       
+
+        });
+
+
+        $( "#empresa_registrada_id_estado_edi").change(function() {
+            
+            //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/ciudades.json?id_estado="+$(this).val(), function( data ) { 
+                var ciudades = $("#empresa_registrada_id_ciudad_edi");
+                ciudades.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    ciudades.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            });
+
+            //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/municipios.json?id_estado="+$(this).val(), function( data ) { 
+                var  municipios = $("#empresa_registrada_id_municipio_edi");
+                municipios.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    municipios.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            });       
+
+        });
+
+        // Datepicker de la fecha
+
+        if (window.location.pathname.split('/')[3] != 'edit')
+        {
+            // Datepicker los ultimos 100 anhos
+            $("#empresa_registrada_fecha_registro_mercantil").datepicker({yearRange: "-100:+0",
+                changeYear: true});
+        }
+
 
 	
 });
