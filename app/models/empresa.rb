@@ -374,6 +374,26 @@ class Empresa < ActiveRecord::Base
  end
 
 
+ def self.sincronizar_aporte_mantenimiento ## Procedimiento para sincronizar el estatus de las empresas  SOLVENTES
+
+  spreadsheet = Roo::Excelx.new("#{Rails.root}/doc/aporte_mantenimiento.xlsx", nil, :ignore)
+
+    (1..spreadsheet.last_row).each do |fila|
+
+       empresa = Empresa.find(spreadsheet.cell(fila,1))
+     
+        if empresa
+          empresa.aporte_mantenimiento = (spreadsheet.cell(fila,2))
+          empresa.save
+        end
+     
+
+    end
+
+
+ end
+
+
  def self.activar(empresa_registrada)
 
   estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", "Activa", "Empresa"])
