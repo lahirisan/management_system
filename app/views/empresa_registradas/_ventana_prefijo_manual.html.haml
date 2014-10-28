@@ -1,0 +1,83 @@
+
+%h1
+  Listado de Prefijos que se pueden reutilizar:
+%br
+
+%table{:border => "1"}
+  %tr
+    %td{:align => "center"}
+      Empresa
+    %td{:align => "center"}
+      Ramo de desempeño de la Empresa
+    
+    %td
+      Categoría
+    %td
+      División
+    %td
+      Grupo
+    %td
+      Clase
+    %td
+      Descripción Clasificación
+  %tr
+    %td{:align => "center"}
+      =@empresa_registrada.nombre_empresa
+    %td
+      =@clasificacion_empresa.try(:descripcion)
+    %td{:align => "center"}
+      =@empresa_registrada.categoria
+    %td{:align => "center"}
+      =@empresa_registrada.division
+    %td{:align => "center"}
+      =@empresa_registrada.grupo
+    %td{:align => "center"}
+      =@empresa_registrada.clase
+%br
+%br
+
+%table#prefijos_disponibles.display{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+  %thead
+    %tr
+      %td PREFIJO
+      %td NOMBRE EMPRESA
+      %td ESTATUS
+      %td FECHA ELIMINACION
+      %td CATEGORIA
+      %td DIVISION
+      %td GRUPO
+      %td CLASE
+      
+    
+  %tbody
+    - @prefijos_disponibles.each do |empresa|
+      -fecha = empresa.try(:fecha_eliminacion) 
+      -fecha = fecha.strftime("%Y-%m-%d") if fecha
+
+      %tr
+        %td= empresa.prefijo
+        %td= empresa.nombre_empresa
+        %td= empresa.try(:estatus).try(:descripcion)
+        %td= fecha
+        %td{:id => "#{empresa.prefijo}_categoria"}
+          = empresa.try(:categoria)
+        %td{:id => "#{empresa.prefijo}_division"}
+          = empresa.try(:division)
+        %td{:id => "#{empresa.prefijo}_grupo"}
+          = empresa.try(:grupo)
+        %td{:id => "#{empresa.prefijo}_clase"}
+          = empresa.try(:clase)
+
+%br
+%br
+%table
+  %tr
+    %td
+      =text_field_tag "prefijo_manual", nil, :placeholder => "PREFIJO"
+    %td{:style => "width:20%"}
+      =button_tag 'Asignar Prefijo', :class => "boton_asignar_prefijo_manual"
+    %td{:style => "width:80%; text-align:right;"}
+      =button_tag 'Regresar', :id => "regresar_formulario_empresa"
+%br
+%br
+%br
