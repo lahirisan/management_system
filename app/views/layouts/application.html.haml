@@ -30,28 +30,27 @@
 				=link_to 'Cerrar Sesión', logout_path, :class => "enlace_session", :title => "Cierra sesión"
 
 		%section#menu.menu	
-			.submenu Menú Administración
+			
 
-			-if ((params[:controller] == 'empresas' and params[:action] == 'index')) or ((params[:controller] == 'empresas' and params[:action] == 'new')) or ((params[:controller] == 'empresas' and params[:action] == 'show')) or ((params[:controller] == 'empresas' and params[:action] == 'edit'))
+			-if (((params[:controller] == 'empresas' and params[:action] == 'index')) or ((params[:controller] == 'empresas' and params[:action] == 'new')) or ((params[:controller] == 'empresas' and params[:action] == 'show')) or ((params[:controller] == 'empresas' and params[:action] == 'edit'))) and (session[:gerencia] != 'Comercial' and session[:gerencia] != 'Administracion')
 
 				%a.opcion{:href => "/empresas", :title => "Empresas Activas", :class => "ui-state-default ui-corner-all botones_menu"}
 					%span.ui-icon.ui-icon-home
 					&nbsp;Empresas
 
-			-if params[:controller] == 'empresas' and params[:action] == 'index' and params[:activacion].nil? and params[:retirar].nil? and params[:eliminar].nil? and params[:eliminadas].nil? and params[:retiradas].nil? and params[:reactivar].nil?
-				
-				- if session[:gerencia] == 'Comercial' or session[:perfil] == 'Administrador'
-				
+			
+			-if (params[:controller] == 'empresa_registradas' and params[:action] == 'index' and session[:gerencia] == 'Comercial')
 
-					%a.opcion{:href => "/empresas/new", :title => "Opción para Crear Empresa", :class => "ui-state-default ui-corner-all botones_menu"}
-						%span.ui-icon.ui-icon-circle-plus
-						&nbsp;Registrar
+				%a.opcion{:href => "/empresa_registradas/new", :title => "Opción para Registrar Empresa", :class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-circle-plus
+					&nbsp;Registrar Empresa
+
+			-if (params[:controller] == 'empresas' and params[:action] == 'index' and params[:activacion].nil? and params[:retirar].nil? and params[:eliminar].nil? and params[:eliminadas].nil? and params[:retiradas].nil? and params[:reactivar].nil? and session[:perfil] == 'Super Usuario') 
 					
 				
-				- if session[:gerencia] == 'Administrativa' or session[:perfil] == 'Administrador' or session[:gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Super Usuario' or session[:gerencia] == 'Comercial' or session[:gerencia] == 'Administracion'
-					
+				- if session[:perfil] == 'Administrador' or session[:perfil] == 'Super Usuario' 
 				
-					%a.opcion{:href => "/empresas?activacion=true", :title => "Opción para Activar Empresas creadas", :class => "ui-state-default ui-corner-all botones_menu"}
+					%a.opcion{:href => "/empresa_registradas", :title => "Opción para ACTIVAR las nuevas empresas", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-circle-check
 						&nbsp;Activar / No Validada
 
@@ -89,11 +88,23 @@
 						%span.ui-icon.ui-icon-trash
 						&nbsp;Empresas Eliminadas
 
-			-if params[:controller] != 'empresas'
-
+			-if params[:controller] != 'empresas' and (session[:gerencia] != 'Comercial' and session[:gerencia] != 'Administracion')
+				
 				%a.opcion{:href => "/empresas", :title => "Listado de Empresas Activas", :class => "ui-state-default ui-corner-all botones_menu"}
 					%span.ui-icon.ui-icon-home
 					Empresas
+
+			-if (params[:controller] == 'empresa_registradas' and params[:action] != 'index') 
+				%a.opcion{:href => "/empresa_registradas", :title => "Listado de Nuevas Empresas", :class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-document
+					Empresas Nuevas
+
+			// boton para activar colocar como solventes las empresas nuevas
+			-if ((session[:gerencia] == 'Administracion' and session[:perfil] == 'Usuario Validador') or (session[:gerencia] == 'Estandares y Consultoría' and session[:perfil] == 'Usuario Operativo') or session[:perfil] == 'Administrador')
+
+				%a.opcion{:href => "/empresa_registradas?activar_solvencia=true", :title => "Listado de Nuevas Empresas", :class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-document
+					Nuevas/SOLVENCIA
 					
 			-if params[:controller] == 'productos' and params[:action] == 'index' and params[:retirar].nil? and params[:retirados].nil? and params[:eliminar].nil? and params[:eliminados].nil?
 			
