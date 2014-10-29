@@ -33,7 +33,7 @@ private
       if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Empresa')
         
         ## Se verifica la solvencia, no solvente no puede codificar
-        if empresa.solv == 2
+        if empresa.solv != 2
 
           [ 
           empresa.prefijo,
@@ -72,15 +72,15 @@ private
 
       else
         # Se verifica la solvencia, si esta insolvente no se puede codificar
-        if solvencia == 2
+        if solvencia != 2
         
           [ 
           empresa.prefijo,
           empresa.nombre_empresa,
-          fecha,
-          empresa.ciudad.nombre,
+          empresa.fecha_activacion,
+          empresa.ciudad_,
           empresa.rif,
-          empresa.estatus,
+          empresa.estatus_,
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe,empresa_productos_path(empresa), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos de la empresa #{empresa.nombre_empresa}"}),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios", :class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios de la empresa #{empresa.nombre_empresa}"),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"}),  
@@ -90,10 +90,10 @@ private
           [ 
           empresa.prefijo,
           empresa.nombre_empresa,
-          fecha,
-          empresa.ciudad.nombre,
+          empresa.fecha_activacion,
+          empresa.ciudad_,
           empresa.rif,
-          empresa.estatus.descripcion,
+          empresa.estatus_,
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe,empresa_productos_path(empresa, :insolvente => "true"), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos de la empresa #{empresa.nombre_empresa}"}),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios?insolvente=true", :class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios de la empresa #{empresa.nombre_empresa}"),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa, :insolvente => "true"), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"}),  
