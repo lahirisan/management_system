@@ -479,7 +479,11 @@ class Empresa < ActiveRecord::Base
   empresa.id_subestatus = empresa_registrada.id_subestatus
   empresa.fecha_activacion = Time.now
   empresa.save
+
+  raise empresa.errors.to_yaml
   empresa_registrada.destroy
+
+
   
   eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", empresa.prefijo])
   Empresa.registrar_historico_eliminada(eliminada) if eliminada # Se esta utilizando un prefijo de empresa eliminada
