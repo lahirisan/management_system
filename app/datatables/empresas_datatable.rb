@@ -33,7 +33,7 @@ private
       if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Empresa')
         
         ## Se verifica la solvencia, no solvente no puede codificar
-        if empresa.solv != 2
+        if empresa.solv == 2
 
           [ 
           empresa.prefijo,
@@ -72,7 +72,7 @@ private
 
       else
         # Se verifica la solvencia, si esta insolvente no se puede codificar
-        if solvencia != 2
+        if solvencia == 2
         
           [ 
           empresa.prefijo,
