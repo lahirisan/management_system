@@ -42,7 +42,7 @@ private
           empresa.ciudad_,
           empresa.rif,
           empresa.estatus_,
-          "NO SOLVENTE",
+          "DEUDOR",
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe, edit_empresa_path(empresa.prefijo, :editar => "true"), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar la empresa #{empresa.nombre_empresa}"}),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, empresa_productos_path(empresa.prefijo), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos de la empresa #{empresa.nombre_empresa}"}),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios", :class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios de la empresa #{empresa.nombre_empresa}"),
@@ -163,17 +163,17 @@ private
 
     if params[:sSearch_6].present?
       
-      if params[:sSearch_6] == "N" or params[:sSearch_6] == "NO"
+      if params[:sSearch_6].upcase == "D" or params[:sSearch_6].upcase == "DE" or params[:sSearch_6].upcase == "DEU" or params[:sSearch_6].upcase == "DEUD" or params[:sSearch_6].upcase == "DEUDO" or params[:sSearch_6].upcase == "DEUDOR"
         
-        empresas = empresas.where("empresa.solv = 2")
+        empresas = empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) = 2")
         #empresas = empresas.where("sub_estatus.descripcion like :search6", search6: "%#{params[:sSearch_6]}%" )
-      elsif params[:sSearch_6] == "S" or params[:sSearch_6] == "SO" or params[:sSearch_6] == "SOL" or params[:sSearch_6] == "SOLV" or params[:sSearch_6] == "SOLVE" or params[:sSearch_6] == "SOLVE" or params[:sSearch_6] == "SOLVEN" or params[:sSearch_6] == "SOLVENT" or params[:sSearch_6] == "SOLVENTE" 
+      elsif params[:sSearch_6].upcase == "S" or params[:sSearch_6].upcase == "SO" or params[:sSearch_6].upcase == "SOL" or params[:sSearch_6].upcase == "SOLV" or params[:sSearch_6].upcase == "SOLVE" or params[:sSearch_6].upcase == "SOLVE" or params[:sSearch_6].upcase == "SOLVEN" or params[:sSearch_6].upcase == "SOLVENT" or params[:sSearch_6].upcase == "SOLVENTE" 
 
-        empresas = empresas.where("empresa.solv != 2")
+        empresas = empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) != 2")
 
       else
         
-        empresas = empresas.where("empresa.solv like #{params[:sSearch_6]}")
+        empresas = empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) like '#{params[:sSearch_6]}'")
       end 
     
     end
