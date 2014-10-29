@@ -396,6 +396,8 @@ class Empresa < ActiveRecord::Base
 
  def self.activar(empresa_registrada)
 
+  raise "qui".to_yaml
+
   estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", "Activa", "Empresa"])
 
   empresa = Empresa.new
