@@ -163,16 +163,19 @@ private
 
     if params[:sSearch_6].present?
       
-      # Comparar contra una expresion regular ??? 
-
       if params[:sSearch_6] == "N" or params[:sSearch_6] == "NO"
         
-        #[BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo
-        
-        empresas = empresas.where("[BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo is null")
+        empresas = empresas.where("empresa.solv = 2")
         #empresas = empresas.where("sub_estatus.descripcion like :search6", search6: "%#{params[:sSearch_6]}%" )
-      end
+      elsif params[:sSearch_6] == "S" or params[:sSearch_6] == "SO" or params[:sSearch_6] == "SOL" or params[:sSearch_6] == "SOLV" or params[:sSearch_6] == "SOLVE" or params[:sSearch_6] == "SOLVE" or params[:sSearch_6] == "SOLVEN" or params[:sSearch_6] == "SOLVENT" or params[:sSearch_6] == "SOLVENTE" 
 
+        empresas = empresas.where("empresa.solv != 2")
+
+      else
+        
+        empresas = empresas.where("empresa.solv like #{params[:sSearch_6]}")
+      end 
+    
     end
   
 
