@@ -118,7 +118,7 @@ private
    
     #empresas = Empresa.where("estatus.descripcion = ?", 'Activa').includes(:ciudad, :estatus, :sub_estatus).order("#{sort_column} #{sort_direction}") 
     
-    empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("inner join ciudad on empresa.id_ciudad = ciudad.id inner join sub_estatus on sub_estatus.id = empresa.id_subestatus inner join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo").order("#{sort_column} #{sort_direction}").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, ciudad.nombre as ciudad_, empresa.rif as rif, estatus.descripcion as estatus_, sub_estatus.descripcion as sub_estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv")
+    empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("inner join ciudad on empresa.id_ciudad = ciudad.id inner join inner join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo").order("#{sort_column} #{sort_direction}").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, ciudad.nombre as ciudad_, empresa.rif as rif, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv")
     
 
  #   SELECT
@@ -141,29 +141,39 @@ private
 
 
     
-    # if params[:sSearch].present? # Filtro de busqueda general
-    #   empresas = empresas.where("empresa.prefijo like :search or  empresa.nombre_empresa like :search or empresa.fecha_activacion like :search or  ciudad.nombre like :search or empresa.rif like :search or sub_estatus.descripcion like :search ", search: "%#{params[:sSearch]}%")
-    # end
-    # if params[:sSearch_0].present? # Filtro de busqueda prefijo
-    #   empresas = empresas.where("empresa.prefijo like :search0", search0: "%#{params[:sSearch_0]}%" )
-    # end
-    # if params[:sSearch_1].present? # Filtro de busqueda por nombre de la empresa
-    #   empresas = empresas.where("empresa.nombre_empresa like :search1", search1: "%#{params[:sSearch_1]}%" )
-    # end
-    # if params[:sSearch_2].present? # Filtro fecha_activacion
-    #   empresas = empresas.where("empresa.fecha_activacion like :search2", search2: "%#{params[:sSearch_2]}%" )
-    # end
+    if params[:sSearch].present? # Filtro de busqueda general
+      empresas = empresas.where("empresa.prefijo like :search or  empresa.nombre_empresa like :search or empresa.fecha_activacion like :search or  ciudad.nombre like :search or empresa.rif like :search or sub_estatus.descripcion like :search ", search: "%#{params[:sSearch]}%")
+    end
+    if params[:sSearch_0].present? # Filtro de busqueda prefijo
+      empresas = empresas.where("empresa.prefijo like :search0", search0: "%#{params[:sSearch_0]}%" )
+    end
+    if params[:sSearch_1].present? # Filtro de busqueda por nombre de la empresa
+      empresas = empresas.where("empresa.nombre_empresa like :search1", search1: "%#{params[:sSearch_1]}%" )
+    end
+    if params[:sSearch_2].present? # Filtro fecha_activacion
+      empresas = empresas.where("empresa.fecha_activacion like :search2", search2: "%#{params[:sSearch_2]}%" )
+    end
    
-    # if params[:sSearch_3].present?
-    #   empresas = empresas.where("ciudad.nombre like :search3", search3: "%#{params[:sSearch_3]}%" )
-    # end
-    # if params[:sSearch_4].present?
-    #   empresas = empresas.where("empresa.rif like :search4", search4: "%#{params[:sSearch_4]}%" )
-    # end
+    if params[:sSearch_3].present?
+      empresas = empresas.where("ciudad.nombre like :search3", search3: "%#{params[:sSearch_3]}%" )
+    end
+    if params[:sSearch_4].present?
+      empresas = empresas.where("empresa.rif like :search4", search4: "%#{params[:sSearch_4]}%" )
+    end
 
-    # if params[:sSearch_6].present?
-    #   empresas = empresas.where("sub_estatus.descripcion like :search6", search6: "%#{params[:sSearch_6]}%" )
-    # end
+    if params[:sSearch_6].present?
+      
+      # Comparar contra una expresion regular ??? 
+
+      if params[:sSearch_6] == "N" or params[:sSearch_6] == "NO"
+        
+        #[BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo
+        
+        empresas = empresas.where("[BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo is null")
+        #empresas = empresas.where("sub_estatus.descripcion like :search6", search6: "%#{params[:sSearch_6]}%" )
+      end
+
+    end
   
 
     empresas
