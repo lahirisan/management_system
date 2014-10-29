@@ -72,7 +72,7 @@ private
 
       else
         # Se verifica la solvencia, si esta insolvente no se puede codificar
-        if solvencia == 1
+        if solvencia == 2
         
           [ 
           empresa.prefijo,
