@@ -479,10 +479,7 @@ class Empresa < ActiveRecord::Base
   empresa.direccion_edi = empresa_registrada.direccion_edi
   empresa.id_subestatus = empresa_registrada.id_subestatus
   empresa.fecha_activacion = Time.now
-
-  raise "aqui".to_yaml
   empresa.save
-
  
   empresa_registrada.destroy
 
