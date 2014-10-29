@@ -396,7 +396,6 @@ class Empresa < ActiveRecord::Base
 
  def self.activar(empresa_registrada)
 
-  raise "qui".to_yaml
 
   estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", "Activa", "Empresa"])
 
@@ -480,9 +479,11 @@ class Empresa < ActiveRecord::Base
   empresa.direccion_edi = empresa_registrada.direccion_edi
   empresa.id_subestatus = empresa_registrada.id_subestatus
   empresa.fecha_activacion = Time.now
+
+  raise "aqui".to_yaml
   empresa.save
 
-  raise empresa.errors.to_yaml
+ 
   empresa_registrada.destroy
 
 
