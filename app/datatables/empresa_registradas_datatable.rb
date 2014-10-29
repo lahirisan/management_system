@@ -76,8 +76,10 @@ private
       empresas = EmpresaRegistrada.where("rif IS NOT NULL").includes(:ciudad, :sub_estatus, :estatus, :clasificacion, :tipo_usuario_empresa).order("#{sort_column} #{sort_direction}") 
 
      end
-   
-    
+
+
+
+
     
     empresas = empresas.page(page).per_page(per_page)
     

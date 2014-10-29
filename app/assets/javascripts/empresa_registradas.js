@@ -43,7 +43,7 @@ $( document ).ready(function() {
         sPaginationType: "full_numbers",
         aoColumns: [ { "bSortable": false }, null,null, null, null, null, null],
         bJQueryUI: true,
-        aaSorting: [[ 2, "desc" ]],
+        aaSorting: [[ 3, "desc" ]],
         bProcessing: true,
         bServerSide: true,
         sDom: 'T<"clear">lfrtip',
