@@ -410,7 +410,7 @@ class Empresa < ActiveRecord::Base
   empresa.id_estatus = estatus.id
   empresa.id_tipo_usuario = empresa_registrada.id_tipo_usuario
   empresa.nombre_comercial = empresa_registrada.nombre_comercial
-  empresa.id_clasificacion = empresa.id_clasificacion
+  empresa.id_clasificacion = empresa_registrada.id_clasificacion
   empresa.categoria = empresa_registrada.categoria
   empresa.division = empresa_registrada.division
   empresa.grupo = empresa_registrada.grupo
@@ -437,7 +437,7 @@ class Empresa < ActiveRecord::Base
   empresa.rep_ean_cargo = empresa_registrada.rep_ean_cargo
   empresa.punto_ref_ean = empresa_registrada.punto_ref_ean
   empresa.id_estado_ean = empresa_registrada.id_estado_ean
-  empresa.id_ciudad_ean = empresa.id_ciudad_ean
+  empresa.id_ciudad_ean = empresa_registrada.id_ciudad_ean
   empresa.id_parroquia_ean = empresa_registrada.id_parroquia_ean
   empresa.parroquia_ean = empresa_registrada.parroquia_ean
   empresa.cod_postal_ean = empresa_registrada.cod_postal_ean
