@@ -24,11 +24,13 @@ private
 
       
       fecha = ""
-      fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") if (empresa.fecha_activacion)
-      
-      empresa.solv
+      if (empresa.fecha_activacion) # Las empresas que no se resgistraron mediante el sistema de  gestion no tienen fecha de activacion
+        fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") 
+      else
 
-      
+        fecha = empresa.fecha_inscripcion.strftime("%Y-%m-%d") 
+      end
+      empresa.solv
 
       if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Empresa')
         
@@ -55,7 +57,7 @@ private
           [
           empresa.prefijo,
           empresa.nombre_empresa,
-          fecha_activacion,
+          fecha,
           empresa.ciudad_,
           empresa.rif,
           empresa.estatus_,
@@ -77,7 +79,7 @@ private
           [ 
           empresa.prefijo,
           empresa.nombre_empresa,
-          fecha_activacion,
+          fecha,
           empresa.ciudad_,
           empresa.rif,
           empresa.estatus_,
@@ -90,7 +92,7 @@ private
           [ 
           empresa.prefijo,
           empresa.nombre_empresa,
-          fecha_activacion,
+          fecha,
           empresa.ciudad_,
           empresa.rif,
           empresa.estatus_,
@@ -118,29 +120,9 @@ private
    
     #empresas = Empresa.where("estatus.descripcion = ?", 'Activa').includes(:ciudad, :estatus, :sub_estatus).order("#{sort_column} #{sort_direction}") 
     
-    empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("inner join ciudad on empresa.id_ciudad = ciudad.id inner join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo").order("#{sort_column} #{sort_direction}").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, ciudad.nombre as ciudad_, empresa.rif as rif, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv")
-    
-
- #   SELECT
- #  prefijo,
- #  isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv
- # FROM
- #  empresa
- # LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo;
-
-
-
-
+    empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("inner join ciudad on empresa.id_ciudad = ciudad.id inner join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo").order("#{sort_column} #{sort_direction}").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, ciudad.nombre as ciudad_, empresa.rif as rif, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv, empresa.fecha_inscripcion as fecha_inscripcion").order("#{sort_column} #{sort_direction}") 
     empresas = empresas.page(page).per_page(per_page)
 
-
-
-
-
-
-
-
-    
     if params[:sSearch].present? # Filtro de busqueda general
       empresas = empresas.where("empresa.prefijo like :search or  empresa.nombre_empresa like :search or empresa.fecha_activacion like :search or  ciudad.nombre like :search or empresa.rif like :search or sub_estatus.descripcion like :search ", search: "%#{params[:sSearch]}%")
     end
@@ -165,11 +147,12 @@ private
       
       if params[:sSearch_6].upcase == "D" or params[:sSearch_6].upcase == "DE" or params[:sSearch_6].upcase == "DEU" or params[:sSearch_6].upcase == "DEUD" or params[:sSearch_6].upcase == "DEUDO" or params[:sSearch_6].upcase == "DEUDOR"
         
-        empresas = empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) = 2")
-        #empresas = empresas.where("sub_estatus.descripcion like :search6", search6: "%#{params[:sSearch_6]}%" )
+        empresas = empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) != 2")
+
+        
       elsif params[:sSearch_6].upcase == "S" or params[:sSearch_6].upcase == "SO" or params[:sSearch_6].upcase == "SOL" or params[:sSearch_6].upcase == "SOLV" or params[:sSearch_6].upcase == "SOLVE" or params[:sSearch_6].upcase == "SOLVE" or params[:sSearch_6].upcase == "SOLVEN" or params[:sSearch_6].upcase == "SOLVENT" or params[:sSearch_6].upcase == "SOLVENTE" 
 
-        empresas = empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) != 2")
+        empresas = empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) = 2")
 
       else
         
