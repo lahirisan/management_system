@@ -38,7 +38,7 @@ private
           [ 
           empresa.prefijo,
           empresa.nombre_empresa,
-          empresa.fecha_activacion,
+          fecha,
           empresa.ciudad_,
           empresa.rif,
           empresa.estatus_,
@@ -55,7 +55,7 @@ private
           [
           empresa.prefijo,
           empresa.nombre_empresa,
-          empresa.fecha_activacion,
+          fecha_activacion,
           empresa.ciudad_,
           empresa.rif,
           empresa.estatus_,
@@ -77,7 +77,7 @@ private
           [ 
           empresa.prefijo,
           empresa.nombre_empresa,
-          empresa.fecha_activacion,
+          fecha_activacion,
           empresa.ciudad_,
           empresa.rif,
           empresa.estatus_,
@@ -90,7 +90,7 @@ private
           [ 
           empresa.prefijo,
           empresa.nombre_empresa,
-          empresa.fecha_activacion,
+          fecha_activacion,
           empresa.ciudad_,
           empresa.rif,
           empresa.estatus_,
