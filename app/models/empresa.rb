@@ -86,7 +86,6 @@ class Empresa < ActiveRecord::Base
         empresa_seleccionada = parametros[:eliminar_empresas][eliminar_empresas]
         
         empresa_eliminar = Empresa.find(empresa_seleccionada)
-
         
         empresa_eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", empresa_eliminar.prefijo])
 
