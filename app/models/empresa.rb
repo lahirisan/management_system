@@ -86,15 +86,13 @@ class Empresa < ActiveRecord::Base
         empresa_seleccionada = parametros[:eliminar_empresas][eliminar_empresas]
         
         empresa_eliminar = Empresa.find(empresa_seleccionada)
+
         
         empresa_eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", empresa_eliminar.prefijo])
 
-        Empresa.registrar_historico_eliminada(empresa_eliminada) if empresa_eliminada
-        
+        empresa_eliminada.destroy if empresa_eliminada
         Empresa.registrar_eliminada(empresa_eliminar)
-
-        empresa_eliminar.destroy if empresa_eliminada.nil?  # Empresas retiradas que se estan eliminando
-
+        empresa_eliminar.destroy # Se elimina la retirada
         
       end
   end
@@ -194,6 +192,7 @@ class Empresa < ActiveRecord::Base
     empresa_eliminada.fecha_eliminacion = Time.now
     empresa_eliminada.id_estatus = estatus_empresa.id
     empresa_eliminada.save
+
 
  end
 
