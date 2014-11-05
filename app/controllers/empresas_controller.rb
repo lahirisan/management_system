@@ -120,6 +120,8 @@ class EmpresasController < ApplicationController
           prawnto :prawn => { :top_margin => 10, :page_layout => :portrait}
           @gln_legal = Gln.find(:first,  :include => [:tipo_gln], :conditions =>["prefijo = ? and id_tipo_gln= ? ", @empresa.prefijo, 1])
           
+          @productos = Producto.find(:all, :conditions => ["prefijo = ?", @empresa.prefijo])
+
           if params[:retiro_individual]
             render "empresas/retiro_voluntario.pdf.prawn"
           else
@@ -220,9 +222,5 @@ class EmpresasController < ApplicationController
     end
   end
 
-
-  def self.attributes_protected_by_default
-    []
-  end
 
 end
