@@ -80,7 +80,8 @@ private
       empresas = empresas.where("empresa.rif like :search4", search4: "%#{params[:sSearch_4]}%" )
     end
     if params[:sSearch_5].present?
-       empresas = empresas.where("fecha_retiro like :search5", search5: "%#{params[:sSearch_5]}%" )
+       empresas = empresas.where("CONVERT(DATETIME, FLOOR(CONVERT(FLOAT, empresa.fecha_retiro))) = '#{params[:sSearch_5]}'")
+       
     end
    
    

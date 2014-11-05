@@ -60,7 +60,8 @@ class EmpresasController < ApplicationController
       format.xlsx{
 
                   if params[:retiradas]
-                    @empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, {:empresas_retiradas => :sub_estatus},{:empresas_retiradas => :motivo_retiro}).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("empresas_retiradas.fecha_retiro desc")
+
+                    @empresas = Empresa.includes(:estado, :ciudad, :estatus, :motivo_retiro).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("fecha_retiro desc")  
                     render  "/empresas/empresas_retiradas.xlsx.axlsx"
 
                   elsif params[:eliminadas]
@@ -119,6 +120,8 @@ class EmpresasController < ApplicationController
           prawnto :prawn => { :top_margin => 10, :page_layout => :portrait}
           @gln_legal = Gln.find(:first,  :include => [:tipo_gln], :conditions =>["prefijo = ? and id_tipo_gln= ? ", @empresa.prefijo, 1])
           
+          @productos = Producto.find(:all, :conditions => ["prefijo = ?", @empresa.prefijo])
+
           if params[:retiro_individual]
             render "empresas/retiro_voluntario.pdf.prawn"
           else

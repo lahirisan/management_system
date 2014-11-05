@@ -42,14 +42,7 @@ class Empresa < ActiveRecord::Base
     end 
   end
 
-  # def self.validar_empresas(empresas) # Procedimiento para validar Empresas
-  #   @estatus_activa = Estatus.find(:first, :conditions => ["descripcion like ?", "Activa"]) # Se busca el ID de Estatus Activa
-  #   @empresas = Empresa.find(:all, :conditions => ["prefijo in (?)", empresas.collect{|prefijo| prefijo}])
-  #   subestatus = SubEstatus.find(:first, :conditions => ["descripcion = ?", "SOLVENTE"]) # La empresa esta solvente
-  #   @empresas.collect{|empresa_seleccionada| empresa = Empresa.find(empresa_seleccionada.prefijo); empresa.id_estatus = @estatus_activa.id; empresa.id_subestatus = subestatus.id; empresa.fecha_activacion = Time.now; empresa.save}
-
-  # end
-
+ 
   def self.cambiar_sub_estatus(parametros)
     
     parametros[:sub_estatus_empresas].collect{|empresa_seleccionada|  empresa = Empresa.find(empresa_seleccionada); empresa.id_subestatus = parametros[:"#{empresa.prefijo}"].to_i; empresa.save}
@@ -96,8 +89,9 @@ class Empresa < ActiveRecord::Base
         
         empresa_eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", empresa_eliminar.prefijo])
 
-        Empresa.registrar_historico_eliminada(empresa_eliminada) if empresa_eliminada
+        empresa_eliminada.destroy if empresa_eliminada
         Empresa.registrar_eliminada(empresa_eliminar)
+        empresa_eliminar.destroy # Se elimina la retirada
         
       end
   end
@@ -128,102 +122,7 @@ class Empresa < ActiveRecord::Base
   end
 
 
-  # def self.crear_correspondencia_eliminada(empresa)
-      
-  #     correspondencia_eliminada = CorrespondenciaEliminada.new;
-  #     correspondencia_eliminada.prefijo = empresa.correspondencia.prefijo;
-  #     correspondencia_eliminada.rep_tecnico = empresa.correspondencia.rep_tecnico;
-  #     correspondencia_eliminada.cargo_rep_tecnico = empresa.correspondencia.cargo_rep_tecnico;
-  #     correspondencia_eliminada.edificio = empresa.correspondencia.edificio;
-  #     correspondencia_eliminada.calle = empresa.correspondencia.calle;
-  #     correspondencia_eliminada.urbanizacion = empresa.correspondencia.urbanizacion;
-  #     correspondencia_eliminada.cargo_rep_tecnico = empresa.correspondencia.cargo_rep_tecnico;
-  #     correspondencia_eliminada.id_estado = empresa.correspondencia.id_estado;
-  #     correspondencia_eliminada.id_municipio = empresa.correspondencia.id_municipio;
-  #     correspondencia_eliminada.cod_postal = empresa.correspondencia.cod_postal;
-  #     correspondencia_eliminada.punto_referencia = empresa.correspondencia.punto_referencia;
-  #     correspondencia_eliminada.id_parroquia= empresa.correspondencia.id_parroquia;
-  #     correspondencia_eliminada.save;
-
-  #     # Se elimina la correspondencia
-  #     correspondencia = Correspondencia.find(:first, :conditions => ["prefijo = ?", empresa.correspondencia.prefijo])
-  #     correspondencia.destroy
-
-  # end
-
-
-  # def self.crear_datos_contacto_eliminada(empresa)
-
-  #   empresa.datos_contacto.collect{|contacto|
-
-  #     contacto_eliminado = EmpresaContactoEliminada.new;
-  #     contacto_eliminado.prefijo = contacto.prefijo;
-  #     contacto_eliminado.contacto = contacto.contacto;
-  #     contacto_eliminado.prefijo = contacto.prefijo;
-  #     contacto_eliminado.tipo = contacto.tipo;
-  #     contacto_eliminado.nombre_contacto = contacto.nombre_contacto;
-  #     contacto_eliminado.cargo_contacto = contacto.cargo_contacto;
-  #     contacto_eliminado.save;
-  #     contacto.destroy;
-  #   }
-
-  # end
-
-
-  # def self.crear_datos_contacto(contactos_eliminado)
-
-  #   contactos_eliminado.collect{|contacto| 
-  #     nuevo_contacto = DatosContacto.new;
-  #     nuevo_contacto.prefijo = contacto.prefijo;
-  #     nuevo_contacto.contacto = contacto.contacto;
-  #     nuevo_contacto.tipo = contacto.tipo;
-  #     nuevo_contacto.nombre_contacto = contacto.nombre_contacto ? contacto.nombre_contacto : "No tiene";
-  #     nuevo_contacto.cargo_contacto = contacto.cargo_contacto ? contacto.cargo_contacto : "No tiene";
-  #     nuevo_contacto.save;
-  #     contacto.destroy;
-  #   }
-
-  # end
-
-  # def self.crear_correspondencia(correspondencia_eliminada)
-
-  #   correspondencia = Correspondencia.new
-  #   correspondencia.prefijo = correspondencia_eliminada.prefijo
-  #   correspondencia.rep_tecnico = (correspondencia_eliminada.rep_tecnico) ? correspondencia_eliminada.rep_tecnico : "No Tiene"
-  #   correspondencia.cargo_rep_tecnico = (correspondencia_eliminada.cargo_rep_tecnico) ? correspondencia_eliminada.cargo_rep_tecnico : "No Tiene"
-  #   correspondencia.edificio = (correspondencia_eliminada.edificio) ? correspondencia_eliminada.edificio : "No Tiene"
-  #   correspondencia.urbanizacion = (correspondencia_eliminada.urbanizacion) ? correspondencia_eliminada.urbanizacion : "No Tiene"
-  #   correspondencia.calle = (correspondencia_eliminada.calle) ? correspondencia_eliminada.calle : "No Tiene"
-  #   correspondencia.id_estado = (correspondencia_eliminada.id_estado) ? correspondencia_eliminada.id_estado : 99
-  #   correspondencia.id_ciudad = (correspondencia_eliminada.id_ciudad) ? correspondencia_eliminada.id_ciudad : 999
-  #   correspondencia.cod_postal = (correspondencia_eliminada.cod_postal) ? correspondencia_eliminada.cod_postal : "No Tiene"
-  #   correspondencia.punto_referencia = (correspondencia_eliminada.punto_referencia) ? correspondencia_eliminada.punto_referencia : "No Tiene"
-  #   correspondencia.save
-  #   correspondencia_eliminada.destroy
-
-  # end
-
-  # def self.crear_producto(productos_empresa)
-
-  #   estatus = Estatus.find(:first, :conditions => ['descripcion like ? and alcance = ?', 'Activo', 'Producto'])
-
-  #   productos_empresa.collect{|producto_empresa|
-  #     producto_eliminado = ProductoEliminado.find(:first, :conditions => ["gtin like ?", producto_empresa.gtin])
-  #     producto = Producto.new;
-  #     producto.gtin = producto_eliminado.gtin;
-  #     producto.descripcion = producto_eliminado.descripcion ? producto_eliminado.descripcion : "No tiene";
-  #     producto.marca = producto_eliminado.marca ? producto_eliminado.marca : "No tiene";;
-  #     producto.gpc = producto_eliminado.gpc ? producto_eliminado.gpc : "No tiene";;
-  #     producto.id_estatus = estatus.id;
-  #     producto.codigo_prod = producto_eliminado.codigo_prod ? producto_eliminado.codigo_prod : "No tiene";
-  #     producto.fecha_creacion = producto_eliminado.fecha_creacion ? producto_eliminado.fecha_creacion : Time.now;
-  #     producto.id_tipo_gtin = producto_eliminado.id_tipo_gtin;
-  #     producto.save;
-  #     producto_eliminado.destroy;
-
-  #   }
-
-  # end
+  
 
   def self.generar_prefijo_valido
 
@@ -247,66 +146,7 @@ class Empresa < ActiveRecord::Base
 
   end
 
-  # def self.agregar_contacto(contacto, empresa, tipo_contacto)
-
-  #   empresa = Empresa.find(:first, :conditions => ["prefijo = ?", empresa])
-    
-  #   datos =  empresa.datos_contacto.first
-  #   dato_contacto = DatosContacto.new 
-  #   dato_contacto.prefijo = empresa.prefijo
-  #   dato_contacto.tipo = tipo_contacto
-  #   dato_contacto.contacto = contacto
-  #   dato_contacto.nombre_contacto = datos.nombre_contacto
-  #   dato_contacto.cargo_contacto = datos.cargo_contacto
-  #   dato_contacto.save
-
-  # end
-
-
-  # def self.utilizar_prefijo_no_validado(empresa_no_validada)
-
-
-  #   correspondencias = Correspondencia.find(:all, :conditions => ["prefijo = ?", empresa_no_validada.prefijo])
-  #   correspondencias.collect{|correspondencia| correspondencia.prefijo = Empresa.generar_prefijo_valido; correspondencia.save }
-    
-  #   nuevo_prefijo_empresa_no_validada = Empresa.new
-  #   nuevo_prefijo_empresa_no_validada.prefijo = Empresa.generar_prefijo_valido
-  #   nuevo_prefijo_empresa_no_validada.nombre_empresa = empresa_no_validada.try(:nombre_empresa)
-  #   nuevo_prefijo_empresa_no_validada.fecha_inscripcion = empresa_no_validada.try(:fecha_inscripcion)
-  #   nuevo_prefijo_empresa_no_validada.direccion_empresa = empresa_no_validada.try(:direccion_empresa)
-  #   nuevo_prefijo_empresa_no_validada.id_estado = empresa_no_validada.try(:id_estado)
-  #   nuevo_prefijo_empresa_no_validada.id_ciudad = empresa_no_validada.try(:id_ciudad)
-  #   nuevo_prefijo_empresa_no_validada.rif = empresa_no_validada.try(:rif)
-  #   nuevo_prefijo_empresa_no_validada.id_estatus = empresa_no_validada.try(:id_estatus)
-  #   nuevo_prefijo_empresa_no_validada.id_tipo_usuario = empresa_no_validada.try(:id_tipo_usuario)
-  #   nuevo_prefijo_empresa_no_validada.nombre_comercial = empresa_no_validada.try(:nombre_comercial)
-  #   nuevo_prefijo_empresa_no_validada.id_clasificacion = empresa_no_validada.try(:id_clasificacion)
-  #   nuevo_prefijo_empresa_no_validada.categoria = empresa_no_validada.try(:categoria)
-  #   nuevo_prefijo_empresa_no_validada.division = empresa_no_validada.try(:division)
-  #   nuevo_prefijo_empresa_no_validada.grupo = empresa_no_validada.try(:grupo)
-  #   nuevo_prefijo_empresa_no_validada.clase = empresa_no_validada.try(:clase)
-  #   nuevo_prefijo_empresa_no_validada.rep_legal = empresa_no_validada.try(:rep_legal)
-  #   nuevo_prefijo_empresa_no_validada.cargo_rep_legal = empresa_no_validada.try(:cargo_rep_legal)
-  #   nuevo_prefijo_empresa_no_validada.circunscripcion_judicial = empresa_no_validada.try(:circunscripcion_judicial)
-  #   nuevo_prefijo_empresa_no_validada.numero_registro_mercantil = empresa_no_validada.try(:numero_registro_mercantil)
-  #   nuevo_prefijo_empresa_no_validada.tomo_registro_mercantil = empresa_no_validada.try(:tomo_registro_mercantil)
-  #   nuevo_prefijo_empresa_no_validada.nit_registro_mercantil = empresa_no_validada.try(:nit_registro_mercantil)
-  #   nuevo_prefijo_empresa_no_validada.nacionalidad_responsable_legal = empresa_no_validada.try(:nacionalidad_responsable_legal)
-  #   nuevo_prefijo_empresa_no_validada.domicilio_responsable_legal = empresa_no_validada.try(:domicilio_responsable_legal)
-  #   nuevo_prefijo_empresa_no_validada.cedula_responsable_legal = empresa_no_validada.try(:cedula_responsable_legal)
-  #   nuevo_prefijo_empresa_no_validada.created_at = empresa_no_validada.try(:created_at)
-  #   nuevo_prefijo_empresa_no_validada.updated_at = empresa_no_validada.try(:updated_at)
-  #   nuevo_prefijo_empresa_no_validada.ventas_brutas_anuales = empresa_no_validada.try(:ventas_brutas_anuales)
-  #   nuevo_prefijo_empresa_no_validada.fecha_registro_mercantil = empresa_no_validada.try(:fecha_registro_mercantil)
-  #   nuevo_prefijo_empresa_no_validada.id_subestatus = empresa_no_validada.try(:id_subestatus)
-  #   nuevo_prefijo_empresa_no_validada.fecha_activacion = empresa_no_validada.try(:fecha_activacion)
-  #   prefijo_valido = Empresa.generar_prefijo_valido
-  #   Gln.generar_legal(prefijo_valido.to_s)  
-  #   empresa_no_validada.destroy
-  #   nuevo_prefijo_empresa_no_validada.save
-
-  # end
-
+ 
 
   def self.registrar_historico_eliminada(eliminada)
 
@@ -351,6 +191,7 @@ class Empresa < ActiveRecord::Base
     empresa_eliminada.fecha_eliminacion = Time.now
     empresa_eliminada.id_estatus = estatus_empresa.id
     empresa_eliminada.save
+
 
  end
 
