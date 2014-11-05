@@ -102,7 +102,6 @@ class EmpresasController < ApplicationController
   # GET /empresas/1.json
   def show
 
-    #(params[:eliminados]) ? (@empresa = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:id]])) : (@empresa = Empresa.find(params[:id]))
     
     @empresa = Empresa.find(params[:id])
 
@@ -156,11 +155,8 @@ class EmpresasController < ApplicationController
   # PUT /empresas/1.json
   def update
 
-
     @empresa = Empresa.find(params[:id])
     
-    
-  
     respond_to do |format|
        
       if @empresa.update_attributes(params[:empresa])
