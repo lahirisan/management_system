@@ -220,8 +220,4 @@ class EmpresasController < ApplicationController
   end
 
 
-  def self.attributes_protected_by_default
-    []
-  end
-
 end
