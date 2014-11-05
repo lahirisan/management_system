@@ -68,6 +68,9 @@ class Empresa < ActiveRecord::Base
         empresa.id_motivo_retiro = retirar_datos.split('_')[1]
         empresa.save
 
+        # Se registra la persona que retiro la empresa
+        #Auditoria.registrar_evento(session[:usuario],"empresa", "Retirar", Time.now,  "EMPRESA RETIRADA. PREFIJO:#{empresa.prefijo}")
+        
         # Se retiran todo los productos de la empresa
         Producto.retirar_productos(empresa.prefijo)
 
