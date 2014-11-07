@@ -78,7 +78,7 @@
     %span.ui-icon.ui-icon-arrowreturnthick-1-w
     Regresar
 
-  - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Etiqueta')
+  - if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Etiqueta')
 
     %a.ui-state-default.ui-corner-all.etiqueta_regresar_empresas_editar{:href => "#{edit_empresa_etiqueta_path(params[:empresa_id], params[:empresa_id])}", :title => "Editar datos de la etiqueta"}
       %span.ui-icon.ui-icon.ui-icon-extlink

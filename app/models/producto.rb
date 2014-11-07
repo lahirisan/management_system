@@ -14,7 +14,7 @@ class Producto < ActiveRecord::Base
   validates :gtin, :uniqueness => {:message => "El codigo de Producto que esta ingresando ya  se encuentra asociado a un GTIN"}
 
 
-  def self.retirar(parametros) # Retira productos seleccionadaos individualmete
+  def self.retirar(parametros) # Retira productos desde el listado de productos
 
   	# Se busca el estatus retirado
     estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Retirado', 'Producto'])
@@ -25,13 +25,9 @@ class Producto < ActiveRecord::Base
       gtin = retirar_datos.split('_')[0] # retirar_datos.split('_')[0] GTIN del producto retirar_datos.split('_')[1] id sub_estatus retirar_datos.split('_')[2] id motivo_retiro
       producto = Producto.find(:first, :conditions => ["gtin like ?", gtin])
       producto.id_estatus = estatus_producto.id 
+      producto.fecha_retiro = Time.now
       producto.save
-      producto_retirado = ProductosRetirados.new 
-      producto_retirado.gtin = producto.gtin
-      producto_retirado.fecha_retiro = Time.now
-      producto_retirado.id_motivo_retiro = retirar_datos.split('_')[2]
-      producto_retirado.id_subestatus = retirar_datos.split('_')[1]
-      producto_retirado.save 
+      #Auditoria.registrar_evento(session[:usuario],"producto", "Retirar", Time.now,  "PRODUCTO RETIRADO. GTIN:#{producto.gtin}")
       
     end
   
@@ -46,8 +42,10 @@ class Producto < ActiveRecord::Base
     producto.id_estatus = estatus_producto.id;
     producto.fecha_retiro = Time.now;
     producto.save
+    #Auditoria.registrar_evento(session[:usuario],"producto", "Retirar", Time.now,  "PRODUCTO RETIRADO. GTIN:#{producto.gtin}")
     
     }
+
 
   end
 

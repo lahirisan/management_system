@@ -228,6 +228,14 @@
           %td
           %td
             =f.select(:ventas_brutas_anuales, options_for_select(['0 a 200.000', 'De 200.001,00 a 2.000.000,00', 'De 2.000.001,00 a 4.500.000,00', 'De 4.500.001,00 a 6.000.000,00', 'De 6.000.0001,00 o más'], @empresa.ventas_brutas_anuales), :prompt => "- Seleccione -")
+        %tr
+          %td
+            Aporte Mantenimiento Bs.
+          %td
+          %td
+            =f.text_field :aporte_mantenimiento_bs
+
+
       %br
 
       %br

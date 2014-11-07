@@ -21,18 +21,10 @@ private
   def data
 
     empresas.map do |empresa|
-
       
-      fecha = ""
-      if (empresa.fecha_activacion) # Las empresas que no se resgistraron mediante el sistema de  gestion no tienen fecha de activacion
-        fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") 
-      else
+      fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") 
 
-        fecha = empresa.fecha_inscripcion.strftime("%Y-%m-%d") 
-      end
-      empresa.solv
-
-      if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Empresa')
+      if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Empresa') or session[:perfil] == 'Administrador'
         
         ## Se verifica la solvencia, no solvente no puede codificar
         if empresa.solv == 2
@@ -50,7 +42,7 @@ private
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios", :class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios de la empresa #{empresa.nombre_empresa}"),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa.prefijo), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"}),  
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Etiqueta').html_safe, empresa_etiqueta_path(empresa.prefijo, empresa.prefijo), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Etiqueta de la empresa #{empresa.nombre_empresa}"}),
-          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Carta_afiliación').html_safe, "/empresas/#{empresa.prefijo}.pdf", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Etiqueta de la empresa #{empresa.nombre_empresa}"})
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Carta_afiliación').html_safe, "/empresas/#{empresa.prefijo}.pdf", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Carta Retiro de la Empresa #{empresa.nombre_empresa}"})
           ]
 
         else
@@ -67,14 +59,14 @@ private
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios?insolvente=true", :class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios de la empresa #{empresa.nombre_empresa}"),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa.prefijo, :insolvente => "true"), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"}),  
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Etiqueta').html_safe, empresa_etiqueta_path(empresa.prefijo, empresa.prefijo), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Etiqueta de la empresa #{empresa.nombre_empresa}"}),
-          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Carta_afiliación').html_safe, "/empresas/#{empresa.prefijo}.pdf", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Etiqueta de la empresa #{empresa.nombre_empresa}"})
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Carta_afiliación').html_safe, "/empresas/#{empresa.prefijo}.pdf", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Carta Retiro de la Empresa #{empresa.nombre_empresa}"})
           ]
 
         end
 
       else
         # Se verifica la solvencia, si esta insolvente no se puede codificar
-        if solvencia == 2
+        if empresa.solv == 2
         
           [ 
           empresa.prefijo,
@@ -83,10 +75,12 @@ private
           empresa.ciudad_,
           empresa.rif,
           empresa.estatus_,
+          "SOLVENTE",
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe,empresa_productos_path(empresa), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos de la empresa #{empresa.nombre_empresa}"}),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios", :class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios de la empresa #{empresa.nombre_empresa}"),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"}),  
-          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Etiqueta').html_safe,empresa_etiqueta_path(empresa.prefijo, empresa.prefijo), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Etiqueta de la empresa #{empresa.nombre_empresa}"})
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Etiqueta').html_safe,empresa_etiqueta_path(empresa.prefijo, empresa.prefijo), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Etiqueta de la empresa #{empresa.nombre_empresa}"}),
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Carta_afiliación').html_safe, "/empresas/#{empresa.prefijo}.pdf", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Carta Retiro de la Empresa #{empresa.nombre_empresa}"})
           ]
         else
           [ 
@@ -96,10 +90,12 @@ private
           empresa.ciudad_,
           empresa.rif,
           empresa.estatus_,
+          "DEUDOR",
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe,empresa_productos_path(empresa, :insolvente => "true"), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos de la empresa #{empresa.nombre_empresa}"}),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios?insolvente=true", :class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios de la empresa #{empresa.nombre_empresa}"),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa, :insolvente => "true"), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"}),  
-          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Etiqueta').html_safe,empresa_etiqueta_path(empresa.prefijo, empresa.prefijo), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Etiqueta de la empresa #{empresa.nombre_empresa}"})
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Etiqueta').html_safe,empresa_etiqueta_path(empresa.prefijo, empresa.prefijo), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Etiqueta de la empresa #{empresa.nombre_empresa}"}),
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Carta_afiliación').html_safe, "/empresas/#{empresa.prefijo}.pdf", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Carta Retiro de la Empresa #{empresa.nombre_empresa}"})
           ]
 
         end
@@ -124,7 +120,7 @@ private
     empresas = empresas.page(page).per_page(per_page)
 
     if params[:sSearch].present? # Filtro de busqueda general
-      empresas = empresas.where("empresa.prefijo like :search or  empresa.nombre_empresa like :search or empresa.fecha_activacion like :search or  ciudad.nombre like :search or empresa.rif like :search or sub_estatus.descripcion like :search ", search: "%#{params[:sSearch]}%")
+      empresas = empresas.where("empresa.prefijo like :search or  empresa.nombre_empresa like :search or empresa.fecha_activacion like :search or  ciudad.nombre like :search or empresa.rif like :search", search: "%#{params[:sSearch]}%")
     end
     if params[:sSearch_0].present? # Filtro de busqueda prefijo
       empresas = empresas.where("empresa.prefijo like :search0", search0: "%#{params[:sSearch_0]}%" )
@@ -133,9 +129,9 @@ private
       empresas = empresas.where("empresa.nombre_empresa like :search1", search1: "%#{params[:sSearch_1]}%" )
     end
     if params[:sSearch_2].present? # Filtro fecha_activacion
-      empresas = empresas.where("empresa.fecha_activacion like :search2", search2: "%#{params[:sSearch_2]}%" )
-    end
-   
+      empresas = empresas.where("CONVERT(varchar(255),  empresa.fecha_activacion ,126) like :search2", search2: "%#{params[:sSearch_2]}%")
+    end 
+
     if params[:sSearch_3].present?
       empresas = empresas.where("ciudad.nombre like :search3", search3: "%#{params[:sSearch_3]}%" )
     end

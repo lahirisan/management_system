@@ -1,4 +1,4 @@
-class EliminarProductosDatatable < AjaxDatatablesRails
+ class EliminarProductosDatatable < AjaxDatatablesRails
   delegate :params, :h, :link_to,  to: :@view
 
    def initialize(view)
@@ -72,7 +72,8 @@ private
     end
 
     if params[:sSearch_7].present?
-      productos = productos.where("producto.fecha_creacion like :search7", search7: "%#{params[:sSearch_7]}%" )
+      productos = productos.where("CONVERT(varchar(255),  producto.fecha_creacion ,126) like :search7", search7: "%#{params[:sSearch_7]}%")
+      
     end
     
    

@@ -50,7 +50,7 @@ class ProductosController < ApplicationController
                     else
 
 
-                      if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Producto')
+                      if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Producto') or session[:perfil] == 'Administrador'
 
                         render json: ProductosDatatable.new(view_context) 
                       else

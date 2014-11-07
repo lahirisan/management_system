@@ -14,9 +14,9 @@
 			%th Cargo
 			%th Fecha Creación
 			
-			- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Usuario')
+			- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Usuario')
 				%th
-			- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Usuario')
+			- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia],'Eliminar Usuario')
 				%th
 			
 		%tbody
@@ -31,12 +31,12 @@
 					%td
 						= usuario.fecha_creacion.strftime("%Y-%m-%d") if usuario.fecha_creacion
 					
-					- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Usuario')
+					- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Usuario')
 						%td= link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,  edit_usuario_path(usuario),  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar usuario #{usuario.username}"})
-					- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Eliminar Usuario')
+					- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Eliminar Usuario')
 						%td= link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Eliminar').html_safe,  usuario, method: :delete, data: { confirm: 'Desea ELIMINAR este usuario?'}, :class => "ui-state-default ui-corner-all botones_servicio", :title => "Eliminar usuario #{usuario.username}")
 
-	- if UsuariosAlcance.verificar_alcance(session[:perfil], 'Registrar Usuario')
+	- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Usuario')
 		%br
 		%br
 

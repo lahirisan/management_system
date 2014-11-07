@@ -1,4 +1,4 @@
-if params[:prefijo] != ''
+ if params[:prefijo] != ''
    @empresas = @empresas.where("empresa.prefijo like :search", search: "%#{params[:prefijo]}%" )
 end
 
@@ -6,7 +6,7 @@ if params[:nombre_empresa] != ''
   @empresas = @empresas.where("empresa.nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%" )
 end
 if params[:fecha_inscripcion] != ''
-  @empresas = @empresas.where("empresa.fecha_inscripcion like :search", search: "%#{params[:fecha_inscripcion]}%" )
+	@empresas = @empresas.where("CONVERT(varchar(255),  empresa.fecha_activacion ,126) like :search", search: "%#{params[:fecha_inscripcion]}%")
 end
 if (params[:ciudad] != '')
 
@@ -16,9 +16,7 @@ if params[:rif] != ''
    @empresas = @empresas.where("empresa.rif like :search", search: "%#{params[:rif]}%" )
 end
 if params[:fecha_retiro] != ''
-	
-	@empresas = @empresas.where("CONVERT(DATETIME, FLOOR(CONVERT(FLOAT, empresa.fecha_retiro))) = '#{params[:fecha_retiro]}'")	
-   
+	@empresas = @empresas.where("CONVERT(varchar(255),  empresa.fecha_retiro ,126) like :search", search: "%#{params[:fecha_retiro]}%")
 end
 
 

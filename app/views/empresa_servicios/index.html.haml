@@ -17,7 +17,7 @@
         %th Cargo Contacto
         %th Teléfono
         %th Correo
-        -if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Servicio')
+        -if UsuariosAlcance.verificar_alcance(session[:perfil],  session[:gerencia],'Modificar Servicio') 
           -if params[:retirados].nil?
             %th Editar
         

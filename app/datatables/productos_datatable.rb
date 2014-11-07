@@ -100,7 +100,8 @@ private
 
     if params[:sSearch_6].present?
       
-      productos = productos.where("CONVERT(DATETIME, FLOOR(CONVERT(FLOAT, producto.fecha_creacion))) = '#{params[:sSearch_6]}'")
+      productos = productos.where("CONVERT(varchar(255),  producto.fecha_creacion ,126) like :search6", search6: "%#{params[:sSearch_6]}%")
+      
     end
 
 
