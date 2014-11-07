@@ -20,12 +20,12 @@
             %tbody
             %tfoot
                 =render 'footer_activar_solvencia'
-        -if (session[:gerencia] == 'Estandares y Consultoría' and (session[:perfil] == 'Super Usuario' or session[:perfil] == 'Administrador')) or (session[:gerencia] == 'Administracion' and session[:perfil] == 'Usuario Validador')
+       
 
-            %br
-            %br
-            %button#submit.ui-state-default.ui-corner-all.nuevo_registro_activar_solvencia{:type => "submit", :title => "Asigna como SOLVENTE a las empresas seleccionadas"}
-                %span.ui-icon.ui-icon-circle-check
-                Marcar SOLVENTE
+        %br
+        %br
+        %button#submit.ui-state-default.ui-corner-all.nuevo_registro_activar_solvencia{:type => "submit", :title => "Asigna como SOLVENTE a las empresas seleccionadas"}
+            %span.ui-icon.ui-icon-circle-check
+            Marcar SOLVENTE
     
    
