@@ -1,38 +1,61 @@
 %section.contexto
-    %label.contexto Empresas > Empresas Retiradas
-    %hr.contexto{:size => "1"}
+	%label.contexto Empresas > Empresas Retiradas
+	%hr.contexto{:size => "1"}
 %section#areaTrabajo.areaTrabajo
-    %p#notice= notice
+	%p#notice= notice
 
-    = render 'botones_exportar_empresas_retiradas'
-    %br
-       
-    %table#data_table_empresas_retiradas.display{:"data-source" => "/empresas.json?retiradas=true"}
-        %thead
-            %tr
-                %th Prefijo
-                %th Nombre Empresa
-                %th Fecha Activación
-                %th Ciudad
-                %th RIF
-                %th Fecha Retiro
-                %th Motivo Retiro
-                %th Empresa Detalle
-                %th Productos
-                %th Servicios
-                %th GLN
-                %th Carta Retiro
-                
-                
+	= render 'botones_exportar_empresas_retiradas'
+	%br
+			
+		%table#data_table_empresas_retiradas.display{:"data-source" => "/empresas.json?retiradas=true"}
+			%thead
+				%tr
+					%th Prefijo
+					%th Nombre Empresa
+					%th Fecha Activación
+					%th Ciudad
+					%th RIF
+					%th Fecha Retiro
+					%th Motivo Retiro
+					%th Empresa Detalle
+					%th Productos
+					%th Servicios
+					%th GLN
+					%th Carta Retiro
+						
+							
 
-        %tbody
-        %tfoot
-            =render 'footer_retiradas'
-    %br/
-    %br/
-    %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
-        %span.ui-icon.ui-icon-arrowreturnthick-1-w
-        Regresar
-        
-        
-    
+			%tbody
+			%tfoot
+				=render 'footer_retiradas'
+		%br/
+		%br/
+		%a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
+			%span.ui-icon.ui-icon-arrowreturnthick-1-w
+			Regresar
+
+		%a#generar_carta_masivamente{:href => "#", :title => "Generar Cartas Masivamente"}
+			Generar Cartas Masivamente
+
+		#ventana_generar_carta_masivamente
+			=form_tag "/empresas.pdf?cartas_retiradas", :method => "get", :id => "cartas_empresas_retiradas", :target => "_blank" do
+				%table#generar_cartas_masivamente.display{:border => "1", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+					%thead
+						%tr
+							%td Selección
+							%td Prefijo
+							%td Nombre
+							%td RIF
+							%td Fecha Retiro
+							%td Motivo Retiro
+						
+					%tbody
+						-@empresas_retiradas.each do |empresa_retirada|
+							%tr
+								%td= check_box_tag("cartas_retiradas[]", "#{empresa_retirada.prefijo}", false)
+								%td= empresa_retirada.prefijo
+								%td= empresa_retirada.nombre_empresa
+								%td= empresa_retirada.rif
+								%td= empresa_retirada.fecha_retiro
+								%td= empresa_retirada.try(:motivo_retiro).try(:descripcion)
+				=submit_tag "Generar Cartas"

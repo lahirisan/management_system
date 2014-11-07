@@ -24,7 +24,9 @@ class EmpresasController < ApplicationController
                     render :template =>'/empresas/eliminar_empresa.html.haml'
                   elsif params[:eliminadas]
                     render :template =>'/empresas/empresas_eliminadas.html.haml'
-                  elsif params[:retiradas] 
+                  elsif params[:retiradas]
+                    @empresas_retiradas = Empresa.find(:all, :conditions => ["estatus.descripcion = ? and estatus.alcance = ? ", "Retirada", "Empresa"], :include => [:estatus])
+
                     render :template =>'/empresas/empresas_retiradas.html.haml'
                   elsif params[:reactivar]
                     render :template =>'/empresas/empresas_reactivar.html.haml'
@@ -83,6 +85,8 @@ class EmpresasController < ApplicationController
       format.pdf {
 
 
+
+
                 if (params[:retiradas])
                   @empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, {:empresas_retiradas => :sub_estatus},{:empresas_retiradas => :motivo_retiro}).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("empresas_retiradas.fecha_retiro desc")
                   render "/empresas/empresas_retiradas.pdf.prawn"
@@ -92,6 +96,10 @@ class EmpresasController < ApplicationController
                 elsif params[:activacion]
                   @empresas = Empresa.where("estatus.descripcion like ?", "No Validado").includes(:ciudad, :estatus, :clasificacion, :tipo_usuario_empresa).order("empresa.fecha_inscripcion DESC")
                   render "/empresas/activacion_empresas.pdf.prawn"
+                elsif params[:cartas_retiradas]
+                  @empresas = Empresa.find(params[:cartas_retiradas])
+                  render "/empresas/cartas_retiro_masivo.pdf.prawn"
+
                 else
                   @empresas = Empresa.includes( :ciudad, :estatus, :clasificacion, :sub_estatus).where("estatus.descripcion = ?", 'Activa').order("empresa.fecha_activacion desc")
                   render "/empresas/index.pdf.prawn"
