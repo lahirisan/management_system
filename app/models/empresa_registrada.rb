@@ -10,12 +10,8 @@ class EmpresaRegistrada < ActiveRecord::Base
   belongs_to :sub_estatus, :foreign_key => "id_subestatus"
   belongs_to :tipo_usuario_empresa, :foreign_key => "id_tipo_usuario"
 
-
-
-  validates :id_tipo_usuario, :nombre_empresa, :fecha_inscripcion,  :id_estado, :id_ciudad, :direccion_empresa, :contacto_tlf1, :contacto_email1,  :rif, :id_clasificacion, :rep_legal, :cargo_rep_legal,  :presence => {:message => "No puede estar en blanco"}, :on => :create
-  #validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{5,8})-([0-9]{1})$/, on: :create, :message => "El Formato del RIF es invalido"} # Validacion al crear
+  validates :id_tipo_usuario, :nombre_empresa, :fecha_inscripcion,  :id_estado, :id_ciudad, :direccion_empresa, :contacto_tlf1, :contacto_email1,  :rif, :id_clasificacion, :rep_legal, :cargo_rep_legal, :rep_ean, :rep_ean_cargo, :id_estado_ean, :id_ciudad_ean, :id_municipio_ean, :telefono1_ean, :telefono2_ean, :telefono3_ean, :email1_ean,    :presence => {:message => "No puede estar en blanco"}, :on => :create
+  validates :rif, format: { with: /^(v|V|e|E|j|J|g|G)-([0-9]{5,8})-([0-9]{1})$/, on: :create, :message => "El Formato del RIF es invalido"} # Validacion al crear
   validates :rif, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado. Por favor verifique."}, :on => :create
-
-  #validates :prefijo, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado. Por favor verifique."}, :on => :update
   
 end

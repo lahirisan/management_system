@@ -3,7 +3,6 @@ $(document).ready(function(){
         // Datatable que maneja el listado de productos
         oTable = $("#data_table_productos").dataTable({
             sPaginationType: "full_numbers",
-            aoColumns: [ null,  null, null,  null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }],
             aaSorting: [[ 6, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,

@@ -1,9 +1,39 @@
-@empresas = @empresas.where("prefijo like :search", search: "%#{params[:prefijo]}%") if (params[:prefijo] != '')
-@empresas = @empresas.where("nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%") if (params[:nombre_empresa] != '')
-@empresas = @empresas.where("fecha_activacion like :search", search: "%#{params[:fecha_activacion]}%") if (params[:fecha_activacion] != '')
-@empresas = @empresas.where("ciudad.nombre like :search", search: "%#{params[:ciudad]}%") if (params[:ciudad] != '')
-@empresas = @empresas.where("empresa.rif like :search", search: "%#{params[:rif]}%")  if (params[:rif] != '')
-@empresas = @empresas.where("sub_estatus.descripcion like :search", search: "%#{params[:sub_estatus]}%")  if (params[:sub_estatus] != '')
+if params[:prefijo].present? # Filtro de busqueda prefijo
+  @empresas = @empresas.where("prefijo like :search", search: "%#{params[:prefijo]}%")
+end
+if params[:nombre_empresa].present? # Filtro de busqueda por nombre de la empresa
+  @empresas = @empresas.where("nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%")
+end
+if params[:fecha_activacion].present? # Filtro fecha_activacion
+  @empresas = @empresas.where("CONVERT(varchar(255),  empresa.fecha_activacion ,126) like :search", search: "%#{params[:fecha_activacion]}%")
+end 
+
+if params[:ciudad].present?
+  @empresas = @empresas.where("ciudad.nombre like :search", search: "%#{params[:ciudad]}%")
+end
+if params[:rif].present?
+  @empresas = @empresas.where("empresa.rif like :search", search: "%#{params[:rif]}%")
+end
+
+
+if params[:sub_estatus].present?
+  
+  if params[:sub_estatus].upcase == "D" or params[:sub_estatus].upcase == "DE" or params[:sub_estatus].upcase == "DEU" or params[:sub_estatus].upcase == "DEUD" or params[:sub_estatus].upcase == "DEUDO" or params[:sub_estatus].upcase == "DEUDOR"
+    
+    @empresas = @empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) != 2")
+
+    
+  elsif params[:sub_estatus].upcase == "S" or params[:sub_estatus].upcase == "SO" or params[:sub_estatus].upcase == "SOL" or params[:sub_estatus].upcase == "SOLV" or params[:sub_estatus].upcase == "SOLVE" or params[:sub_estatus].upcase == "SOLVE" or params[:sub_estatus].upcase == "SOLVEN" or params[:sub_estatus].upcase == "SOLVENT" or params[:sub_estatus].upcase == "SOLVENTE" 
+
+    @empresas = @empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) = 2")
+
+  else
+    
+    @empresas = @empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) like '#{params[:sub_estatus]}'")
+  end 
+
+end
+
 
 
 xlsx_package = Axlsx::Package.new 
@@ -16,14 +46,20 @@ wb.add_worksheet(name: "GS1") do |sheet|
 		black_cell2 = s.add_style   :border => { :style => :thin, :color => "00" }, :i => true,:fg_color => "00", :sz => 8, :alignment => { :horizontal=> :left }
 		tomas = s.add_style  :sz => 12, :alignment => { :horizontal=> :center }
 
-			sheet.add_row ['Prefijo', 'Nombre Empresa', 'Fecha Inscripción', 'RIF', 'Estatus', 'Sub Estatus', 'Tipo Usuario', 'Ventas Brutas Anuales', 'Aporte Mantenimiento', 'Clasificacion', 'Categoria', 'Division', 'Grupo', 'Clase', 'Rep Legal' ], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
+			sheet.add_row ['Prefijo', 'Nombre Empresa', 'Fecha Activación', 'RIF', 'Estatus', 'Sub Estatus',  'Ventas Brutas Anuales', 'Aporte Mantenimiento',  'Categoria', 'Division', 'Grupo', 'Clase', 'Rep Legal' ], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
 			@empresas.each do |empresa|
 				
-				fecha = ""
       			fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") if (empresa.fecha_activacion)
-      			clasificacion = Clasificacion.find(:first, :conditions => ["division = ? and categoria = ? and grupo = ? and clase = ?", empresa.division, empresa.categoria, empresa.grupo, empresa.clase])
-				sheet.add_row [empresa.prefijo,empresa.try(:nombre_empresa),fecha,empresa.try(:rif),empresa.try(:estatus).try(:descripcion), empresa.try(:sub_estatus).try(:descripcion), empresa.try(:tipo_usuario_empresa).try(:descripcion), empresa.try(:ventas_brutas_anuales), empresa.try(:aporte_mantenimiento).to_f, clasificacion.try(:descripcion), empresa.try(:division), empresa.try(:categoria), empresa.try(:grupo), empresa.try(:clase),  empresa.try(:rep_legal)], :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]		
+				if empresa.solv == 2
+					solvencia =  "SOLVENTE"
+				else
+					solvencia = "DEUDOR"
+				end
+
+				sheet.add_row [empresa.prefijo,empresa.try(:nombre_empresa),fecha,empresa.try(:rif),empresa.try(:estatus_), solvencia,  empresa.try(:ventas_brutas_anuales), empresa.try(:aporte_mantenimiento).to_f, empresa.try(:division), empresa.try(:categoria), empresa.try(:grupo), empresa.try(:clase),  empresa.try(:rep_legal)], :types => [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, :float], :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]
+				
+				#sheet.column_widths 13,80,20,140,40,20,20,25,50,50,50, 50, 20, 20,20,20, 40,40,40,40, 30,30,30,30,30,30,30,30 # Ancho de las columnas
+
 			end
-			sheet.column_widths 13,80,20,140,40,20,20,25,50,50,50, 50, 20, 20,20,20, 40,40,40,40, 30,30,30,30,30,30,30,30 # Ancho de las columnas
 	end 
 end

@@ -22,9 +22,8 @@ private
 
     empresas.map do |empresa|
       
-      fecha = ""
-      fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
-      sub_estatus = empresa.try(:sub_estatus).try(:descripcion).nil? ? 'No Tiene' : empresa.try(:sub_estatus).try(:descripcion)
+      
+      fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") 
       motivo_retiro = empresa.try(:motivo_retiro).try(:descripcion).nil? ? 'No Tiene' : empresa.try(:motivo_retiro).try(:descripcion)
       fecha_retiro = empresa.try(:fecha_retiro).nil? ? '' : empresa.fecha_retiro.strftime("%Y-%m-%d")
 
@@ -71,7 +70,8 @@ private
       empresas = empresas.where("empresa.nombre_empresa like :search1", search1: "%#{params[:sSearch_1]}%" )
     end
     if params[:sSearch_2].present?
-      empresas = empresas.where("empresa.fecha_inscripcion like :search2", search2: "%#{params[:sSearch_2]}%" )
+      empresas = empresas.where("CONVERT(varchar(255),  empresa.fecha_activacion ,126) like :search2", search2: "%#{params[:sSearch_2]}%")
+      
     end
     if params[:sSearch_3].present?
       empresas = empresas.where("ciudad.nombre like :search3", search3: "%#{params[:sSearch_3]}%" )
@@ -80,7 +80,7 @@ private
       empresas = empresas.where("empresa.rif like :search4", search4: "%#{params[:sSearch_4]}%" )
     end
     if params[:sSearch_5].present?
-       empresas = empresas.where("CONVERT(DATETIME, FLOOR(CONVERT(FLOAT, empresa.fecha_retiro))) = '#{params[:sSearch_5]}'")
+         empresas = empresas.where("CONVERT(varchar(255),  empresa.fecha_retiro ,126) like :search5", search5: "%#{params[:sSearch_5]}%")
        
     end
    

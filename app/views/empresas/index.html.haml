@@ -16,7 +16,7 @@
                 %th RIF
                 %th Estatus
                 %th Sub Estatus
-                - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Empresa')
+                - if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Empresa')
                     %th Editar Empresa 
                 %th Productos
                 %th Servicios

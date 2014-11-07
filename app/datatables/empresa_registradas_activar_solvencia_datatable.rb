@@ -47,7 +47,7 @@ private
 
   def fetch_empresas
    
-    empresas = EmpresaRegistrada.where("rif IS NOT NULL").includes(:ciudad, :sub_estatus, :estatus).order("#{sort_column} #{sort_direction}") 
+    empresas = EmpresaRegistrada.where("rif IS NOT NULL and sub_estatus.descripcion = 'NO SOLVENTE'").includes(:ciudad, :sub_estatus, :estatus).order("#{sort_column} #{sort_direction}") 
     
 
 

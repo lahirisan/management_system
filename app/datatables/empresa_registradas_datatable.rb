@@ -98,7 +98,7 @@ private
      
      if params[:sSearch_2].present?
       
-        empresas = empresas.where("CONVERT(DATETIME, FLOOR(CONVERT(FLOAT, empresas_registradas.fecha_inscripcion))) = '#{params[:sSearch_2]}'")
+      empresas = empresas.where("CONVERT(varchar(255),  empresas_registradas.fecha_inscripcion ,126) like :search2", search2: "%#{params[:sSearch_2]}%")
       
      end
 

@@ -19,12 +19,12 @@
                 %th Estatus
                 %th Código Prod
                 %th Fecha Creación
-                -if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Producto')
+                -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Producto') or session[:perfil] == 'Administrador'
                     %th Editar
                     %th GTIN 14
         %tbody
         %tfoot
-            -if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Producto')
+            -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Producto') or session[:perfil] == 'Administracion'
                 =render 'footer'
             -else
                 =render 'footer_not_editable'
@@ -32,13 +32,14 @@
     %br/
 
     
-    - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Importar Producto') and params[:empresa_retirada].nil? and params[:insolvente].nil?
+    - if (UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Importar Producto') or session[:perfil] == 'Administrador') and params[:empresa_retirada].nil? and params[:insolvente].nil?
 
         %a.boton_importar.ui-state-default.ui-corner-all{:href => "#", :title => "Opción que permite importar los productos desde un archivo Excel"}
             %span.ui-icon.ui-icon-transferthick-e-w
             Importar Producto
+    
+        =render "importar_producto"
 
-    =render "importar_producto"
     %a.ui-state-default.ui-corner-all.regresar_empresas{:href => "/empresas", :title => "Regresar al listado general de empresas"}
         %span.ui-icon.ui-icon-arrowreturnthick-1-w
         Regresar
