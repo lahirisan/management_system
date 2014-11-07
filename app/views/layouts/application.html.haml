@@ -37,6 +37,15 @@
 					%span.ui-icon.ui-icon-home
 					&nbsp;Empresas Activas
 
+
+					
+
+			-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Activar Empresa') 
+				
+				%a.opcion{:href => "/empresa_registradas", :title => "Opción para ACTIVAR las nuevas empresas", :class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-circle-check
+					&nbsp;Activar / No Validada
+
 			
 			-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Nuevas Empresas') 
 
