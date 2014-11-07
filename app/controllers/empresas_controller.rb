@@ -97,6 +97,7 @@ class EmpresasController < ApplicationController
                   @empresas = Empresa.where("estatus.descripcion like ?", "No Validado").includes(:ciudad, :estatus, :clasificacion, :tipo_usuario_empresa).order("empresa.fecha_inscripcion DESC")
                   render "/empresas/activacion_empresas.pdf.prawn"
                 elsif params[:cartas_retiradas]
+                  prawnto :prawn => { :top_margin => 10, :page_layout => :portrait}
                   @empresas = Empresa.find(params[:cartas_retiradas])
                   render "/empresas/cartas_retiro_masivo.pdf.prawn"
 
