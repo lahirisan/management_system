@@ -105,6 +105,15 @@
 						%span.ui-icon.ui-icon-circle-close
 						Eliminar Productos
 
+			- if params[:controller] == 'glns'
+
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar GLN') 
+					
+					%a.opcion{:href => "#{new_empresa_gln_path}", :title => "Opción que permite crear GLN",:class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-circle-plus
+						Crear GLN
+
+
 				
 		= yield
 		

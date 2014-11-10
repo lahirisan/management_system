@@ -22,7 +22,7 @@ private
 
     glns.map do |empresa_gln|
        
-          if (empresa_gln.try(:tipo_gln).try(:nombre) == 'Legal') # GLN legal no se edita
+          if (empresa_gln.try(:tipo_gln).try(:nombre) == 'Legal') or UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar GLN').nil? # GLN legal no se edita , sino tiewne el priviligeo no se edita GLN
             [ 
             empresa_gln.try(:gln),
             empresa_gln.try(:tipo_gln).try(:nombre),
@@ -37,6 +37,7 @@ private
             link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de  GLN #{empresa_gln.try(:gln)}"})
             ]
           else
+            
             [ 
             empresa_gln.try(:gln),
             empresa_gln.try(:tipo_gln).try(:nombre),
