@@ -456,8 +456,23 @@
                 this.value = this.value.toUpperCase();
         });
 
-        
+        // Dialogo importar productos oculto por defecto
+        $('#ventana_generar_carta_masivamente').dialog({
+          autoOpen: false,
+          width: 700
+        });
 
+        // para abrir el dialogo generar carta masivamente
+        $('#generar_carta_masivamente').click(function(w){
+
+            w.preventDefault(); // Deshabilita el hipervinculo el boton importar
+            $('#ventana_generar_carta_masivamente').dialog('open');
+        });
+
+        $("#generar_cartas_masivamente").dataTable();
+
+
+        
 
     })   
 
