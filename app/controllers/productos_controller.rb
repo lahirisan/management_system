@@ -72,6 +72,7 @@ class ProductosController < ApplicationController
                       @productos = ProductoEliminado.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?", params[:empresa_id], 'Eliminado', 'Producto').includes(:estatus, :tipo_gtin, {:producto_elim_detalle => :sub_estatus}, {:producto_elim_detalle => :motivo_retiro}, {:productos_empresa => :empresa})
                       render '/productos/productos_eliminados.pdf.prawn'
                     else
+                      
                       @productos = Producto.where("prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes(:estatus, :tipo_gtin).order("producto.fecha_creacion") 
                       render '/productos/index.pdf.prawn'
                     end
@@ -186,6 +187,7 @@ class ProductosController < ApplicationController
     
 
     @producto = Producto.find(:first, :conditions => ["gtin like ?", params[:id]])
+    params[:producto][:fecha_ultima_modificacion] = Time.now
 
     respond_to do |format|
       if @producto.update_attributes(params[:producto])

@@ -11,7 +11,7 @@ $(document).ready(function(){
             sAjaxSource: $('#data_table_productos').data('source')
         });
 
-        oTable.columnFilter({ aoColumns: [{ type: "text"},{ type: "text"}, {type: "text" }, {type: "text"},  null, {type: "text"}, {type: "text"}, null, null]});
+        oTable.columnFilter({ aoColumns: [{ type: "text"},{ type: "text"}, {type: "text" }, {type: "text"},  null, {type: "text"}, {type: "text"}, {type: "text"}, null, null]});
 
 
 
@@ -344,7 +344,8 @@ $(document).ready(function(){
                 '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
                 '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
                 '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
-                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'
+                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
+                '<input name="fecha_modificacion" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'
             );
         });
 

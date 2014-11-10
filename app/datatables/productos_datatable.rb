@@ -24,6 +24,8 @@ private
       
       fecha = ""
       fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
+      fecha_modificacion = ""
+      fecha_modificacion =  producto.fecha_ultima_modificacion.strftime("%Y-%m-%d") if (producto.fecha_ultima_modificacion)
       
       
        if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3)
@@ -37,6 +39,7 @@ private
            producto.try(:estatus).try(:descripcion),
            producto.codigo_prod,
            fecha,
+           fecha_modificacion,
            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar producto"}),
            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"GTIN14").html_safe, "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{producto.descripcion}&marca=#{producto.marca}&gpc=#{producto.gpc}",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Generar GTIN-14"})
          ]
@@ -51,6 +54,7 @@ private
            producto.try(:estatus).try(:descripcion),
            producto.codigo_prod,
            fecha,
+           fecha_modificacion,
            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar producto"}),
            ""
          ]
@@ -104,6 +108,12 @@ private
       
     end
 
+    if params[:sSearch_7].present?
+      
+      productos = productos.where("CONVERT(varchar(255),  producto.fecha_ultima_modificacion ,126) like :search7", search7: "%#{params[:sSearch_7]}%")
+      
+    end
+
 
 
     productos
@@ -121,7 +131,7 @@ private
 
   def sort_column
 
-     columns = %w[tipo_gtin.tipo producto.gtin producto.descripcion producto.marca estatus.descripcion producto.codigo_prod producto.fecha_creacion nil nil]
+     columns = %w[tipo_gtin.tipo producto.gtin producto.descripcion producto.marca estatus.descripcion producto.codigo_prod producto.fecha_creacion producto.fecha_ultima_modificacion nil nil]
      columns[params[:iSortCol_0].to_i]
   end
 
