@@ -471,6 +471,23 @@
 
         $("#generar_cartas_masivamente").dataTable();
 
+        // Seleccionar deseleccioanr todos - generar cartas masivamente
+
+        $('#generar_cartas_masivamente').live('change', function() {
+
+            
+            if ($(this).is(':checked'))
+            {
+                $('.carta_retiro_masivo').prop('checked', true);
+            }
+            else 
+            {
+                $('.carta_retiro_masivo').prop('checked', false);
+            }  
+            
+        });
+
+
 
         
 

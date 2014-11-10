@@ -42,7 +42,8 @@
 				%table#generar_cartas_masivamente.display{:border => "1", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
 					%thead
 						%tr
-							%td Selección
+							%td
+								=check_box_tag 'generar_cartas_masivamente', true, false 
 							%td Prefijo
 							%td Nombre
 							%td RIF
@@ -52,7 +53,7 @@
 					%tbody
 						-@empresas_retiradas.each do |empresa_retirada|
 							%tr
-								%td= check_box_tag("cartas_retiradas[]", "#{empresa_retirada.prefijo}", false)
+								%td= check_box_tag("cartas_retiradas[]", "#{empresa_retirada.prefijo}", false, :class => "carta_retiro_masivo")
 								%td= empresa_retirada.prefijo
 								%td= empresa_retirada.nombre_empresa
 								%td= empresa_retirada.rif
