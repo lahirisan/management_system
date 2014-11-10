@@ -14,8 +14,13 @@ if params[:codigo_producto] != ''
   @productos = @productos.where("producto.codigo_prod like :search", search: "%#{params[:codigo_producto]}%" )
 end
 if params[:fecha_creacion] != ''
-	@productos = @productos.where("CONVERT(DATETIME, FLOOR(CONVERT(FLOAT, producto.fecha_creacion))) = '#{params[:fecha_creacion]}'")
+  @productos = @productos.where("CONVERT(varchar(255),  producto.fecha_creacion ,126) like '%#{params[:fecha_creacion]}%'")
+	
+end
+
+if params[:fecha_modificacion] != ''
   
+  @productos = @productos.where("CONVERT(varchar(255),  producto.fecha_ultima_modificacion ,126) like '%#{params[:fecha_modificacion]}%'")
 end
 
 productos = Array.new

@@ -1,6 +1,6 @@
 class Producto < ActiveRecord::Base
   self.table_name = "producto"  # El nombre de la tabla que se esta mapeando
-  attr_accessible :codigo_prod, :descripcion, :fecha_creacion, :gpc, :gtin, :id_estatus, :id_tipo_gtin, :marca, :prefijo, :codigo_upc, :fecha_retiro
+  attr_accessible :codigo_prod, :descripcion, :fecha_creacion, :gpc, :gtin, :id_estatus, :id_tipo_gtin, :marca, :prefijo, :codigo_upc, :fecha_retiro, :fecha_ultima_modificacion
   
   #has_one :productos_empresa,  :primary_key => "gtin",  :foreign_key => "gtin" ,  :dependent => :destroy # busca los productos en productos_empresa a traves de gtin no del campo  id
   #belongs_to :productos_empresa, :primary_key => "gtin",  :foreign_key => "gtin" # busca los productos en productos_empresa a traves de gtin no del campo  id
