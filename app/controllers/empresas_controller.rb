@@ -102,7 +102,8 @@ class EmpresasController < ApplicationController
                   render "/empresas/cartas_retiro_masivo.pdf.prawn"
 
                 else
-                  @empresas = Empresa.includes( :ciudad, :estatus, :clasificacion, :sub_estatus).where("estatus.descripcion = ?", 'Activa').order("empresa.fecha_activacion desc")
+                  @empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("inner join ciudad on empresa.id_ciudad = ciudad.id inner join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo").order("empresa.fecha_activacion desc").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, ciudad.nombre as ciudad_, empresa.rif as rif, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv, empresa.ventas_brutas_anuales as ventas_brutas_anuales, empresa.aporte_mantenimiento as aporte_mantenimiento, empresa.categoria as categoria, empresa.division as division, empresa.grupo as grupo, empresa.clase as clase, empresa.rep_legal as rep_legal")
+                  
                   render "/empresas/index.pdf.prawn"
                 end
       } 
