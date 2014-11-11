@@ -53,7 +53,7 @@
 					%tbody
 						-@empresas_retiradas.each do |empresa_retirada|
 							%tr
-								%td= check_box_tag("cartas_retiradas[]", "#{empresa_retirada.prefijo}", false, :class => "carta_retiro_masivo")
+								%td=check_box_tag("cartas_retiradas[]", "#{empresa_retirada.prefijo}", true, :class => "cartas_retiradas")
 								%td= empresa_retirada.prefijo
 								%td= empresa_retirada.nombre_empresa
 								%td= empresa_retirada.rif

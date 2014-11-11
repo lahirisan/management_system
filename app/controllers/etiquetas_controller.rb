@@ -1,16 +1,17 @@
 class EtiquetasController < ApplicationController
   
   before_filter :require_authentication
-  prawnto :prawn => {:page_layout => :portrait, :page_size => [279, 200]} 
+  prawnto :prawn => {:page_layout => :portrait, :page_size => [310, 200]} 
   
   def show
 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:id]])
 
-    @ciudad_ean = Ciudad.find(@empresa.id_ciudad_ean) if @empresa.id_ciudad_ean
-    @municipio_ean = Municipio.find(@empresa.id_municipio_ean) if @empresa.id_municipio_ean
-    @estado_ean = Estado.find(@empresa.id_estado_ean) if @empresa.id_estado_ean
+    @telefono =  @empresa.telefono1_ean
+    @telefono += " / #{@empresa.telefono2_ean}" if @empresa.telefono2_ean
+    
 
+    
     @navegabilidad = @empresa.try(:prefijo).to_s+" > "+@empresa.try(:nombre_empresa) + " > Etiqueta"
     
     respond_to do |format|

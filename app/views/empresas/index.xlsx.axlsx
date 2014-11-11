@@ -46,7 +46,7 @@ wb.add_worksheet(name: "GS1") do |sheet|
 		black_cell2 = s.add_style   :border => { :style => :thin, :color => "00" }, :i => true,:fg_color => "00", :sz => 8, :alignment => { :horizontal=> :left }
 		tomas = s.add_style  :sz => 12, :alignment => { :horizontal=> :center }
 
-			sheet.add_row ['Prefijo', 'Nombre Empresa', 'Fecha Activación', 'RIF', 'Estatus', 'Sub Estatus',  'Ventas Brutas Anuales', 'Aporte Mantenimiento',  'Categoria', 'Division', 'Grupo', 'Clase', 'Rep Legal' ], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
+			sheet.add_row ['Prefijo', 'Nombre Empresa', 'Fecha Activación', 'RIF', 'Estatus', 'Sub Estatus',  'Ventas Brutas Anuales', 'Aporte Mantenimiento',  'Categoria', 'Division', 'Grupo', 'Clase', 'Rep Legal', 'Correo 1', 'Correo 2', 'Teléfono 1', 'Teléfono 2', 'Teléfono 3', 'Fax' ], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
 			@empresas.each do |empresa|
 				
       			fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") if (empresa.fecha_activacion)
@@ -56,7 +56,9 @@ wb.add_worksheet(name: "GS1") do |sheet|
 					solvencia = "DEUDOR"
 				end
 
-				sheet.add_row [empresa.prefijo,empresa.try(:nombre_empresa),fecha,empresa.try(:rif),empresa.try(:estatus_), solvencia,  empresa.try(:ventas_brutas_anuales), empresa.try(:aporte_mantenimiento).to_f, empresa.try(:division), empresa.try(:categoria), empresa.try(:grupo), empresa.try(:clase),  empresa.try(:rep_legal)], :types => [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, :float], :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]
+				
+
+				sheet.add_row [empresa.prefijo,empresa.try(:nombre_empresa),fecha,empresa.try(:rif),empresa.try(:estatus_), solvencia,  empresa.try(:ventas_brutas_anuales), empresa.try(:aporte_mantenimiento).to_f, empresa.try(:division), empresa.try(:categoria), empresa.try(:grupo), empresa.try(:clase),  empresa.try(:rep_legal), empresa.try(:email1_ean), empresa.try(:email2_ean),empresa.try(:telefono1_ean),empresa.try(:telefono2_ean),empresa.try(:telefono3_ean), empresa.try(:fax_ean)],  :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]
 				
 				#sheet.column_widths 13,80,20,140,40,20,20,25,50,50,50, 50, 20, 20,20,20, 40,40,40,40, 30,30,30,30,30,30,30,30 # Ancho de las columnas
 
