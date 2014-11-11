@@ -11,6 +11,7 @@ class Empresa < ActiveRecord::Base
   
   belongs_to :estado, :foreign_key =>  "id_estado"  # Se establece la clave foranea por la cual va a buscar la asociacion
   belongs_to :ciudad, :foreign_key =>  "id_ciudad"
+  belongs_to :municipio, :foreign_key => "id_municipio"
   belongs_to :estatus, :foreign_key =>  "id_estatus"
   belongs_to :clasificacion, :foreign_key => "id_clasificacion"
   belongs_to :sub_estatus, :foreign_key => "id_subestatus"
