@@ -21,7 +21,8 @@ private
 
 
     glns.map do |empresa_gln|
-       
+          
+          
           if (empresa_gln.try(:tipo_gln).try(:nombre) == 'Legal') or UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar GLN').nil? # GLN legal no se edita , sino tiewne el priviligeo no se edita GLN
             [ 
             empresa_gln.try(:gln),
