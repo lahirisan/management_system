@@ -469,26 +469,24 @@
             $('#ventana_generar_carta_masivamente').dialog('open');
         });
 
-        $("#generar_cartas_masivamente").dataTable();
+        $("#generar_cartas_masivamente").dataTable({
+            "aoColumnDefs": [
+            { "bSortable": false, "aTargets": [0] }
+          ]
+        });
 
         // Seleccionar deseleccioanr todos - generar cartas masivamente
 
-        $('#generar_cartas_masivamente').live('change', function() {
-
-            
-            if ($(this).is(':checked'))
-            {
-                $('.carta_retiro_masivo').prop('checked', true);
-            }
-            else 
-            {
-                $('.carta_retiro_masivo').prop('checked', false);
-            }  
-            
-        });
-
-
-
+        // $('#generar_cartas_masivamente').on('change', function() {
+        //     if ($(this).is(':checked'))
+        //     {
+        //         $('.cartas_retiradas').prop('checked', true);
+        //     }
+        //     else 
+        //     {
+        //         $('.cartas_retiradas').prop('checked', false);
+        //     }  
+        // });
         
 
     })   
