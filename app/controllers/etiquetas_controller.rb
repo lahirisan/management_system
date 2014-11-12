@@ -1,7 +1,7 @@
 class EtiquetasController < ApplicationController
   
   before_filter :require_authentication
-  prawnto :prawn => {:page_layout => :portrait, :page_size => [310, 200]} 
+  prawnto :prawn => {:page_layout => :portrait, :page_size => [285, 170]} 
   
   def show
 
