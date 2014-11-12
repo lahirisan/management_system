@@ -5,75 +5,71 @@
   %section.formulario
 
     = form_tag "/empresas/#{params[:empresa_id]}/etiquetas/#{params[:empresa_id]}", :method => "put" do 
-      - if @etiqueta.errors.any?
-        #error_explanation
-          %h2= "#{pluralize(@etiqueta.errors.count, "errore")} "
-          %ul
-            - @etiqueta.errors.full_messages.each do |msg|
-              %li= msg
+     
       %table
         %tr
           %td
-            Nombre del representante legal
+            Contacto
           %td
-            =text_field_tag "nombre_contacto", "#{@empresa.rep_legal}", :size => "100"
+            =text_field_tag "empresa[rep_ean]", "#{@empresa.rep_ean}", :size => "100"
         %tr
           %td
             Cargo
           %td
-            =text_field_tag "cargo_contacto", "#{@empresa.cargo_rep_legal}", :size => "100"
+            =text_field_tag "empresa[rep_ean_cargo]", "#{@empresa.rep_ean_cargo}", :size => "100"
         %tr
           %td
-            Teléfono
+            Dirección
           %td
-            =text_field_tag "contacto", "#{@contacto.contacto}"
+            =text_field_tag "empresa[direccion_ean]", "#{@empresa.direccion_ean}", :size => "100"
+        
         %tr
           %td
-            Edificio
+            Punto Referencia
           %td
-            =text_field_tag "edificio", "#{@etiqueta.edificio}", :size => "100"
-        %tr
-          %td
-            Calle 
-          %td
-            =text_field_tag "calle", "#{@etiqueta.calle}", :size => "100"
-        %tr
-          %td
-            Urbanización
-          %td
-            =text_field_tag "urbanizacion", "#{@etiqueta.urbanizacion}", :size => "100"
+            =text_field_tag "empresa[punto_ref_ean]", "#{@empresa.punto_ref_ean}", :size => "100"
+
         %tr
           %td
             Estado
           %td
-            =select_tag "id_estado", options_from_collection_for_select(Estado.find(:all, :order => "nombre ASC"), :id, :nombre, @etiqueta.try(:id_estado)), :prompt => "-Seleccione-"
+            =select_tag "empresa[id_estado_ean]", options_from_collection_for_select(Estado.find(:all, :order => "nombre ASC"), :id, :nombre, @empresa.try(:id_estado_ean)), :prompt => "-Seleccione-"
         %tr
           %td
             Ciudad
           %td
-            =select_tag "id_ciudad", options_from_collection_for_select(Ciudad.all, :id, :nombre, @etiqueta.try(:id_ciudad)), :prompt => "-Seleccione-"
+            =select_tag "empresa[id_ciudad_ean]", options_from_collection_for_select(Ciudad.all, :id, :nombre, @empresa.try(:id_ciudad_ean)), :prompt => "-Seleccione-"
         %tr
           %td
             Municipio
           %td
-            =select_tag "id_municipio", options_from_collection_for_select(Municipio.all, :id, :nombre,@etiqueta.try(:id_municipio)), :prompt => "-Seleccione-"
+            =select_tag "empresa[id_municipio_ean]", options_from_collection_for_select(Municipio.all, :id, :nombre,@empresa.try(:id_municipio_ean)), :prompt => "-Seleccione-"
         %tr
           %td
             Parroquia
           %td
-            /=select_tag "id_parroquia", options_from_collection_for_select(Parroquia.all, :id, :nombre,@etqueta.try(:id_parroquia)), :prompt => "-Seleccione-"
-            =text_field_tag "nombre_parroquia", "#{@etiqueta.nombre_parroquia}", :size => "100"
+            
+            =text_field_tag "empresa[parroquia_ean]", "#{@empresa.try(:parroquia_ean)}", :size => "100"
+
+        %tr
+          %td
+            Teléfono 1
+          %td
+            =text_field_tag "empresa[telefono1_ean]", "#{@empresa.telefono1_ean}"
+        %tr
+          %td
+            Teléfono 2
+          %td
+            =text_field_tag "empresa[telefono2_ean]", "#{@empresa.telefono2_ean}"
+
+        
 
         %tr
           %td
             Código Postal
           %td
-            =text_field_tag "cod_postal", "#{@etiqueta.cod_postal}"
-        %tr
-          %td
-            Punto Referencia
-          %td
-            =text_field_tag "punto_referencia", "#{@etiqueta.punto_referencia}", :size => "100"
+            =text_field_tag "empresa[cod_postal_ean]", "#{@empresa.cod_postal_ean}"
+       
           
       .actions
         %br
