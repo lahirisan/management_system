@@ -6,6 +6,10 @@ class EtiquetasController < ApplicationController
   def show
 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:id]])
+    @estado_ean = Estado.find(@empresa.id_estado_ean)
+    @ciudad_ean = Ciudad.find(@empresa.id_ciudad_ean)
+
+    @municipio_ean = Municipio.find(@empresa.id_municipio_ean)
 
     @telefono =  @empresa.telefono1_ean
     @telefono += " / #{@empresa.telefono2_ean}" if @empresa.telefono2_ean
@@ -34,12 +38,20 @@ class EtiquetasController < ApplicationController
 
   def update
 
-    Correspondencia.modificar_etiqueta(params)
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
 
+
     respond_to do |format|
+
+       if @empresa.update_attributes(params[:empresa])
+        format.html { redirect_to empresa_etiqueta_path, notice: "Los datos para la etiqueta de la empresa #{@empresa.nombre_empresa} fueron modificados."}
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
         
-      format.html { redirect_to empresa_etiqueta_path, notice: "Los datos para la etiqueta de la empresa #{@empresa.nombre_empresa} fueron modificados."}
+      end
+        
+      
      
     end
   end
