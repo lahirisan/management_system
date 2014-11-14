@@ -490,7 +490,33 @@
         //         $('.cartas_retiradas').prop('checked', false);
         //     }  
         // });
-        
+
+
+         $('#cartas_empresas_retiradas').submit(function( event ) { 
+            
+
+          
+            // Se valida que se haya seleccionado alguna empresa para retirar
+            if ($(".cartas_retiradas:checked").length == 0)
+            {
+                alert("Estimado usuario, no ha seleccionado ninguna EMPRESA para generar su carta de retiro. Por favor verifique.");
+                return false;
+            }
+            else
+            {
+                var empresas = "";
+                $('.cartas_retiradas:checked').each(function() {
+                    // Por cada empresa seleccionda se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
+                    empresas = empresas + " " + $(this).val();
+                    
+                });
+
+                $('#empresas_seleccionadas').append('<input type="hidden" name="retiro_masivo_cartas" value="'+empresas+ '">');
+
+                
+            }
+
+        });
 
     })   
 
