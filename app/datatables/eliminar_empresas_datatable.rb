@@ -53,7 +53,7 @@ private
 
   def fetch_empresas
     
-    empresas = Empresa.includes(:estado, :ciudad, :estatus, :sub_estatus, :motivo_retiro).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("#{sort_column} #{sort_direction}") 
+    empresas = Empresa.includes(:estado, :ciudad, :estatus, :motivo_retiro).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("#{sort_column} #{sort_direction}") 
     empresas = empresas.page(page).per_page(per_page)
     
     empresas = empresas.where("empresa.prefijo like :search or empresa.nombre_empresa like :search or empresa.fecha_inscripcion like :search or ciudad.nombre like :search or empresa.rif like :search", search: "%#{params[:sSearch]}%") if params[:sSearch].present? # Filtro de busqueda general
@@ -63,7 +63,7 @@ private
     empresas = empresas.where("ciudad.nombre like :search4", search4: "%#{params[:sSearch_4]}%" ) if params[:sSearch_4].present?
     empresas = empresas.where("empresa.rif like :search5", search5: "%#{params[:sSearch_5]}%" ) if params[:sSearch_5].present?
     empresas = empresas.where("empresa.fecha_retiro like :search6", search6: "%#{params[:sSearch_6]}%" ) if params[:sSearch_6].present?
-    empresas = empresas.where("sub_estatus.descripcion like :search11", search11: "%#{params[:sSearch_11]}%" ) if params[:sSearch_11].present?
+    
     empresas = empresas.where("motivo_retiro.descripcion like :search12", search12: "%#{params[:sSearch_12]}%" ) if params[:sSearch_12].present?
     
     empresas

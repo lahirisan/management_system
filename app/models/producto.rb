@@ -299,16 +299,14 @@ class Producto < ActiveRecord::Base
       end
 
       if spreadsheet.empty?(fila,1) # EL codigo de producto no viene en el Excel
-
         
         gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil, nil)
-
+        
       else
 
         gtin = Producto.crear_gtin(tipo_gtin, prefijo, nil, spreadsheet.row(fila)[0].to_i)
         
       end
-
 
       producto = new
       producto.gtin = gtin.to_s
@@ -331,7 +329,7 @@ class Producto < ActiveRecord::Base
       producto.prefijo = prefijo
       producto.save
 
-      
+
 
     end
 

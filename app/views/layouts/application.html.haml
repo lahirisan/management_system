@@ -32,15 +32,14 @@
 		%section#menu.menu	
 			
 			-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Empresas Activas') 
-
+				
 				%a.opcion{:href => "/empresas", :title => "Empresas Activas", :class => "ui-state-default ui-corner-all botones_menu"}
 					%span.ui-icon.ui-icon-home
 					&nbsp;Empresas Activas
-
-
 					
 
-			-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Activar Empresa') 
+			-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Activar Empresa') and( session[:controller] == 'empresas' or  session[:controller] == 'empresa_registradas')
+
 				
 				%a.opcion{:href => "/empresa_registradas", :title => "Opción para ACTIVAR las nuevas empresas", :class => "ui-state-default ui-corner-all botones_menu"}
 					%span.ui-icon.ui-icon-circle-check

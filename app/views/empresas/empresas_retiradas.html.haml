@@ -38,7 +38,7 @@
 			Generar Cartas Masivamente
 
 		#ventana_generar_carta_masivamente
-			=form_tag "/empresas.pdf?cartas_retiradas", :method => "get", :id => "cartas_empresas_retiradas", :target => "_blank" do
+			=form_tag "/empresas.pdf?cartas_retiradas", :method => "post", :id => "cartas_empresas_retiradas", :target => "_blank" do
 				%table#generar_cartas_masivamente.display{:border => "1", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
 					%thead
 						%tr
@@ -59,6 +59,8 @@
 								%td= empresa_retirada.rif
 								%td= empresa_retirada.fecha_retiro
 								%td= empresa_retirada.try(:motivo_retiro).try(:descripcion)
+				#empresas_seleccionadas
+
 				%br
 				%br
 				=submit_tag "Generar Cartas"
