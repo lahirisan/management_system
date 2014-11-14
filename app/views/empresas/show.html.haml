@@ -12,11 +12,11 @@
         Prefijo
       %td
         =@empresa.prefijo
-    / %tr
-    /   %td
-    /     Tipo Usuario
-    /   %td
-    /     =@empresa.try(:tipo_usuario).try(:descripcion)
+    %tr
+      %td
+        Tipo Usuario
+      %td
+        =@empresa.try(:tipo_usuario_empresa).try(:descripcion)
 
     %tr
       %td
@@ -28,20 +28,20 @@
       %td
         Estado
       %td
-        = @empresa.try(:estado).try(:nombre)
+        = @estado.try(:nombre)
 
     %tr
       %td
         Ciudad
       %td
-        = @empresa.try(:ciudad).try(:nombre)
+        = @ciudad.try(:nombre)
 
     
     %tr
       %td
         Fecha Activación
       %td
-        =@empresa.fecha_activacion.nil? ? "No Tiene" : @empresa.fecha_activacion.strftime("%Y-%m-%d")
+        =@empresa.try(:fecha_activacion).strftime("%Y-%m-%d") 
     %tr
       %td
         Dirección Fiscal
@@ -58,11 +58,7 @@
         Estatus
       %td
         =@empresa.try(:estatus).try(:descripcion)
-    %tr
-      %td
-        Sub Estatus
-      %td
-        =@empresa.try(:sub_estatus).try(:descripcion)
+    
       
     %tr
       %td
@@ -74,56 +70,45 @@
         Cargo Rep Legal
       %td
         = @empresa.cargo_rep_legal
-   
-
-
-
-  %br
-  %br
-  %label.contexto=@empresa.nombre_empresa + " > Clasificación de la Empresa"
-  %hr.contexto{:size => "1"}
-
-  %br
-  %table
-    
+  
     %tr
       %td
         Clasificación
       %td
-        = @empresa.try(:clasificacion).try(:descripcion)
+        = @clasificacion.try(:descripcion)
     %tr
       %td
         Categoría
       %td
-        = @empresa.try(:clasificacion).try(:categoria)
+        = @empresa.try(:categoria)
     %tr
       %td
         División
       %td
-        = @empresa.try(:clasificacion).try(:division)
+        =@empresa.try(:division)
     %tr
       %td
         Grupo
       %td
-        = @empresa.try(:clasificacion).try(:grupo)
+        =@empresa.try(:grupo)
     %tr
       %td
         Clase
       %td
-        = @empresa.try(:clasificacion).try(:clase)
-  %br
-  %br
-  %label.contexto=@empresa.nombre_empresa +   " > Datos de Contacto"
-  %hr.contexto{:size => "1"}
-  %br
-  -if params[:editar]
-    =render 'datos_contacto'
-  -else
-    =render 'datos_contacto_no_editable'
+        =@empresa.try(:clase)
+  / %br
+  / %br
+  / %label.contexto=@empresa.nombre_empresa +   " > Datos de Contacto"
+  / %hr.contexto{:size => "1"}
+  / %br
+  / -if params[:editar]
+  /   =render 'datos_contacto'
+  / -else
+  /   =render 'datos_contacto_no_editable'
 
-  %label.contexto=@empresa.nombre_empresa + " > Datos Correspondencia"
-  %hr.contexto{:size => "1"}
-  %br
+  / %label.contexto=@empresa.nombre_empresa + " > Datos Correspondencia"
+  / %hr.contexto{:size => "1"}
+  / %br
 
   / %table
   /   %tr
@@ -182,9 +167,9 @@
   /       Punto Referencia
   /     %td
   /       =@correspondencia.try(:punto_referencia)
-  / %br
-  / %br
-  / %br
+  %br
+  %br
+  %br
   
   %a.ui-state-default.ui-corner-all.regresar{:href => "javascript:window.history.back()"}
     %span.ui-icon.ui-icon-arrowreturnthick-1-w

@@ -23,23 +23,43 @@ private
     empresas.map do |empresa|
       
       fecha = ""
-      fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
+      fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") if (empresa.fecha_activacion)
 
-      [ 
-        check_box_tag("retirar_empresas[]", "#{empresa.id}", false, :class=>"retirar_empresa"),
-        empresa.prefijo,
-        empresa.nombre_empresa,
-        fecha,
-        empresa.ciudad.nombre,
-        empresa.rif,
-        empresa.estatus.descripcion,
-        empresa.sub_estatus.try(:descripcion),
-        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa, :retirar => true), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
-        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, "/empresas/#{empresa.prefijo}/productos", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),
-        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe,  "/empresas/#{empresa.prefijo}/empresa_servicios",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios asociados a la empresa #{empresa.nombre_empresa}"}),
-        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, "/empresas/#{empresa.prefijo}/glns",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociado a la empresa #{empresa.nombre_empresa}"}),
-        select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion", empresa.try(:id_motivo_retiro)), :id => "#{empresa.prefijo}motivo_ret")
-      ]
+      if empresa.solv == 2
+        [ 
+          check_box_tag("retirar_empresas[]", "#{empresa.id}", false, :class=>"retirar_empresa"),
+          empresa.prefijo,
+          empresa.nombre_empresa,
+          fecha,
+          empresa.ciudad_,
+          empresa.rif,
+          empresa.estatus_.upcase,
+          "SOLVENTE",
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa, :retirar => true), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, "/empresas/#{empresa.prefijo}/productos", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe,  "/empresas/#{empresa.prefijo}/empresa_servicios",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios asociados a la empresa #{empresa.nombre_empresa}"}),
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, "/empresas/#{empresa.prefijo}/glns",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociado a la empresa #{empresa.nombre_empresa}"}),
+          select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"), :id => "#{empresa.prefijo}motivo_ret")
+        ]
+
+      else
+
+        [ 
+          check_box_tag("retirar_empresas[]", "#{empresa.id}", false, :class=>"retirar_empresa"),
+          empresa.prefijo,
+          empresa.nombre_empresa,
+          fecha,
+          empresa.ciudad_,
+          empresa.rif,
+          empresa.estatus_.upcase,
+          "DEUDOR",
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa, :retirar => true), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, "/empresas/#{empresa.prefijo}/productos", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe,  "/empresas/#{empresa.prefijo}/empresa_servicios",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios asociados a la empresa #{empresa.nombre_empresa}"}),
+          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, "/empresas/#{empresa.prefijo}/glns",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociado a la empresa #{empresa.nombre_empresa}"}),
+          select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"), :id => "#{empresa.prefijo}motivo_ret")
+        ]
+      end
   
     end
 
@@ -51,14 +71,13 @@ private
 
   def fetch_empresas
     
-   
-    empresas = Empresa.includes(:estado, :ciudad, :estatus).where("estatus.descripcion like ? and alcance like ?", 'Activa', 'Empresa')
-   
-    
+    empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("inner join ciudad on empresa.id_ciudad = ciudad.id inner join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo").order("#{sort_column} #{sort_direction}").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, ciudad.nombre as ciudad_, empresa.rif as rif, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv, empresa.fecha_inscripcion as fecha_inscripcion").order("#{sort_column} #{sort_direction}") 
+    #empresas = Empresa.includes(:estado, :ciudad, :estatus).where("estatus.descripcion like ? and alcance like ?", 'Activa', 'Empresa')
+     
     empresas = empresas.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general
-      empresas = empresas.where("empresa.prefijo like :search or empresa.nombre_empresa like :search or empresa.fecha_inscripcion like :search or ciudad.nombre like :search or empresa.rif like :search or estatus.descripcion like :search or empresa.id_tipo_usuario like :search or empresa.nombre_comercial like :search or empresa.id_clasificacion like :search or empresa.categoria like :search or empresa.division like :search or empresa.grupo like :search or empresa.clase like :search or empresa.rep_legal like :search or empresa.cargo_rep_legal like :search", search: "%#{params[:sSearch]}%")
+      empresas = empresas.where("empresa.prefijo like :search or empresa.nombre_empresa like :search or empresa.fecha_activacion like :search or empresa.ciudad_ like :search or empresa.rif like :search or empresa.estatus_ like :search", search: "%#{params[:sSearch]}%")
     end
     
     if params[:sSearch_1].present? # Filtro de busqueda por prefijo
@@ -69,7 +88,8 @@ private
       empresas = empresas.where("empresa.nombre_empresa like :search2", search2: "%#{params[:sSearch_2]}%" )
     end
     if params[:sSearch_3].present?
-      empresas = empresas.where("empresa.fecha_inscripcion like :search3", search3: "%#{params[:sSearch_3]}%" )
+      empresas = empresas.where("CONVERT(varchar(255),  empresa.fecha_activacion ,126) like :search3", search3: "%#{params[:sSearch_3]}%")
+      
     end
     if params[:sSearch_4].present?
       empresas = empresas.where("ciudad.nombre like :search4", search4: "%#{params[:sSearch_4]}%" )
@@ -80,33 +100,25 @@ private
     if params[:sSearch_6].present?
       empresas = empresas.where("estatus.descripcion like :search6", search6: "%#{params[:sSearch_6]}%" )
     end
-    # if params[:sSearch_7].present?
-    #   empresas = empresas.where("empresa.id_tipo_usuario like :search7", search7: "%#{params[:sSearch_7]}%" )
-    # end
-    # if params[:sSearch_8].present?
-    #   empresas = empresas.where("empresa.nombre_comercial like :search8", search8: "%#{params[:sSearch_8]}%" )
-    # end
-    # if params[:sSearch_9].present?
-    #   empresas = empresas.where("empresa.id_clasificacion like :search9", search9: "%#{params[:sSearch_9]}%" )
-    # end
-    # if params[:sSearch_10].present?
-    #   empresas = empresas.where("empresa.categoria like :search10", search10: "%#{params[:sSearch_10]}%" )
-    # end
-    # if params[:sSearch_11].present?
-    #   empresas = empresas.where("empresa.division like :search11", search11: "%#{params[:sSearch_11]}%" )
-    # end
-    # if params[:sSearch_12].present?
-    #   empresas = empresas.where("empresa.grupo like :search12", search12: "%#{params[:sSearch_12]}%" )
-    # end
-    # if params[:sSearch_13].present? 
-    #   empresas = empresas.where("empresa.clase like :search13", search13: "%#{params[:sSearch_13]}%" )
-    # end
-    # if params[:sSearch_14].present?
-    #   empresas = empresas.where("empresa.rep_legal like :search14", search14: "%#{params[:sSearch_14]}%" )
-    # end
-    # if params[:sSearch_15].present?
-    #   empresas = empresas.where("empresa.cargo_rep_legal like :search15", search15: "%#{params[:sSearch_15]}%" )
-    # end
+
+     if params[:sSearch_7].present?
+      
+      if params[:sSearch_7].upcase == "D" or params[:sSearch_7].upcase == "DE" or params[:sSearch_7].upcase == "DEU" or params[:sSearch_7].upcase == "DEUD" or params[:sSearch_7].upcase == "DEUDO" or params[:sSearch_7].upcase == "DEUDOR"
+        
+        empresas = empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) != 2")
+
+        
+      elsif params[:sSearch_7].upcase == "S" or params[:sSearch_7].upcase == "SO" or params[:sSearch_7].upcase == "SOL" or params[:sSearch_7].upcase == "SOLV" or params[:sSearch_7].upcase == "SOLVE" or params[:sSearch_7].upcase == "SOLVE" or params[:sSearch_7].upcase == "SOLVEN" or params[:sSearch_7].upcase == "SOLVENT" or params[:sSearch_7].upcase == "SOLVENTE" 
+
+        empresas = empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) = 2")
+
+      else
+        
+        empresas = empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) like '#{params[:sSearch_7]}'")
+      end 
+    
+    end
+    
     empresas
   end
 
@@ -120,7 +132,7 @@ private
 
   def sort_column
 
-     columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_inscripcion empresa.direccion_empresa estados.nombre ciudad.nombre empresa.rif  estatus.descripcion empresa.id_tipo_usuario empresa.nombre_comercial empresa.id_clasificacion empresa.categoria empresa.division empresa.grupo empresa.clase empresa.rep_legal empresa.cargo_rep_legal]
+     columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_activacion ciudad.nombre empresa.rif  estatus.descripcion ]
      columns[params[:iSortCol_0].to_i]
      
   end

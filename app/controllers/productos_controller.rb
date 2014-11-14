@@ -171,8 +171,10 @@ class ProductosController < ApplicationController
 
     respond_to do |format|
       if @producto.save
-       
-        format.html { redirect_to empresa_productos_path, notice: "EL #{@producto.tipo_gtin.tipo} #{@producto.gtin} fue creado correctamente." }        
+
+          Auditoria.registrar_evento(session[:usuario],"producto", "Crear", Time.now, "GTIN:#{@producto.gtin} DESCRIPCION:#{@producto.descripcion} TIPO GTIN:#{@producto.tipo_gtin.tipo}")
+          format.html { redirect_to empresa_productos_path, notice: "EL #{@producto.tipo_gtin.tipo} #{@producto.gtin} fue creado correctamente." }        
+
       else
         format.html { 
           
@@ -210,6 +212,7 @@ class ProductosController < ApplicationController
 
   def import
 
+
     
     tipo_gtin = TipoGtin.find(params[:tipo_gtin])
 
@@ -217,6 +220,8 @@ class ProductosController < ApplicationController
       codigo_invalido = Producto.import_gtin_14(params[:file], params[:tipo_gtin], params[:empresa_id]) 
       mensaje = "Los #{tipo_gtin.tipo} base #{tipo_gtin.base} fueron importados." 
     else
+
+      Auditoria.registrar_evento(session[:usuario],"producto", "Crear", Time.now, "GTIN:#{@producto.gtin} DESCRIPCION:#{@producto.descripcion} TIPO GTIN:#{@producto.tipo_gtin.tipo}")
       Producto.import(params[:file], params[:tipo_gtin], params[:empresa_id]) 
       mensaje = "Los #{tipo_gtin.tipo} fueron importados." 
     end

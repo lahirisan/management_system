@@ -12,7 +12,6 @@ class EmpresasController < ApplicationController
 
     # OJO: La llamada JSON y los parametro se establecen en el datatable desde el template.html.haml
 
-
     respond_to do |format|
       format.html{
                   
@@ -84,9 +83,6 @@ class EmpresasController < ApplicationController
 
       format.pdf {
 
-
-
-
                 if (params[:retiradas])
                   @empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, {:empresas_retiradas => :sub_estatus},{:empresas_retiradas => :motivo_retiro}).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("empresas_retiradas.fecha_retiro desc")
                   render "/empresas/empresas_retiradas.pdf.prawn"
@@ -117,10 +113,17 @@ class EmpresasController < ApplicationController
   def show
 
     
-    @empresa = Empresa.find(params[:id])
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:id]], :include => [:tipo_usuario_empresa])
+
 
     respond_to do |format|
       format.html # show.html.erb
+
+      #@estado = Estado.find(@empresa.id_estado)
+      @ciudad = Ciudad.find(@empresa.id_ciudad)
+      
+      @clasificacion = Clasificacion.find(:first, :conditions => ["categoria = ? and division = ? and grupo = ? and clase = ?", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase])
+      
       
       format.json {
 
@@ -148,6 +151,8 @@ class EmpresasController < ApplicationController
   # GET /empresas/new
   # GET /empresas/new.json
   def new
+
+
      # la creacion de empresa es por empresa_registrada_controller
   end
 
@@ -162,6 +167,7 @@ class EmpresasController < ApplicationController
   # POST /empresas
   # POST /empresas.json
   def create
+    raise params.to_yaml
     # La creacion de empresa es por empresa_registrada_controller
   end
 
@@ -174,6 +180,8 @@ class EmpresasController < ApplicationController
     respond_to do |format|
        
       if @empresa.update_attributes(params[:empresa])
+
+        Auditoria.registrar_evento(session[:usuario],"empresa", "Editar", Time.now, "Empresa:#{@empresa.nombre_empresa} PREFIJO:#{@empresa.prefijo}")
 
         format.html { 
           
@@ -193,14 +201,24 @@ class EmpresasController < ApplicationController
   end
 
   def update_multiple
-
    
     Empresa.validar_empresas(params[:activar_empresas]) if params[:activar_empresas] #Parametro que indica Validar Empresa       
-    Empresa.retirar_empresas(params) if params[:retiro]
-    Empresa.eliminar_empresas(params) if params[:eliminar]
-    Empresa.reactivar_empresas_retiradas(params) if params[:reactivar]
-    Empresa.cambiar_sub_estatus(params) if params[:sub_estatus]
+    
+    if params[:retiro]
+      
+      Empresa.retirar_empresas(params) 
+      params[:retirar_empresas].collect{|empresa_retirar| @empresa = Empresa.find(empresa_retirar); Auditoria.registrar_evento(session[:usuario],"empresa", "Retirar", Time.now, "Empresa:#{@empresa.nombre_empresa} PREFIJO:#{@empresa.prefijo}") }
 
+    end
+
+    if params[:eliminar]
+
+      Empresa.eliminar_empresas(params) 
+      params[:eliminar_empresas].collect{|empresa_eliminar| @empresa = EmpresaEliminada.find(empresa_eliminar); Auditoria.registrar_evento(session[:usuario],"empresa", "Eliminar", Time.now, "Empresa:#{@empresa.nombre_empresa.strip} PREFIJO:#{@empresa.prefijo}") }
+
+    end
+    
+    Empresa.reactivar_empresas_retiradas(params) if params[:reactivar]
     
     @procesadas = ""
     params[:activar_empresas].collect{|prefijo| @procesadas += prefijo + " " } if params[:activar_empresas]
