@@ -38,7 +38,8 @@
 					&nbsp;Empresas Activas
 					
 
-			-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Activar Empresa') and( session[:controller] == 'empresas' or  session[:controller] == 'empresa_registradas')
+
+			-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Activar Empresa') and ( params[:controller] == 'empresas' or  params[:controller] == 'empresa_registradas')
 
 				
 				%a.opcion{:href => "/empresa_registradas", :title => "Opción para ACTIVAR las nuevas empresas", :class => "ui-state-default ui-corner-all botones_menu"}
