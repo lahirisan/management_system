@@ -221,7 +221,7 @@ class ProductosController < ApplicationController
       mensaje = "Los #{tipo_gtin.tipo} base #{tipo_gtin.base} fueron importados." 
     else
 
-      Auditoria.registrar_evento(session[:usuario],"producto", "Crear", Time.now, "GTIN:#{@producto.gtin} DESCRIPCION:#{@producto.descripcion} TIPO GTIN:#{@producto.tipo_gtin.tipo}")
+      #Auditoria.registrar_evento(session[:usuario],"producto", "Crear", Time.now, "GTIN:#{@producto.gtin} DESCRIPCION:#{@producto.descripcion} TIPO GTIN:#{@producto.tipo_gtin.tipo}")
       Producto.import(params[:file], params[:tipo_gtin], params[:empresa_id]) 
       mensaje = "Los #{tipo_gtin.tipo} fueron importados." 
     end
