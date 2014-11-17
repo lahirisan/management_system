@@ -52,12 +52,13 @@
 						
 					%tbody
 						-@empresas_retiradas.each do |empresa_retirada|
+
 							%tr
 								%td=check_box_tag("cartas_retiradas[]", "#{empresa_retirada.prefijo}", true, :class => "cartas_retiradas")
 								%td= empresa_retirada.prefijo
 								%td= empresa_retirada.nombre_empresa
 								%td= empresa_retirada.rif
-								%td= empresa_retirada.fecha_retiro
+								%td= empresa_retirada.fecha_retiro.nil? ? empresa_retirada.try(:fecha_retiro) : empresa_retirada.try(:fecha_retiro).strftime("%Y-%m-%d") 
 								%td= empresa_retirada.try(:motivo_retiro).try(:descripcion)
 				#empresas_seleccionadas
 
