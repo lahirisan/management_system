@@ -1,3 +1,4 @@
+ fecha = Time.now
  @empresas.each do |empresa|
 
   image "#{Rails.root}/app/assets/images/Gs1Vzla.png", :at => [0, 720], :height => 50
@@ -27,7 +28,7 @@
   draw_text "Quorum, piso 1, Ofic. J y K,", :size => 7, :at => [350,100] 
   draw_text "Los Ruices, Caracas - 1071 ", :size => 7, :at => [350,90] 
   draw_text "Venezuela", :size => 7, :at => [350,80] 
-  draw_text "GT / JLM / MFT / 6170914", :size => 8, :at => [0,60]
+  draw_text "EC / JLM / MFT / 6#{fecha.strftime("%d%m%Y")}", :size => 8, :at => [0,60]
 
   pdf.start_new_page
 
