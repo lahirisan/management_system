@@ -36,13 +36,13 @@
           %td
             Descripción
           %td
-            =params[:descripcion] ? f.text_field(:descripcion, :value => params[:descripcion]) : f.text_field(:descripcion, :autocomplete => "off")
+            =params[:descripcion] ? f.text_field(:descripcion, :value => params[:descripcion], :readonly => :true, :class => "campo_readonly") : f.text_field(:descripcion, :autocomplete => "off", :readonly => :true, :class => "campo_readonly")
             
         %tr
           %td
             Marca
           %td
-            =params[:marca] ? f.text_field(:marca, :value => params[:marca]): f.text_field(:marca, :autocomplete => "off")
+            =params[:marca] ? f.text_field(:marca, :value => params[:marca], :readonly => :true, :class => "campo_readonly"): f.text_field(:marca, :autocomplete => "off", :readonly => :true, :class => "campo_readonly")
         / %tr
         /   %td
         /     GPC
