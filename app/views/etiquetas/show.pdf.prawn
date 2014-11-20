@@ -1,11 +1,11 @@
-pdf.text_box "<b>#{@empresa.nombre_empresa.strip}</b>", :size => 11, :at => [-30,125], :height => 30, :width => 350, :align => :justify,  :inline_format => true
-pdf.text_box "Contacto: <b>#{@empresa.rep_ean.strip.upcase}</b>", :size => 9, :at => [-30,110],  :align => :left, :inline_format => true
-pdf.text_box "Cargo: <b>#{@empresa.rep_ean_cargo.strip}</b>", :size => 9, :at => [-30,100], :align => :left, :inline_format => true
-pdf.text_box "Dirección: <b>#{@empresa.direccion_ean.strip}</b>", :size => 9, :at => [-30,90], :height => 50, :width => 270, :align => :justify, :inline_format => true
-pdf.text_box "Pto Ref: <b>#{@empresa.try(:punto_ref_ean)}</b>", :size => 9, :at => [-30,70], :align => :left, :inline_format => true
-pdf.text_box "Estado: <b>#{@empresa.try(:estado).try(:nombre)}</b>    Ciudad: <b>#{@empresa.try(:ciudad).try(:nombre).upcase}<b>", :size => 9, :at => [-30,50], :align => :left, :inline_format => true 
-pdf.text_box "Municipio: <b>#{@empresa.try(:municipio).try(:nombre)}</b>                                 Prefijo:<b>#{@empresa.prefijo}</b>", :size => 9, :at => [-30,40], :align => :left, :inline_format => true 
-pdf.text_box "Parroquia: <b>#{@empresa.try(:parroquia_ean)}</b>", :size => 9, :at => [-30,30], :align => :left, :inline_format => true 
-pdf.text_box "Cod Postal: <b>#{@empresa.try(:cod_postal_ean).strip}</b>", :size => 9, :at => [-30,20],  :align => :left, :inline_format => true 
-pdf.text_box "Teléfono: <b>#{@telefono}</b>", :size => 9, :at => [-30,10],  :align => :left, :inline_format => true 
+pdf.text_box "<b>#{@empresa.nombre_empresa.strip}</b>", :size => 8, :at => [-35,130], :height => 30, :width => 350, :align => :justify,  :inline_format => true
+pdf.text_box "<b>Contacto: #{@empresa.rep_ean.strip.upcase}</b>", :size => 6, :at => [-35,120],  :align => :left, :inline_format => true
+pdf.text_box "<b>Cargo: #{@empresa.rep_ean_cargo.strip}</b>", :size => 6, :at => [-35,113], :align => :left, :inline_format => true
+pdf.text_box "<b>Dirección: #{@empresa.direccion_ean.strip}</b>", :size => 6, :at => [-35,106], :height => 50, :width => 270, :align => :justify, :inline_format => true
+pdf.text_box "<b>Pto Ref: #{@empresa.try(:punto_ref_ean)}</b>", :size => 6, :at => [-35,90], :align => :left, :inline_format => true
+pdf.text_box "<b>Estado: #{@empresa.try(:estado).try(:nombre)}</b>    Ciudad: <b>#{@empresa.try(:ciudad).try(:nombre).upcase}<b>", :size => 6, :at => [-35,83], :align => :left, :inline_format => true 
+pdf.text_box "<b>Municipio: #{@empresa.try(:municipio).try(:nombre)}</b>                                 Prefijo:<b>#{@empresa.prefijo}</b>", :size => 6, :at => [-35,76], :align => :left, :inline_format => true 
+pdf.text_box "<b>Parroquia: #{@empresa.try(:parroquia_ean)}</b>", :size => 6, :at => [-35,69], :align => :left, :inline_format => true 
+pdf.text_box "<b>Cod Postal: #{@empresa.try(:cod_postal_ean).strip}</b>", :size => 6, :at => [-35,62],  :align => :left, :inline_format => true 
+pdf.text_box "<b>Teléfono: #{@telefono}</b>", :size => 6, :at => [-35,55],  :align => :left, :inline_format => true 
 
