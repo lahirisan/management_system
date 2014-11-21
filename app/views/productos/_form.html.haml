@@ -39,10 +39,10 @@
 
             -if @producto.new_record?
               
-              =params[:descripcion] ? f.text_field(:descripcion, :value => params[:descripcion])   : f.text_field(:descripcion, :autocomplete => "off")
+              =params[:descripcion] ? f.text_field(:descripcion, :value => @producto_.descripcion)   : f.text_field(:descripcion, :autocomplete => "off")
             -else
               
-              =params[:descripcion] ? f.text_field(:descripcion, :value => params[:descripcion], :readonly => :true, :class => "campo_readonly") : f.text_field(:descripcion, :autocomplete => "off", :readonly => :true, :class => "campo_readonly")
+              =params[:descripcion] ? f.text_field(:descripcion, :value => @producto_.descripcion, :readonly => :true, :class => "campo_readonly") : f.text_field(:descripcion, :autocomplete => "off", :readonly => :true, :class => "campo_readonly")
             
         %tr
           %td
