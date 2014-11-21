@@ -41,7 +41,7 @@
               
               =params[:descripcion] ? f.text_field(:descripcion, :value => params[:descripcion])   : f.text_field(:descripcion, :autocomplete => "off")
             -else
-              =raise "edit"
+              
               =params[:descripcion] ? f.text_field(:descripcion, :value => params[:descripcion], :readonly => :true, :class => "campo_readonly") : f.text_field(:descripcion, :autocomplete => "off", :readonly => :true, :class => "campo_readonly")
             
         %tr
@@ -52,7 +52,7 @@
               =params[:marca] ? f.text_field(:marca, :value => params[:marca]): f.text_field(:marca, :autocomplete => "off")
             -else
               =params[:marca] ? f.text_field(:marca, :value => params[:marca], :readonly => :true, :class => "campo_readonly"): f.text_field(:marca, :autocomplete => "off", :readonly => :true, :class => "campo_readonly")
-              
+
 
         
         / %tr
