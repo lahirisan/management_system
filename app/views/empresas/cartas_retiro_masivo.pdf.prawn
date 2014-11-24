@@ -19,7 +19,7 @@
 
   draw_text "Atentamente,", :size => 10, :at => [0,250]
 
-  draw_text "Jose Luis Mejia N.", :size => 10, :at => [0,180]
+  draw_text "José Luis Mejía Nuñez", :size => 10, :at => [0,180]
   draw_text "Presidente Ejecutivo", :size => 10, :at => [0,165]
   draw_text "GS1 Venezuela", :size => 10, :at => [0,150]
 
