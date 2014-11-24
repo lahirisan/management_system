@@ -22,7 +22,7 @@ text_box "Es importante señalar que cualquier cambio que se realice en su empre
 
 text_box "Sin otro particular y quedando a su entera disposición para apoyarle en el manejo y aplicación de los estándares GS1.", :size => 9, :at => [0,250], :height => 40, :width => 500, :align => :justify
 
-text_box "Luis Mejias Nuñez", :size => 10, :at => [10,190], :height => 10, :width => 500
+text_box "José Luis Mejía Núñez", :size => 10, :at => [10,190], :height => 10, :width => 500
 text_box "Presidente Ejecutivo", :size => 10, :at => [10,178], :height => 10, :width => 500
 text_box "GS1 Venezuela", :size => 10, :at => [10,166], :height => 10, :width => 500
 
