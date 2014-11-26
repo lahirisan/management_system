@@ -47,8 +47,9 @@ wb.add_worksheet(name: "GS1") do |sheet|
 
       sheet.add_row ["GLN", "Tipo GLN", "Código localización", "Descripción", "Fecha Asignación","Estado", "Municipio", "Ciudad"], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
       @glns.each do |empresa_gln|
-        
-        sheet.add_row [empresa_gln.try(:gln), empresa_gln.try(:tipo_gln).try(:nombre), empresa_gln.try(:codigo_localizacion), empresa_gln.try(:descripcion),  empresa_gln.try(:fecha_asignacion), empresa_gln.try(:estado).try(:nombre),empresa_gln.try(:municipio).try(:nombre), empresa_gln.try(:ciudad).try(:nombre)] , :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]   
+
+        sheet.add_row [empresa_gln.try(:gln), empresa_gln.try(:tipo_gln).try(:nombre), empresa_gln.try(:codigo_localizacion), empresa_gln.try(:descripcion),  empresa_gln.try(:fecha_asignacion), empresa_gln.try(:estado).try(:nombre),empresa_gln.try(:municipio).try(:nombre), empresa_gln.try(:ciudad).try(:nombre)], :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas]
+
       end
       sheet.column_widths 20,15,20,20,25,20,20,20
   end 
