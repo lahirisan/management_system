@@ -179,14 +179,10 @@
           %td
             RIF
           %td
-            /=select_tag "tipo_rif", "<option value='tipo'>tipo</option><option value='J'>J</option><option value='G'>G</option><option value='E'>E</option><option value='V'>V</option>".html_safe
+            =f.select "tipo_rif", @opciones.map{|opcion|[opcion,opcion]}, {:prompt => "--", :select => @empresa_registrada }
           %td
-            = f.text_field :rif, :placeholder => "J-12548785-4"    
-        / %tr
-        /   %td
-        /     NIT Nº
-        /   %td
-        /     =f.text_field :nit_registro_mercantil
+            = f.text_field :rif, :placeholder => "12548785-4"    
+        
      
         %tr
           %td
