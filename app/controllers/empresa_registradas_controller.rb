@@ -47,7 +47,8 @@ class EmpresaRegistradasController < ApplicationController
   # GET /empresa_registradas/new.json
   def new
     @empresa_registrada = EmpresaRegistrada.new
-
+    @opciones = ['J', 'G', 'E', 'V']
+    
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @empresa_registrada }
@@ -58,6 +59,7 @@ class EmpresaRegistradasController < ApplicationController
   def edit
 
     @empresa_registrada = EmpresaRegistrada.find(params[:id])
+    @opciones = ['J', 'G', 'E', 'V']
 
     if (session[:perfil] == 'Super Usuario' and session[:gerencia] == 'Estandares y Consultoría') or (session[:perfil] == 'Administrador' and session[:gerencia] == 'Estandares y Consultoría')
       
@@ -82,8 +84,11 @@ class EmpresaRegistradasController < ApplicationController
     params[:empresa_registrada][:contacto_tlf2] = params[:codigo_telefono2] + "-" + params[:empresa_registrada][:contacto_tlf2] if params[:codigo_telefono2] != ""
     params[:empresa_registrada][:contacto_tlf3] = params[:codigo_telefono3] + "-" + params[:empresa_registrada][:contacto_tlf3] if params[:codigo_telefono3] != ""
     params[:empresa_registrada][:contacto_fax] = params[:codigo_telefono4] + "-" + params[:empresa_registrada][:contacto_fax] if params[:codigo_telefono4] != ""
+    params[:empresa_registrada][:rif_completo] = params[:empresa_registrada][:tipo_rif] + "-" + params[:empresa_registrada][:rif]
 
     @empresa_registrada = EmpresaRegistrada.new(params[:empresa_registrada])
+
+    @opciones = ['J', 'G', 'E', 'V']
 
     respond_to do |format|
       if @empresa_registrada.save
@@ -106,7 +111,8 @@ class EmpresaRegistradasController < ApplicationController
     @empresa_registrada = EmpresaRegistrada.find(params[:id])
 
     params[:empresa_registrada][:fecha_ultima_modificacion] = Time.now # Se registra la fecha en que se edita la empresa
-
+    params[:empresa_registrada][:rif_completo] = params[:empresa_registrada][:tipo_rif] + "-" + params[:empresa_registrada][:rif]
+    @opciones = ['J', 'G', 'E', 'V']
 
     respond_to do |format|
       if @empresa_registrada.update_attributes(params[:empresa_registrada])
