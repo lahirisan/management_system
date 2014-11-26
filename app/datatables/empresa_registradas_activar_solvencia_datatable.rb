@@ -48,9 +48,6 @@ private
   def fetch_empresas
    
     empresas = EmpresaRegistrada.where("rif IS NOT NULL and sub_estatus.descripcion = 'NO SOLVENTE'").includes(:ciudad, :sub_estatus, :estatus).order("#{sort_column} #{sort_direction}") 
-    
-
-
     empresas = empresas.page(page).per_page(per_page)
     
      if params[:sSearch].present? # Filtro de busqueda general

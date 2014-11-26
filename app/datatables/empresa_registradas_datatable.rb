@@ -32,7 +32,7 @@ private
           empresa.nombre_empresa,
           fecha,
           empresa.try(:ciudad).try(:nombre),
-          empresa.try(:estatus).try(:descripcion),
+          empresa.try(:sub_estatus).try(:descripcion),
           empresa.try(:tipo_usuario_empresa).try(:descripcion),
           empresa.ventas_brutas_anuales,
           empresa.try(:clasificacion).try(:descripcion),
@@ -49,7 +49,7 @@ private
           empresa.nombre_empresa,
           fecha,
           empresa.try(:ciudad).try(:nombre),
-          empresa.try(:estatus).try(:descripcion),
+          empresa.try(:sub_estatus).try(:descripcion),
           empresa.try(:tipo_usuario_empresa).try(:descripcion),
           empresa.ventas_brutas_anuales,
           empresa.try(:clasificacion).try(:descripcion),
@@ -71,9 +71,9 @@ private
   def fetch_empresas
 
      if (session[:gerencia] == 'Estandares y Consultoría' and  session[:perfil] == 'Super Usuario') or session[:perfil] == 'Administrador'
-      empresas = EmpresaRegistrada.where("rif IS NOT NULL").includes(:ciudad, :estatus, :clasificacion, :tipo_usuario_empresa).order("#{sort_column} #{sort_direction}") 
+      empresas = EmpresaRegistrada.where("rif IS NOT NULL and sub_estatus.descripcion = 'SOLVENTE'").includes(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).order("#{sort_column} #{sort_direction}") 
      else
-      empresas = EmpresaRegistrada.where("rif IS NOT NULL").includes(:ciudad, :estatus,  :clasificacion, :tipo_usuario_empresa).order("#{sort_column} #{sort_direction}") 
+      empresas = EmpresaRegistrada.where("rif IS NOT NULL").includes(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).order("#{sort_column} #{sort_direction}") 
      end
 
 
@@ -109,7 +109,7 @@ private
      end
 
      if params[:sSearch_4].present?
-       empresas = empresas.where("estatus.descripcion like :search4", search4: "%#{params[:sSearch_4]}%" )
+       empresas = empresas.where("sub_estatus.descripcion like :search4", search4: "%#{params[:sSearch_4]}%" )
      end
 
      if params[:sSearch_6].present?
