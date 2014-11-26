@@ -28,11 +28,11 @@ private
         fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
         
         [ 
-          empresa.rif,
+          empresa.rif_completo,
           empresa.nombre_empresa,
           fecha,
           empresa.try(:ciudad).try(:nombre),
-          empresa.try(:sub_estatus).try(:descripcion),
+          empresa.try(:estatus).try(:descripcion),
           empresa.try(:tipo_usuario_empresa).try(:descripcion),
           empresa.ventas_brutas_anuales,
           empresa.try(:clasificacion).try(:descripcion),
@@ -45,11 +45,11 @@ private
         fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
         
         [ 
-          empresa.rif,
+          empresa.rif_completo,
           empresa.nombre_empresa,
           fecha,
           empresa.try(:ciudad).try(:nombre),
-          empresa.try(:sub_estatus).try(:descripcion),
+          empresa.try(:estatus).try(:descripcion),
           empresa.try(:tipo_usuario_empresa).try(:descripcion),
           empresa.ventas_brutas_anuales,
           empresa.try(:clasificacion).try(:descripcion),
@@ -71,18 +71,16 @@ private
   def fetch_empresas
 
      if (session[:gerencia] == 'Estandares y Consultoría' and  session[:perfil] == 'Super Usuario') or session[:perfil] == 'Administrador'
-      empresas = EmpresaRegistrada.where("rif IS NOT NULL and sub_estatus.descripcion = 'SOLVENTE'").includes(:ciudad, :sub_estatus, :estatus, :clasificacion, :tipo_usuario_empresa).order("#{sort_column} #{sort_direction}") 
+      empresas = EmpresaRegistrada.where("rif IS NOT NULL").includes(:ciudad, :estatus, :clasificacion, :tipo_usuario_empresa).order("#{sort_column} #{sort_direction}") 
      else
-      empresas = EmpresaRegistrada.where("rif IS NOT NULL").includes(:ciudad, :sub_estatus, :estatus, :clasificacion, :tipo_usuario_empresa).order("#{sort_column} #{sort_direction}") 
-
+      empresas = EmpresaRegistrada.where("rif IS NOT NULL").includes(:ciudad, :estatus,  :clasificacion, :tipo_usuario_empresa).order("#{sort_column} #{sort_direction}") 
      end
 
 
-
-
-    
     empresas = empresas.page(page).per_page(per_page)
+
     
+
      if params[:sSearch].present? # Filtro de busqueda general
        empresas = empresas.where("empresas_registradas.nombre_empresa like :search or empresas_registradas.fecha_inscripcion like :search or  ciudad.nombre like :search or empresas_registradas.rif or sub_estatus.descripcion like :search or empresas_registradas.ventas_brutas_anuales like :search", search: "%#{params[:sSearch]}%")
      end
@@ -111,7 +109,7 @@ private
      end
 
      if params[:sSearch_4].present?
-       empresas = empresas.where("sub_estatus.descripcion like :search4", search4: "%#{params[:sSearch_4]}%" )
+       empresas = empresas.where("estatus.descripcion like :search4", search4: "%#{params[:sSearch_4]}%" )
      end
 
      if params[:sSearch_6].present?
@@ -121,6 +119,9 @@ private
      if params[:sSearch_7].present?
        empresas = empresas.where("empresa_clasificacion.descripcion like :search7", search7: "%#{params[:sSearch_7]}%" )
      end
+
+
+
   
 
     empresas
