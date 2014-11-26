@@ -445,13 +445,7 @@
             return pattern_phone_number.test(phoneNumber);
         };
 
-
-        $('#formulario_crear_empresa').submit(function( event ) { 
-
-           
-        
-        });
-
+       
         // Se cambian todos los input a Mayusculas expceto login
         $('input').keyup(function() {
             
@@ -515,6 +509,26 @@
 
                 
             }
+
+        });
+
+         $('#empresa_rif').keyup(function() {
+
+            if ($(this).val().length == 8)
+            {
+                $('#empresa_rif').val($(this).val() + '-');
+            }
+
+        })
+
+
+        $('#formulario_crear_empresa').submit(function( event ) {
+
+            if ($('#empresa_tipo_rif').val() == '')
+                {
+                    alert('Estimado usuario, debe seleccionar el Tipo de RIF para poder continuar (J,G,E,V)');
+                    return false;
+                }
 
         });
 
