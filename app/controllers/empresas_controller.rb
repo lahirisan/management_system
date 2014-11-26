@@ -155,7 +155,7 @@ class EmpresasController < ApplicationController
 
   # GET /empresas/1/edit
   def edit
-    
+    @opciones = ['J', 'G', 'E', 'V']
     @empresa = Empresa.find(params[:id])
     
     
@@ -186,7 +186,10 @@ class EmpresasController < ApplicationController
   def update
 
     @empresa = Empresa.find(params[:id])
-    
+    @opciones = ['J', 'G', 'E', 'V']
+
+    params[:empresa][:rif_completo] = params[:empresa][:tipo_rif] + "-" + params[:empresa][:rif]
+
     respond_to do |format|
        
       if @empresa.update_attributes(params[:empresa])
