@@ -204,6 +204,32 @@ $( document ).ready(function() {
                 changeYear: true});
         }
 
+        
+
+        function isValidRIF(RIF){
+            var pattern_rif = new RegExp(/^([0-9]{5,8})-([0-9]{1})$/);
+            return pattern_rif.test(RIF);
+        }
+
+        $('#empresa_registrada_rif').keyup(function() {
+
+            if ($(this).val().length == 8)
+            {
+                $('#empresa_registrada_rif').val($(this).val() + '-');
+            }
+
+        })
+
+
+        $('#formulario_crear_empresa').submit(function( event ) {
+
+            if ($('#empresa_registrada_tipo_rif').val() == '')
+                {
+                    alert('Estimado usuario, debe seleccionar el Tipo de RIF para poder continuar (J,G,E,V)');
+                    return false;
+                }
+
+        });
 
 	
 });
