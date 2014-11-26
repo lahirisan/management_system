@@ -51,7 +51,7 @@ class Gln < ActiveRecord::Base
 
   tipo_gln = TipoGln.find(:first, :conditions => ["nombre = ?", "Legal"])
   estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?","Activo", "GLN"])
-  pais = Pais.find(:first, :conditions => ["nombre = ?", "Venezuela"])
+  
   
   gln_legal = Gln.new
   gln_legal.gln = gln
