@@ -25,12 +25,9 @@ class EmpresasController < ApplicationController
                     render :template =>'/empresas/empresas_eliminadas.html.haml'
                   elsif params[:retiradas]
                     @empresas_retiradas = Empresa.find(:all, :conditions => ["estatus.descripcion = ? and estatus.alcance = ? ", "Retirada", "Empresa"], :include => [:estatus])
-
                     render :template =>'/empresas/empresas_retiradas.html.haml'
                   elsif params[:reactivar]
                     render :template =>'/empresas/empresas_reactivar.html.haml'
-                  elsif params[:sub_estatus]
-                    render :template =>'/empresas/sub_estatus.html.haml'
                   else
                     render :template =>'/empresas/index.html.haml'
                   end
@@ -51,8 +48,6 @@ class EmpresasController < ApplicationController
                       render json: (EmpresasRetiradasDatatable.new(view_context))
                     elsif (params[:reactivar] == 'true')
                       render json: (ReactivarEmpresasDatatable.new(view_context))
-                    elsif (params[:sub_estatus] == 'true')
-                      render json: (EmpresasSubEstatusDatatable.new(view_context))
                     else
                       render json: (EmpresasDatatable.new(view_context))
                     end
@@ -72,6 +67,12 @@ class EmpresasController < ApplicationController
                   elsif params[:activacion]
                     @empresas = Empresa.where("estatus.descripcion like ?", "No Validado").includes(:ciudad, :estatus, :tipo_usuario_empresa, :clasificacion).order("empresa.fecha_inscripcion")
                     render "/empresas/activacion_empresas.xlsx.axlsx"
+                  
+                  elsif params[:reactivar] == 'true'
+
+                    @empresas = Empresa.includes(:estado, :ciudad, :estatus,  :motivo_retiro).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("empresa.fecha_retiro desc")
+                    render  "/empresas/reactivar.xlsx.axlsx"
+
                   else
                    
                     @empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("inner join ciudad on empresa.id_ciudad = ciudad.id inner join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo").order("empresa.fecha_activacion desc").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, ciudad.nombre as ciudad_, empresa.rif as rif, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv, empresa.ventas_brutas_anuales as ventas_brutas_anuales, empresa.aporte_mantenimiento as aporte_mantenimiento, empresa.categoria as categoria, empresa.division as division, empresa.grupo as grupo, empresa.clase as clase, empresa.rep_legal as rep_legal, empresa.email1_ean as email1_ean, empresa.email2_ean as email2_ean, empresa.telefono1_ean as telefono1_ean, empresa.telefono2_ean as telefono2_ean, empresa.telefono3_ean as telefono3_ean, empresa.fax_ean as fax_ean")
