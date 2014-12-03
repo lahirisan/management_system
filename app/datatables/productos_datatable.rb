@@ -22,6 +22,12 @@ private
 
     productos.map do |producto|
       
+      if params[:empresa_retirada] == true
+        estatus = "Retirado"
+      else
+        estatus = producto.try(:estatus).try(:descripcion)
+      end
+
       fecha = ""
       fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
       fecha_modificacion = ""
@@ -31,14 +37,12 @@ private
        if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3)
          base = (producto.id_tipo_gtin == 1) ? 4 : 6  # Para mostrar seleccioando la base del producto cunado se crear GTIN 14
 
-         
-
          [ 
            producto.try(:tipo_gtin).try(:tipo),
            producto.gtin,
            producto.descripcion,
            producto.marca,
-           producto.try(:estatus).try(:descripcion),
+           estatus,
            producto.codigo_prod,
            fecha,
            fecha_modificacion,
@@ -55,7 +59,7 @@ private
            producto.gtin,
            producto.descripcion,
            producto.marca,
-           producto.try(:estatus).try(:descripcion),
+           estatus,
            producto.codigo_prod,
            fecha,
            fecha_modificacion,
