@@ -81,6 +81,13 @@
 						%span.ui-icon.ui-icon-folder-collapsed
 						&nbsp;Empresas Retiradas
 
+				-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Reactivar Empresa')
+
+					%a.opcion{:href => "/empresas?reactivar=true", :title => "Opción que permite Reactivar Empresas Retiradas", :class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-refresh
+						&nbsp;Reactivar Empresa
+
+						
 				- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia],'Eliminar Empresa')
 					%a.opcion{:href => "/empresas?eliminar=true", :title => "Opción para Eliminar Empresa", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-circle-close
