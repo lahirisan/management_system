@@ -22,14 +22,19 @@ private
 
     glns.map do |empresa_gln|
           
-          
+        if params[:empresa_retirada] == true
+          estatus = "Retirado"
+        else
+          estatus = empresa_gln.try(:estatus).try(:descripcion)
+        end
+
           if (empresa_gln.try(:tipo_gln).try(:nombre) == 'Legal') or UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar GLN').nil? # GLN legal no se edita , sino tiewne el priviligeo no se edita GLN
             [ 
             empresa_gln.try(:gln),
             empresa_gln.try(:tipo_gln).try(:nombre),
             empresa_gln.try(:codigo_localizacion),
             empresa_gln.try(:descripcion),
-            empresa_gln.try(:estatus).try(:descripcion),
+            estatus,
             empresa_gln.try(:fecha_asignacion),
             empresa_gln.try(:estado),
             empresa_gln.try(:municipio),
@@ -44,7 +49,7 @@ private
             empresa_gln.try(:tipo_gln).try(:nombre),
             empresa_gln.try(:codigo_localizacion),
             empresa_gln.try(:descripcion),
-            empresa_gln.try(:estatus).try(:descripcion),
+            estatus,
             empresa_gln.try(:fecha_asignacion),
             empresa_gln.try(:estado),
             empresa_gln.try(:municipio),
