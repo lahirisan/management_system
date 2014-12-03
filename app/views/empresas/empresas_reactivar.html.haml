@@ -7,23 +7,23 @@
     = render 'botones_exportar_empresas_retiradas'
     
     =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_reactivar" do
-
-        %table#data_table_empresas_retiradas.display{:"data-source" => "/empresas.json?reactivar=true"}
+        
+        %table#data_table_reactivar_empresas.display{:"data-source" => "/empresas.json?reactivar=true"}
             %thead
                 %tr
                     %th Selección
                     %th Prefijo
                     %th Nombre Empresa
-                    %th Fecha Inscripción
+                    %th Fecha Activación
                     %th Ciudad
                     %th RIF
                     %th Fecha Retiro
-                    %th Sub-estatus
                     %th Motivo Retiro
                     %th Empresa Detalle
                     %th Productos
                     %th Servicios
                     %th GLN
+                    %th
 
             %tbody
             %tfoot
@@ -32,10 +32,10 @@
         %br/
         #datos_empresas_eliminar
         =hidden_field_tag "reactivar", "true"
-        - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Reactivar Empresa')
-            %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit", :title => "Reactivar empresas seleccionadas"}
-                %span.ui-icon.ui-icon-refresh
-                Reactivar
+        
+        %button#submit.ui-state-default.ui-corner-all.reactivar{:type => "submit", :title => "Reactivar empresas seleccionadas"}
+            %span.ui-icon.ui-icon-refresh
+            Reactivar
         %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
             %span.ui-icon.ui-icon-arrowreturnthick-1-w
             Regresar
