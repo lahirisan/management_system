@@ -73,10 +73,10 @@ class Empresa < ActiveRecord::Base
         #Auditoria.registrar_evento(session[:usuario],"empresa", "Retirar", Time.now,  "EMPRESA RETIRADA. PREFIJO:#{empresa.prefijo}")
         
         # Se retiran todo los productos de la empresa
-        Producto.retirar_productos(empresa.prefijo)
+        #Producto.retirar_productos(empresa.prefijo)
 
         # Retirar GLN ojo REVISAR
-        Gln.retirar(empresa.prefijo)
+        #Gln.retirar(empresa.prefijo)
 
 
       end
@@ -107,20 +107,14 @@ class Empresa < ActiveRecord::Base
     estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activo', 'Producto'])
     estatus_gln = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Activo', 'GLN'])
 
+    empresas = Empresa.find(parametros[:reactivar_empresas])
+    empresas.collect{|empresa| empresa.id_estatus = estatus_empresa.id; empresa.fecha_activacion = Time.now; empresa.save}
 
-    parametros[:reactivar_empresas].collect{|prefijo| empresa = Empresa.find(:first, :conditions => ["prefijo = ?", prefijo]);
-      empresa.id_estatus = estatus_empresa.id;
-      empresa.save;
-      empresa.producto.collect{|objeto_producto| producto = Producto.find(:first, :conditions => ["gtin = ?", objeto_producto.gtin]);
-        producto.id_estatus = estatus_producto.id;
-        producto.save;
-        };
-      empresa.gln.collect{ |objeto_gln| gln = Gln.find(:first, :conditions => ["gln = ?", objeto_gln.gln]);
-        gln.id_estatus = estatus_gln.id;
-        gln.save
-      };
+    productos = Producto.find(:all, :conditions => ["prefijo in (?)", parametros[:reactivar_empresas]])
+    productos.collect{|producto| producto.id_estatus = estatus_producto.id; producto.save}
 
-    } 
+    glns = Gln.find(:all, :conditions => ["prefijo in (?)", parametros[:reactivar_empresas]])
+    glns.collect{|gln| gln.id_estatus = estatus_gln.id; gln.save}
 
      
   end
