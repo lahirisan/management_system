@@ -11,10 +11,7 @@
             sAjaxSource: $('#data_table_empresas').data('source')
         }).columnFilter({ aoColumns: [{ type: "text"}, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, null, {type: "text"}]});
 
-
-
         $('#data_table_empresas input').attr("placeholder", "Buscar");
-
 
          // Datatable que maneja el listado de empresas activacion
         $("#data_table_empresas_activacion").dataTable({
@@ -30,19 +27,7 @@
 
         $('#data_table_empresas_activacion input').attr("placeholder", "Buscar");
 
-        /*
-        $("#data_table_empresas_sub_estatus").dataTable({
-            sPaginationType: "full_numbers",
-            aaSorting: [[ 2, "desc" ]],
-            bJQueryUI: true,
-            bProcessing: true,
-            bServerSide: true,
-            sDom: 'T<"clear">lfrtip',
-            sAjaxSource: $('#data_table_empresas_sub_estatus').data('source')
-        }).columnFilter({ aoColumns: [null, { type: "text"}, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, null, {type: "text"}]});
-
-        */
-
+        
         // Datatable que maneja el listado para retirar empresas
         $("#data_table_empresas_retirar").dataTable({
             sPaginationType: "full_numbers",
@@ -69,6 +54,21 @@
         }).columnFilter({ aoColumns: [{type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},null,null,null,null]});
 
         $('#data_table_empresas_retiradas input').attr("placeholder", "Buscar");
+
+
+        // Listado de la empresas que se van a reactivar
+        $("#data_table_reactivar_empresas").dataTable({
+            sPaginationType: "full_numbers",
+            aoColumns: [ { "bSortable": false },  null, null,  null, null, null, null ,{ "bSortable": false },{"bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false }],
+            aaSorting: [[ 6, "desc" ]],
+            bJQueryUI: true,
+            bProcessing: true,
+            bServerSide: true,
+            sDom: 'T<"clear">lfrtip',
+            sAjaxSource: $('#data_table_reactivar_empresas').data('source')
+        }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},{type: "text"},null,null,null]});
+
+        $('#data_table_reactivar_empresas input').attr("placeholder", "Buscar");
 
         // Datatable que maneja el listado para empresas eliminar
         $("#data_table_empresas_eliminar").dataTable({
@@ -166,15 +166,9 @@
                 $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
                     municipios.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
                 });
-            });
- 
-            
-                      
+            });       
 
         });
-
-
-
 
         // Verificar el cambio del select  estado de la correspondencia
 		$( "#empresa_correspondencia_attributes_id_estado").change(function() {
@@ -348,7 +342,7 @@
         
         
         // estilos de los botones exportar
-        $('.etiqueta_regresar_empresas,.etiqueta_regresar_empresas_editar, .etiqueta_regresar_empresas_exportar, .regresar_empresas_sin_espacio, .regresar_empresas, .datos_contacto, .botones_menu, .exportar_empresas_no_validadas, .exportar_empresas_eliminadas, .exportar, .regresar, .retirar, .reactivar, .eliminar, .activar_empresa, .reactivar, .crear_empresa, .retirar_empresa_exportar, .empresas_retiradas_exportar').hover(
+        $('.etiqueta_regresar_empresas,.etiqueta_regresar_empresas_editar, .etiqueta_regresar_empresas_exportar, .regresar_empresas_sin_espacio, .regresar_empresas, .datos_contacto, .botones_menu, .exportar_empresas_no_validadas, .exportar_empresas_eliminadas, .exportar, .regresar, .retirar, .reactivar_empresas, .eliminar, .activar_empresa, .reactivar, .crear_empresa, .retirar_empresa_exportar, .empresas_retiradas_exportar').hover(
      
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');
@@ -403,6 +397,21 @@
 
         });
 
+        $('body').on('click', '.reactivar_empresas', function() {
+            
+            $('.parametros').html(
+                '<input name="prefijo" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
+                '<input name="nombre_empresa" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="fecha_activacion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="rif" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="fecha_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
+                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
+                '<input name="reactivar" type="hidden" value="true">'
+            );
+
+        });
+
         $('body').on('click', '.exportar_empresas_eliminadas', function() {
             
             $('.parametros').html(
@@ -434,6 +443,9 @@
             );
 
         });
+
+
+
 
         function isValidEmailAddress(emailAddress) {
             var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
