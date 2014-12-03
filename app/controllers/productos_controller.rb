@@ -41,8 +41,6 @@ class ProductosController < ApplicationController
                       codigo_generado =  gtin + digito_verificacion.to_s
                       producto = ProductosEmpresa.find(:first, :conditions => ["prefijo = ? and gtin = ?", params[:prefijo], codigo_generado])
                       render json: producto
-                    elsif params[:retirados]
-                      render json: (ProductosRetiradosDatatable.new(view_context))
                     elsif params[:eliminar]
                       render json: (EliminarProductosDatatable.new(view_context))
                     elsif params[:eliminados]
@@ -114,8 +112,8 @@ class ProductosController < ApplicationController
   # GET /productos/new.json
   def new
 
+    
     @empresa =  Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]] )
-
     @productos_gtin_13 = Producto.find(:all, :conditions => ["tipo_gtin.tipo = ? and prefijo = ?", "GTIN-13", params[:empresa_id]], :include => [:tipo_gtin]) if params[:empresa_id].size == 5
     
     if params[:empresa_id].size == 5
@@ -177,7 +175,6 @@ class ProductosController < ApplicationController
 
       else
         format.html { 
-          
           render action: "new" }        
       end
     end
@@ -206,6 +203,7 @@ class ProductosController < ApplicationController
     string_gtin = ""
 
     respond_to do |format|
+
       format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "Los GTIN #{productos.collect{|producto| producto.gtin}} fueron eliminados." }
     end
   end
@@ -217,12 +215,11 @@ class ProductosController < ApplicationController
     tipo_gtin = TipoGtin.find(params[:tipo_gtin])
 
     if (params[:tipo_gtin] == '6') or (params[:tipo_gtin] == '4') # Gtin14 base 8  GTIN14 base 13
-      codigo_invalido = Producto.import_gtin_14(params[:file], params[:tipo_gtin], params[:empresa_id]) 
+      codigo_invalido = Producto.import_gtin_14(params[:file], params[:tipo_gtin], params[:empresa_id], session[:usuario]) 
       mensaje = "Los #{tipo_gtin.tipo} base #{tipo_gtin.base} fueron importados." 
     else
 
-      #Auditoria.registrar_evento(session[:usuario],"producto", "Crear", Time.now, "GTIN:#{@producto.gtin} DESCRIPCION:#{@producto.descripcion} TIPO GTIN:#{@producto.tipo_gtin.tipo}")
-      Producto.import(params[:file], params[:tipo_gtin], params[:empresa_id]) 
+      Producto.import(params[:file], params[:tipo_gtin], params[:empresa_id], session[:usuario]) 
       mensaje = "Los #{tipo_gtin.tipo} fueron importados." 
     end
 
