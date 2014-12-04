@@ -283,7 +283,7 @@ class Producto < ActiveRecord::Base
 
   end
 
-  def self.import(file, tipo_gtin, prefijo) #Importar GTIN 13
+  def self.import(file, tipo_gtin, prefijo, usuario) #Importar GTIN 13
 
 
     spreadsheet = open_spreadsheet(file)
@@ -329,7 +329,7 @@ class Producto < ActiveRecord::Base
       producto.prefijo = prefijo
       producto.save
 
-
+      Auditoria.registrar_evento(usuario,"producto", "Importar", Time.now, "GTIN:#{producto.gtin} DESCRIPCION:#{producto.descripcion} TIPO:GTIN-13")
 
     end
 
@@ -337,7 +337,7 @@ class Producto < ActiveRecord::Base
   end
 
 
-  def self.import_gtin_14(file, tipo_gtin_, prefijo) #Importar GTIN 14
+  def self.import_gtin_14(file, tipo_gtin_, prefijo, usuario) #Importar GTIN 14
 
     tipo_gtin = TipoGtin.find(tipo_gtin_)
     spreadsheet = open_spreadsheet(file)
@@ -372,11 +372,12 @@ class Producto < ActiveRecord::Base
           producto.codigo_prod = producto.gtin[10..12]
 
         end
-        
 
         producto.id_tipo_gtin = tipo_gtin_.to_i
         producto.prefijo = prefijo
         producto.save
+
+        Auditoria.registrar_evento(usuario,"producto", "Importar", Time.now, "GTIN:#{producto.gtin} DESCRIPCION:#{producto.descripcion} TIPO:GTIN-14")
         
       else
         
