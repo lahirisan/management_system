@@ -220,7 +220,7 @@ class ProductosController < ApplicationController
     else
 
       Producto.import(params[:file], params[:tipo_gtin], params[:empresa_id], session[:usuario])
-       
+
       mensaje = "Los #{tipo_gtin.tipo} fueron importados." 
     end
 
