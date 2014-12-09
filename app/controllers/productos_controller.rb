@@ -47,7 +47,6 @@ class ProductosController < ApplicationController
                       render json: (ProductosEliminadosDatatable.new(view_context))
                     else
 
-
                       if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Producto') or session[:perfil] == 'Administrador'
 
                         render json: ProductosDatatable.new(view_context) 
@@ -162,7 +161,9 @@ class ProductosController < ApplicationController
     params[:producto][:codigo_prod] = params[:producto][:gtin][9..11] if params[:producto][:id_tipo_gtin] == '3' and @empresa.prefijo.to_s.size == 9 and @empresa.prefijo.to_s[3..5] == "400"
     params[:producto][:codigo_prod] = params[:producto][:gtin][3..6] if params[:producto][:id_tipo_gtin] == '1'
     params[:producto][:codigo_prod] = params[:producto][:gtin][9..12] if params[:producto][:id_tipo_gtin] == '4' 
-    params[:producto][:codigo_prod] = params[:producto][:gtin][8..12] if params[:producto][:id_tipo_gtin] == '6'
+    params[:producto][:codigo_prod] = params[:producto][:gtin][8..12] if params[:producto][:id_tipo_gtin] == '6' and (@empresa.prefijo.to_s.size == 7  or @empresa.prefijo.to_s.size == 5)
+    params[:producto][:codigo_prod] = params[:producto][:gtin][10..12] if params[:producto][:id_tipo_gtin] == '6' and @empresa.prefijo.to_s.size == 9 and @empresa.prefijo.to_s[3..5] == "400"
+
     params[:producto][:prefijo] = params[:empresa_id]
 
     @producto = Producto.new(params[:producto])
@@ -209,8 +210,6 @@ class ProductosController < ApplicationController
   end
 
   def import
-
-
     
     tipo_gtin = TipoGtin.find(params[:tipo_gtin])
 
@@ -220,7 +219,6 @@ class ProductosController < ApplicationController
     else
 
       Producto.import(params[:file], params[:tipo_gtin], params[:empresa_id], session[:usuario])
-
       mensaje = "Los #{tipo_gtin.tipo} fueron importados." 
     end
 
@@ -232,7 +230,6 @@ class ProductosController < ApplicationController
     end
 
   end
-
 
 
   # DELETE /productos/1
