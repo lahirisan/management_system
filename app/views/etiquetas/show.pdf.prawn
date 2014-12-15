@@ -1,4 +1,4 @@
-pdf.text_box "<b>#{@empresa.nombre_empresa.strip}</b>", :size => 8, :at => [-35,130], :height => 30, :width => 350, :align => :justify,  :inline_format => true
+pdf.text_box "<b>#{@empresa.nombre_empresa.strip}</b>", :size => 8, :at => [-50,130], :height => 30, :width => 350, :align => :justify,  :inline_format => true
 pdf.text_box "<b>Contacto: #{@empresa.rep_ean.strip.upcase}</b>", :size => 6, :at => [-35,120],  :align => :left, :inline_format => true
 pdf.text_box "<b>Cargo: #{@empresa.rep_ean_cargo.strip}</b>", :size => 6, :at => [-35,113], :align => :left, :inline_format => true
 pdf.text_box "<b>Dirección: #{@empresa.direccion_ean.strip}</b>", :size => 6, :at => [-35,106], :height => 50, :width => 270, :align => :justify, :inline_format => true
