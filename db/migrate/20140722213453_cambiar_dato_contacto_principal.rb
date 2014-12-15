@@ -1,7 +1,7 @@
-class CambiarDatoContactoPrincipal < ActiveRecord::Migration
-  def up
-  end
+# class CambiarDatoContactoPrincipal < ActiveRecord::Migration
+#   def up
+#   end
 
-  def down
-  end
-end
+#   def down
+#   end
+# end

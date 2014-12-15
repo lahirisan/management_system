@@ -42,7 +42,6 @@
   %br
   %br
 
-  - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Usuario')
-    /=link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa),  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),        
-    = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,  edit_usuario_path(@usuario), :class => "editar_usuario ui-state-default ui-corner-all" )
-  = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Regresar').html_safe,  usuarios_path, :class => "editar_usuario ui-state-default ui-corner-all")
+  
+  =link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,  edit_usuario_path(@usuario), :class => "editar_usuario ui-state-default ui-corner-all" )
+  =link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Regresar').html_safe,  usuarios_path, :class => "editar_usuario ui-state-default ui-corner-all")

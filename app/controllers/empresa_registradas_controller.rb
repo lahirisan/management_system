@@ -76,14 +76,22 @@ class EmpresaRegistradasController < ApplicationController
   # POST /empresa_registradas
   # POST /empresa_registradas.json
   def create
+    
     params[:empresa_registrada][:id_estatus] = 5 # NO VALIDADA (SIN PREFIJO)
     params[:empresa_registrada][:id_subestatus] = 2 # NO SOLVENTE
     params[:empresa_registrada][:fecha_inscripcion] = Time.now
     params[:empresa_registrada][:id_tipo_usuario] = 3 if params[:empresa_registrada][:id_tipo_usuario] == '' # Si el usaurio no especifico el tipo de empresa
-    params[:empresa_registrada][:contacto_tlf1] =  params[:codigo_telefono1] + "-" + params[:empresa_registrada][:contacto_tlf1] if params[:codigo_telefono1] != ""
-    params[:empresa_registrada][:contacto_tlf2] = params[:codigo_telefono2] + "-" + params[:empresa_registrada][:contacto_tlf2] if params[:codigo_telefono2] != ""
-    params[:empresa_registrada][:contacto_tlf3] = params[:codigo_telefono3] + "-" + params[:empresa_registrada][:contacto_tlf3] if params[:codigo_telefono3] != ""
-    params[:empresa_registrada][:contacto_fax] = params[:codigo_telefono4] + "-" + params[:empresa_registrada][:contacto_fax] if params[:codigo_telefono4] != ""
+    
+    params[:empresa_registrada][:contacto_tlf1_completo] =  "("+ params[:empresa_registrada][:cod_contacto_tlf1] + ")" +" "+ params[:empresa_registrada][:contacto_tlf1] if params[:empresa_registrada][:cod_contacto_tlf1] != ""
+    params[:empresa_registrada][:contacto_tlf2_completo] = "("+ params[:empresa_registrada][:cod_contacto_tlf2] + ")"+ " " + params[:empresa_registrada][:contacto_tlf2] if params[:empresa_registrada][:cod_contacto_tlf2] != ""
+    params[:empresa_registrada][:contacto_tlf3_completo] ="("+ params[:empresa_registrada][:cod_contacto_tlf3] + ")" +" "+ params[:empresa_registrada][:contacto_tlf3] if params[:empresa_registrada][:cod_contacto_tlf3] != ""
+    params[:empresa_registrada][:contacto_fax_completo] = "("+params[:empresa_registrada][:cod_contacto_fax] + ")" +" "+ params[:empresa_registrada][:contacto_fax] if params[:empresa_registrada][:cod_contacto_fax] != ""
+    params[:empresa_registrada][:direccion_ean] = params[:empresa_registrada][:tipo_urbanizacion_barrio_sector] + " " + params[:empresa_registrada][:urbanizacion_barrio_sector] + " " + params[:empresa_registrada][:tipo_avenida_calle]  + " " + params[:empresa_registrada][:avenida_calle] + " " + params[:empresa_registrada][:tipo_galpon_edificio_quinta] + " " + params[:empresa_registrada][:galpon_edificio_quinta] + " " + params[:empresa_registrada][:tipo_piso_numero] + " " + params[:empresa_registrada][:piso_numero]  + " " + params[:empresa_registrada][:tipo_oficina_apartamento] + " " + params[:empresa_registrada][:oficina_apartamento] 
+    params[:empresa_registrada][:telefono1_ean_completo] = "("+ params[:empresa_registrada][:cod_tlf1_ean] + ")" +" "+ params[:empresa_registrada][:telefono1_ean] if params[:empresa_registrada][:cod_tlf1_ean] != ""
+    params[:empresa_registrada][:telefono2_ean_completo] = "("+ params[:empresa_registrada][:cod_tlf2_ean] + ")" +" "+ params[:empresa_registrada][:telefono2_ean] if params[:empresa_registrada][:cod_tlf2_ean] != ""
+    params[:empresa_registrada][:telefono3_ean_completo] = "("+ params[:empresa_registrada][:cod_tlf3_ean] + ")" +" "+ params[:empresa_registrada][:telefono3_ean] if params[:empresa_registrada][:cod_tlf3_ean] != ""
+    params[:empresa_registrada][:fax_ean_completo] = "("+ params[:empresa_registrada][:cod_fax_ean] + ")" +" "+ params[:empresa_registrada][:fax_ean]              if params[:empresa_registrada][:cod_fax_ean] != ""  
+
     params[:empresa_registrada][:rif_completo] = params[:empresa_registrada][:tipo_rif] + "-" + params[:empresa_registrada][:rif]
 
     @empresa_registrada = EmpresaRegistrada.new(params[:empresa_registrada])
@@ -112,6 +120,19 @@ class EmpresaRegistradasController < ApplicationController
 
     params[:empresa_registrada][:fecha_ultima_modificacion] = Time.now # Se registra la fecha en que se edita la empresa
     params[:empresa_registrada][:rif_completo] = params[:empresa_registrada][:tipo_rif] + "-" + params[:empresa_registrada][:rif]
+    
+    params[:empresa_registrada][:contacto_tlf1_completo] =  "("+ params[:empresa_registrada][:cod_contacto_tlf1] + ")" +" "+ params[:empresa_registrada][:contacto_tlf1] if params[:empresa_registrada][:cod_contacto_tlf1] != ""
+    params[:empresa_registrada][:contacto_tlf2_completo] = "("+ params[:empresa_registrada][:cod_contacto_tlf2] + ")"+ " " + params[:empresa_registrada][:contacto_tlf2] if params[:empresa_registrada][:cod_contacto_tlf2] != ""
+    params[:empresa_registrada][:contacto_tlf3_completo] ="("+ params[:empresa_registrada][:cod_contacto_tlf3] + ")" +" "+ params[:empresa_registrada][:contacto_tlf3] if params[:empresa_registrada][:cod_contacto_tlf3] != ""
+    params[:empresa_registrada][:contacto_fax_completo] = "("+params[:empresa_registrada][:cod_contacto_fax] + ")" +" "+ params[:empresa_registrada][:contacto_fax] if params[:empresa_registrada][:cod_contacto_fax] != ""
+    params[:empresa_registrada][:direccion_ean] = params[:empresa_registrada][:tipo_urbanizacion_barrio_sector] + " " + params[:empresa_registrada][:urbanizacion_barrio_sector] + " " + params[:empresa_registrada][:tipo_avenida_calle]  + " " + params[:empresa_registrada][:avenida_calle] + " " + params[:empresa_registrada][:tipo_galpon_edificio_quinta] + " " + params[:empresa_registrada][:galpon_edificio_quinta] + " " + params[:empresa_registrada][:tipo_piso_numero] + " " + params[:empresa_registrada][:piso_numero]  + " " + params[:empresa_registrada][:tipo_oficina_apartamento] + " " + params[:empresa_registrada][:oficina_apartamento] 
+    params[:empresa_registrada][:telefono1_ean_completo] = "("+ params[:empresa_registrada][:cod_tlf1_ean] + ")" +" "+ params[:empresa_registrada][:telefono1_ean] if params[:empresa_registrada][:cod_tlf1_ean] != ""
+    params[:empresa_registrada][:telefono2_ean_completo] = "("+ params[:empresa_registrada][:cod_tlf2_ean] + ")" +" "+ params[:empresa_registrada][:telefono2_ean] if params[:empresa_registrada][:cod_tlf2_ean] != ""
+    params[:empresa_registrada][:telefono3_ean_completo] = "("+ params[:empresa_registrada][:cod_tlf3_ean] + ")" +" "+ params[:empresa_registrada][:telefono3_ean] if params[:empresa_registrada][:cod_tlf3_ean] != ""
+    params[:empresa_registrada][:fax_ean_completo] = "("+ params[:empresa_registrada][:cod_fax_ean] + ")" +" "+ params[:empresa_registrada][:fax_ean]              if params[:empresa_registrada][:cod_fax_ean] != ""  
+
+
+
     @opciones = ['J', 'G', 'E', 'V']
 
     respond_to do |format|
@@ -121,7 +142,7 @@ class EmpresaRegistradasController < ApplicationController
 
           Empresa.activar(@empresa_registrada)
           Auditoria.registrar_evento(session[:usuario],"empresa", "Activar", Time.now,  "EMPRESA ACTIVADA. PREFIJO:#{@empresa_registrada.prefijo}")
-          format.html { redirect_to "/empresas", notice: "EMPRESA ACTIVADA. PREFIJO:#{@empresa_registrada.prefijo} NOMBRE EMPRESA:#{@empresa_registrada.nombre_empresa} RIF:#{@empresa_registrada.rif}" }
+          format.html { redirect_to "/empresas", notice: "EMPRESA ACTIVADA. PREFIJO:#{@empresa_registrada.prefijo} NOMBRE EMPRESA:#{@empresa_registrada.nombre_empresa} RIF:#{@empresa_registrada.rif_completo}" }
 
         else
 
@@ -155,7 +176,7 @@ class EmpresaRegistradasController < ApplicationController
         
         # Se registra la persona que la nueva empresa como SOLVENTE
 
-        format.html { redirect_to "/empresa_registradas", notice: "       Las empresas con RIF #{nuevas_empresas.collect{|nueva_empresa| nueva_empresa.rif} } fueron marcadas como SOLVENTES."}
+        format.html { redirect_to "/empresa_registradas", notice: "       Las empresas con RIF #{nuevas_empresas.collect{|nueva_empresa| nueva_empresa.rif_completo} } fueron marcadas como SOLVENTES."}
     
     end
   end

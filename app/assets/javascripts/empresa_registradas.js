@@ -98,6 +98,8 @@ $( document ).ready(function() {
           
         });
 
+
+
         //cierra la ventana para asignar prefijo manual
         $('#regresar_formulario_empresa').click(function(){
             $('.ventana_prefijo_manual').dialog('close');
@@ -195,6 +197,55 @@ $( document ).ready(function() {
 
         });
 
+
+        $( "#empresa_registrada_id_estado_mercadeo").change(function() {
+            
+            //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/ciudades.json?id_estado="+$(this).val(), function( data ) { 
+                var ciudades = $("#empresa_registrada_id_ciudad_mercadeo");
+                ciudades.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    ciudades.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            });
+
+            //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/municipios.json?id_estado="+$(this).val(), function( data ) { 
+                var  municipios = $("#empresa_registrada_id_municipio_mercadeo");
+                municipios.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    municipios.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            });       
+
+        });
+
+        $( "#empresa_registrada_id_estado_recursos").change(function() {
+            
+            //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/ciudades.json?id_estado="+$(this).val(), function( data ) { 
+                var ciudades = $("#empresa_registrada_id_ciudad_recursos");
+                ciudades.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    ciudades.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            });
+
+            //AJAX que obtiene las ciudades dependiendo Que cumplen la condicion del estado seleccioando
+            $.get("/municipios.json?id_estado="+$(this).val(), function( data ) { 
+                var  municipios = $("#empresa_registrada_id_municipio_recursos");
+                municipios.empty() // Se eliminan las opciones del select ciudades
+                
+                $.each( data, function( key, value ) {  // Se itera sobre las ciudades del estado seleccionado
+                    municipios.append('<option value="'+ value.id +'">'+value.nombre+'</option>') // Se agregan las ciudades al select
+                });
+            });       
+
+        });
+
         // Datepicker de la fecha
 
         if (window.location.pathname.split('/')[3] != 'edit')
@@ -218,7 +269,207 @@ $( document ).ready(function() {
                 $('#empresa_registrada_rif').val($(this).val() + '-');
             }
 
-        })
+        });
+
+
+
+        // validacion de lof formato del telefono
+
+     
+        $('#empresa_registrada_contacto_tlf1').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_contacto_tlf1').val($(this).val() + '-');
+            }
+           
+
+        });
+
+        $('#empresa_registrada_contacto_tlf2').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_contacto_tlf2').val($(this).val() + '-');
+            }
+           
+
+        });
+
+        $('#empresa_registrada_contacto_tlf3').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_contacto_tlf3').val($(this).val() + '-');
+            }
+           
+
+        });
+
+        $('#empresa_registrada_contacto_fax').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_contacto_fax').val($(this).val() + '-');
+            }
+
+        });
+
+
+        $('#empresa_registrada_telefono1_ean').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_telefono1_ean').val($(this).val() + '-');
+            }
+           
+
+        });
+
+        $('#empresa_registrada_telefono2_ean').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_telefono2_ean').val($(this).val() + '-');
+            }
+           
+
+        });
+
+        $('#empresa_registrada_telefono3_ean').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_telefono3_ean').val($(this).val() + '-');
+            }
+
+        });
+
+        $('#empresa_registrada_fax_ean').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_fax_ean').val($(this).val() + '-');
+            }
+
+        });
+
+
+        $('#empresa_registrada_telefono1_edi').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_telefono1_edi').val($(this).val() + '-');
+            }
+           
+
+        });
+
+        $('#empresa_registrada_telefono2_edi').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_telefono2_edi').val($(this).val() + '-');
+            }
+           
+
+        });
+
+        $('#empresa_registrada_telefono3_edi').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_telefono3_edi').val($(this).val() + '-');
+            }
+
+        });
+
+        $('#empresa_registrada_fax_edi').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_fax_edi').val($(this).val() + '-');
+            }
+
+        });
+
+        $('#empresa_registrada_telefono1_recursos').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_telefono1_recursos').val($(this).val() + '-');
+            }
+           
+
+        });
+
+        $('#empresa_registrada_telefono2_recursos').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_telefono2_recursos').val($(this).val() + '-');
+            }
+           
+
+        });
+
+        $('#empresa_registrada_telefono3_recursos').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_telefono3_recursos').val($(this).val() + '-');
+            }
+
+        });
+
+        $('#empresa_registrada_fax_recursos').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_fax_recursos').val($(this).val() + '-');
+            }
+
+        });
+
+        $('#empresa_registrada_telefono1_mercadeo').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_telefono1_mercadeo').val($(this).val() + '-');
+            }
+           
+
+        });
+
+        $('#empresa_registrada_telefono2_mercadeo').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_telefono2_mercadeo').val($(this).val() + '-');
+            }
+           
+
+        });
+
+        $('#empresa_registrada_telefono3_mercadeo').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_telefono3_mercadeo').val($(this).val() + '-');
+            }
+
+        });
+
+        $('#empresa_registrada_fax_mercadeo').keyup( function() {
+            
+            if (($(this).val().length == 3) ||  ($(this).val().length == 6))
+            {
+                $('#empresa_registrada_fax_mercadeo').val($(this).val() + '-');
+            }
+
+        });
+
+
 
 
         $('#formulario_crear_empresa').submit(function( event ) {
@@ -228,8 +479,126 @@ $( document ).ready(function() {
                     alert('Estimado usuario, debe seleccionar el Tipo de RIF para poder continuar (J,G,E,V)');
                     return false;
                 }
+        });
+
+        $('#repetir_correspondencia').click(function(w){
+
+            $('#empresa_registrada_rep_edi').val($('#empresa_registrada_rep_ean').val());
+            $('#empresa_registrada_rep_recursos').val($('#empresa_registrada_rep_ean').val());
+            $('#empresa_registrada_rep_mercadeo').val($('#empresa_registrada_rep_ean').val());
+
+            $('#empresa_registrada_rep_edi_cargo').val($('#empresa_registrada_rep_ean_cargo').val());
+            $('#empresa_registrada_rep_recursos_cargo').val($('#empresa_registrada_rep_ean_cargo').val());
+            $('#empresa_registrada_rep_mercadeo_cargo').val($('#empresa_registrada_rep_ean_cargo').val());
+
+            $('#empresa_registrada_tipo_galpon_edificio_quinta_sincronet').val($('#empresa_registrada_tipo_galpon_edificio_quinta').val());
+            $('#empresa_registrada_tipo_galpon_edificio_quinta_seminarios').val($('#empresa_registrada_tipo_galpon_edificio_quinta').val());
+            $('#empresa_registrada_tipo_galpon_edificio_quinta_mercadeo').val($('#empresa_registrada_tipo_galpon_edificio_quinta').val());
+
+            $('#empresa_registrada_galpon_edificio_quinta_sincronet').val($('#empresa_registrada_galpon_edificio_quinta').val());
+            $('#empresa_registrada_galpon_edificio_quinta_seminarios').val($('#empresa_registrada_galpon_edificio_quinta').val());
+            $('#empresa_registrada_galpon_edificio_quinta_mercadeo').val($('#empresa_registrada_galpon_edificio_quinta').val());
+
+            $('#empresa_registrada_tipo_piso_numero_sincronet').val($('#empresa_registrada_tipo_piso_numero').val());
+            $('#empresa_registrada_tipo_piso_numero_seminarios').val($('#empresa_registrada_tipo_piso_numero').val());
+            $('#empresa_registrada_tipo_piso_numero_mercadeo').val($('#empresa_registrada_tipo_piso_numero').val());
+
+            $('#empresa_registrada_piso_numero_sincronet').val($('#empresa_registrada_piso_numero').val());
+            $('#empresa_registrada_piso_numero_seminarios').val($('#empresa_registrada_piso_numero').val());
+            $('#empresa_registrada_piso_numero_mercadeo').val($('#empresa_registrada_piso_numero').val());
+
+            $('#empresa_registrada_tipo_oficina_apartamento_sincronet').val($('#empresa_registrada_tipo_oficina_apartamento').val());
+            $('#empresa_registrada_tipo_oficina_apartamento_seminarios').val($('#empresa_registrada_tipo_oficina_apartamento').val());
+            $('#empresa_registrada_tipo_oficina_apartamento_mercadeo').val($('#empresa_registrada_tipo_oficina_apartamento').val());
+
+            $('#empresa_registrada_oficina_apartamento_sincronet').val($('#empresa_registrada_oficina_apartamento').val());
+            $('#empresa_registrada_oficina_apartamento_seminarios').val($('#empresa_registrada_oficina_apartamento').val());
+            $('#empresa_registrada_oficina_apartamento_mercadeo').val($('#empresa_registrada_oficina_apartamento').val());
+
+            $('#empresa_registrada_tipo_avenida_calle_sincronet').val($('#empresa_registrada_tipo_avenida_calle').val());
+            $('#empresa_registrada_tipo_avenida_calle_seminarios').val($('#empresa_registrada_tipo_avenida_calle').val());
+            $('#empresa_registrada_tipo_avenida_calle_mercadeo').val($('#empresa_registrada_tipo_avenida_calle').val());
+
+            $('#empresa_registrada_avenida_calle_sincronet').val($('#empresa_registrada_avenida_calle').val());
+            $('#empresa_registrada_avenida_calle_seminarios').val($('#empresa_registrada_avenida_calle').val());
+            $('#empresa_registrada_avenida_calle_mercadeo').val($('#empresa_registrada_avenida_calle').val());
+
+            $('#empresa_registrada_tipo_urbanizacion_barrio_sector_sincronet').val($('#empresa_registrada_tipo_urbanizacion_barrio_sector').val());
+            $('#empresa_registrada_tipo_urbanizacion_barrio_sector_seminarios').val($('#empresa_registrada_tipo_urbanizacion_barrio_sector').val());
+            $('#empresa_registrada_tipo_urbanizacion_barrio_sector_mercadeo').val($('#empresa_registrada_tipo_urbanizacion_barrio_sector').val());
+
+            $('#empresa_registrada_urbanizacion_barrio_sector_sincronet').val($('#empresa_registrada_urbanizacion_barrio_sector').val());
+            $('#empresa_registrada_urbanizacion_barrio_sector_seminarios').val($('#empresa_registrada_urbanizacion_barrio_sector').val());
+            $('#empresa_registrada_urbanizacion_barrio_sector_mercadeo').val($('#empresa_registrada_urbanizacion_barrio_sector').val());
+
+            $('#empresa_registrada_id_estado_edi').val($('#empresa_registrada_id_estado_ean').val());
+            $('#empresa_registrada_id_estado_recursos').val($('#empresa_registrada_id_estado_ean').val());
+            $('#empresa_registrada_id_estado_mercadeo').val($('#empresa_registrada_id_estado_ean').val());
+
+            $('#empresa_registrada_id_ciudad_edi').val($('#empresa_registrada_id_ciudad_ean').val());
+            $('#empresa_registrada_id_ciudad_recursos').val($('#empresa_registrada_id_ciudad_ean').val());
+            $('#empresa_registrada_id_ciudad_mercadeo').val($('#empresa_registrada_id_ciudad_ean').val());
+
+            $('#empresa_registrada_id_municipio_edi').val($('#empresa_registrada_id_municipio_ean').val());
+            $('#empresa_registrada_id_municipio_recursos').val($('#empresa_registrada_id_municipio_ean').val());
+            $('#empresa_registrada_id_municipio_mercadeo').val($('#empresa_registrada_id_municipio_ean').val());
+
+            $('#empresa_registrada_parroquia_edi').val($('#empresa_registrada_parroquia_ean').val());
+            $('#empresa_registrada_parroquia_recursos').val($('#empresa_registrada_parroquia_ean').val());
+            $('#empresa_registrada_parroquia_mercadeo').val($('#empresa_registrada_parroquia_ean').val());
+
+
+            $('#empresa_registrada_punto_ref_edi').val($('#empresa_registrada_punto_ref_ean').val());
+            $('#empresa_registrada_punto_ref_recursos').val($('#empresa_registrada_punto_ref_ean').val());
+            $('#empresa_registrada_punto_ref_mercadeo').val($('#empresa_registrada_punto_ref_ean').val());
+
+            $('#empresa_registrada_codigo_postal_edi').val($('#empresa_registrada_cod_postal_ean').val());
+            $('#empresa_registrada_codigo_postal_recursos').val($('#empresa_registrada_cod_postal_ean').val());
+            $('#empresa_registrada_codigo_postal_mercadeo').val($('#empresa_registrada_cod_postal_ean').val());
+
+            $('#empresa_registrada_cod_tlf1_sincronet').val($('#empresa_registrada_cod_tlf1_ean').val());
+            $('#empresa_registrada_cod_tlf1_seminarios').val($('#empresa_registrada_cod_tlf1_ean').val());
+            $('#empresa_registrada_cod_tlf1_mercadeo').val($('#empresa_registrada_cod_tlf1_ean').val());
+
+            $('#empresa_registrada_telefono1_edi').val($('#empresa_registrada_telefono1_ean').val());
+            $('#empresa_registrada_telefono1_recursos').val($('#empresa_registrada_telefono1_ean').val());
+            $('#empresa_registrada_telefono1_mercadeo').val($('#empresa_registrada_telefono1_ean').val());
+
+            $('#empresa_registrada_cod_tlf2_sincronet').val($('#empresa_registrada_cod_tlf2_ean').val());
+            $('#empresa_registrada_cod_tlf2_seminarios').val($('#empresa_registrada_cod_tlf2_ean').val());
+            $('#empresa_registrada_cod_tlf2_mercadeo').val($('#empresa_registrada_cod_tlf2_ean').val());
+
+            $('#empresa_registrada_telefono2_edi').val($('#empresa_registrada_telefono2_ean').val());
+            $('#empresa_registrada_telefono2_recursos').val($('#empresa_registrada_telefono2_ean').val());
+            $('#empresa_registrada_telefono2_mercadeo').val($('#empresa_registrada_telefono2_ean').val());
+
+            $('#empresa_registrada_cod_tlf3_sincronet').val($('#empresa_registrada_cod_tlf3_ean').val());
+            $('#empresa_registrada_cod_tlf3_seminarios').val($('#empresa_registrada_cod_tlf3_ean').val());
+            $('#empresa_registrada_cod_tlf3_mercadeo').val($('#empresa_registrada_cod_tlf3_ean').val());
+
+            $('#empresa_registrada_telefono3_edi').val($('#empresa_registrada_telefono3_ean').val());
+            $('#empresa_registrada_telefono3_recursos').val($('#empresa_registrada_telefono3_ean').val());
+            $('#empresa_registrada_telefono3_mercadeo').val($('#empresa_registrada_telefono3_ean').val());
+
+            $('#empresa_registrada_cod_fax_sincronet').val($('#empresa_registrada_cod_fax_ean').val());
+            $('#empresa_registrada_cod_fax_seminarios').val($('#empresa_registrada_cod_fax_ean').val());
+            $('#empresa_registrada_cod_fax_mercadeo').val($('#empresa_registrada_cod_fax_ean').val());
+
+            $('#empresa_registrada_fax_edi').val($('#empresa_registrada_fax_ean').val());
+            $('#empresa_registrada_fax_recursos').val($('#empresa_registrada_fax_ean').val());
+            $('#empresa_registrada_fax_mercadeo').val($('#empresa_registrada_fax_ean').val());
+
+            $('#empresa_registrada_email1_edi').val($('#empresa_registrada_email1_ean').val());
+            $('#empresa_registrada_email1_recursos').val($('#empresa_registrada_email1_ean').val());
+            $('#empresa_registrada_email1_mercadeo').val($('#empresa_registrada_email1_ean').val());
+
+            $('#empresa_registrada_email2_edi').val($('#empresa_registrada_email2_ean').val());
+            $('#empresa_registrada_email2_recursos').val($('#empresa_registrada_email2_ean').val());
+            $('#empresa_registrada_email2_mercadeo').val($('#empresa_registrada_email2_ean').val());
+
 
         });
+     
 
 	
 });

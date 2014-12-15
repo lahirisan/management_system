@@ -7,8 +7,7 @@ class Empresa < ActiveRecord::Base
   #accepts_nested_attributes_for :correspondencia, :allow_destroy => true # Maneja el modelo correspondencia en el formulario de empresa  
   #accepts_nested_attributes_for :datos_contacto, :allow_destroy => true # Maneja el modelo correspondencia en el formulario de empresa  
   
-  attr_accessible :cargo_rep_legal, :categoria, :clase, :direccion_empresa, :division, :fecha_inscripcion, :grupo, :id_ciudad, :id_clasificacion, :id_estado, :id_estatus, :id_tipo_usuario, :nombre_comercial, :nombre_empresa, :rep_legal, :rif, :prefijo,  :numero_registro_mercantil, :tomo_registro_mercantil, :nit_registro_mercantil, :nacionalidad_responsable_legal, :domicilio_responsable_legal, :cedula_responsable_legal, :circunscripcion_judicial, :ventas_brutas_anuales, :fecha_registro_mercantil, :contacto_tlf1, :contacto_tlf2, :contacto_tlf3, :contacto_fax, :contacto_email1, :contacto_email2, :rep_ean, :rep_ean_cargo, :direccion_ean1, :direccion_ean3, :direccion_ean4, :id_estado_ean, :id_ciudad_ean, :id_municipio_ean, :parroquia_ean, :punto_ref_ean, :cod_postal_ean, :telefono1_ean, :telefono2_ean, :telefono3_ean, :fax_ean, :email1_ean, :email2_ean, :rep_edi, :rep_edi_cargo, :direccion_edi1, :direccion_edi2, :direccion_edi3, :id_estado_edi, :id_ciudad_edi, :id_municipio_edi, :parroquia_edi, :punto_ref_edi, :codigo_postal_edi, :telefono1_edi, :telefono2_edi, :telefono3_edi, :fax_edi, :email1_edi, :rep_recursos, :rep_recursos_cargo, :telefono1_recursos, :fax_recursos, :email_recursos, :rep_mercadeo, :rep_mercadeo_cargo, :telefono1_mercadeo, :fax_mercadeo, :email_mercadeo, :direccion_ean, :direccion_edi, :direccion_recursos, :direccion_mercadeo, :fecha_activacion, :id_subestatus, :administrativo, :aporte_mantenimiento_bs, :tipo_rif, :rif_completo
-  
+  attr_accessible :cargo_rep_legal, :categoria, :clase, :direccion_empresa, :division, :fecha_inscripcion, :grupo, :id_ciudad, :id_clasificacion, :id_estado, :id_estatus, :id_tipo_usuario, :nombre_comercial, :nombre_empresa, :rep_legal, :rif, :prefijo,  :numero_registro_mercantil, :tomo_registro_mercantil, :nit_registro_mercantil, :nacionalidad_responsable_legal, :domicilio_responsable_legal, :cedula_responsable_legal, :circunscripcion_judicial, :ventas_brutas_anuales, :fecha_registro_mercantil, :contacto_tlf1, :contacto_tlf2, :contacto_tlf3, :contacto_fax, :contacto_email1, :contacto_email2, :rep_ean, :rep_ean_cargo, :direccion_ean1, :direccion_ean3, :direccion_ean4, :id_estado_ean, :id_ciudad_ean, :id_municipio_ean, :parroquia_ean, :punto_ref_ean, :cod_postal_ean, :telefono1_ean, :telefono2_ean, :telefono3_ean, :fax_ean, :email1_ean, :email2_ean, :rep_edi, :rep_edi_cargo, :direccion_edi1, :direccion_edi2, :direccion_edi3, :id_estado_edi, :id_ciudad_edi, :id_municipio_edi, :parroquia_edi, :punto_ref_edi, :codigo_postal_edi, :telefono1_edi, :telefono2_edi, :telefono3_edi, :fax_edi, :email1_edi, :rep_recursos, :rep_recursos_cargo, :telefono1_recursos, :fax_recursos, :email_recursos, :rep_mercadeo, :rep_mercadeo_cargo, :telefono1_mercadeo, :fax_mercadeo,  :direccion_ean, :direccion_edi, :direccion_recursos, :direccion_mercadeo, :fecha_activacion, :id_subestatus, :administrativo, :aporte_mantenimiento_bs, :tipo_rif, :rif_completo, :tipo_galpon_edificio_quinta, :galpon_edificio_quinta, :tipo_oficina_apartamento, :oficina_apartamento, :tipo_avenida_calle, :avenida_calle, :tipo_urbanizacion_barrio_sector, :urbanizacion_barrio_sector, :tipo_piso_numero, :piso_numero, :tipo_galpon_edificio_quinta_sincronet, :galpon_edificio_quinta_sincronet, :tipo_oficina_apartamento_sincronet, :oficina_apartamento_sincronet, :tipo_avenida_calle_sincronet, :avenida_calle_sincronet, :tipo_urbanizacion_barrio_sector_sincronet, :urbanizacion_barrio_sector_sincronet, :tipo_piso_numero_sincronet, :piso_numero_sincronet, :tipo_galpon_edificio_quinta_seminarios, :galpon_edificio_quinta_seminarios, :tipo_oficina_apartamento_seminarios, :oficina_apartamento_seminarios, :tipo_avenida_calle_seminarios, :avenida_calle_seminarios, :tipo_urbanizacion_barrio_sector_seminarios, :urbanizacion_barrio_sector_seminarios, :tipo_piso_numero_seminarios, :piso_numero_seminarios, :tipo_galpon_edificio_quinta_mercadeo, :galpon_edificio_quinta_mercadeo, :tipo_oficina_apartamento_mercadeo, :oficina_apartamento_mercadeo, :tipo_avenida_calle_mercadeo, :avenida_calle_mercadeo, :tipo_urbanizacion_barrio_sector_mercadeo, :urbanizacion_barrio_sector_mercadeo, :tipo_piso_numero_mercadeo, :piso_numero_mercadeo, :id_estado_mercadeo, :parroquia_mercadeo, :punto_ref_mercadeo, :telefono3_mercadeo, :email2_edi, :email2_recursos, :email2_mercadeo, :email1_recursos, :email1_mercadeo, :telefono3_recursos, :id_estado_recursos, :punto_ref_recursos, :cod_contacto_tlf1, :cod_contacto_tlf3, :cod_contacto_fax, :cod_tlf1_ean, :cod_tlf2_ean, :cod_tlf3_ean, :cod_fax_ean, :cod_tlf1_sincronet, :cod_tlf2_sincronet, :cod_tlf3_sincronet, :cod_fax_sincronet, :cod_tlf1_seminarios, :cod_tlf2_seminarios, :cod_tlf3_seminarios, :cod_fax_seminarios, :cod_tlf1_mercadeo, :cod_tlf2_mercadeo, :cod_tlf3_mercadeo, :cod_fax_mercadeo, :contacto_tlf1_completo, :contacto_tlf2_completo, :contacto_tlf3_completo, :contacto_fax_completo, :telefono1_ean_completo, :telefono2_ean_completo, :telefono3_ean_completo, :fax_ean_completo, :id_ciudad_recursos, :id_municipio_recursos, :parroquia_recursos, :codigo_postal_recursos, :telefono2_recursos, :cod_contacto_tlf2, :codigo_postal_mercadeo, :telefono2_mercadeo, :id_municipio_mercadeo, :id_ciudad_mercadeo  
   belongs_to :estado, :foreign_key =>  "id_estado"  # Se establece la clave foranea por la cual va a buscar la asociacion
   belongs_to :ciudad, :foreign_key =>  "id_ciudad"
   belongs_to :municipio, :foreign_key => "id_municipio"
@@ -24,7 +23,6 @@ class Empresa < ActiveRecord::Base
   
   # Asi es como se debe hacer con las asociaciones con tablas de por medio, para manejar correctamente los helper de los formularios
   has_many :gln, :foreign_key => "prefijo" , :dependent => :destroy# Define una asociaicion 1 a N con productos_empresa
-
   
   belongs_to :tipo_usuario_empresa, :foreign_key => "id_tipo_usuario"
   
@@ -305,13 +303,10 @@ class Empresa < ActiveRecord::Base
   empresa.rep_mercadeo_cargo = empresa_registrada.rep_mercadeo_cargo
   empresa.telefono1_mercadeo = empresa_registrada.telefono1_mercadeo
   empresa.fax_mercadeo = empresa_registrada.fax_mercadeo
-  empresa.email_mercadeo = empresa_registrada.fax_mercadeo
-  empresa.email_mercadeo = empresa_registrada.email_mercadeo
   empresa.rep_recursos = empresa_registrada.rep_recursos
   empresa.rep_recursos_cargo = empresa_registrada.rep_recursos_cargo
   empresa.telefono1_recursos = empresa_registrada.telefono1_recursos
   empresa.fax_recursos = empresa_registrada.fax_recursos
-  empresa.email_recursos = empresa_registrada.email_recursos
   empresa.contacto_tlf1 = empresa_registrada.contacto_tlf1
   empresa.rep_ean = empresa_registrada.rep_ean
   empresa.parroquia_edi = empresa_registrada.parroquia_edi
@@ -320,6 +315,97 @@ class Empresa < ActiveRecord::Base
   empresa.direccion_edi = empresa_registrada.direccion_edi
   empresa.id_subestatus = empresa_registrada.id_subestatus
   empresa.fecha_activacion = Time.now
+  empresa.tipo_galpon_edificio_quinta = empresa_registrada.tipo_galpon_edificio_quinta
+  empresa.galpon_edificio_quinta = empresa_registrada.galpon_edificio_quinta
+  empresa.tipo_oficina_apartamento = empresa_registrada.tipo_oficina_apartamento
+  empresa.oficina_apartamento = empresa_registrada.oficina_apartamento
+  empresa.tipo_avenida_calle = empresa_registrada.tipo_avenida_calle
+  empresa.avenida_calle = empresa_registrada.avenida_calle
+  empresa.tipo_urbanizacion_barrio_sector = empresa_registrada.tipo_urbanizacion_barrio_sector
+  empresa.urbanizacion_barrio_sector = empresa_registrada.urbanizacion_barrio_sector
+  empresa.tipo_piso_numero = empresa_registrada.tipo_piso_numero
+  empresa.piso_numero = empresa_registrada.piso_numero
+  empresa.tipo_galpon_edificio_quinta_sincronet = empresa_registrada.tipo_galpon_edificio_quinta_sincronet
+  empresa.galpon_edificio_quinta_sincronet = empresa_registrada.galpon_edificio_quinta_sincronet
+  empresa.tipo_oficina_apartamento_sincronet = empresa_registrada.tipo_oficina_apartamento_sincronet
+  empresa.oficina_apartamento_sincronet = empresa_registrada.oficina_apartamento_sincronet
+  empresa.tipo_avenida_calle_sincronet = empresa_registrada.tipo_avenida_calle_sincronet
+  empresa.avenida_calle_sincronet = empresa_registrada.avenida_calle_sincronet
+  empresa.tipo_urbanizacion_barrio_sector_sincronet = empresa_registrada.tipo_urbanizacion_barrio_sector_sincronet
+  empresa.urbanizacion_barrio_sector_sincronet = empresa_registrada.urbanizacion_barrio_sector_sincronet
+  empresa.tipo_piso_numero_sincronet = empresa_registrada.tipo_piso_numero_sincronet
+  empresa.piso_numero_sincronet = empresa_registrada.piso_numero_sincronet
+  empresa.tipo_galpon_edificio_quinta_seminarios = empresa_registrada.tipo_galpon_edificio_quinta_seminarios
+  empresa.galpon_edificio_quinta_seminarios = empresa_registrada.galpon_edificio_quinta_seminarios
+  empresa.tipo_oficina_apartamento_seminarios = empresa_registrada.tipo_oficina_apartamento_seminarios
+  empresa.oficina_apartamento_seminarios = empresa_registrada.oficina_apartamento_seminarios
+  empresa.tipo_avenida_calle_seminarios = empresa_registrada.tipo_avenida_calle_seminarios
+  empresa.avenida_calle_seminarios = empresa_registrada.avenida_calle_seminarios
+  empresa.tipo_urbanizacion_barrio_sector_seminarios = empresa_registrada.tipo_urbanizacion_barrio_sector_seminarios
+  empresa.urbanizacion_barrio_sector_seminarios = empresa_registrada.urbanizacion_barrio_sector_seminarios
+  empresa.tipo_piso_numero_seminarios = empresa_registrada.tipo_piso_numero_seminarios
+  empresa.piso_numero_seminarios = empresa_registrada.piso_numero_seminarios
+  empresa.tipo_galpon_edificio_quinta_mercadeo = empresa_registrada.tipo_galpon_edificio_quinta_mercadeo
+  empresa.galpon_edificio_quinta_mercadeo = empresa_registrada.galpon_edificio_quinta_mercadeo
+  empresa.tipo_oficina_apartamento_mercadeo = empresa_registrada.tipo_oficina_apartamento_mercadeo
+  empresa.oficina_apartamento_mercadeo = empresa_registrada.oficina_apartamento_mercadeo
+  empresa.tipo_avenida_calle_mercadeo = empresa_registrada.tipo_avenida_calle_mercadeo
+  empresa.avenida_calle_mercadeo = empresa_registrada.avenida_calle_mercadeo
+  empresa.tipo_urbanizacion_barrio_sector_mercadeo = empresa_registrada.tipo_urbanizacion_barrio_sector_mercadeo
+  empresa.urbanizacion_barrio_sector_mercadeo = empresa_registrada.urbanizacion_barrio_sector_mercadeo
+  empresa.tipo_piso_numero_mercadeo = empresa_registrada.tipo_piso_numero_mercadeo
+  empresa.piso_numero_mercadeo = empresa_registrada.piso_numero_mercadeo
+  empresa.id_estado_mercadeo = empresa_registrada.id_estado_mercadeo
+  empresa.parroquia_mercadeo = empresa_registrada.parroquia_mercadeo
+  empresa.punto_ref_mercadeo = empresa_registrada.punto_ref_mercadeo
+  empresa.telefono3_mercadeo = empresa_registrada.telefono3_mercadeo
+  empresa.email2_edi = empresa_registrada.email2_edi
+  empresa.email2_recursos = empresa_registrada.email2_recursos
+  empresa.email2_mercadeo = empresa_registrada.email2_mercadeo
+  empresa.email1_recursos = empresa_registrada.email1_recursos
+  empresa.email1_mercadeo = empresa_registrada.email1_mercadeo
+  empresa.telefono3_recursos = empresa_registrada.telefono3_recursos
+  empresa.id_estado_recursos = empresa_registrada.id_estado_recursos
+  empresa.punto_ref_recursos = empresa_registrada.punto_ref_recursos
+  empresa.cod_contacto_tlf1 = empresa_registrada.cod_contacto_tlf1
+  empresa.cod_contacto_tlf2 = empresa_registrada.cod_contacto_tlf2
+  empresa.cod_contacto_tlf3 = empresa_registrada.cod_contacto_tlf3
+  empresa.cod_contacto_fax = empresa_registrada.cod_contacto_fax
+  empresa.cod_tlf1_ean = empresa_registrada.cod_tlf1_ean
+  empresa.cod_tlf2_ean = empresa_registrada.cod_tlf2_ean
+  empresa.cod_tlf3_ean = empresa_registrada.cod_tlf3_ean
+  empresa.cod_fax_ean = empresa_registrada.cod_fax_ean
+  empresa.cod_tlf1_sincronet = empresa_registrada.cod_tlf1_sincronet
+  empresa.cod_tlf2_sincronet = empresa_registrada.cod_tlf2_sincronet
+  empresa.cod_tlf3_sincronet = empresa_registrada.cod_tlf3_sincronet
+  empresa.cod_fax_sincronet = empresa_registrada.cod_fax_sincronet
+  empresa.cod_tlf1_seminarios = empresa_registrada.cod_tlf1_seminarios
+  empresa.cod_tlf2_seminarios = empresa_registrada.cod_tlf2_seminarios
+  empresa.cod_tlf3_seminarios = empresa_registrada.cod_tlf3_seminarios
+  empresa.cod_fax_seminarios = empresa_registrada.cod_fax_seminarios
+  empresa.cod_tlf1_mercadeo = empresa_registrada.cod_tlf1_mercadeo
+  empresa.cod_tlf2_mercadeo = empresa_registrada.cod_tlf2_mercadeo
+  empresa.cod_tlf3_mercadeo = empresa_registrada.cod_tlf3_mercadeo
+  empresa.cod_fax_mercadeo = empresa_registrada.cod_fax_mercadeo
+  empresa.fax_ean_completo = empresa_registrada.fax_ean_completo
+  empresa.telefono3_ean_completo = empresa_registrada.fax_ean_completo
+  empresa.telefono2_ean_completo = empresa_registrada.telefono2_ean_completo
+  empresa.telefono1_ean_completo = empresa_registrada.telefono1_ean_completo
+  empresa.contacto_fax_completo = empresa_registrada.contacto_fax_completo
+  empresa.contacto_tlf3_completo = empresa_registrada.contacto_tlf3_completo
+  empresa.contacto_tlf2_completo = empresa_registrada.contacto_tlf2_completo
+  empresa.contacto_tlf1_completo = empresa_registrada.contacto_tlf1_completo
+  empresa.id_ciudad_recursos = empresa_registrada.id_ciudad_recursos
+  empresa.id_municipio_recursos = empresa_registrada.id_municipio_recursos
+  empresa.parroquia_recursos = empresa_registrada.parroquia_recursos
+  empresa.codigo_postal_recursos = empresa_registrada.codigo_postal_recursos
+  empresa.telefono2_recursos = empresa_registrada.telefono2_recursos
+  empresa.codigo_postal_mercadeo = empresa_registrada.codigo_postal_mercadeo
+  empresa.telefono2_mercadeo = empresa_registrada.telefono2_mercadeo
+  empresa.id_municipio_mercadeo = empresa_registrada.id_municipio_mercadeo
+  empresa.id_ciudad_mercadeo = empresa_registrada.id_ciudad_mercadeo
+
+
   empresa.save
  
   empresa_registrada.destroy
