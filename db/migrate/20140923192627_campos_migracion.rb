@@ -53,34 +53,34 @@ class CamposMigracion < ActiveRecord::Migration
   #add_column :empresa, :rep_mercadeo_cargo, :string
  # add_column :empresa, :direccion_mercadeo1, :string
 #=======
-  add_column :empresa, :contacto_tlf2, :string
-  add_column :empresa, :contacto_tlf3, :string
-  add_column :empresa, :contacto_fax,  :string
-  add_column :empresa, :contacto_email1, :string
-  add_column :empresa, :contacto_email2, :string
-  add_column :empresa, :user_ult_modificacion, :integer
-  add_column :empresa, :fecha_ultima_modificacion, :datetime
+ # add_column :empresa, :contacto_tlf2, :string
+ # add_column :empresa, :contacto_tlf3, :string
+ # add_column :empresa, :contacto_fax,  :string
+ # add_column :empresa, :contacto_email1, :string
+ # add_column :empresa, :contacto_email2, :string
+ # add_column :empresa, :user_ult_modificacion, :integer
+  #add_column :empresa, :fecha_ultima_modificacion, :datetime
   add_column :empresa, :user_crea, :datetime
   add_column :empresa, :rep_ean, :string
   add_column :empresa, :rep_ean_cargo, :string
-  add_column :empresa, :direccion_ean1, :string
-  add_column :empresa, :direccion_ean2, :string
-  add_column :empresa, :direccion_ean3, :string
-  add_column :empresa, :direccion_ean4, :string
-  add_column :empresa, :punto_ref_ean, :string
-  add_column :empresa, :id_estado_ean, :integer
-  add_column :empresa, :id_ciudad_ean, :integer
-  add_column :empresa, :id_parroquia_ean, :integer
-  add_column :empresa, :parroquia_ean, :string
-  add_column :empresa, :cod_postal_ean, :integer
-  add_column :empresa, :codigo_postal_empresa, :integer
-  add_column :empresa, :telefono1_ean, :string
-  add_column :empresa, :telefono2_ean, :string
-  add_column :empresa, :telefono3_ean, :string
-  add_column :empresa, :fax_ean, :string
-  add_column :empresa, :email1_ean, :string
-  add_column :empresa, :email2_ean, :string
-  add_column :empresa, :rep_edi, :string
+  #add_column :empresa, :direccion_ean1, :string
+  #add_column :empresa, :direccion_ean2, :string
+  #add_column :empresa, :direccion_ean3, :string
+  #add_column :empresa, :direccion_ean4, :string
+  #add_column :empresa, :punto_ref_ean, :string
+  #add_column :empresa, :id_estado_ean, :integer
+  #add_column :empresa, :id_ciudad_ean, :integer
+  #add_column :empresa, :id_parroquia_ean, :integer
+ # add_column :empresa, :parroquia_ean, :string
+ # add_column :empresa, :cod_postal_ean, :integer
+ # add_column :empresa, :codigo_postal_empresa, :integer
+ # add_column :empresa, :telefono1_ean, :string
+ # add_column :empresa, :telefono2_ean, :string
+ # add_column :empresa, :telefono3_ean, :string
+ # add_column :empresa, :fax_ean, :string
+ # add_column :empresa, :email1_ean, :string
+  #add_column :empresa, :email2_ean, :string
+  #add_column :empresa, :rep_edi, :string
   add_Column :empresa, :rep_edi_cargo, :string
   add_column :empresa, :direccion_edi1, :string
   add_column :empresa, :direccion_edi2, :string
