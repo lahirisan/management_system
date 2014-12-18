@@ -31,7 +31,7 @@
 
 		%section#menu.menu	
 			
-			-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Empresas Activas') 
+			-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Empresas Activas') and params[:controller] = "empresas"
 				
 				%a.opcion{:href => "/empresas", :title => "Empresas Activas", :class => "ui-state-default ui-corner-all botones_menu"}
 					%span.ui-icon.ui-icon-home
@@ -53,7 +53,8 @@
 					%span.ui-icon.ui-icon-document
 					&nbsp;Empresas Nuevas
 
-			-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Empresa') 
+			
+			-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Empresa') and params[:controller] = "empresas"
 
 				%a.opcion{:href => "/empresa_registradas/new", :title => "Opción para Registrar Empresa", :class => "ui-state-default ui-corner-all botones_menu"}
 					%span.ui-icon.ui-icon-circle-plus
@@ -64,8 +65,6 @@
 				%a.opcion{:href => "/empresa_registradas?activar_solvencia=true", :title => "Listado de Nuevas Empresas", :class => "ui-state-default ui-corner-all botones_menu"}
 					%span.ui-icon.ui-icon-print
 					&nbsp;Solvencias
-
-
 
 
 			- if params[:controller] == 'empresas'

@@ -13,8 +13,13 @@ class SessionsController < ApplicationController
 	    session[:perfil] = user.try(:perfil).try(:descripcion)
 	    session[:cargo] = user.try(:cargo).try(:descripcion)
 	    session[:gerencia] = user.try(:gerencia).try(:nombre)
-	    if session[:gerencia] == 'Comercial' 
-	    	redirect_to "/empresa_registradas"
+	    
+	    if session[:gerencia] == 'Comercial'
+	    	if session[:perfil] == 'Mercadeo'
+	    		redirect_to "/empresa_registradas" 
+	    	else
+	    		redirect_to "/empresas"
+	    	end
 	    elsif session[:gerencia] == 'Administracion' 
 	    	redirect_to "/empresa_registradas?activar_solvencia=true"
 	    else	

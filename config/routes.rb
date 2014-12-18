@@ -11,6 +11,8 @@ GS1::Application.routes.draw do
     end
   end
 
+
+
   resources :usuarios 
 
   resources :productos do #/empresas/1/productos
@@ -69,6 +71,7 @@ GS1::Application.routes.draw do
   resources :clasificaciones
   resources :municipios
   resources :sessions
+  resources :perfiles
 
 
 

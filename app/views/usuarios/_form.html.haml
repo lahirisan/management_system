@@ -45,19 +45,20 @@
             = f.text_field :email, :class => "email"
         %tr
           %td
-            Perfil
-          %td
-            =f.collection_select :id_perfil, Perfil.order("descripcion asc"), :id, :descripcion, :prompt => "-Seleccione-"
-        %tr
-          %td
             Gerencia
           %td
             = f.collection_select :id_gerencia, Gerencia.order("nombre asc"), :id, :nombre, :prompt => "-Seleccione-"
         %tr
           %td
-            Cargo
+            Perfil
           %td
-            = f.collection_select :id_cargo, Cargo.order("descripcion asc"), :id, :descripcion, :prompt => "-Seleccione-"
+            =f.collection_select :id_perfil, Perfil.order("descripcion asc"), :id, :descripcion, :prompt => "-Seleccione-"
+        
+        / %tr
+        /   %td
+        /     Cargo
+        /   %td
+        /     = f.collection_select :id_cargo, Cargo.order("descripcion asc"), :id, :descripcion, :prompt => "-Seleccione-"
 
       .actions
         %button#submit.ui-state-default.ui-corner-all.crear_empresa{:type => "submit", :title => "Guardar usuario"}
