@@ -15,6 +15,7 @@ $( document ).ready(function() {
 
 
         // Datatable que maneja el listado de glns
+        
         $("#data_table_eliminar_gln").dataTable({
             sPaginationType: "full_numbers",
             aaSorting: [[ 5, "desc" ]],
@@ -27,19 +28,7 @@ $( document ).ready(function() {
 
         $('#data_table_eliminar_gln input').attr("placeholder", "Buscar");
 
-         // Datatable que maneja el listado de glns
-        $("#data_table_gln_eliminados").dataTable({
-            aaSorting: [[ 9, "desc" ]],
-            sPaginationType: "full_numbers",
-            bJQueryUI: true,
-            bProcessing: true,
-            bServerSide: true,
-            sDom: 'T<"clear">lfrtip',            
-            sAjaxSource: $('#data_table_gln_eliminados').data('source')
-        }).columnFilter({ aoColumns: [{ type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
-
-        $('#data_table_gln_eliminados input').attr("placeholder", "Buscar");
-
+       
 
         // Efectos del boton importar
         $('.eliminar_gln, .exportar_gln, .exportar_gln_eliminar').hover(

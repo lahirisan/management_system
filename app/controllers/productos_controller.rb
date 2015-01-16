@@ -7,35 +7,27 @@ class ProductosController < ApplicationController
 
   # GET /productos
   # GET /productos.json
-  
   def index
-
 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
 
     respond_to do |format|
       format.html {
                     
-                    if params[:eliminar]
-                      @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Productos Activos > Eliminar Productos"
+                    if params[:eliminar]  
+                      @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Productos > Eliminar Productos"
                       render :template =>'/productos/eliminar_productos.html.haml'
-                    elsif params[:eliminados]
-                      @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
-                      @empresa = @empresa ?  @empresa : EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
-                      @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Productos Eliminados"
-                      render :template =>'/productos/productos_eliminados.html.haml'
                     else
-
-                      @navegabilidad = "#{@empresa.prefijo} > " +  @empresa.nombre_empresa + " > Productos Activos > Listado"
+                      @navegabilidad = "#{@empresa.prefijo} > " +  @empresa.nombre_empresa + " > Productos > Listado"
+                       # para mostrar el estatus de los productos como retirados si la empresa esta retirada
+                      @ruta = (params[:empresa_retirada]) ? "/empresas/#{params[:empresa_id]}/productos.json?empresa_retirada=true" : "/empresas/#{params[:empresa_id]}/productos.json"  
                       render :template =>'/productos/index.html.haml'
-
                     end
                   }
       format.json { 
                     
-                    if params[:retirar]
-                      render json: (RetirarProductosDatatable.new(view_context))
-                    elsif params[:gtin]
+                   
+                    if params[:gtin]
                       gtin = params[:gtin]
                       digito_verificacion = Producto.calcular_digito_verificacion(params[:gtin].to_i,"GTIN-13")
                       codigo_generado =  gtin + digito_verificacion.to_s
@@ -43,11 +35,9 @@ class ProductosController < ApplicationController
                       render json: producto
                     elsif params[:eliminar]
                       render json: (EliminarProductosDatatable.new(view_context))
-                    elsif params[:eliminados]
-                      render json: (ProductosEliminadosDatatable.new(view_context))
                     else
 
-                      if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Producto') or session[:perfil] == 'Administrador'
+                      if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Editar Producto')
 
                         render json: ProductosDatatable.new(view_context) 
                       else
@@ -56,18 +46,10 @@ class ProductosController < ApplicationController
                     end
                   }
       format.pdf  {
-                    if params[:retirar]
-                      @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("producto.fecha_creacion") 
-                      render '/productos/retirar_productos.pdf.prawn'
-                    elsif params[:retirados]
-                      @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
-                      render '/productos/productos_retirados.pdf.prawn'
-                    elsif params[:eliminar]
+                   
+                    if params[:eliminar]
                       @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
                       render '/productos/eliminar_productos.pdf.prawn'
-                    elsif params[:eliminados]
-                      @productos = ProductoEliminado.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?", params[:empresa_id], 'Eliminado', 'Producto').includes(:estatus, :tipo_gtin, {:producto_elim_detalle => :sub_estatus}, {:producto_elim_detalle => :motivo_retiro}, {:productos_empresa => :empresa})
-                      render '/productos/productos_eliminados.pdf.prawn'
                     else
                       
                       @productos = Producto.where("prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes(:estatus, :tipo_gtin).order("producto.fecha_creacion") 
@@ -75,13 +57,8 @@ class ProductosController < ApplicationController
                     end
       }
       format.xlsx{
-                  if params[:retirar]
-                    @productos = Producto.where("productos_empresa.prefijo = ?", params[:empresa_id]).includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin).order("producto.fecha_creacion") 
-                    render '/productos/retirar_productos.xlsx.axlsx'
-                  elsif params[:retirados]
-                    @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
-                    render '/productos/productos_retirados.xlsx.axlsx'
-                  elsif params[:eliminar]
+                 
+                  if params[:eliminar]
                     @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
                     render '/productos/eliminar_productos.xlsx.axlsx'
                   elsif params[:eliminados]

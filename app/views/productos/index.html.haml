@@ -9,7 +9,7 @@
     %br/
     %br/  
     
-    %table#data_table_productos.display{:"data-source" => "#{empresa_productos_path}.json"}
+    %table#data_table_productos.display{:"data-source" => "#{@ruta}"}
         %thead
             %tr
                 %th Tipo GTIN    
@@ -20,20 +20,19 @@
                 %th Código Prod
                 %th Fecha Creación
                 %th Fecha Modificación
-                -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Producto') 
+                -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Editar Producto') 
                     %th Editar
                     %th GTIN 14
         %tbody
         %tfoot
-            -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Producto')
+            -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Editar Producto')
                 =render 'footer'
             -else
                 =render 'footer_not_editable'
     %br/
     %br/
-
     
-    - if (UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Importar Producto') or session[:perfil] == 'Administrador') and params[:empresa_retirada].nil? and params[:insolvente].nil?
+    - if (UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Importar Producto') and params[:empresa_retirada].nil? and params[:insolvente].nil?)
 
         %a.boton_importar.ui-state-default.ui-corner-all{:href => "#", :title => "Opción que permite importar los productos desde un archivo Excel"}
             %span.ui-icon.ui-icon-transferthick-e-w

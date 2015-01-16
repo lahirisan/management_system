@@ -457,8 +457,10 @@
             return pattern_phone_number.test(phoneNumber);
         };
 
+        
+
        
-        // Se cambian todos los input a Mayusculas expceto login
+        // Se cambian todos los input a Mayusculas excepto login
         $('input').keyup(function() {
             
             if (($(this).attr('class') != 'login') && ($(this).attr('class') != 'email') && ($(this).attr('class') != 'clave'))

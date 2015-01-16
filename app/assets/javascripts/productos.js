@@ -10,8 +10,10 @@ $(document).ready(function(){
             sDom: 'T<"clear">lfrtip',            
             sAjaxSource: $('#data_table_productos').data('source')
         });
-
+       
         oTable.columnFilter({ aoColumns: [{ type: "text"},{ type: "text"}, {type: "text" }, {type: "text"},  null, {type: "text"}, {type: "text"}, {type: "text"}, null, null]});
+
+       
 
 
 
@@ -51,27 +53,10 @@ $(document).ready(function(){
 
 // oTable.fnSetFilteringDelay()
 
-
-
-
-
         $('#data_table_productos input').attr("placeholder", "Buscar");
 
-        // // Datatable que maneja retirar productos
-        $("#data_table_productos_eliminados").dataTable({
-            sPaginationType: "full_numbers",
-              aaSorting: [[ 9, "desc" ]],
-            bJQueryUI: true,
-            bProcessing: true,
-            bServerSide: true,
-            sDom: 'T<"clear">lfrtip',            
-            sAjaxSource: $('#data_table_productos_eliminados').data('source')
-        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"},  null, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
-
-        $('#data_table_productos_eliminados input').attr("placeholder", "Buscar");
-
-        // aoColumns: [ null,  null, null,  null, null, { "bSortable": false }, null, { "bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false }],
-        // Datatable que maneja retirar productos
+        
+        // Datatable que maneja Eliminar productos
         $("#data_table_eliminar_productos").dataTable({
             sPaginationType: "full_numbers",
             aaSorting: [[ 7, "desc" ]],
@@ -118,91 +103,9 @@ $(document).ready(function(){
             
         });
 
-
-
-        // ELiminar masivo seleccionar / deseleccionar todos
-        $('#retiro_masivo_productos').live('change', function() {
-            
-            if ($(this).is(':checked'))
-            {
-                $('.retirar_producto').prop('checked', true);
-            }
-            else 
-            {
-                $('.retirar_producto').prop('checked', false);
-            }  
-            
-        });
-
-        $('#formulario_retirar_productos').submit(function( event ) { 
-            
-            // Se valida que se haya seleccionado alguna empresa para retirar
-            if ($(".retirar_producto:checked").length == 0)
-            {
-                alert("Estimado usuario, no ha seleccionado ningún producto para RETIRAR. Por favor verifique.");
-                return false;
-            }
-            var seleccion_invalida = false;
-
-            if ($('#retiro_masivo_productos').is(':checked')) // retiro masivo
-                // Se valida que se haya selccioando un sub_estatus y motivo_ret para el retiro masivo
-            {
-                if ($('#retirar_producto_sub_estatus').val() == 1)
-                {
-                    alert('Estimado usuario, no ha selecciona un SUB ESTATUS para asignar masivamente. Por favor verifique');
-                    seleccion_invalida = true;
-                    return false;
-
-                }
-
-                if ($('#retirar_producto_motivo_retiro').val() == 1)
-                {
-                    alert('Estimado usuario, no ha selecciona un MOTIVO RETIRO para asignar masivamente. Por favor verifique');
-                    seleccion_invalida = true;
-                    return false;
-
-                }
-
-                $('.retirar_producto:checked').each(function() {
-                    // Por cada producto seleccionado se toma el valor de su id y el de los campos estatus y motivo retiro del control de retiro masivo
-                    $('#datos_productos_retirar_productos').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#retirar_producto_sub_estatus").val()+'_'+$("#retirar_producto_motivo_retiro").val()+ '">');
-                });   
-            }
-            else // múltiple selecccion de empresas a retirar
-            {
-                $('.retirar_producto:checked').each(function() {
-
-                    // Se valida que el usuario haya seleccion un subestatus para retirar el GTIN
-                    if ($('#'+$(this).val()+'sub_estatus').val() == 1)
-                    {
-                        alert('Estimado usuario, no ha seleccionado un SUB ESTATUS para el GTIN '+ $(this).val());
-                        seleccion_invalida = true;
-                        return false;
-                    }
-
-                    // Se valida que el usaurio haya selccionado un motivo de retiro pra el GTIN
-                    if ($('#'+$(this).val()+'motivo_ret').val() == 1)
-                    {
-                        alert('Estimado usuario, no ha seleccionado un MOTIVO RETIRO para el GTIN '+ $(this).val());
-                        seleccion_invalida = true;
-                        return false;
-                    }
-
-                    // Por cada producto selecciondo se toma el valor de su id y el de sus campos sub_estatus y motivo retiro
-                    $('#datos_productos_retirar_productos').append('<input type="hidden" name="'+$(this).val()+'" value="'+$(this).val()+'_'+$("#"+$(this).val()+"sub_estatus").val()+'_'+$("#"+$(this).val()+"motivo_ret").val()+ '">');
-                });
-            }
-
-            if (seleccion_invalida)
-                return false;
-
-            if (!(confirm('Esta seguro RETIRAR los productos seleccionados ?')))
-                return false;
-           
-        });
-
+        
         // Efectos del boton importar
-        $('.regresar_editar_empresa, .guardar_producto, .exportar_productos_eliminados, .exportar_productos_eliminar, .exportar_productos_retirados, .exportar_productos_retirar, .boton_importar, .retirar_productos,   .eliminar_productos, .exportar_productos').hover(
+        $('.regresar_editar_empresa, .guardar_producto,  .exportar_productos_eliminar,  .boton_importar, .eliminar_productos, .exportar_productos').hover(
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');}
         );
@@ -336,8 +239,6 @@ $(document).ready(function(){
         
         $(".exportar_productos").click(function() {
             
-            //alert($('tfoot tr th:nth-child(7) span input').datepicker({changeYear: true}));
-            //return false;
             $('.parametros').html(
                 '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(1) span input').val()+'">'+
                 '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
@@ -349,38 +250,8 @@ $(document).ready(function(){
             );
         });
 
-        $(".exportar_productos_retirar").click(function() {
-
-            $('.parametros').html(
-                '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
-                '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
-                '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
-                '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
-                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
-                '<input name="retirar" type="hidden" value="true">'
-            );
-
-          
-        });
-
-        $(".exportar_productos_retirados").click(function() {
-
-            $('.parametros').html(
-                '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
-                '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
-                '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
-                '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
-                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
-                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
-                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
-                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
-                '<input name="fecha_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(11) span input').val()+'">'+
-                '<input name="retirados" type="hidden" value="true">'
-            );
-
-          
-        });
-
+      
+      
         $(".exportar_productos_eliminar").click(function() {
 
             $('.parametros').html(
@@ -399,34 +270,14 @@ $(document).ready(function(){
         });
 
 
-        $(".exportar_productos_eliminados").click(function() {
 
-            $('.parametros').html(
-                '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
-                '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
-                '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
-                '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
-                '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
-                '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
-                '<input name="fecha_eliminacion" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
-                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
-                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(11) span input').val()+'">'+
-                '<input name="eliminados" type="hidden" value="true">'
-            );
-
-          
-        });
-
-
-
-        
 
         
 
 });
 
 
-;
+
 
 
 

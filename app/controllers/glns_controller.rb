@@ -11,12 +11,12 @@ class GlnsController < ApplicationController
         if params[:eliminar]
           @navegabilidad = "#{@empresa.prefijo} > "+@empresa.nombre_empresa + " > Eliminar GLN"
           render :template => '/glns/eliminar_gln.html.haml'
-        elsif params[:eliminados]
-          @navegabilidad = "#{@empresa.prefijo} > "+@empresa.nombre_empresa + " > GLN Eliminados"
-          render :template => '/glns/gln_eliminados.html.haml'
+       
         else
           @empresas_retiradas = params[:retirados].nil? ? false : true
           @navegabilidad = "#{@empresa.prefijo} > "+@empresa.nombre_empresa + " > GLN > Listado"
+          # para mostrar el estatus de los GLN como retirados si la empresa esta retirada
+          @ruta = (params[:empresa_retirada]) ? "/empresas/#{params[:empresa_id]}/glns.json?empresa_retirada=true" : "/empresas/#{params[:empresa_id]}/glns.json"  
           render :template => '/glns/index.html.haml'
         end
       }
@@ -25,8 +25,7 @@ class GlnsController < ApplicationController
 
         if params[:eliminar]
           render json: (EliminarGlnDatatable.new(view_context))
-        elsif params[:eliminados]
-          render json: (GlnEliminadosDatatable.new(view_context))
+       
         else
           render json: GlnsDatatable.new(view_context)
         end
@@ -53,7 +52,8 @@ class GlnsController < ApplicationController
   # GET /glns/1.json
   def show
 
-    @gln =  params[:eliminado] ? GlnEliminado.find(params[:id]) : Gln.find(params[:id])
+    @gln = Gln.find(params[:id])
+    @estatus = params[:retirado] ? "Retirado" : "Activo"
 
     respond_to do |format|
       format.html # show.html.erb
@@ -67,7 +67,6 @@ class GlnsController < ApplicationController
 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
     # SI la empresa GLN Legal puede crear GLN fisico y operativo, sino puede crear legal
-    
     @gln = @empresa.gln.build
 
 

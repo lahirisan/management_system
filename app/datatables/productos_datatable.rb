@@ -22,11 +22,17 @@ private
 
     productos.map do |producto|
       
-      if params[:empresa_retirada] == true
+      if params[:empresa_retirada] == 'true'
         estatus = "Retirado"
+        boton_editar = ""
+        boton_gtin_14 = ""
       else
         estatus = producto.try(:estatus).try(:descripcion)
+        boton_editar = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar producto"})
+        boton_gtin_14 = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"GTIN14").html_safe, "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{producto.descripcion.gsub(/%/, '')}&marca=#{producto.marca}&gpc=#{producto.gpc}",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Generar GTIN-14"})
       end
+
+      prueba = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar producto"})
 
       fecha = ""
       fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
@@ -36,8 +42,8 @@ private
       
        if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3)
          base = (producto.id_tipo_gtin == 1) ? 4 : 6  # Para mostrar seleccioando la base del producto cunado se crear GTIN 14
-
-         [ 
+         
+          [ 
            producto.try(:tipo_gtin).try(:tipo),
            producto.gtin,
            producto.descripcion,
@@ -46,15 +52,15 @@ private
            producto.codigo_prod,
            fecha,
            fecha_modificacion,
-           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar producto"}),
-           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"GTIN14").html_safe, "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{producto.descripcion.gsub(/%/, '')}&marca=#{producto.marca}&gpc=#{producto.gpc}",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Generar GTIN-14"})
-           
+           boton_editar,
+           boton_gtin_14
 
-         ]
+          ]
 
-       else
+        else
 
-         [ 
+          [ 
+
            producto.try(:tipo_gtin).try(:tipo),
            producto.gtin,
            producto.descripcion,
@@ -63,9 +69,9 @@ private
            producto.codigo_prod,
            fecha,
            fecha_modificacion,
-           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar producto"}),
-           ""
-         ]
+           boton_editar,
+           boton_gtin_14
+          ]
 
        end
       

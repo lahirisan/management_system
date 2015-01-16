@@ -4,6 +4,7 @@ class SessionsController < ApplicationController
 	end
 
 	def create
+	  
 	  user = Usuario.authenticate(params[:usuario], params[:clave])
 
 	  
