@@ -35,11 +35,32 @@
 				%span.ui-icon.ui-icon-home
 				&nbsp;Empresas Activas
 
-			- if params[:controller] == 'empresas'
+			- if params[:controller] == 'empresas' or params[:controller] == 'empresa_registradas'
 
-				-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Empresa') and params[:controller] == "empresas"
+				-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Empresas No Activas') 
 
-					%a.opcion{:href => "/empresa_registradas/new", :title => "Opción para Registrar Empresa", :class => "ui-state-default ui-corner-all botones_menu"}
+					%a.opcion{:href => "/empresa_registradas", :title => "Opción para visualizar empresas que aún no se les ha asignado prefijo", :class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-folder-collapsed
+						&nbsp;Empresas No Activas
+				
+				-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Activar Empresa')
+
+					%a.opcion{:href => "/empresa_registradas?activar_empresa=true", :title => "Opción para asignar Prefijo a Empresas Solventes", :class => "ui-state-default ui-corner-all botones_menu"}
+
+						%span.ui-icon.ui-icon-check
+						&nbsp;Activar Empresa
+
+
+				-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Validar Empresa') 
+
+					%a.opcion{:href => "/empresa_registradas?activar_solvencia=true", :title => "Opción para validar la Solvencia de las empresas", :class => "ui-state-default ui-corner-all botones_menu"}
+						%span.ui-icon.ui-icon-print
+						&nbsp;Validar Solvencia
+
+
+				-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Empresa') 
+
+					%a.opcion{:href => "/empresa_registradas/new", :title => "Opción para Registrar una nueva Empresa", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-circle-plus
 						&nbsp;Registrar Empresa
 				
@@ -106,14 +127,14 @@
 
 				- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Servicio') and params[:empresa_retirada].nil? and  params[:insolvente].nil? 
 
-					%a.opcion{:href => "#{new_empresa_servicio_path}", :title => "Opción que permite asociar Servicios a una Empresa",:class => "ui-state-default ui-corner-all botones_menu"}
+					%a.opcion{:href => "#{new_empresa_empresa_servicio_path}", :title => "Opción que permite asociar Servicios a una Empresa",:class => "ui-state-default ui-corner-all botones_menu"}
 
 						%span.ui-icon.ui-icon-circle-plus
 						&nbsp;Registrar Servicio
 
 				- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Eliminar Servicio') and params[:empresa_retirada].nil? and  params[:insolvente].nil? 
 
-					%a.opcion{:href => "#{new_empresa_servicio_path}?eliminar=true", :title => "Opción que permite asociar Servicios a una Empresa",:class => "ui-state-default ui-corner-all botones_menu"}
+					%a.opcion{:href => "#{new_empresa_empresa_servicio_path}?eliminar=true", :title => "Opción que permite asociar Servicios a una Empresa",:class => "ui-state-default ui-corner-all botones_menu"}
 
 						%span.ui-icon.ui-icon-circle-close
 						&nbsp;Eliminar Servicio

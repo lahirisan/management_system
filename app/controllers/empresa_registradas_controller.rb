@@ -7,14 +7,22 @@ class EmpresaRegistradasController < ApplicationController
     @empresa_registradas = EmpresaRegistrada.all
 
     respond_to do |format|
+      
       format.html {
 
-        if params[:activar_solvencia]
-          
-          render :template =>'/empresa_registradas/activar_solvencia.html.haml' 
+        if params[:activar_solvencia] 
+
+          render :template =>'/empresa_registradas/activar_solvencia.html.haml'
 
         else
+          if params[:activar_empresa]
+            @ruta = "/empresa_registradas.json?activar_empresa=true"
+          else
+              @ruta = "/empresa_registradas.json"
+          end
+
           render :template => '/empresa_registradas/index.html.haml'
+
         end 
       }
 
@@ -39,7 +47,6 @@ class EmpresaRegistradasController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @empresa_registrada }
     end
   end
 
@@ -51,26 +58,26 @@ class EmpresaRegistradasController < ApplicationController
     
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @empresa_registrada }
     end
   end
 
   # GET /empresa_registradas/1/edit
   def edit
 
+
     @empresa_registrada = EmpresaRegistrada.find(params[:id])
     @opciones = ['J', 'G', 'E', 'V']
+    respond_to do |format|
 
-    if (session[:perfil] == 'Super Usuario' and session[:gerencia] == 'Estandares y Consultoría') or (session[:perfil] == 'Administrador' and session[:gerencia] == 'Estandares y Consultoría')
-      
-      @prefijo = Empresa.generar_prefijo_valido
+      format.html{
+        
+        @prefijo = Empresa.generar_prefijo_valido
+        render :template => '/empresa_registradas/_form.html.haml'
+        
+      }
 
-      @clasificacion_empresa = Clasificacion.find(:first, :conditions => ["categoria = ? and division = ? and grupo = ? and clase = ?", @empresa_registrada.categoria, @empresa_registrada.division, @empresa_registrada.grupo, @empresa_registrada.clase])
-      @prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus], :conditions => ["(categoria = ? or division = ? or grupo = ? or clase = ?) and no_elejible is ? and prefijo >= 7590000 and prefijo <= 7599999", @empresa_registrada.categoria, @empresa_registrada.division, @empresa_registrada.grupo, @empresa_registrada.clase, nil], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion")
-
-    end
-
-
+    end 
+    
   end
 
   # POST /empresa_registradas
@@ -163,10 +170,9 @@ class EmpresaRegistradasController < ApplicationController
   def update_multiple  ## Ruta para asignar SOLVENTE  a las nuevas empresas  
     
     nuevas_empresas = EmpresaRegistrada.find(params[:activar_solvencias])
-
     solvente = SubEstatus.find(:first, :conditions => ["descripcion = ?", "SOLVENTE"])
 
-    nuevas_empresas.collect{|nueva_empresa| 
+      nuevas_empresas.collect{|nueva_empresa| 
       nueva_empresa.id_subestatus = solvente.id; 
       nueva_empresa.save; 
       Auditoria.registrar_evento(session[:usuario],"empresa_registradas", "Asignar SOLVENTE", Time.now, "EMPRESA #{nueva_empresa.nombre_empresa}  RIF #{nueva_empresa.rif}")

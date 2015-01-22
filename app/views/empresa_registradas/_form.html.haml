@@ -1,9 +1,9 @@
 %section.contexto
   %label.contexto.titulo_contrato
-    -if params[:activacion]
+    -if params[:activar_empresa].nil?
       =@empresa_registrada.new_record? ? "Registrar Empresa" : "#{@empresa_registrada.nombre_empresa} > Editar Empresa"
     -else
-      =@empresa_registrada.new_record? ? "Registrar Empresa" : "#{@empresa_registrada.nombre_empresa} > Editar Empresa"
+      ="#{@empresa_registrada.nombre_empresa} > Activar Empresa"
   
   %br
   %br
@@ -42,15 +42,14 @@
               -else
                 %li=msg + '.'
       
-      -if ((session[:gerencia] == 'Estandares y Consultoría'  and session[:perfil] == 'Super Usuario') or session[:perfil] == 'Administrador') and !@empresa_registrada.new_record? 
+      -if params[:activar_empresa]
 
         %table
           %tr
             %td.prefijo
               Prefijo Asignado
             %td.prefijo
-            
-              -if (params[:activacion]) 
+             
                 =f.text_field :prefijo, :value => "#{@prefijo}"
               -else  
                 =f.text_field :prefijo, :readonly => :true, :class => "campo_readonly"

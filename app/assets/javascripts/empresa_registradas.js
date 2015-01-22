@@ -15,8 +15,8 @@ $( document ).ready(function() {
 
 	$('#empresa_registrada_ventas_brutas_anuales').change(function() {
 
-		if (($(this).val() == '0 a 200.000') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
-			$('#empresa_registrada_aporte_mantenimiento_bs').val('3400.00');
+		if (($(this).val() == '0 a 100.000') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
+			$('#empresa_registrada_aporte_mantenimiento_bs').val('5500.00');
 		if (($(this).val() == 'De 200.001,00 a 2.000.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
 		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('5700.00');
 		if (($(this).val() == 'De 2.000.001,00 a 4.500.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
@@ -26,8 +26,8 @@ $( document ).ready(function() {
 		if (($(this).val() == 'De 6.000.0001,00 o más') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
 		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('27000.00');
 
-		if (($(this).val() == '0 a 200.000') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
-			$('#empresa_registrada_aporte_mantenimiento_bs').val('3400.00');
+		if (($(this).val() == '0 a 100.000') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
+			$('#empresa_registrada_aporte_mantenimiento_bs').val('5500.00');
 		if (($(this).val() == 'De 200.001,00 a 2.000.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
 		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('3400.00');
 		if (($(this).val() == 'De 2.000.001,00 a 4.500.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
@@ -598,6 +598,24 @@ $( document ).ready(function() {
 
 
         });
+
+
+        // Ventana para activar empresa
+
+        $('.activar_empresa').dialog({
+          autoOpen: false,
+          width: 900
+         
+        });
+
+        // Botón para abrir el dialogo
+        $('.boton_activar_empresa').click(function(w){
+          w.preventDefault(); // 
+         
+          $('.activar_empresa').dialog('open');
+          
+        });
+
      
 
 	

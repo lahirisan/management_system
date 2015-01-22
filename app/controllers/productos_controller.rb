@@ -11,16 +11,27 @@ class ProductosController < ApplicationController
 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
 
+
     respond_to do |format|
       format.html {
                     
+
                     if params[:eliminar]  
                       @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Productos > Eliminar Productos"
                       render :template =>'/productos/eliminar_productos.html.haml'
                     else
                       @navegabilidad = "#{@empresa.prefijo} > " +  @empresa.nombre_empresa + " > Productos > Listado"
                        # para mostrar el estatus de los productos como retirados si la empresa esta retirada
-                      @ruta = (params[:empresa_retirada]) ? "/empresas/#{params[:empresa_id]}/productos.json?empresa_retirada=true" : "/empresas/#{params[:empresa_id]}/productos.json"  
+                      
+                      # Las empresas retirada no pueden generar GTIN14 ni editar productos
+                      if params[:empresa_retirada]
+                        @ruta = "/empresas/#{params[:empresa_id]}/productos.json?empresa_retirada=true"
+                      elsif params[:insolvente]
+                        @ruta = "/empresas/#{params[:empresa_id]}/productos.json?insolvente=true"
+                      else
+                        @ruta = "/empresas/#{params[:empresa_id]}/productos.json" 
+                      end
+                      
                       render :template =>'/productos/index.html.haml'
                     end
                   }
@@ -101,10 +112,11 @@ class ProductosController < ApplicationController
     @producto = @empresa.producto.build  # Se crea el form_for
     
     @gtin = params[:gtin] if params[:gtin] != ''# SI esta gtin  es para crear gtin tipo 14 base 8 o gtin 14 base 13
+    
 
     @producto_ = Producto.find(:first, :conditions => ["gtin like ?", params[:gtin]]) if params[:gtin]
     @base = TipoGtin.find(:first, :conditions =>["tipo like ? and base like ?", "GTIN-14", @producto_.tipo_gtin.tipo]) if @producto_
-
+    
 
     respond_to do |format|
       format.html # new.html.erb
@@ -128,6 +140,7 @@ class ProductosController < ApplicationController
 
     @gtin = params[:gtin]  if params[:gtin] != ''
     
+
     params[:producto][:gtin] = Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin], params[:producto][:codigo_prod])
 
     params[:producto][:fecha_creacion] = Time.now
@@ -182,7 +195,7 @@ class ProductosController < ApplicationController
 
     respond_to do |format|
 
-      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "Los GTIN #{productos.collect{|producto| producto.gtin}} fueron eliminados." }
+      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?eliminar=true", notice: "Los GTIN #{productos.collect{|producto| producto.gtin}} fueron eliminados." }
     end
   end
 
