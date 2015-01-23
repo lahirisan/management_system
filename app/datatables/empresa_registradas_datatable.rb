@@ -52,12 +52,16 @@ private
 
   def fetch_empresas
 
+    if params[:activar_empresa] 
+      empresas = EmpresaRegistrada.where("rif IS NOT NULL and sub_estatus.descripcion = 'SOLVENTE'").includes(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).order("#{sort_column} #{sort_direction}") 
+    else
+      empresas = EmpresaRegistrada.where("rif IS NOT NULL").includes(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).order("#{sort_column} #{sort_direction}") 
+    end
 
-    empresas = EmpresaRegistrada.where("rif IS NOT NULL").includes(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).order("#{sort_column} #{sort_direction}") 
     empresas = empresas.page(page).per_page(per_page)
 
      if params[:sSearch].present? # Filtro de busqueda general
-       empresas = empresas.where("empresas_registradas.nombre_empresa like :search or empresas_registradas.fecha_inscripcion like :search or  ciudad.nombre like :search or empresas_registradas.rif or sub_estatus.descripcion like :search or empresas_registradas.ventas_brutas_anuales like :search", search: "%#{params[:sSearch]}%")
+       empresas = empresas.where("empresas_registradas.nombre_empresa like :search or empresas_registradas.fecha_inscripcion like :search or  ciudad.nombre like :search or empresas_registradas.rif_completo or sub_estatus.descripcion like :search or empresas_registradas.ventas_brutas_anuales like :search", search: "%#{params[:sSearch]}%")
      end
    
      if params[:sSearch_1].present? # Filtro de busqueda por nombre de la empresa
@@ -76,7 +80,7 @@ private
      end
 
      if params[:sSearch_0].present?
-       empresas = empresas.where("empresas_registradas.rif like :search0", search0: "%#{params[:sSearch_0]}%" )
+       empresas = empresas.where("empresas_registradas.rif_completo like :search0", search0: "%#{params[:sSearch_0]}%" )
      end
 
      if params[:sSearch_5].present?

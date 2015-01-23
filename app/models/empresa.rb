@@ -388,7 +388,7 @@ class Empresa < ActiveRecord::Base
   empresa.cod_tlf3_mercadeo = empresa_registrada.cod_tlf3_mercadeo
   empresa.cod_fax_mercadeo = empresa_registrada.cod_fax_mercadeo
   empresa.fax_ean_completo = empresa_registrada.fax_ean_completo
-  empresa.telefono3_ean_completo = empresa_registrada.fax_ean_completo
+  empresa.telefono3_ean_completo = empresa_registrada.telefono3_ean_completo
   empresa.telefono2_ean_completo = empresa_registrada.telefono2_ean_completo
   empresa.telefono1_ean_completo = empresa_registrada.telefono1_ean_completo
   empresa.contacto_fax_completo = empresa_registrada.contacto_fax_completo

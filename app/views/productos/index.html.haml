@@ -20,12 +20,11 @@
                 %th Código Prod
                 %th Fecha Creación
                 %th Fecha Modificación
-                -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Editar Producto') 
-                    %th Editar
+                -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Producto')
                     %th GTIN 14
         %tbody
         %tfoot
-            -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Editar Producto')
+            -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Producto')
                 =render 'footer'
             -else
                 =render 'footer_not_editable'

@@ -27,7 +27,7 @@ private
       
       [ 
         check_box_tag("activar_solvencias[]", "#{empresa.id}", false, :class => "activar_solvencia"),
-        empresa.rif,
+        empresa.rif_completo,
         empresa.nombre_empresa,
         fecha,
         empresa.try(:ciudad).try(:nombre),
@@ -51,7 +51,7 @@ private
     empresas = empresas.page(page).per_page(per_page)
     
      if params[:sSearch].present? # Filtro de busqueda general
-       empresas = empresas.where("empresas_registradas.nombre_empresa like :search  or  ciudad.nombre like :search or empresas_registradas.rif like :search or sub_estatus.descripcion like :search or empresas_registradas.ventas_brutas_anuales like :search", search: "%#{params[:sSearch]}%")
+       empresas = empresas.where("empresas_registradas.nombre_empresa like :search  or  ciudad.nombre like :search or empresas_registradas.rif_completo like :search or sub_estatus.descripcion like :search or empresas_registradas.ventas_brutas_anuales like :search", search: "%#{params[:sSearch]}%")
      end
    
      if params[:sSearch_2].present? # Filtro de busqueda por nombre de la empresa
@@ -70,7 +70,7 @@ private
      end
 
      if params[:sSearch_1].present?
-       empresas = empresas.where("empresas_registradas.rif like :search1", search1: "%#{params[:sSearch_1]}%" )
+       empresas = empresas.where("empresas_registradas.rif_completo like :search1", search1: "%#{params[:sSearch_1]}%" )
      end
 
      if params[:sSearch_5].present?

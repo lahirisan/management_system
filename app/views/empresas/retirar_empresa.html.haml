@@ -1,13 +1,8 @@
 %section.contexto
     %label.contexto Empresas Activas > Retirar Empresas
     %hr.contexto{:size => "1"}
-%p#notice.ui-state-highlight.ui-corner-all
-    -if (notice)
-        =notice
-        -notice = nil
 %section#areaTrabajo.areaTrabajo
-    
-    /=render 'botones_retirar_empresa'
+    %p#notice= notice
 
     =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retirar_empresa" do
         

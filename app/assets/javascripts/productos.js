@@ -11,7 +11,7 @@ $(document).ready(function(){
             sAjaxSource: $('#data_table_productos').data('source')
         });
        
-        oTable.columnFilter({ aoColumns: [{ type: "text"},{ type: "text"}, {type: "text" }, {type: "text"},  null, {type: "text"}, {type: "text"}, {type: "text"}, null, null]});
+        oTable.columnFilter({ aoColumns: [{ type: "text"},{ type: "text"}, {type: "text" }, {type: "text"},  null, {type: "text"}, {type: "text"}, {type: "text"}, null]});
 
        
 

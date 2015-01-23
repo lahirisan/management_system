@@ -48,7 +48,7 @@ class ProductosController < ApplicationController
                       render json: (EliminarProductosDatatable.new(view_context))
                     else
 
-                      if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Editar Producto')
+                      if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Producto')
 
                         render json: ProductosDatatable.new(view_context) 
                       else

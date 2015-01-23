@@ -15,6 +15,7 @@ class EmpresaRegistradasController < ApplicationController
           render :template =>'/empresa_registradas/activar_solvencia.html.haml'
 
         else
+          
           if params[:activar_empresa]
             @ruta = "/empresa_registradas.json?activar_empresa=true"
           else
@@ -32,6 +33,7 @@ class EmpresaRegistradasController < ApplicationController
 
           render json: (EmpresaRegistradasActivarSolvenciaDatatable.new(view_context)) 
         else
+
           render json: (EmpresaRegistradasDatatable.new(view_context)) 
         end
 
@@ -64,14 +66,20 @@ class EmpresaRegistradasController < ApplicationController
   # GET /empresa_registradas/1/edit
   def edit
 
-
     @empresa_registrada = EmpresaRegistrada.find(params[:id])
     @opciones = ['J', 'G', 'E', 'V']
     respond_to do |format|
 
       format.html{
         
-        @prefijo = Empresa.generar_prefijo_valido
+        if params[:activar_empresa]
+
+          @prefijo = Empresa.generar_prefijo_valido
+          @clasificacion_empresa = Clasificacion.find(:first, :conditions => ["categoria = ? and division = ? and grupo = ? and clase = ?", @empresa_registrada.categoria, @empresa_registrada.division, @empresa_registrada.grupo, @empresa_registrada.clase])
+          @prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus], :conditions => ["(categoria = ? or division = ? or grupo = ? or clase = ?) and no_elejible is ? and prefijo >= 7590000 and prefijo <= 7599999", @empresa_registrada.categoria, @empresa_registrada.division, @empresa_registrada.grupo, @empresa_registrada.clase, nil], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion")
+
+        end
+
         render :template => '/empresa_registradas/_form.html.haml'
         
       }
@@ -121,7 +129,6 @@ class EmpresaRegistradasController < ApplicationController
   # PUT /empresa_registradas/1
   # PUT /empresa_registradas/1.json
   def update
-    
 
     @empresa_registrada = EmpresaRegistrada.find(params[:id])
 
@@ -143,22 +150,21 @@ class EmpresaRegistradasController < ApplicationController
     @opciones = ['J', 'G', 'E', 'V']
 
     respond_to do |format|
+      
       if @empresa_registrada.update_attributes(params[:empresa_registrada])
-        
-        if ((session[:gerencia] == 'Estandares y Consultoría' )  or session[:perfil] == 'Administrador')  and params[:activacion]
-
+      
+        if params[:activar]
+          
           Empresa.activar(@empresa_registrada)
           Auditoria.registrar_evento(session[:usuario],"empresa", "Activar", Time.now,  "EMPRESA ACTIVADA. PREFIJO:#{@empresa_registrada.prefijo}")
-          format.html { redirect_to "/empresas", notice: "EMPRESA ACTIVADA. PREFIJO:#{@empresa_registrada.prefijo} NOMBRE EMPRESA:#{@empresa_registrada.nombre_empresa} RIF:#{@empresa_registrada.rif_completo}" }
+          format.html { redirect_to "/empresa_registradas?activar_empresa=true", notice: "EMPRESA ACTIVADA. PREFIJO #{@empresa_registrada.prefijo} NOMBRE EMPRESA #{@empresa_registrada.nombre_empresa} RIF #{@empresa_registrada.rif_completo}" and return }
 
         else
-
+         
           Auditoria.registrar_evento(session[:usuario],"empresa_registradas", "Editar", Time.now, params[:empresa_registrada])
-          format.html { redirect_to "/empresa_registradas", notice: "Los datos de la Empresa:#{@empresa_registrada.nombre_empresa} RIF:#{@empresa_registrada.rif} fueron actualizados satisfactoriamente." }
+          format.html { redirect_to "/empresa_registradas", notice: "Los datos de la Empresa:#{@empresa_registrada.nombre_empresa} RIF:#{@empresa_registrada.rif} fueron actualizados satisfactoriamente."  and return}
 
         end
-        
-          
     
       else
         format.html { render action: "edit" }
@@ -169,12 +175,14 @@ class EmpresaRegistradasController < ApplicationController
 
   def update_multiple  ## Ruta para asignar SOLVENTE  a las nuevas empresas  
     
+
     nuevas_empresas = EmpresaRegistrada.find(params[:activar_solvencias])
     solvente = SubEstatus.find(:first, :conditions => ["descripcion = ?", "SOLVENTE"])
 
       nuevas_empresas.collect{|nueva_empresa| 
       nueva_empresa.id_subestatus = solvente.id; 
       nueva_empresa.save; 
+      
       Auditoria.registrar_evento(session[:usuario],"empresa_registradas", "Asignar SOLVENTE", Time.now, "EMPRESA #{nueva_empresa.nombre_empresa}  RIF #{nueva_empresa.rif}")
     }
 
@@ -182,7 +190,7 @@ class EmpresaRegistradasController < ApplicationController
         
         # Se registra la persona que la nueva empresa como SOLVENTE
 
-        format.html { redirect_to "/empresa_registradas", notice: "       Las empresas con RIF #{nuevas_empresas.collect{|nueva_empresa| nueva_empresa.rif_completo} } fueron marcadas como SOLVENTES."}
+        format.html { redirect_to "/empresa_registradas?activar_solvencia=true", notice: "       Las empresas con RIF #{nuevas_empresas.collect{|nueva_empresa| nueva_empresa.rif_completo} } fueron marcadas como SOLVENTES."}
     
     end
   end
