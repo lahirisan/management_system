@@ -3,7 +3,7 @@
         // Datatable que maneja el listado de empresas
         $("#data_table_empresas").dataTable({
             sPaginationType: "full_numbers",
-            aaSorting: [[ 2, "desc" ]],
+            aaSorting: [[ 1, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
