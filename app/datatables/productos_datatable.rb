@@ -22,10 +22,23 @@ private
 
     productos.map do |producto|
       
-      if params[:empresa_retirada] == true
+      if params[:empresa_retirada] == 'true'
         estatus = "Retirado"
-      else
+        boton_gtin_14 = ""
+      
+      elsif params[:insolvente] == 'true'
         estatus = producto.try(:estatus).try(:descripcion)
+        boton_gtin_14 = ""
+
+      else
+
+        estatus = producto.try(:estatus).try(:descripcion)
+        
+        if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3)
+          base = (producto.id_tipo_gtin == 1) ? 4 : 6  # Para mostrar seleccioando la base del producto cunado se crear GTIN 14
+          boton_gtin_14 = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"GTIN14").html_safe, "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{producto.descripcion.gsub(/%/, '')}&marca=#{producto.marca}&gpc=#{producto.gpc}",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Generar GTIN-14"})
+        end
+
       end
 
       fecha = ""
@@ -33,11 +46,12 @@ private
       fecha_modificacion = ""
       fecha_modificacion =  producto.fecha_ultima_modificacion.strftime("%Y-%m-%d") if (producto.fecha_ultima_modificacion)
       
-      
-       if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3)
+      if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Producto') # SI tiene el pricilegio se le muestra el boton de generar GTIN 14
+
+        if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3)
          base = (producto.id_tipo_gtin == 1) ? 4 : 6  # Para mostrar seleccioando la base del producto cunado se crear GTIN 14
-
-         [ 
+         
+          [ 
            producto.try(:tipo_gtin).try(:tipo),
            producto.gtin,
            producto.descripcion,
@@ -46,15 +60,14 @@ private
            producto.codigo_prod,
            fecha,
            fecha_modificacion,
-           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar producto"}),
-           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"GTIN14").html_safe, "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{producto.descripcion.gsub(/%/, '')}&marca=#{producto.marca}&gpc=#{producto.gpc}",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Generar GTIN-14"})
-           
+           boton_gtin_14
 
-         ]
+          ]
 
-       else
+        else
 
-         [ 
+          [ 
+
            producto.try(:tipo_gtin).try(:tipo),
            producto.gtin,
            producto.descripcion,
@@ -63,11 +76,46 @@ private
            producto.codigo_prod,
            fecha,
            fecha_modificacion,
-           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar producto"}),
            ""
-         ]
+          ]
 
        end
+
+      else # NO tiene el privilegio de crear producto no se le muestra el boton para generar GTIN 14
+
+         if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3)
+         base = (producto.id_tipo_gtin == 1) ? 4 : 6  # Para mostrar seleccioando la base del producto cunado se crear GTIN 14
+         
+          [ 
+           producto.try(:tipo_gtin).try(:tipo),
+           producto.gtin,
+           producto.descripcion,
+           producto.marca,
+           estatus,
+           producto.codigo_prod,
+           fecha,
+           fecha_modificacion
+           
+          ]
+
+        else
+
+          [ 
+
+           producto.try(:tipo_gtin).try(:tipo),
+           producto.gtin,
+           producto.descripcion,
+           producto.marca,
+           estatus,
+           producto.codigo_prod,
+           fecha,
+           fecha_modificacion
+         
+          ]
+
+       end
+
+      end
       
     end
 

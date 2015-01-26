@@ -1,9 +1,9 @@
 %section.contexto
   %label.contexto.titulo_contrato
-    -if params[:activacion]
+    -if params[:activar_empresa].nil?
       =@empresa_registrada.new_record? ? "Registrar Empresa" : "#{@empresa_registrada.nombre_empresa} > Editar Empresa"
     -else
-      =@empresa_registrada.new_record? ? "Registrar Empresa" : "#{@empresa_registrada.nombre_empresa} > Editar Empresa"
+      ="#{@empresa_registrada.nombre_empresa} > Activar / Reasignar Prefijo"
   
   %br
   %br
@@ -42,21 +42,23 @@
               -else
                 %li=msg + '.'
       
-      -if ((session[:gerencia] == 'Estandares y Consultoría'  and session[:perfil] == 'Super Usuario') or session[:perfil] == 'Administrador') and !@empresa_registrada.new_record? 
+      -if params[:activar_empresa]
 
         %table
           %tr
             %td.prefijo
               Prefijo Asignado
             %td.prefijo
-            
-              -if (params[:activacion]) 
-                =f.text_field :prefijo, :value => "#{@prefijo}"
-              -else  
-                =f.text_field :prefijo, :readonly => :true, :class => "campo_readonly"
+             
+              =f.text_field :prefijo, :value => "#{@prefijo}"
+              
             %td
               =link_to "Reasignar Prefijo", "#", :id => "boton_abrir_ventana_prefijo_manual"
+        =hidden_field_tag "activar", "true"
       
+        %br
+        %br
+        %br
       %table
         %tr
           %td
@@ -97,7 +99,7 @@
             DIRECCION FISCAL
           %td
           %td         
-            =f.text_field :direccion_empresa, {:size => "120"}
+            =f.text_field :direccion_empresa, {:size => "105"}
             
         %tr
           %td
@@ -222,7 +224,7 @@
             VENTAS BRUTAS ANUALES
           %td
           %td
-            =f.select(:ventas_brutas_anuales, options_for_select(['0 a 200.000', 'De 200.001,00 a 2.000.000,00', 'De 2.000.001,00 a 4.500.000,00', 'De 4.500.001,00 a 6.000.000,00', 'De 6.000.0001,00 o más'], @empresa_registrada.ventas_brutas_anuales), :prompt => "- Seleccione -")
+            =f.select(:ventas_brutas_anuales, options_for_select(['0 a 100.000', 'De 100.001,00 a 2.000.000,00', 'De 2.000.001,00 a 6.500.000,00', 'De 6.500.001,00 a 8.000.000,00', 'De 8.000.0001,00 o más'], @empresa_registrada.ventas_brutas_anuales), :prompt => "- Seleccione -")
         %tr
           %td
             Aporte Mantenimiento
@@ -850,7 +852,7 @@
         
 
     #asignar_prefijo_manual
-      -if params[:action] == 'edit' and ((session[:perfil] == 'Super Usuario' and session[:gerencia] == 'Estandares y Consultoría') or (session[:perfil] == 'Administrador' and  session[:gerencia] == 'Estandares y Consultoría'))
+      -if params[:activar_empresa]
         =render 'ventana_prefijo_manual'
       
 

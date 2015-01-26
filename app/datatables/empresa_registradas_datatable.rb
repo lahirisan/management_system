@@ -22,11 +22,14 @@ private
 
     empresas.map do |empresa|
 
-      if (session[:gerencia] == 'Estandares y Consultoría' and  session[:perfil] == 'Super Usuario') or session[:perfil] == 'Administrador'
+        if params[:activar_empresa]
+          boton = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Activar').html_safe, "/empresa_registradas/#{empresa.id}/edit?activar_empresa=true", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Activar la empresa #{empresa.nombre_empresa}"}) 
+        else
+          boton = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe, "/empresa_registradas/#{empresa.id}/edit", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar la empresa #{empresa.nombre_empresa}"}) 
+        end
 
         fecha = ""
         fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
-        
         [ 
           empresa.rif_completo,
           empresa.nombre_empresa,
@@ -36,29 +39,8 @@ private
           empresa.try(:tipo_usuario_empresa).try(:descripcion),
           empresa.ventas_brutas_anuales,
           empresa.try(:clasificacion).try(:descripcion),
-          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe, "/empresa_registradas/#{empresa.id}/edit?activacion=true", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar la empresa #{empresa.nombre_empresa}"}),
-          
+          boton
         ]
-      else
-
-        fecha = ""
-        fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
-        
-        [ 
-          empresa.rif_completo,
-          empresa.nombre_empresa,
-          fecha,
-          empresa.try(:ciudad).try(:nombre),
-          empresa.try(:sub_estatus).try(:descripcion),
-          empresa.try(:tipo_usuario_empresa).try(:descripcion),
-          empresa.ventas_brutas_anuales,
-          empresa.try(:clasificacion).try(:descripcion),
-          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe, "/empresa_registradas/#{empresa.id}/edit", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar la empresa #{empresa.nombre_empresa}"}),
-          
-        ]
-
-      end
-
     
     end
 
@@ -70,19 +52,16 @@ private
 
   def fetch_empresas
 
-     if (session[:gerencia] == 'Estandares y Consultoría' and  session[:perfil] == 'Super Usuario') or session[:perfil] == 'Administrador'
+    if params[:activar_empresa] 
       empresas = EmpresaRegistrada.where("rif IS NOT NULL and sub_estatus.descripcion = 'SOLVENTE'").includes(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).order("#{sort_column} #{sort_direction}") 
-     else
+    else
       empresas = EmpresaRegistrada.where("rif IS NOT NULL").includes(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).order("#{sort_column} #{sort_direction}") 
-     end
-
+    end
 
     empresas = empresas.page(page).per_page(per_page)
 
-    
-
      if params[:sSearch].present? # Filtro de busqueda general
-       empresas = empresas.where("empresas_registradas.nombre_empresa like :search or empresas_registradas.fecha_inscripcion like :search or  ciudad.nombre like :search or empresas_registradas.rif or sub_estatus.descripcion like :search or empresas_registradas.ventas_brutas_anuales like :search", search: "%#{params[:sSearch]}%")
+       empresas = empresas.where("empresas_registradas.nombre_empresa like :search or empresas_registradas.fecha_inscripcion like :search or  ciudad.nombre like :search or empresas_registradas.rif_completo or sub_estatus.descripcion like :search or empresas_registradas.ventas_brutas_anuales like :search", search: "%#{params[:sSearch]}%")
      end
    
      if params[:sSearch_1].present? # Filtro de busqueda por nombre de la empresa
@@ -101,7 +80,7 @@ private
      end
 
      if params[:sSearch_0].present?
-       empresas = empresas.where("empresas_registradas.rif like :search0", search0: "%#{params[:sSearch_0]}%" )
+       empresas = empresas.where("empresas_registradas.rif_completo like :search0", search0: "%#{params[:sSearch_0]}%" )
      end
 
      if params[:sSearch_5].present?

@@ -15,27 +15,27 @@ $( document ).ready(function() {
 
 	$('#empresa_registrada_ventas_brutas_anuales').change(function() {
 
-		if (($(this).val() == '0 a 200.000') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
-			$('#empresa_registrada_aporte_mantenimiento_bs').val('3400.00');
-		if (($(this).val() == 'De 200.001,00 a 2.000.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
-		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('5700.00');
-		if (($(this).val() == 'De 2.000.001,00 a 4.500.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
-		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('12500.00');
-		if (($(this).val() == 'De 4.500.001,00 a 6.000.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
-		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('21700.00');
-		if (($(this).val() == 'De 6.000.0001,00 o más') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
-		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('27000.00');
+		if (($(this).val() == '0 a 100.000') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
+			$('#empresa_registrada_aporte_mantenimiento_bs').val('5500.00');
+		if (($(this).val() == 'De 100.001,00 a 2.000.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('9000.00');
+		if (($(this).val() == 'De 2.000.001,00 a 6.500.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('20000.00');
+		if (($(this).val() == 'De 6.500.001,00 a 8.000.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('35000.00');
+		if (($(this).val() == 'De 8.000.0001,00 o más') && ($('#empresa_registrada_id_tipo_usuario').val()== '1'))
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('44000.00');
 
-		if (($(this).val() == '0 a 200.000') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
-			$('#empresa_registrada_aporte_mantenimiento_bs').val('3400.00');
-		if (($(this).val() == 'De 200.001,00 a 2.000.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
-		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('3400.00');
-		if (($(this).val() == 'De 2.000.001,00 a 4.500.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
-		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('4500.00');
-		if (($(this).val() == 'De 4.500.001,00 a 6.000.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
-		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('7900.00');
-		if (($(this).val() == 'De 6.000.0001,00 o más') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
-		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('21700.00');
+		if (($(this).val() == '0 a 100.000') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
+			$('#empresa_registrada_aporte_mantenimiento_bs').val('5500.00');
+		if (($(this).val() == 'De 100.001,00 a 2.000.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('5500.00');
+		if (($(this).val() == 'De 2.000.001,00 a 6.500.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('7300.00');
+		if (($(this).val() == 'De 6.500.001,00 a 8.000.000,00') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('12800.00');
+		if (($(this).val() == 'De 8.000.0001,00 o más') && ($('#empresa_registrada_id_tipo_usuario').val()== '2'))
+		 	$('#empresa_registrada_aporte_mantenimiento_bs').val('35000.00');
 
 	});
 
@@ -598,6 +598,24 @@ $( document ).ready(function() {
 
 
         });
+
+
+        // Ventana para activar empresa
+
+        $('.activar_empresa').dialog({
+          autoOpen: false,
+          width: 900
+         
+        });
+
+        // Botón para abrir el dialogo
+        $('.boton_activar_empresa').click(function(w){
+          w.preventDefault(); // 
+         
+          $('.activar_empresa').dialog('open');
+          
+        });
+
      
 
 	

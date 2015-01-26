@@ -7,7 +7,7 @@
   %p#notice= notice
   =render 'exportar_gln'
   %br
-  %table#data_table_glns.display{:"data-source" => "#{empresa_glns_path}.json?empresa_retirada=#{@empresas_retiradas}"}
+  %table#data_table_glns.display{:"data-source" => "#{@ruta}"}
     %thead
       %tr
         %th GLN
@@ -19,7 +19,7 @@
         %th Estado
         %th Municipio
         %th Ciudad
-        -if params[:retirados].nil?
+        - if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar GLN')
           %th Editar GLN
         %th Detalle
         

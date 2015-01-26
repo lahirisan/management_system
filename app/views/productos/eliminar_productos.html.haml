@@ -4,7 +4,7 @@
     %hr.contexto{:size => "1"}
 
 %section#areaTrabajo.areaTrabajo
-    /= render 'exportar_productos_eliminar'
+    %p#notice= notice
     =form_tag "#{empresa_productos_path}/update_multiple", :method => "put", :id => "formulario_eliminar_productos" do
        
         %table.margen_inferior{:border => 1}
@@ -28,7 +28,6 @@
                     %th Estatus
                     %th Código Prod
                     %th Fecha Creación
-                    
                    
             %tbody
             %tfoot

@@ -3,31 +3,28 @@ class EmpresaServiciosController < ApplicationController
   # GET /empresa_servicios
   # GET /empresa_servicios.json
   def index
-    
-    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
-    @empresa = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]]) if @empresa.nil?
 
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
 
     respond_to do |format|
       format.html {
+
                   if params[:eliminar]
                     @navegabilidad = "#{@empresa.prefijo} > " +  @empresa.nombre_empresa + " > Eliminar Servicios"
                     render :template =>'/empresa_servicios/eliminar_empresa_servicios.html.haml'
-                  elsif params[:eliminados]
-                    @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Servicios Eliminados"
-                    render :template =>'/empresa_servicios/servicios_eliminados.html.haml'
                   else
-                    @empresas_retiradas = params[:retirados].nil? ? false : true
-                    @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Servicios Activos > Listado"
+                    @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Servicios > Listado"
+                    if params[:empresa_retirada] or params[:insolvente]
+                      @ruta = "/empresas/#{params[:empresa_id]}/empresa_servicios.json?no_editable=true"
+                    end
                     render :template =>'/empresa_servicios/index.html.haml'
+
                   end
                    
       }
        format.json {
                     if params[:eliminar]
                       render json: (EliminarEmpresaServiciosDatatable.new(view_context))
-                    elsif params[:eliminados]
-                      render json: (EmpresaServiciosEliminadosDatatable.new(view_context))
                     else
                       render json: (EmpresaServiciosDatatable.new(view_context)) 
                     end
@@ -38,9 +35,6 @@ class EmpresaServiciosController < ApplicationController
                   if params[:eliminar]
                     @empresa_servicios = EmpresaServicio.where("empresa_servicios.prefijo = ?", params[:empresa_id]).includes(:servicio, :empresa).order("empresa_servicios.fecha_contratacion") 
                     render '/empresa_servicios/eliminar_servicio.pdf.prawn'
-                  elsif params[:eliminados]
-                    @empresa_servicios = EmpresaServiciosEliminado.where("prefijo = ?", params[:empresa_id]).includes(:servicio, :sub_estatus, :motivo_retiro).order("empresa_servicios_eliminado.fecha_eliminacion") 
-                    render :template =>'/empresa_servicios/servicios_eliminados.pdf.prawn'
                   else
                     @empresa_servicios = EmpresaServicio.where("empresa_servicios.prefijo = ?", params[:empresa_id]).includes(:servicio, :empresa).order("empresa_servicios.fecha_contratacion") 
                     render '/empresa_servicios/index.pdf.prawn'
@@ -51,9 +45,6 @@ class EmpresaServiciosController < ApplicationController
                   if params[:eliminar]
                     @empresa_servicios = EmpresaServicio.where("empresa_servicios.prefijo = ?", params[:empresa_id]).includes(:servicio, :empresa).order("empresa_servicios.fecha_contratacion") 
                     render '/empresa_servicios/index.xlsx.axlsx'
-                  elsif params[:eliminados]
-                     @empresa_servicios = EmpresaServiciosEliminado.where("prefijo = ?", params[:empresa_id]).includes(:servicio, :sub_estatus, :motivo_retiro).order("empresa_servicios_eliminado.fecha_eliminacion") 
-                    render '/empresa_servicios/servicios_eliminados.xlsx.axlsx'
                   else
                     @empresa_servicios = EmpresaServicio.where("empresa_servicios.prefijo = ?", params[:empresa_id]).includes(:servicio, :empresa).order("empresa_servicios.fecha_contratacion") 
                     render '/empresa_servicios/index.xlsx.axlsx'

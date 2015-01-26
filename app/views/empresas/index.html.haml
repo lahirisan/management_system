@@ -4,7 +4,8 @@
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
     
-    =render 'botones_exportar'
+    - if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Exportar Empresa')
+        =render 'botones_exportar'
 
     %table#data_table_empresas.display{:"data-source" => "/empresas.json"}
         %thead

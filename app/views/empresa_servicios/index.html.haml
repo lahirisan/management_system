@@ -17,16 +17,15 @@
         %th Cargo Contacto
         %th Teléfono
         %th Correo
-        -if UsuariosAlcance.verificar_alcance(session[:perfil],  session[:gerencia],'Modificar Servicio') 
-          -if params[:retirados].nil?
-            %th Editar
-        
+        -if UsuariosAlcance.verificar_alcance(session[:perfil],  session[:gerencia],'Modificar Servicio') and params[:retirados].nil? 
+          %th Editar
 
     %tbody
     %tfoot
       =render 'empresa_servicios_footer'
   %br
   %br
+
   %a.ui-state-default.ui-corner-all.regresar_empresas_sin_espacio{:href => "/empresas", :title => "Regresar al listado general de empresas"}
     %span.ui-icon.ui-icon-arrowreturnthick-1-w
     Regresar

@@ -36,16 +36,11 @@
 					- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Eliminar Usuario')
 						%td= link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Eliminar').html_safe,  usuario, method: :delete, data: { confirm: 'Desea ELIMINAR este usuario?'}, :class => "ui-state-default ui-corner-all botones_servicio", :title => "Eliminar usuario #{usuario.username}")
 
-	- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Usuario')
-		%br
-		%br
-
-		%a.ui-state-default.ui-corner-all.regresar_empresas_sin_espacio{:href => "#{new_usuario_path}", :title => "Crear usuario"}
-			%span.ui-icon.ui-icon.ui-icon-circle-plus
-			Crear usuario
-		%a.ui-state-default.ui-corner-all.regresar_empresas{:href => "/empresas", :title => "Regresar listado general de empresas"}
-			%span.ui-icon.ui-icon.ui-icon-circle-plus
-			Regresar
+	%br
+	%br
+	%a.ui-state-default.ui-corner-all.regresar_empresas{:href => "/empresas", :title => "Regresar listado general de empresas"}
+		%span.ui-icon.ui-icon.ui-icon-circle-plus
+		Regresar
 
 		
 

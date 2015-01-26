@@ -58,7 +58,7 @@ wb.add_worksheet(name: "GS1") do |sheet|
 
 				
 
-				sheet.add_row [empresa.prefijo,empresa.try(:nombre_empresa),fecha,empresa.try(:rif),empresa.try(:estatus_), solvencia,  empresa.try(:ventas_brutas_anuales), empresa.try(:aporte_mantenimiento).to_f, empresa.try(:division), empresa.try(:categoria), empresa.try(:grupo), empresa.try(:clase),  empresa.try(:rep_legal), empresa.try(:email1_ean), empresa.try(:email2_ean),empresa.try(:telefono1_ean),empresa.try(:telefono2_ean),empresa.try(:telefono3_ean), empresa.try(:fax_ean)],  :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]
+				sheet.add_row [empresa.prefijo,empresa.try(:nombre_empresa),fecha,empresa.try(:rif_completo),empresa.try(:estatus_), solvencia,  empresa.try(:ventas_brutas_anuales), empresa.try(:aporte_mantenimiento).to_f, empresa.try(:division), empresa.try(:categoria), empresa.try(:grupo), empresa.try(:clase),  empresa.try(:rep_legal), empresa.try(:email1_ean), empresa.try(:email2_ean),empresa.try(:telefono1_ean),empresa.try(:telefono2_ean),empresa.try(:telefono3_ean), empresa.try(:fax_ean)],  :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]
 				
 				#sheet.column_widths 13,80,20,140,40,20,20,25,50,50,50, 50, 20, 20,20,20, 40,40,40,40, 30,30,30,30,30,30,30,30 # Ancho de las columnas
 

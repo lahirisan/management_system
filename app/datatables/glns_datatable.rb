@@ -22,10 +22,13 @@ private
 
     glns.map do |empresa_gln|
           
-        if params[:empresa_retirada] == true
+        if params[:empresa_retirada] == 'true'
           estatus = "Retirado"
+          boton_detalle = (link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln}?retirado=true",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de  GLN #{empresa_gln.try(:gln)}"}))
+          
         else
           estatus = empresa_gln.try(:estatus).try(:descripcion)
+          boton_detalle = (link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de  GLN #{empresa_gln.try(:gln)}"}))
         end
 
           if (empresa_gln.try(:tipo_gln).try(:nombre) == 'Legal') or UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar GLN').nil? # GLN legal no se edita , sino tiewne el priviligeo no se edita GLN
@@ -40,7 +43,7 @@ private
             empresa_gln.try(:municipio),
             empresa_gln.try(:ciudad),
             "",
-            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de  GLN #{empresa_gln.try(:gln)}"})
+            boton_detalle
             ]
           else
             
@@ -55,7 +58,7 @@ private
             empresa_gln.try(:municipio),
             empresa_gln.try(:ciudad),
             link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln}/edit",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar datos GLN #{empresa_gln.try(:gln)}"}),
-            link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln}",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de  GLN #{empresa_gln.try(:gln)}"})
+            boton_detalle
             ]
           end
           
