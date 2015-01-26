@@ -195,7 +195,7 @@ private
   def sort_column
 
      columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_activacion ciudad.nombre empresa.rif estatus.descripcion empresa.solv]
-     raise columns[params[:iSortCol_0].to_i].to_yaml
+     columns[params[:iSortCol_0].to_i]
 
   end
 
