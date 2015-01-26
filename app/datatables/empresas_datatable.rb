@@ -22,7 +22,7 @@ private
 
     empresas.map do |empresa|
 
-      fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") 
+      #fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") 
       
       if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Empresa') or session[:perfil] == 'Administrador'
         
@@ -31,7 +31,7 @@ private
           [ 
             empresa.prefijo,
             empresa.nombre_empresa,
-            fecha,
+            "",
             empresa.ciudad_,
             empresa.rif_completo,
             empresa.estatus_.upcase,
@@ -50,7 +50,7 @@ private
           [
             empresa.prefijo,
             empresa.nombre_empresa,
-            fecha,
+            "",
             empresa.ciudad_,
             empresa.rif_completo,
             empresa.estatus_.upcase,
@@ -67,7 +67,7 @@ private
           [
             empresa.prefijo,
             empresa.nombre_empresa,
-            fecha,
+            "",
             empresa.ciudad_,
             empresa.rif_completo,
             empresa.estatus_.upcase,
@@ -93,7 +93,7 @@ private
           [ 
           empresa.prefijo,
           empresa.nombre_empresa,
-          fecha,
+          "",
           empresa.ciudad_,
           empresa.rif_completo,
           empresa.estatus_.upcase,
@@ -108,7 +108,7 @@ private
           [ 
           empresa.prefijo,
           empresa.nombre_empresa,
-          fecha,
+          "",
           empresa.ciudad_,
           empresa.rif_completo,
           empresa.estatus_.upcase,
