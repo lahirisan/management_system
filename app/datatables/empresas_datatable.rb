@@ -22,7 +22,7 @@ private
 
     empresas.map do |empresa|
 
-      #fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") 
+      fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") 
       
       if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Empresa') or session[:perfil] == 'Administrador'
         
@@ -31,7 +31,7 @@ private
           [ 
             empresa.prefijo,
             empresa.nombre_empresa,
-            fecha_activacion,
+            fecha,
             empresa.ciudad_,
             empresa.rif_completo,
             empresa.estatus_.upcase,
@@ -50,7 +50,7 @@ private
           [
             empresa.prefijo,
             empresa.nombre_empresa,
-            fecha_activacion,
+            fecha,
             empresa.ciudad_,
             empresa.rif_completo,
             empresa.estatus_.upcase,
@@ -67,7 +67,7 @@ private
           [
             empresa.prefijo,
             empresa.nombre_empresa,
-            fecha_activacion,
+            fecha,
             empresa.ciudad_,
             empresa.rif_completo,
             empresa.estatus_.upcase,
@@ -93,7 +93,7 @@ private
           [ 
           empresa.prefijo,
           empresa.nombre_empresa,
-          fecha_activacion,
+          fecha,
           empresa.ciudad_,
           empresa.rif_completo,
           empresa.estatus_.upcase,
@@ -108,7 +108,7 @@ private
           [ 
           empresa.prefijo,
           empresa.nombre_empresa,
-          fecha_activacion,
+          fecha,
           empresa.ciudad_,
           empresa.rif_completo,
           empresa.estatus_.upcase,
@@ -136,9 +136,7 @@ private
 
   def fetch_empresas
    
-    #empresas = Empresa.where("estatus.descripcion = ?", 'Activa').includes(:ciudad, :estatus, :sub_estatus).order("#{sort_column} #{sort_direction}") 
-    
-    empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("inner join ciudad on empresa.id_ciudad = ciudad.id inner join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, ciudad.nombre as ciudad_, empresa.rif_completo as rif_completo, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv")
+    empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("inner join ciudad on empresa.id_ciudad = ciudad.id inner join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, ciudad.nombre as ciudad_, empresa.rif_completo as rif_completo, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv").order("#{sort_column} #{sort_direction}")
     empresas = empresas.page(page).per_page(per_page)
 
     if params[:sSearch].present? # Filtro de busqueda general
@@ -197,7 +195,8 @@ private
   def sort_column
 
      columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_activacion ciudad.nombre empresa.rif estatus.descripcion empresa.solv]
-     columns[params[:iSortCol_0].to_i]
+     raise columns[params[:iSortCol_0].to_i].to_yaml
+
   end
 
   def sort_direction
