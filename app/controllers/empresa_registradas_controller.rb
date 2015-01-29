@@ -96,7 +96,34 @@ class EmpresaRegistradasController < ApplicationController
     params[:empresa_registrada][:id_subestatus] = 2 # NO SOLVENTE
     params[:empresa_registrada][:fecha_inscripcion] = Time.now
     params[:empresa_registrada][:id_tipo_usuario] = 3 if params[:empresa_registrada][:id_tipo_usuario] == '' # Si el usaurio no especifico el tipo de empresa
+
+    params[:empresa_registrada][:nombre_comercial] = params[:empresa_registrada][:nombre_empresa] if params[:empresa_registrada][:nombre_comercial].blank? 
+    params[:empresa_registrada][:cod_contacto_tlf3] = params[:empresa_registrada][:cod_contacto_tlf1] if params[:empresa_registrada][:cod_contacto_tlf3].blank?
+    params[:empresa_registrada][:contacto_tlf3] = params[:empresa_registrada][:contacto_tlf1] if params[:empresa_registrada][:contacto_tlf3].blank?
+    params[:empresa_registrada][:cod_contacto_fax] = params[:empresa_registrada][:cod_contacto_tlf1] if params[:empresa_registrada][:cod_contacto_fax].blank?
+    params[:empresa_registrada][:contacto_fax] = params[:empresa_registrada][:contacto_tlf1] if params[:empresa_registrada][:contacto_fax].blank?
+    params[:empresa_registrada][:cod_contacto_tlf2] = params[:empresa_registrada][:cod_contacto_tlf1] if params[:empresa_registrada][:cod_contacto_tlf2].blank?
+    params[:empresa_registrada][:contacto_tlf2] = params[:empresa_registrada][:contacto_tlf1] if params[:empresa_registrada][:contacto_tlf2].blank?
+
+
+    params[:empresa_registrada][:cod_tlf2_ean] = params[:empresa_registrada][:cod_tlf1_ean] if params[:empresa_registrada][:cod_tlf2_ean].blank?
+    params[:empresa_registrada][:telefono2_ean] = params[:empresa_registrada][:telefono1_ean] if params[:empresa_registrada][:telefono2_ean].blank?
+    params[:empresa_registrada][:cod_tlf3_ean] = params[:empresa_registrada][:cod_tlf1_ean] if params[:empresa_registrada][:cod_tlf3_ean].blank?
+    params[:empresa_registrada][:telefono3_ean] = params[:empresa_registrada][:telefono1_ean] if params[:empresa_registrada][:telefono3_ean].blank?
+    params[:empresa_registrada][:cod_fax_ean] = params[:empresa_registrada][:cod_tlf1_ean] if params[:empresa_registrada][:cod_fax_ean].blank?
+    params[:empresa_registrada][:fax_ean] = params[:empresa_registrada][:telefono1_ean] if params[:empresa_registrada][:fax_ean].blank?
     
+
+    
+    params[:empresa_registrada][:email2_ean] = params[:empresa_registrada][:email1_ean] if params[:empresa_registrada][:email2_ean].blank?
+    params[:empresa_registrada][:parroquia_ean] = "" if params[:empresa_registrada][:parroquia_ean].blank?
+
+    params[:empresa_registrada][:tipo_galpon_edificio_quinta] = "" if params[:empresa_registrada][:tipo_galpon_edificio_quinta].blank?
+    params[:empresa_registrada][:tipo_piso_numero] = "" if params[:empresa_registrada][:tipo_piso_numero].blank?
+    params[:empresa_registrada][:tipo_oficina_apartamento] = "" if params[:empresa_registrada][:tipo_oficina_apartamento].blank?
+    params[:empresa_registrada][:tipo_avenida_calle] = "" if params[:empresa_registrada][:tipo_avenida_calle].blank?
+    params[:empresa_registrada][:tipo_urbanizacion_barrio_sector] = "" if params[:empresa_registrada][:tipo_urbanizacion_barrio_sector].blank?
+
     params[:empresa_registrada][:contacto_tlf1_completo] =  "("+ params[:empresa_registrada][:cod_contacto_tlf1] + ")" +" "+ params[:empresa_registrada][:contacto_tlf1] if params[:empresa_registrada][:cod_contacto_tlf1] != ""
     params[:empresa_registrada][:contacto_tlf2_completo] = "("+ params[:empresa_registrada][:cod_contacto_tlf2] + ")"+ " " + params[:empresa_registrada][:contacto_tlf2] if params[:empresa_registrada][:cod_contacto_tlf2] != ""
     params[:empresa_registrada][:contacto_tlf3_completo] ="("+ params[:empresa_registrada][:cod_contacto_tlf3] + ")" +" "+ params[:empresa_registrada][:contacto_tlf3] if params[:empresa_registrada][:cod_contacto_tlf3] != ""
@@ -106,6 +133,8 @@ class EmpresaRegistradasController < ApplicationController
     params[:empresa_registrada][:telefono2_ean_completo] = "("+ params[:empresa_registrada][:cod_tlf2_ean] + ")" +" "+ params[:empresa_registrada][:telefono2_ean] if params[:empresa_registrada][:cod_tlf2_ean] != ""
     params[:empresa_registrada][:telefono3_ean_completo] = "("+ params[:empresa_registrada][:cod_tlf3_ean] + ")" +" "+ params[:empresa_registrada][:telefono3_ean] if params[:empresa_registrada][:cod_tlf3_ean] != ""
     params[:empresa_registrada][:fax_ean_completo] = "("+ params[:empresa_registrada][:cod_fax_ean] + ")" +" "+ params[:empresa_registrada][:fax_ean]              if params[:empresa_registrada][:cod_fax_ean] != ""  
+
+
 
     params[:empresa_registrada][:rif_completo] = params[:empresa_registrada][:tipo_rif] + "-" + params[:empresa_registrada][:rif]
 
