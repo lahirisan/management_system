@@ -22,6 +22,8 @@
                 %th Fecha Modificación
                 -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Producto')
                     %th GTIN 14
+                -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Producto')
+                    %th Editar
         %tbody
         %tfoot
             -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Producto')
