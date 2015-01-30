@@ -30,8 +30,8 @@ class EtiquetasController < ApplicationController
   def edit
 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
-    @etiqueta = Correspondencia.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
-    @contacto = DatosContacto.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
+    #@etiqueta = Correspondencia.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
+    #@contacto = DatosContacto.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
 
   end
 

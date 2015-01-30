@@ -62,7 +62,7 @@ class EmpresasController < ApplicationController
                     render  "/empresas/empresas_retiradas.xlsx.axlsx"
 
                   elsif params[:eliminadas]
-                    @empresas = EmpresaEliminada.includes(:estado, :ciudad, :estatus, :clasificacion, :empresa_elim_detalle, :sub_estatus, :motivo_retiro).order("empresa_elim_detalle.fecha_eliminacion desc")
+                    @empresas = EmpresaEliminada.includes(:estatus, :motivo_retiro).order("empresa_eliminada.fecha_eliminacion desc")
                     render "/empresas/empresas_eliminadas.xlsx.axlsx"
                   elsif params[:activacion]
                     @empresas = Empresa.where("estatus.descripcion like ?", "No Validado").includes(:ciudad, :estatus, :tipo_usuario_empresa, :clasificacion).order("empresa.fecha_inscripcion")
@@ -87,14 +87,9 @@ class EmpresasController < ApplicationController
                 if (params[:retiradas])
                   @empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, {:empresas_retiradas => :sub_estatus},{:empresas_retiradas => :motivo_retiro}).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("empresas_retiradas.fecha_retiro desc")
                   render "/empresas/empresas_retiradas.pdf.prawn"
-                elsif params[:eliminadas]
-                  @empresas = EmpresaEliminada.where("estatus.descripcion = ?", 'Eliminada').includes(:estado, :ciudad, :estatus, :clasificacion, :empresa_elim_detalle, :sub_estatus, :motivo_retiro).order("empresa_elim_detalle.fecha_eliminacion desc")
-                  render "/empresas/empresas_eliminadas.pdf.prawn"
                 elsif params[:activacion]
                   @empresas = Empresa.where("estatus.descripcion like ?", "No Validado").includes(:ciudad, :estatus, :clasificacion, :tipo_usuario_empresa).order("empresa.fecha_inscripcion DESC")
                   render "/empresas/activacion_empresas.pdf.prawn"
-                
-
                 else
                   @empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("inner join ciudad on empresa.id_ciudad = ciudad.id inner join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo").order("empresa.fecha_activacion desc").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, ciudad.nombre as ciudad_, empresa.rif as rif, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv, empresa.ventas_brutas_anuales as ventas_brutas_anuales, empresa.aporte_mantenimiento as aporte_mantenimiento, empresa.categoria as categoria, empresa.division as division, empresa.grupo as grupo, empresa.clase as clase, empresa.rep_legal as rep_legal")
                   
@@ -112,14 +107,18 @@ class EmpresasController < ApplicationController
 
     
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:id]], :include => [:tipo_usuario_empresa])
-
+    
+    @telefono1 = Empresa.telefono1(@empresa)
+    @telefono2 = Empresa.telefono2(@empresa)
+    @telefono3 = Empresa.telefono3(@empresa)
+    @fax = Empresa.fax(@empresa)
+    @correo1 = Empresa.correo1(@empresa)
+    @correo2 = Empresa.correo2(@empresa)
+    
 
     respond_to do |format|
       format.html # show.html.erb
 
-      #@estado = Estado.find(@empresa.id_estado)
-      @ciudad = Ciudad.find(@empresa.id_ciudad)
-      
       @clasificacion = Clasificacion.find(:first, :conditions => ["categoria = ? and division = ? and grupo = ? and clase = ?", @empresa.categoria, @empresa.division, @empresa.grupo, @empresa.clase])
       
       

@@ -42,7 +42,7 @@
               =params[:descripcion] ? f.text_field(:descripcion, :value => @producto_.descripcion)   : f.text_field(:descripcion, :autocomplete => "off")
             -else
               
-              =params[:descripcion] ? f.text_field(:descripcion, :value => @producto_.descripcion, :readonly => :true, :class => "campo_readonly") : f.text_field(:descripcion, :autocomplete => "off", :readonly => :true, :class => "campo_readonly")
+              =params[:descripcion] ? f.text_field(:descripcion, :value => @producto_.descripcion) : f.text_field(:descripcion, :autocomplete => "off")
             
         %tr
           %td
@@ -51,21 +51,8 @@
             -if @producto.new_record?
               =params[:marca] ? f.text_field(:marca, :value => params[:marca]): f.text_field(:marca, :autocomplete => "off")
             -else
-              =params[:marca] ? f.text_field(:marca, :value => params[:marca], :readonly => :true, :class => "campo_readonly"): f.text_field(:marca, :autocomplete => "off", :readonly => :true, :class => "campo_readonly")
-
-
+              =params[:marca] ? f.text_field(:marca, :value => params[:marca]): f.text_field(:marca, :autocomplete => "off")
         
-        / %tr
-        /   %td
-        /     GPC
-        /   %td
-        /     -if @producto.new_record?
-        /       -if params[:gpc]
-        /         =f.text_field :gpc, :value => params[:gpc], :autocomplete => "off"
-        /       -else
-        /         =f.text_field :gpc, :autocomplete => "off"
-        /     -else
-        /       =f.text_field :gpc, :readonly => :true, :class => "campo_readonly"
         %tr
           %td.codigo_producto
             -if !@producto.new_record? or (@producto.errors.messages[:gtin])

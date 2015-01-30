@@ -418,6 +418,53 @@ class Empresa < ActiveRecord::Base
 
  end
 
+ def self.telefono1(empresa)
 
+  
+    telefono1 = empresa.cod_contacto_tlf1 +"-" + empresa.contacto_tlf1 if (empresa.cod_contacto_tlf1) and (empresa.contacto_tlf1)
+    telefono1 = empresa.contacto_tlf1 if empresa.cod_contacto_tlf1.nil? and empresa.contacto_tlf1
+
+    return telefono1
+
+ end
+
+ def self.telefono2(empresa)
+
+    telefono2 = empresa.cod_contacto_tlf2 + "-" + empresa.contacto_tlf2 if (empresa.cod_contacto_tlf2) and (empresa.contacto_tlf2)
+    telefono2 = empresa.contacto_tlf2 if empresa.cod_contacto_tlf2.nil? and (empresa.contacto_tlf2)
+    
+    return telefono2
+
+ end
+
+ def self.telefono3(empresa)
+
+    telefono3 = empresa.cod_contacto_tlf3 + "-" + empresa.contacto_tlf3 if (empresa.cod_contacto_tlf3) and (empresa.contacto_tlf3)
+    telefono3 = empresa.contacto_tlf3 if empresa.cod_contacto_tlf3.nil? and (empresa.contacto_tlf3)
+    
+    return telefono3
+
+ end
+
+ def self.fax(empresa)
+
+    fax = empresa.cod_contacto_fax +"-" + empresa.contacto_fax if (empresa.cod_contacto_fax) and (empresa.contacto_fax)
+    fax = empresa.contacto_fax if empresa.cod_contacto_fax.nil? and (empresa.contacto_fax)
+    
+    return fax
+
+ end
+
+ def self.correo1(empresa)
+  correo1 = empresa.contacto_email1 
+  return correo1
+
+ end 
+
+ def self.correo2(empresa)
+  correo2 = empresa.contacto_email2 
+  return correo2
+
+ end
 
 end
