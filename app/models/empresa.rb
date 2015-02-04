@@ -420,8 +420,8 @@ class Empresa < ActiveRecord::Base
 
  def self.telefono1(empresa)
 
-  
-    telefono1 = empresa.cod_contacto_tlf1 +"-" + empresa.contacto_tlf1 if (empresa.cod_contacto_tlf1) and (empresa.contacto_tlf1)
+    
+    telefono1 = empresa.cod_contacto_tlf1 + "-" + empresa.contacto_tlf1 if (empresa.cod_contacto_tlf1) and (empresa.contacto_tlf1)
     telefono1 = empresa.contacto_tlf1 if empresa.cod_contacto_tlf1.nil? and empresa.contacto_tlf1
 
     return telefono1
@@ -448,7 +448,7 @@ class Empresa < ActiveRecord::Base
 
  def self.fax(empresa)
 
-    fax = empresa.cod_contacto_fax +"-" + empresa.contacto_fax if (empresa.cod_contacto_fax) and (empresa.contacto_fax)
+    fax = empresa.cod_contacto_fax + "-" + empresa.contacto_fax if (empresa.cod_contacto_fax) and (empresa.contacto_fax)
     fax = empresa.contacto_fax if empresa.cod_contacto_fax.nil? and (empresa.contacto_fax)
     
     return fax
@@ -466,5 +466,154 @@ class Empresa < ActiveRecord::Base
   return correo2
 
  end
+
+ def self.telefono1_ean(empresa)
+  
+  telefono1_ean = "("+empresa.cod_tlf1_ean + ") " +empresa.telefono1_ean if (empresa.cod_tlf1_ean) and (empresa.telefono1_ean)
+  telefono1_ean = empresa.telefono1_ean if (empresa.cod_tlf1_ean).nil?
+  telefono1_ean = "" if (empresa.cod_tlf1_ean.nil?) and (empresa.telefono1_ean.nil?)
+  return telefono1_ean
+
+ end
+
+ def self.telefono2_ean(empresa)
+  
+  telefono2_ean = "("+empresa.cod_tlf2_ean + ") " +empresa.telefono2_ean if (empresa.cod_tlf2_ean) and (empresa.telefono2_ean)
+  telefono2_ean = empresa.telefono2_ean if (empresa.cod_tlf2_ean).nil?
+  telefono2_ean = "" if (empresa.cod_tlf2_ean.nil?) and (empresa.telefono2_ean.nil?)
+  return telefono2_ean
+
+ end
+
+ def self.telefono3_ean(empresa)
+  
+  telefono3_ean = "("+empresa.cod_tlf3_ean + ") " +empresa.telefono3_ean if (empresa.cod_tlf3_ean) and (empresa.telefono3_ean)
+  telefono3_ean = empresa.telefono3_ean if (empresa.cod_tlf3_ean).nil?
+  telefono3_ean = "" if (empresa.cod_tlf3_ean.nil?) and (empresa.telefono3_ean.nil?)
+  return telefono3_ean
+
+ end
+
+ def self.fax_ean(empresa)
+  
+  fax_ean = "("+empresa.cod_fax_ean + ") " +empresa.fax_ean if (empresa.cod_fax_ean) and (empresa.fax_ean)
+  fax_ean = empresa.fax_ean if (empresa.cod_fax_ean).nil?
+  fax_ean = "" if (empresa.cod_fax_ean.nil?) and (empresa.fax_ean.nil?)
+  return fax_ean
+
+ end
+
+ 
+ def self.telefono1_edi(empresa)
+  
+  telefono1_edi = "("+empresa.cod_tlf1_sincronet + ") " +empresa.telefono1_edi if (empresa.cod_tlf1_sincronet) and (empresa.telefono1_edi)
+  telefono1_edi = empresa.telefono1_edi if (empresa.cod_tlf1_sincronet).nil?
+  telefono1_edi = "" if (empresa.cod_tlf1_sincronet.nil?) and (empresa.telefono1_edi.nil?)
+  return telefono1_edi
+
+ end
+
+ def self.telefono2_edi(empresa)
+  
+  telefono2_edi = "("+empresa.cod_tlf2_sincronet + ") " +empresa.telefono2_edi if (empresa.cod_tlf2_sincronet) and (empresa.telefono2_edi)
+  telefono2_edi = empresa.telefono2_edi if (empresa.cod_tlf2_sincronet).nil?
+  telefono2_edi = "" if (empresa.cod_tlf2_sincronet.nil?) and (empresa.telefono2_edi.nil?)
+  return telefono2_edi
+
+ end
+
+ def self.telefono3_edi(empresa)
+  
+  telefono3_edi = "("+empresa.cod_tlf3_sincronet + ") " +empresa.telefono3_edi if (empresa.cod_tlf3_sincronet) and (empresa.telefono3_edi)
+
+  telefono3_edi = empresa.telefono3_edi if (empresa.cod_tlf3_sincronet).nil?
+  telefono3_edi = "" if (empresa.cod_tlf3_sincronet.nil?) and (empresa.telefono3_edi.nil?)
+  return telefono3_edi
+
+ end
+
+ def self.fax_edi(empresa)
+  
+  fax_edi = "("+empresa.cod_fax_sincronet + ") " +empresa.fax_edi if (empresa.cod_fax_sincronet) and (empresa.fax_edi)
+  fax_edi = empresa.fax_edi if (empresa.cod_fax_sincronet).nil?
+  fax_edi = "" if (empresa.cod_fax_sincronet.nil?) and (empresa.fax_edi.nil?)
+  return fax_edi
+
+ end
+
+ def self.telefono1_recursos(empresa)
+  
+  telefono1_recursos = "("+empresa.cod_tlf1_seminarios + ") " +empresa.telefono1_recursos if (empresa.cod_tlf1_seminarios) and (empresa.telefono1_recursos)
+  telefono1_recursos = empresa.telefono1_recursos if (empresa.cod_tlf1_seminarios).nil?
+  telefono1_recursos = "" if (empresa.cod_tlf1_seminarios.nil?) and (empresa.telefono1_recursos.nil?)
+  return telefono1_recursos
+
+ end
+
+ def self.telefono2_recursos(empresa)
+  
+  telefono2_recursos = "("+empresa.cod_tlf2_seminarios + ") " +empresa.telefono2_recursos if (empresa.cod_tlf2_seminarios) and (empresa.telefono2_recursos)
+  telefono2_recursos = empresa.telefono2_recursos if (empresa.cod_tlf2_seminarios).nil?
+  telefono2_recursos = "" if (empresa.cod_tlf2_seminarios.nil?) and (empresa.telefono2_recursos.nil?)
+  return telefono2_recursos
+
+ end
+
+ def self.telefono3_recursos(empresa)
+  
+  telefono3_recursos = "("+empresa.cod_tlf3_seminarios + ") " +empresa.telefono3_recursos if (empresa.cod_tlf3_seminarios) and (empresa.telefono3_recursos)
+  telefono3_recursos = empresa.telefono3_recursos if (empresa.cod_tlf3_seminarios).nil?
+  telefono3_recursos = "" if (empresa.cod_tlf3_seminarios.nil?) and (empresa.telefono3_recursos.nil?)
+  return telefono3_recursos
+
+ end
+
+ def self.fax_recursos(empresa)
+  
+  fax_recursos = "("+empresa.cod_fax_seminarios + ") " +empresa.fax_recursos if (empresa.cod_fax_seminarios) and (empresa.fax_recursos)
+  fax_recursos = empresa.fax_recursos if (empresa.cod_fax_seminarios).nil?
+  fax_recursos = "" if (empresa.cod_fax_seminarios.nil?) and (empresa.fax_recursos.nil?)
+  return fax_recursos
+
+ end
+
+
+ def self.telefono1_mercadeo(empresa)
+  
+  telefono1_mercadeo = "("+empresa.cod_tlf1_mercadeo + ") " +empresa.telefono1_mercadeo if (empresa.cod_tlf1_mercadeo) and (empresa.telefono1_mercadeo)
+  telefono1_mercadeo = empresa.telefono1_mercadeo if (empresa.cod_tlf1_mercadeo).nil?
+  telefono1_mercadeo = "" if (empresa.cod_tlf1_mercadeo.nil?) and (empresa.telefono1_mercadeo.nil?)
+  return telefono1_mercadeo
+
+ end
+
+ def self.telefono2_mercadeo(empresa)
+  
+  telefono2_mercadeo = "("+empresa.cod_tlf2_mercadeo + ") " +empresa.telefono2_mercadeo if (empresa.cod_tlf2_mercadeo) and (empresa.telefono2_mercadeo)
+  telefono2_mercadeo = empresa.telefono2_mercadeo if (empresa.cod_tlf2_mercadeo).nil?
+  telefono2_mercadeo = "" if (empresa.cod_tlf2_mercadeo.nil?) and (empresa.telefono2_mercadeo.nil?)
+  return telefono2_mercadeo
+
+ end
+
+ def self.telefono3_mercadeo(empresa)
+  
+  telefono3_mercadeo = "("+empresa.cod_tlf3_mercadeo + ") " +empresa.telefono3_mercadeo if (empresa.cod_tlf3_mercadeo) and (empresa.telefono3_mercadeo)
+  telefono3_mercadeo = empresa.telefono3_mercadeo if (empresa.cod_tlf3_mercadeo).nil?
+  telefono3_mercadeo = "" if (empresa.cod_tlf3_mercadeo.nil?) and (empresa.telefono3_mercadeo.nil?)
+  return telefono3_mercadeo
+
+ end
+
+ def self.fax_mercadeo(empresa)
+  
+  fax_mercadeo = "("+empresa.cod_fax_mercadeo + ") " +empresa.fax_mercadeo if (empresa.cod_fax_mercadeo) and (empresa.fax_mercadeo)
+  fax_mercadeo = empresa.fax_mercadeo if (empresa.cod_fax_mercadeo).nil?
+  fax_mercadeo = "" if (empresa.cod_fax_mercadeo.nil?) and (empresa.fax_mercadeo.nil?)
+  return fax_mercadeo
+
+ end
+
+
 
 end
