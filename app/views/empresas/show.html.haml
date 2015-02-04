@@ -11,162 +11,559 @@
       %td
         Prefijo
       %td
-        =@empresa.prefijo
+        %b
+          =@empresa.prefijo
     %tr
       %td
         Tipo Usuario
       %td
-        =@empresa.try(:tipo_usuario_empresa).try(:descripcion)
+        %b
+          =@empresa.try(:tipo_usuario_empresa).try(:descripcion)
 
     %tr
       %td
         Nombre Empresa
       %td
-        = @empresa.nombre_empresa
+        %b
+          = @empresa.nombre_empresa
 
     %tr
       %td
         Estado
       %td
-        = @estado.try(:nombre)
+        %b
+          = @empresa.try(:estado).try(:nombre)
 
     %tr
       %td
         Ciudad
       %td
-        = @ciudad.try(:nombre)
+        %b
+          = @empresa.try(:ciudad).try(:nombre)
 
     
     %tr
       %td
         Fecha Activación
       %td
-        =@empresa.try(:fecha_activacion).strftime("%Y-%m-%d") 
+        %b
+          =@empresa.try(:fecha_activacion).strftime("%Y-%m-%d")
+    %tr
+      %td
+        Fecha Inscripción
+      %td
+        %b
+          =@empresa.try(:fecha_inscripcion).strftime("%Y-%m-%d")
+    
+
     %tr
       %td
         Dirección Fiscal
       %td
-        = @empresa.direccion_empresa
+        %b
+          = @empresa.direccion_empresa
+    %tr
+      %td
+        Teléfono 1
+      %td
+        %b
+          =@telefono1
+    %tr
+      %td
+        Teléfono2
+      %td
+        %b
+          =@telefono2
+    %tr
+      %td
+        Teléfono3
+      %td
+        %b
+          =@telefono3
+
+    %tr
+      %td
+        Fax
+      %td
+        %b
+          =@fax
    
+    %tr
+      %td
+        Correo1
+      %td
+        %b
+          =@empresa.try(:contacto_email1)
+    %tr
+      %td
+        Correo2
+      %td
+        %b
+          =@empresa.try(:contacto_email2)
+    %tr
+      %td
+        Fecha Registro Mercantil
+      %td
+        %b
+          =@empresa.try(:fecha_registro_mercantil)
     %tr
       %td
         RIF
       %td
-        = @empresa.rif
+        %b
+          = @empresa.try(:rif_completo)
     %tr
       %td
         Estatus
       %td
-        =@empresa.try(:estatus).try(:descripcion)
+        %b
+          =@empresa.try(:estatus).try(:descripcion)
     
       
     %tr
       %td
-        Rep Legal
+        Responsable Legal
       %td
-        = @empresa.rep_legal
+        %b
+          = @empresa.rep_legal
     %tr
       %td
         Cargo Rep Legal
       %td
-        = @empresa.cargo_rep_legal
+        %b
+          = @empresa.cargo_rep_legal
+    %tr
+      %td
+        Ventas Brutas Anuales
+      %td
+        %b
+          =@empresa.try(:ventas_brutas_anuales)
+    %tr
+      %td
+        Aporte Mantenimiento
+      %td
+        %b
+          =@empresa.try(:aporte_mantenimiento)
   
     %tr
       %td
         Clasificación
       %td
-        = @clasificacion.try(:descripcion)
+        %b
+          = @clasificacion.try(:descripcion)
     %tr
       %td
         Categoría
       %td
-        = @empresa.try(:categoria)
+        %b
+          = @empresa.try(:categoria)
     %tr
       %td
         División
       %td
-        =@empresa.try(:division)
+        %b
+          =@empresa.try(:division)
     %tr
       %td
         Grupo
       %td
-        =@empresa.try(:grupo)
+        %b
+          =@empresa.try(:grupo)
     %tr
       %td
         Clase
       %td
-        =@empresa.try(:clase)
-  / %br
-  / %br
-  / %label.contexto=@empresa.nombre_empresa +   " > Datos de Contacto"
-  / %hr.contexto{:size => "1"}
-  / %br
-  / -if params[:editar]
-  /   =render 'datos_contacto'
-  / -else
-  /   =render 'datos_contacto_no_editable'
+        %b
+          =@empresa.try(:clase)
+  
+  %br
+  %br
+  %br
+  %label.contexto a. DIRECCION PARA ENVIO DE CORRESPONDENCIA DE CODIFICACION GS1
+  %br
+  %hr.contexto{:size => "1"}
+  %br
 
-  / %label.contexto=@empresa.nombre_empresa + " > Datos Correspondencia"
-  / %hr.contexto{:size => "1"}
-  / %br
+  %table
+    %tr
+      %td
+        Nombre Persona Contacto
+      %td
+        %b
+          =@empresa.try(:rep_ean)
+    %tr
+      %td
+        Cargo Rep Técnico
+      %td
+        %b
+          =@empresa.try(:rep_ean_cargo)
+    %tr
+      %td
+        Dirección
+      %td
+        %b
+          =@empresa.try(:direccion_ean)
+  
+    %tr
+      %td
+        Estado
+      %td
+        %b
+          =@estado_ean.nombre
+    %tr
+      %td
+        Ciudad
+      %td
+        %b
+          =@ciudad_ean.nombre
+    %tr
+      %td
+        Municipio
+      %td
+        %b
+          =@municipio_ean.nombre
+    %tr
+      %td
+        Parroquia
+      %td
+        %b
+          =@empresa.try(:parroquia_ean)
 
-  / %table
-  /   %tr
-  /     %td
-  /       Representante Técnico
-  /     %td
-  /       =@correspondencia.try(:rep_tecnico)
-  /   %tr
-  /     %td
-  /       Cargo Rep Técnico
-  /     %td
-  /       =@correspondencia.try(:cargo_rep_tecnico)
-  /   %tr
-  /     %td
-  /       Edificio
-  /     %td
-  /       =@correspondencia.try(:edificio)
-  /   %tr
-  /     %td
-  /       Calle
-  /     %td
-  /       =@correspondencia.try(:calle)
-  /   %tr
-  /     %td
-  /       Urbanización
-  /     %td
-  /       =@correspondencia.try(:urbanizacion)
-  /   %tr
-  /     %td
-  /       Estado
-  /     %td
-  /       =@correspondencia.try(:estado).try(:nombre)
+    %tr
+      %td
+        Código Postal
+      %td
+        %b
+          =@empresa.try(:cod_postal_ean)
+    %tr
+      %td
+        Punto Referencia
+      %td
+        %b
+          =@empresa.try(:punto_ref_ean)
+    %tr
+      %td
+        Teléfono 1
+      %td
+        %b
+          =@telefono1_ean
+    %tr
+      %td
+        Teléfono 2
+      %td
+        %b
+          =@telefono2_ean
+    %tr
+      %td
+        Teléfono 3
+      %td
+        %b
+          =@telefono3_ean
+    %tr
+      %td
+        Fax
+      %td
+        %b
+          =@fax_ean
+
+    %tr
+      %td
+        Email 1
+      %td
+        %b
+          =@empresa.try(:email1_ean)
+    %tr
+      %td
+        Email 2
+      %td
+        %b
+          =@empresa.try(:email2_ean)
+
+  %br
+  %br
+  %br
+  %label.contexto b. DIRECCION PARA ENVIO DE CORRESPONDENCIA DE COMERCIO ELECTRONICO Y SINCRONET
+  %br
+  %hr.contexto{:size => "1"}
+  %br
+  %table
+    %tr
+      %td
+        Nombre Persona Contacto
+      %td
+        %b
+          =@empresa.try(:rep_edi)
+    %tr
+      %td
+        Cargo Rep Técnico
+      %td
+        %b
+          =@empresa.try(:rep_edi_cargo)
     
-  /   %tr
-  /     %td
-  /       Ciudad
-  /     %td
-  /       =@correspondencia.try(:ciudad).try(:nombre)
-  /   %tr
-  /     %td
-  /       Municipio
-  /     %td
-  /       =@correspondencia.try(:municipio).try(:nombre)
-  /   %tr
-  /     %td
-  /       Parroquia
-  /     %td
-  /       =@correspondencia.try(:nombre_parroquia)
-  /   %tr
-  /     %td
-  /       Código Postal
-  /     %td
-  /       =@correspondencia.try(:cod_postal)
-  /   %tr
-  /     %td
-  /       Punto Referencia
-  /     %td
-  /       =@correspondencia.try(:punto_referencia)
+    %tr
+      %td
+        Estado
+      %td
+        %b
+          =@estado_edi.nombre
+    %tr
+      %td
+        Ciudad
+      %td
+        %b
+          =@ciudad_edi.nombre
+    %tr
+      %td
+        Municipio
+      %td
+        %b
+          =@municipio_edi.nombre
+    %tr
+      %td
+        Parroquia
+      %td
+        %b
+          =@empresa.try(:parroquia_edi)
+
+    %tr
+      %td
+        Código Postal
+      %td
+        %b
+          =@empresa.try(:codigo_postal_edi)
+    %tr
+      %td
+        Punto Referencia
+      %td
+        %b
+          =@empresa.try(:punto_ref_edi)
+    %tr
+      %td
+        Teléfono 1
+      %td
+        %b
+          =@telefono1_edi
+    %tr
+      %td
+        Teléfono 2
+      %td
+        %b
+          =@telefono2_edi
+    %tr
+      %td
+        Teléfono 3
+      %td
+        %b
+          =@telefono3_edi
+    %tr
+      %td
+        Fax
+      %td
+        %b
+          =@fax_edi
+
+    %tr
+      %td
+        Email 1
+      %td
+        %b
+          =@empresa.try(:email1_edi)
+    %tr
+      %td
+        Email 2
+      %td
+        %b
+          =@empresa.try(:email2_edi)
+  %br
+  %br
+  %br
+  %label.contexto c. DIRECCION PARA ENVIO DE INFORMACION SOBRE SEMINARIOS Y CURSOS (RECURSOS HUMANOS)
+  %br
+  %hr.contexto{:size => "1"}
+  %br
+  %table
+    %tr
+      %td
+        Nombre Persona Contacto
+      %td
+        %b
+          =@empresa.try(:rep_recursos)
+    %tr
+      %td
+        Cargo Rep Técnico
+      %td
+        %b
+          =@empresa.try(:rep_recursos_cargo)
+    
+    %tr
+      %td
+        Estado
+      %td
+        %b
+          =@estado_recursos.nombre
+    %tr
+      %td
+        Ciudad
+      %td
+        %b
+          =@ciudad_recursos.nombre
+    %tr
+      %td
+        Municipio
+      %td
+        %b
+          =@municipio_recursos.nombre
+    %tr
+      %td
+        Parroquia
+      %td
+        %b
+          =@empresa.try(:parroquia_recursos)
+
+    %tr
+      %td
+        Código Postal
+      %td
+        %b
+          =@empresa.try(:codigo_postal_recursos)
+    %tr
+      %td
+        Punto Referencia
+      %td
+        %b
+          =@empresa.try(:punto_ref_recursos)
+    %tr
+      %td
+        Teléfono 1
+      %td
+        %b
+          =@telefono1_recursos
+    %tr
+      %td
+        Teléfono 2
+      %td
+        %b
+          =@telefono2_recursos
+    %tr
+      %td
+        Teléfono 3
+      %td
+        %b
+          =@telefono3_recursos
+    %tr
+      %td
+        Fax
+      %td
+        %b
+          =@fax_recursos
+
+    %tr
+      %td
+        Email 1
+      %td
+        %b
+          =@empresa.try(:email1_recursos)
+    %tr
+      %td
+        Email 2
+      %td
+        %b
+          =@empresa.try(:email2_recursos)
+
+  %br
+  %br
+  %br
+  %label.contexto d. DIRECCION PARA ENVIO DE INVITACIONES A EVENTOS ESPECIALES (MERCADEO)
+  %br
+  %hr.contexto{:size => "1"}
+  %br
+  %table
+    %tr
+      %td
+        Nombre Persona Contacto
+      %td
+        %b
+          =@empresa.try(:rep_mercadeo)
+    %tr
+      %td
+        Cargo Rep Técnico
+      %td
+        %b
+          =@empresa.try(:rep_mercadeo_cargo)
+    %tr
+      %td
+        Estado
+      %td
+        %b
+          =@estado_mercadeo.nombre
+    %tr
+      %td
+        Ciudad
+      %td
+        %b
+          =@ciudad_mercadeo.nombre
+    %tr
+      %td
+        Municipio
+      %td
+        %b
+          =@municipio_mercadeo.nombre
+    %tr
+      %td
+        Parroquia
+      %td
+        %b
+          =@empresa.try(:parroquia_mercadeo)
+
+    %tr
+      %td
+        Código Postal
+      %td
+        %b
+          =@empresa.try(:codigo_postal_mercadeo)
+    %tr
+      %td
+        Punto Referencia
+      %td
+        %b
+          =@empresa.try(:punto_ref_mercadeo)
+    %tr
+      %td
+        Teléfono 1
+      %td
+        %b
+          =@telefono1_mercadeo
+    %tr
+      %td
+        Teléfono 2
+      %td
+        %b
+          =@telefono2_mercadeo
+    %tr
+      %td
+        Teléfono 3
+      %td
+        %b
+          =@telefono3_mercadeo
+    %tr
+      %td
+        Fax
+      %td
+        %b
+          =@fax_mercadeo
+
+    %tr
+      %td
+        Email 1
+      %td
+        %b
+          =@empresa.try(:email1_mercadeo)
+    %tr
+      %td
+        Email 2
+      %td
+        %b
+          =@empresa.try(:email2_mercadeo)
   %br
   %br
   %br

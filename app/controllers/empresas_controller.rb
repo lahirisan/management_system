@@ -1,4 +1,4 @@
- #encoding: UTF-8
+   #encoding: UTF-8
 
 class EmpresasController < ApplicationController
   before_filter :require_authentication
@@ -112,9 +112,38 @@ class EmpresasController < ApplicationController
     @telefono2 = Empresa.telefono2(@empresa)
     @telefono3 = Empresa.telefono3(@empresa)
     @fax = Empresa.fax(@empresa)
-    @correo1 = Empresa.correo1(@empresa)
-    @correo2 = Empresa.correo2(@empresa)
     
+    @estado_ean = Estado.find(@empresa.id_estado_ean)
+    @ciudad_ean = Ciudad.find(@empresa.id_ciudad_ean)
+    @municipio_ean = Municipio.find(@empresa.id_municipio_ean)
+    @telefono1_ean = Empresa.telefono1_ean(@empresa)
+    @telefono2_ean = Empresa.telefono2_ean(@empresa)
+    @telefono3_ean = Empresa.telefono3_ean(@empresa)
+    @fax_ean = Empresa.fax_ean(@empresa)
+
+    @estado_edi = Estado.find(@empresa.id_estado_edi)
+    @ciudad_edi = Ciudad.find(@empresa.id_ciudad_edi)
+    @municipio_edi = Municipio.find(@empresa.id_municipio_edi)
+    @telefono1_edi = Empresa.telefono1_edi(@empresa)
+    @telefono2_edi = Empresa.telefono2_edi(@empresa)
+    @telefono3_edi = Empresa.telefono3_edi(@empresa)
+    @fax_edi = Empresa.fax_edi(@empresa)
+
+    @estado_recursos = Estado.find(@empresa.id_estado_recursos)
+    @ciudad_recursos = Ciudad.find(@empresa.id_ciudad_recursos)
+    @municipio_recursos = Municipio.find(@empresa.id_municipio_recursos)
+    @telefono1_recursos = Empresa.telefono1_recursos(@empresa)
+    @telefono2_recursos = Empresa.telefono2_recursos(@empresa)
+    @telefono3_recursos = Empresa.telefono3_recursos(@empresa)
+    @fax_recursos = Empresa.fax_recursos(@empresa)
+
+    @estado_mercadeo = Estado.find(@empresa.id_estado_mercadeo)
+    @ciudad_mercadeo= Ciudad.find(@empresa.id_ciudad_mercadeo)
+    @municipio_mercadeo = Municipio.find(@empresa.id_municipio_mercadeo)
+    @telefono1_mercadeo = Empresa.telefono1_mercadeo(@empresa)
+    @telefono2_mercadeo = Empresa.telefono2_mercadeo(@empresa)
+    @telefono3_mercadeo = Empresa.telefono3_mercadeo(@empresa)
+    @fax_mercadeo = Empresa.fax_mercadeo(@empresa)
 
     respond_to do |format|
       format.html # show.html.erb
