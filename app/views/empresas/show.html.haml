@@ -208,8 +208,8 @@
       %td
         Estado
       %td
-        %b
-          =@estado_ean.nombre
+        %b 
+          =@estado_ean.try(:nombre)
     %tr
       %td
         Ciudad
@@ -305,7 +305,7 @@
         Estado
       %td
         %b
-          =@estado_edi.nombre
+          =@estado_edi.try(:nombre)
     %tr
       %td
         Ciudad
@@ -400,7 +400,7 @@
         Estado
       %td
         %b
-          =@estado_recursos.nombre
+          =@estado_recursos.try(:nombre)
     %tr
       %td
         Ciudad
@@ -495,7 +495,7 @@
         Estado
       %td
         %b
-          =@estado_mercadeo.nombre
+          =@estado_mercadeo.try(:nombre)
     %tr
       %td
         Ciudad
