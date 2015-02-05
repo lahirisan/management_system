@@ -113,7 +113,9 @@ class EmpresasController < ApplicationController
     @telefono3 = Empresa.telefono3(@empresa)
     @fax = Empresa.fax(@empresa)
     
-    @estado_ean = Estado.find(@empresa.id_estado_ean)
+    
+    @estado_ean = Estado.find(@empresa.id_estado_ean) if (@empresa.id_estado_ean)
+
     @ciudad_ean = Ciudad.find(@empresa.id_ciudad_ean)
     @municipio_ean = Municipio.find(@empresa.id_municipio_ean)
     @telefono1_ean = Empresa.telefono1_ean(@empresa)
@@ -121,7 +123,7 @@ class EmpresasController < ApplicationController
     @telefono3_ean = Empresa.telefono3_ean(@empresa)
     @fax_ean = Empresa.fax_ean(@empresa)
 
-    @estado_edi = Estado.find(@empresa.id_estado_edi)
+    @estado_edi = Estado.find(@empresa.id_estado_edi) if (@empresa.id_estado_edi)
     @ciudad_edi = Ciudad.find(@empresa.id_ciudad_edi)
     @municipio_edi = Municipio.find(@empresa.id_municipio_edi)
     @telefono1_edi = Empresa.telefono1_edi(@empresa)
@@ -129,7 +131,7 @@ class EmpresasController < ApplicationController
     @telefono3_edi = Empresa.telefono3_edi(@empresa)
     @fax_edi = Empresa.fax_edi(@empresa)
 
-    @estado_recursos = Estado.find(@empresa.id_estado_recursos)
+    @estado_recursos = Estado.find(@empresa.id_estado_recursos) if (@empresa.id_estado_recursos)
     @ciudad_recursos = Ciudad.find(@empresa.id_ciudad_recursos)
     @municipio_recursos = Municipio.find(@empresa.id_municipio_recursos)
     @telefono1_recursos = Empresa.telefono1_recursos(@empresa)
@@ -137,7 +139,7 @@ class EmpresasController < ApplicationController
     @telefono3_recursos = Empresa.telefono3_recursos(@empresa)
     @fax_recursos = Empresa.fax_recursos(@empresa)
 
-    @estado_mercadeo = Estado.find(@empresa.id_estado_mercadeo)
+    @estado_mercadeo = Estado.find(@empresa.id_estado_mercadeo) if (@empresa.id_estado_mercadeo)
     @ciudad_mercadeo= Ciudad.find(@empresa.id_ciudad_mercadeo)
     @municipio_mercadeo = Municipio.find(@empresa.id_municipio_mercadeo)
     @telefono1_mercadeo = Empresa.telefono1_mercadeo(@empresa)
