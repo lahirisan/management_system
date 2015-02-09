@@ -1,4 +1,4 @@
-   #encoding: UTF-8
+    #encoding: UTF-8
 
 class EmpresasController < ApplicationController
   before_filter :require_authentication
@@ -114,34 +114,33 @@ class EmpresasController < ApplicationController
     @fax = Empresa.fax(@empresa)
     
     
-    @estado_ean = Estado.find(@empresa.id_estado_ean) if (@empresa.id_estado_ean)
-
-    @ciudad_ean = Ciudad.find(@empresa.id_ciudad_ean)
-    @municipio_ean = Municipio.find(@empresa.id_municipio_ean)
+    @estado_ean = Estado.find(@empresa.id_estado_ean) if (@empresa.id_estado_ean) and (@empresa.id_estado_ean >= 1 and @empresa_id_estado_ean <= 25)
+    @ciudad_ean = Ciudad.find(@empresa.id_ciudad_ean) if (@empresa.id_ciudad_ean) and (@empresa.id_ciudad_ean >= 1 and   @empresa.id_ciudad_ean <= 601)
+    @municipio_ean = Municipio.find(@empresa.id_municipio_ean) if (@empresa.id_municipio_ean) and (@empresa.id_municipio_ean >= 1 and @empresa.id_municipio_ean <= 365)
     @telefono1_ean = Empresa.telefono1_ean(@empresa)
     @telefono2_ean = Empresa.telefono2_ean(@empresa)
     @telefono3_ean = Empresa.telefono3_ean(@empresa)
     @fax_ean = Empresa.fax_ean(@empresa)
 
-    @estado_edi = Estado.find(@empresa.id_estado_edi) if (@empresa.id_estado_edi)
-    @ciudad_edi = Ciudad.find(@empresa.id_ciudad_edi)
-    @municipio_edi = Municipio.find(@empresa.id_municipio_edi)
+    @estado_edi = Estado.find(@empresa.id_estado_edi) if (@empresa.id_estado_edi) and (@empresa.id_estado_edi >= 1 and @empresa_id_estado_edi <= 25)
+    @ciudad_edi = Ciudad.find(@empresa.id_ciudad_edi) if (@empresa.id_ciudad_edi) and (@empresa.id_ciudad_edi >= 1 and   @empresa.id_ciudad_edi <= 601)
+    @municipio_edi = Municipio.find(@empresa.id_municipio_edi) if (@empresa.id_municipio_edi) and  (@empresa.id_municipio_edi >= 1 and @empresa.id_municipio_edi <= 365)
     @telefono1_edi = Empresa.telefono1_edi(@empresa)
     @telefono2_edi = Empresa.telefono2_edi(@empresa)
     @telefono3_edi = Empresa.telefono3_edi(@empresa)
     @fax_edi = Empresa.fax_edi(@empresa)
 
-    @estado_recursos = Estado.find(@empresa.id_estado_recursos) if (@empresa.id_estado_recursos)
-    @ciudad_recursos = Ciudad.find(@empresa.id_ciudad_recursos)
-    @municipio_recursos = Municipio.find(@empresa.id_municipio_recursos)
+    @estado_recursos = Estado.find(@empresa.id_estado_recursos) if (@empresa.id_estado_recursos) and (@empresa.id_estado_recursos >= 1 and @empresa_id_estado_recursos <= 25)
+    @ciudad_recursos = Ciudad.find(@empresa.id_ciudad_recursos) if (@empresa.id_ciudad_recursos) and (@empresa.id_ciudad_recursos >= 1 and   @empresa.id_ciudad_recursos <= 601)
+    @municipio_recursos = Municipio.find(@empresa.id_municipio_recursos) if (@empresa.id_municipio_recursos) and (@empresa.id_municipio_recursos >= 1 and @empresa.id_municipio_recursos <= 365)
     @telefono1_recursos = Empresa.telefono1_recursos(@empresa)
     @telefono2_recursos = Empresa.telefono2_recursos(@empresa)
     @telefono3_recursos = Empresa.telefono3_recursos(@empresa)
     @fax_recursos = Empresa.fax_recursos(@empresa)
 
-    @estado_mercadeo = Estado.find(@empresa.id_estado_mercadeo) if (@empresa.id_estado_mercadeo)
-    @ciudad_mercadeo= Ciudad.find(@empresa.id_ciudad_mercadeo)
-    @municipio_mercadeo = Municipio.find(@empresa.id_municipio_mercadeo)
+    @estado_mercadeo = Estado.find(@empresa.id_estado_mercadeo) if (@empresa.id_estado_mercadeo) and  (@empresa.id_estado_mercadeo >= 1 and @empresa_id_estado_mercadeo <= 25)
+    @ciudad_mercadeo= Ciudad.find(@empresa.id_ciudad_mercadeo)  if (@empresa.id_ciudad_mercadeo) and  (@empresa.id_ciudad_mercadeo >= 1 and   @empresa.id_ciudad_mercadeo <= 601)
+    @municipio_mercadeo = Municipio.find(@empresa.id_municipio_mercadeo) if (@empresa.id_municipio_mercadeo) and (@empresa.id_municipio_mercadeo >= 1 and @empresa.id_municipio_mercadeo <= 365)
     @telefono1_mercadeo = Empresa.telefono1_mercadeo(@empresa)
     @telefono2_mercadeo = Empresa.telefono2_mercadeo(@empresa)
     @telefono3_mercadeo = Empresa.telefono3_mercadeo(@empresa)

@@ -311,13 +311,13 @@
         Ciudad
       %td
         %b
-          =@ciudad_edi.nombre
+          =@ciudad_edi.try(:nombre)
     %tr
       %td
         Municipio
       %td
         %b
-          =@municipio_edi.nombre
+          =@municipio_edi.try(:nombre)
     %tr
       %td
         Parroquia
@@ -406,13 +406,13 @@
         Ciudad
       %td
         %b
-          =@ciudad_recursos.nombre
+          =@ciudad_recursos.try(:nombre)
     %tr
       %td
         Municipio
       %td
         %b
-          =@municipio_recursos.nombre
+          =@municipio_recursos.try(:nombre)
     %tr
       %td
         Parroquia
@@ -501,13 +501,13 @@
         Ciudad
       %td
         %b
-          =@ciudad_mercadeo.nombre
+          =@ciudad_mercadeo.try(:nombre)
     %tr
       %td
         Municipio
       %td
         %b
-          =@municipio_mercadeo.nombre
+          =@municipio_mercadeo.try(:nombre)
     %tr
       %td
         Parroquia
