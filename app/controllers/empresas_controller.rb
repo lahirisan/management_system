@@ -114,7 +114,7 @@ class EmpresasController < ApplicationController
     @fax = Empresa.fax(@empresa)
     
     
-    @estado_ean = Estado.find(@empresa.id_estado_ean) if (@empresa.id_estado_ean) and (@empresa.id_estado_ean >= 1 and @empresa_id_estado_ean <= 25)
+    @estado_ean = Estado.find(@empresa.id_estado_ean) if (@empresa.id_estado_ean) and (@empresa.id_estado_ean >= 1 and @empresa.id_estado_ean <= 25)
     @ciudad_ean = Ciudad.find(@empresa.id_ciudad_ean) if (@empresa.id_ciudad_ean) and (@empresa.id_ciudad_ean >= 1 and   @empresa.id_ciudad_ean <= 601)
     @municipio_ean = Municipio.find(@empresa.id_municipio_ean) if (@empresa.id_municipio_ean) and (@empresa.id_municipio_ean >= 1 and @empresa.id_municipio_ean <= 365)
     @telefono1_ean = Empresa.telefono1_ean(@empresa)
