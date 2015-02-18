@@ -2,27 +2,22 @@
 class ProductosController < ApplicationController
   before_filter :require_authentication
   
-  
-  prawnto :prawn => { :top_margin => 10} 
-
   # GET /productos
   # GET /productos.json
   def index
 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
 
-
     respond_to do |format|
-      format.html {
-                    
+      format.html { 
 
                     if params[:eliminar]  
                       @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Productos > Eliminar Productos"
                       render :template =>'/productos/eliminar_productos.html.haml'
                     else
                       @navegabilidad = "#{@empresa.prefijo} > " +  @empresa.nombre_empresa + " > Productos > Listado"
-                       # para mostrar el estatus de los productos como retirados si la empresa esta retirada
-                      
+                      # para mostrar el estatus de los productos como retirados si la empresa esta retirada
+
                       # Las empresas retirada no pueden generar GTIN14 ni editar productos
                       if params[:empresa_retirada]
                         @ruta = "/empresas/#{params[:empresa_id]}/productos.json?empresa_retirada=true"
