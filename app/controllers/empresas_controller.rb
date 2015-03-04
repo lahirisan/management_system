@@ -1,9 +1,6 @@
-    #encoding: UTF-8
-
+#encoding: UTF-8
 class EmpresasController < ApplicationController
   before_filter :require_authentication
-  
-  prawnto :prawn => { :top_margin => 10, :page_layout => :landscape} 
   
   # GET /empresas
   # GET /empresas.json
@@ -55,10 +52,10 @@ class EmpresasController < ApplicationController
 
       format.xlsx{
 
-                  if params[:retiradas]
 
+                  if params[:retiradas]
+                  
                     @empresas = Empresa.includes(:estado, :ciudad, :estatus, :motivo_retiro).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("fecha_retiro desc")  
-                    
                     render  "/empresas/empresas_retiradas.xlsx.axlsx"
 
                   elsif params[:eliminadas]
@@ -69,33 +66,20 @@ class EmpresasController < ApplicationController
                     render "/empresas/activacion_empresas.xlsx.axlsx"
                   
                   elsif params[:reactivar] == 'true'
-
                     @empresas = Empresa.includes(:estado, :ciudad, :estatus,  :motivo_retiro).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("empresa.fecha_retiro desc")
                     render  "/empresas/reactivar.xlsx.axlsx"
 
                   else
                    
-                    @empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("inner join ciudad on empresa.id_ciudad = ciudad.id inner join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo").order("empresa.fecha_activacion desc").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, ciudad.nombre as ciudad_, empresa.rif_completo as rif_completo, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv, empresa.ventas_brutas_anuales as ventas_brutas_anuales, empresa.aporte_mantenimiento as aporte_mantenimiento, empresa.categoria as categoria, empresa.division as division, empresa.grupo as grupo, empresa.clase as clase, empresa.rep_legal as rep_legal, empresa.email1_ean as email1_ean, empresa.email2_ean as email2_ean, empresa.telefono1_ean as telefono1_ean, empresa.telefono2_ean as telefono2_ean, empresa.telefono3_ean as telefono3_ean, empresa.fax_ean as fax_ean")
+                    # OJO si algun inner join falla puede que no se traiga los registros de empresa completo
+                    @empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("inner join ciudad on empresa.id_ciudad = ciudad.id inner join estatus on empresa.id_estatus = estatus.id inner join tipo_usuario_empresa on empresa.id_tipo_usuario = tipo_usuario_empresa.id_tipo_usu_empresa LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo").order("empresa.fecha_activacion desc").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, ciudad.nombre as ciudad_, empresa.rif_completo as rif_completo, empresa.rif as rif, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv, empresa.ventas_brutas_anuales as ventas_brutas_anuales, empresa.aporte_mantenimiento as aporte_mantenimiento, empresa.categoria as categoria, empresa.division as division, empresa.grupo as grupo, empresa.clase as clase, empresa.rep_legal as rep_legal, empresa.email1_ean as email1_ean, empresa.email2_ean as email2_ean, empresa.telefono1_ean as telefono1_ean, empresa.telefono2_ean as telefono2_ean, empresa.telefono3_ean as telefono3_ean, empresa.fax_ean as fax_ean, empresa.fecha_inscripcion as fecha_inscripcion, empresa.fecha_reactivacion as fecha_reactivacion, tipo_usuario_empresa.descripcion as tipo_usuario, empresa.direccion_empresa as direccion_empresa, empresa.cod_contacto_tlf1 as cod_contacto_tlf1, empresa.contacto_tlf1 as contacto_tlf1, empresa.cod_contacto_tlf2 as cod_contacto_tlf2, empresa.contacto_tlf2 as contacto_tlf2, empresa.cod_contacto_tlf3 as cod_contacto_tlf3, empresa.contacto_tlf3 as contacto_tlf3, empresa.cod_contacto_fax as cod_contacto_fax, empresa.contacto_fax as contacto_fax, empresa.cod_tlf1_ean as cod_tlf1_ean, empresa.telefono1_ean as telefono1_ean, empresa.cod_tlf2_ean as cod_tlf2_ean, empresa.telefono2_ean as telefono2_ean, empresa.cod_tlf3_ean as cod_tlf3_ean, empresa.telefono3_ean as telefono3_ean, empresa.cod_fax_ean as cod_fax_ean, empresa.fax_ean as fax_ean, empresa.cod_tlf1_sincronet as cod_tlf1_sincronet, empresa.telefono1_edi as telefono1_edi, empresa.cod_tlf2_sincronet as cod_tlf2_sincronet, empresa.telefono2_edi as telefono2_edi, empresa.cod_tlf3_sincronet as cod_tlf3_sincronet, empresa.telefono3_edi as telefono3_edi, empresa.cod_fax_sincronet as cod_fax_sincronet, empresa.fax_edi as fax_edi, empresa.email1_edi as email1_edi, empresa.email2_edi as email2_edi, empresa.cod_tlf1_seminarios as cod_tlf1_seminarios, empresa.telefono1_recursos as telefono1_recursos, empresa.cod_tlf2_seminarios as cod_tlf2_seminarios, empresa.telefono2_recursos as telefono2_recursos, empresa.cod_tlf3_seminarios as cod_tlf3_seminarios, empresa.telefono3_recursos as telefono3_recursos, empresa.cod_fax_seminarios as cod_fax_seminarios, empresa.fax_recursos as fax_recursos, empresa.cod_tlf1_mercadeo as cod_tlf1_mercadeo, empresa.telefono1_mercadeo as telefono1_mercadeo, empresa.cod_tlf2_mercadeo as cod_tlf2_mercadeo, empresa.telefono2_mercadeo as telefono2_mercadeo, empresa.cod_tlf3_mercadeo as cod_tlf3_mercadeo, empresa.telefono3_mercadeo as telefono3_mercadeo, empresa.cod_fax_mercadeo as cod_fax_mercadeo, empresa.fax_mercadeo as fax_mercadeo, empresa.contacto_email1 as contacto_email1, empresa.contacto_email2 as contacto_email2, empresa.email1_recursos as email1_recursos, empresa.email2_recursos as email2_recursos, empresa.email1_mercadeo as email1_mercadeo, empresa.email2_mercadeo as email2_mercadeo")
                     
                     render  "/empresas/index.xlsx.axlsx"
 
                   end 
       }
 
-      format.pdf {
-
-                if (params[:retiradas])
-                  @empresas = Empresa.includes(:estado, :ciudad, :estatus, :clasificacion, {:empresas_retiradas => :sub_estatus},{:empresas_retiradas => :motivo_retiro}).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("empresas_retiradas.fecha_retiro desc")
-                  render "/empresas/empresas_retiradas.pdf.prawn"
-                elsif params[:activacion]
-                  @empresas = Empresa.where("estatus.descripcion like ?", "No Validado").includes(:ciudad, :estatus, :clasificacion, :tipo_usuario_empresa).order("empresa.fecha_inscripcion DESC")
-                  render "/empresas/activacion_empresas.pdf.prawn"
-                else
-                  @empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("inner join ciudad on empresa.id_ciudad = ciudad.id inner join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo").order("empresa.fecha_activacion desc").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, ciudad.nombre as ciudad_, empresa.rif as rif, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv, empresa.ventas_brutas_anuales as ventas_brutas_anuales, empresa.aporte_mantenimiento as aporte_mantenimiento, empresa.categoria as categoria, empresa.division as division, empresa.grupo as grupo, empresa.clase as clase, empresa.rep_legal as rep_legal")
-                  
-                  render "/empresas/index.pdf.prawn"
-                end
-      } 
+      
 
     end
 
@@ -160,16 +144,15 @@ class EmpresasController < ApplicationController
 
       format.pdf {
           
-          prawnto :prawn => { :top_margin => 10, :page_layout => :portrait}
           @gln_legal = Gln.find(:first,  :include => [:tipo_gln], :conditions =>["prefijo = ? and id_tipo_gln= ? ", @empresa.prefijo, 1])
-          
-          @productos = Producto.find(:all, :conditions => ["prefijo = ?", @empresa.prefijo])
+          @productos = Producto.find(:all, :conditions => ["prefijo = ?", @empresa.prefijo], :include => [:tipo_gtin])
 
           if params[:retiro_individual]
-            render "empresas/retiro_voluntario.pdf.prawn"
+            pdf = RetiroVoluntarioPdf.new(@empresa,@productos)
           else
-            render "/empresas/carta_afiliacion.pdf.prawn"
+            pdf = CartaAfiliacionPdf.new(@empresa,@gln_legal)
           end
+          send_data pdf.render
       }
 
     end
@@ -275,7 +258,7 @@ class EmpresasController < ApplicationController
           redirect_to '/empresas', notice: "PREFIJO #{@procesadas} ACTIVADO"  if params[:activar_empresas]
           redirect_to '/empresas?retirar=true', notice: "Los Prefijos #{@procesadas} fueron retirados."  if params[:retiro]
           redirect_to '/empresas?eliminar=true', notice: "Los Prefijos #{@procesadas} fueron eliminados."  if params[:eliminar_empresas]
-          redirect_to '/empresas', notice: "Los Prefijos #{@procesadas} fueron reactivados satisfactoriamente." if params[:reactivar]  # Empresasa eliminadas que se reactivan
+          redirect_to '/empresas?reactivar=true ', notice: "Los Prefijos #{@procesadas} fueron reactivados satisfactoriamente." if params[:reactivar]  # Empresasa eliminadas que se reactivan
           redirect_to '/empresas', notice: "Los Prefijos #{@procesadas} fueron modificados sus sub estatus." if params[:sub_estatus]  
         }
     end

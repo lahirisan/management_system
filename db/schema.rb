@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141218194702) do
+ActiveRecord::Schema.define(:version => 20150213161843) do
 
   create_table "auditoria", :force => true do |t|
     t.string   "usuario"
@@ -239,6 +239,7 @@ ActiveRecord::Schema.define(:version => 20141218194702) do
     t.string   "telefono3_ean_completo"
     t.string   "fax_ean_completo"
     t.string   "cod_contacto_tlf2"
+    t.datetime "fecha_reactivacion"
   end
 
   create_table "empresa_clasificacion", :force => true do |t|
