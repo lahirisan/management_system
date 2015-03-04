@@ -27,10 +27,10 @@ group :assets do
   # gem 'therubyracer', :platforms => :ruby
 
   # para utilizar datatables
-  
+
    gem 'jquery-datatables-rails', github: 'rweng/jquery-datatables-rails'
-   
-  # gem 'jquery-ui-rails'
+
+   gem 'jquery-ui-rails'
 
   gem 'uglifier', '>= 1.0.3'
 end
@@ -42,12 +42,11 @@ gem 'jquery-rails'
 gem 'axlsx_rails'
 
 gem 'prawn'
-
+gem "prawnto_2", :require => "prawnto"
 gem "roo" # Gema para importar archivos Excel
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', :require => "bcrypt"
-
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 

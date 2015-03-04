@@ -1,3 +1,4 @@
+#encoding: UTF-8
 class ProductosDatatable < AjaxDatatablesRails
   delegate :params, :h, :link_to,  to: :@view
 
