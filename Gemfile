@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.8'
+
+gem 'rails', '3.2.18'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -27,9 +28,9 @@ group :assets do
   # gem 'therubyracer', :platforms => :ruby
 
   # para utilizar datatables
-  
+
    gem 'jquery-datatables-rails', github: 'rweng/jquery-datatables-rails'
-   
+
   # gem 'jquery-ui-rails'
 
   gem 'uglifier', '>= 1.0.3'
@@ -42,12 +43,12 @@ gem 'jquery-rails'
 gem 'axlsx_rails'
 
 gem 'prawn'
+gem "prawnto_2", :require => "prawnto"
 
 gem "roo" # Gema para importar archivos Excel
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', :require => "bcrypt"
-
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 
