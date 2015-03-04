@@ -1,6 +1,12 @@
 source 'https://rubygems.org'
 
+<<<<<<< HEAD
 gem 'rails', '3.2.8'
+=======
+
+gem 'rails', '3.2.18'
+
+>>>>>>> 80d07a8170009d1a30a12e9d0467bb1a3c4ded2b
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -42,6 +48,7 @@ gem 'axlsx_rails'
 
 gem 'prawn'
 gem "prawnto_2", :require => "prawnto"
+
 gem "roo" # Gema para importar archivos Excel
 
 # To use ActiveModel has_secure_password
