@@ -1,7 +1,6 @@
 class EtiquetasController < ApplicationController
   
   before_filter :require_authentication
-  prawnto :prawn => {:page_layout => :portrait, :page_size => [285, 170]} 
   
   def show
 
@@ -13,14 +12,16 @@ class EtiquetasController < ApplicationController
 
     @telefono =  @empresa.telefono1_ean
     @telefono += " / #{@empresa.telefono2_ean}" if @empresa.telefono2_ean
-    
 
     
     @navegabilidad = @empresa.try(:prefijo).to_s+" > "+@empresa.try(:nombre_empresa) + " > Etiqueta"
     
     respond_to do |format|
       format.html # show.html.haml
-      format.pdf{}
+      format.pdf{
+        pdf = EtiquetaPdf.new(@empresa)
+        send_data pdf.render
+      }
 
     end
 
@@ -30,9 +31,7 @@ class EtiquetasController < ApplicationController
   def edit
 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
-    #@etiqueta = Correspondencia.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
-    #@contacto = DatosContacto.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
-
+    
   end
 
 

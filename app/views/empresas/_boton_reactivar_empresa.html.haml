@@ -1,0 +1,8 @@
+%table
+    %tr 
+        %td
+            %form{action: "/empresas.xlsx?reactivar=true", method: "get"}
+                .parametros
+                %button.ui-state-default.ui-corner-all.reactivar_empresas{:type => "submit", :title => "Opción que te permite exportar el listado general de Empresas Retiradas a formato Excel"}
+                    %span.ui-icon.ui-icon-disk
+                    Exportar Excel

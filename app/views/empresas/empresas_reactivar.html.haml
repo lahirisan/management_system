@@ -1,10 +1,10 @@
 %section.contexto
-    %label.contexto Empresas > Empresas Reactivar
+    %label.contexto Empresas Retiradas > Reactivar
     %hr.contexto{:size => "1"}
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
     
-    = render 'botones_exportar_empresas_retiradas'
+    = render 'boton_reactivar_empresa'
     
     =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_reactivar" do
         

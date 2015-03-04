@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
-
-gem 'rails', '3.2.18'
+gem 'rails', '3.2.8'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -43,7 +42,6 @@ gem 'jquery-rails'
 gem 'axlsx_rails'
 
 gem 'prawn'
-gem "prawnto_2", :require => "prawnto"
 
 gem "roo" # Gema para importar archivos Excel
 
