@@ -458,14 +458,15 @@
         };
 
         
-
        
-        // Se cambian todos los input a Mayusculas excepto login
-        $('input').keyup(function() {
+        
+        $('input').keydown(function(evt) {
+           
+             if (($(this).attr('class') != 'login') && ($(this).attr('class') != 'email') && ($(this).attr('class') != 'clave'))
             
-            if (($(this).attr('class') != 'login') && ($(this).attr('class') != 'email') && ($(this).attr('class') != 'clave'))
-                this.value = this.value.toUpperCase();
-        });
+                $(this).css("text-transform", "uppercase");
+        
+         });
 
         // Dialogo importar productos oculto por defecto
         $('#ventana_generar_carta_masivamente').dialog({
