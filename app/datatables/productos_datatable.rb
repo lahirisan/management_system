@@ -31,7 +31,13 @@ private
       elsif params[:insolvente] == 'true'
         
         estatus = producto.try(:estatus).try(:descripcion)
-        boton_gtin_14 = ""
+        
+        if (UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Generar Código'))
+          boton_gtin_14 = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"GTIN14").html_safe, "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{producto.descripcion}&marca=#{producto.marca.gsub(/‘/, '%27')}&gpc=#{producto.gpc}",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Generar GTIN-14"})
+        else
+          boton_gtin_14 = ""
+        end
+          
         boton_editar = ""
 
       else
