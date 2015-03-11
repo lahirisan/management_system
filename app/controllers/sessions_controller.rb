@@ -14,6 +14,7 @@ class SessionsController < ApplicationController
 	    session[:perfil] = user.try(:perfil).try(:descripcion)
 	    session[:cargo] = user.try(:cargo).try(:descripcion)
 	    session[:gerencia] = user.try(:gerencia).try(:nombre)
+
 	    
 	    if session[:gerencia] == 'Comercial'
 	    	if session[:perfil] == 'Mercadeo'
