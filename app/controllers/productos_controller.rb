@@ -11,9 +11,16 @@ class ProductosController < ApplicationController
     respond_to do |format|
       format.html { 
 
+                    
                     if params[:eliminar]  
                       @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Productos > Eliminar Productos"
                       render :template =>'/productos/eliminar_productos.html.haml'
+
+                    elsif params[:transferencia]
+                      
+                      @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Productos > Transferencia"
+                      render :template =>'/productos/transferir_productos.html.haml'
+
                     else
                       @navegabilidad = "#{@empresa.prefijo} > " +  @empresa.nombre_empresa + " > Productos > Listado"
                       # para mostrar el estatus de los productos como retirados si la empresa esta retirada
