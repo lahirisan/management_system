@@ -48,7 +48,13 @@ private
           
           
           base = (producto.id_tipo_gtin == 1) ? 4 : 6  # Para mostrar seleccioando la base del producto cunado se crear GTIN 14
-          boton_gtin_14 = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"GTIN14").html_safe, "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{producto.descripcion}&marca=#{producto.marca.gsub(/‘/, '%27')}&gpc=#{producto.gpc}",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Generar GTIN-14"})
+          
+          ################### ESTOS CARACTERES SE CAMBIAN POR QUE GENERAR BAD URI EXCEPTION #################
+
+          descripcion_codificada = producto.descripcion.gsub(/%/, '')
+          marca_codificada = producto.marca.gsub(/%/, '')
+ 
+          boton_gtin_14 = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"GTIN14").html_safe, "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{descripcion_codificada}&marca=#{marca_codificada}&gpc=#{producto.gpc}",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Generar GTIN-14"})
           boton_editar = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"Editar").html_safe, "/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar Producto"})
         end
 
