@@ -110,6 +110,10 @@
 						%span.ui-icon.ui-icon-circle-close
 						&nbsp;Eliminar Productos
 
+				%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?transferencia=true", :title => "Transferir Productos a otro PREFIJO", :class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-transfer-w
+					&nbsp;Transferir Productos
+
 			- if params[:controller] == 'glns' 
 
 				- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar GLN') and params[:empresa_retirada].nil? and params[:insolvente].nil? or (UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Generar Código'))

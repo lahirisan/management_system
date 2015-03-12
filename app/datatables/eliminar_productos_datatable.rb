@@ -29,7 +29,7 @@ private
         producto.gtin,
         producto.descripcion,
         producto.marca,
-        producto.try(:estatus).try(:descripcion),
+        'RETIRADO',
         producto.codigo_prod,
         fecha
         
