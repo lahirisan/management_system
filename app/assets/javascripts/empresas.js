@@ -13,6 +13,20 @@
 
         $('#data_table_empresas input').attr("placeholder", "Buscar");
 
+        // Datatable que maneja el listado de empresas
+        $("#data_table_empresas_transferir").dataTable({
+            sPaginationType: "full_numbers",
+            aaSorting: [[ 1, "asc" ]],
+            aoColumns: [ { "bSortable": false }, { "bSortable": true }, { "bSortable": true }, { "bSortable": false },{ "bSortable": false },{ "bSortable": true }, { "bSortable": false } ],
+            bJQueryUI: true,
+            bProcessing: true,
+            bServerSide: true,
+            sDom: 'T<"clear">lfrtip',
+            sAjaxSource: $('#data_table_empresas_transferir').data('source')
+        }).columnFilter({ aoColumns: [null, { type: "text"}, {type: "text"}, {type: "text" }, null, {type: "text"}, null]});
+
+        $('#data_table_empresas_transferir input').attr("placeholder", "Buscar");
+
          // Datatable que maneja el listado de empresas activacion
         $("#data_table_empresas_activacion").dataTable({
             sPaginationType: "full_numbers",

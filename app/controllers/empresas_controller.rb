@@ -25,6 +25,7 @@ class EmpresasController < ApplicationController
                     render :template =>'/empresas/empresas_retiradas.html.haml'
                   elsif params[:reactivar]
                     render :template =>'/empresas/empresas_reactivar.html.haml'
+
                   else
                     
                     # Se verifica si tiene el privilegio para  EDITAR EMPRESA
@@ -53,7 +54,14 @@ class EmpresasController < ApplicationController
                       render json: (EmpresasRetiradasDatatable.new(view_context))
                     elsif (params[:reactivar] == 'true')
                       render json: (ReactivarEmpresasDatatable.new(view_context))
+                    
+                    elsif params[:transferir]
+                      
+                      render json: EmpresasTransferirGtinDatatable.new(view_context)
+
                     else
+
+
                       
                       if params[:modificar_empresa] # Si llega el parametro modificar_empresa se muestra la vista de Empresas Activas Editable, no en caso contrario
                         

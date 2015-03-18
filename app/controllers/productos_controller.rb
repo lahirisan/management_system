@@ -6,7 +6,7 @@ class ProductosController < ApplicationController
   # GET /productos.json
   def index
 
-    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
+    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]]) if params[:empresa_id]
 
     respond_to do |format|
       format.html { 
@@ -18,8 +18,14 @@ class ProductosController < ApplicationController
 
                     elsif params[:transferencia]
                       
-                      @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Productos > Transferencia"
+                      @navegabilidad = "Productos > Transferencia"
                       render :template =>'/productos/transferir_productos.html.haml'
+
+                    elsif params[:empresa_id].nil?
+
+                      @navegavilidad = 'Listado General GTIN8'
+                      render :template => '/productos/listado_general.html.haml'
+
 
                     else
                       @navegabilidad = "#{@empresa.prefijo} > " +  @empresa.nombre_empresa + " > Productos > Listado"
@@ -39,7 +45,7 @@ class ProductosController < ApplicationController
                   }
       format.json { 
                     
-                   
+                    
                     if params[:gtin]
                       gtin = params[:gtin]
                       digito_verificacion = Producto.calcular_digito_verificacion(params[:gtin].to_i,"GTIN-13")
@@ -48,6 +54,18 @@ class ProductosController < ApplicationController
                       render json: producto
                     elsif params[:eliminar]
                       render json: (EliminarProductosDatatable.new(view_context))
+                    
+                    elsif params[:gtin_8]
+
+                      render json: ProductosGtin8Datatable.new(view_context)
+                    
+                    elsif params[:transferir]
+
+                      
+                      
+                      render json: ProductosTransferirDatatable.new(view_context)
+                      
+                    
                     else
 
                       if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Producto')
@@ -192,12 +210,23 @@ class ProductosController < ApplicationController
 
   def update_multiple
 
-    productos = Producto.eliminar(params)
-    string_gtin = ""
+    if params[:transferir] # Esta opcion se utiliza para transferir gtin de una a empresa a otra. es uin campo iculto dentro del formulario transferir_gtin8  en productos
+
+
+      Producto.transferir_gtin(params[:transferir_gtin8], params[:empresa_transferir_gtin])
+
+    else
+
+
+      productos = Producto.eliminar(params)
+      string_gtin = ""
+
+    end
 
     respond_to do |format|
 
-      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?eliminar=true", notice: "Los GTIN #{productos.collect{|producto| producto.gtin}} fueron eliminados." }
+      format.html { redirect_to "/productos?transferencia=true", notice: "Los GTIN seleccionados fueron transferidos satisfactoriamente" } if params[:transferir]
+      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?eliminar=true", notice: "Los GTIN #{productos.collect{|producto| producto.gtin}} fueron eliminados." } if params[:transferir].nil?
     end
   end
 

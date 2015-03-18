@@ -55,7 +55,6 @@ $(document).ready(function(){
 
         $('#data_table_productos input').attr("placeholder", "Buscar");
 
-        
         // Datatable que maneja Eliminar productos
         $("#data_table_eliminar_productos").dataTable({
             sPaginationType: "full_numbers",
@@ -69,6 +68,35 @@ $(document).ready(function(){
         }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, null, {type: "text"},  {type: "text"} ]});
 
         $('#data_table_eliminar_productos input').attr("placeholder", "Buscar");
+
+        // Datatable que maneja Eliminar productos
+        $("#data_table_productos_general").dataTable({
+            sPaginationType: "full_numbers",
+            aaSorting: [[ 0, "asc" ]],
+            aoColumns: [{ "bSortable": true}, { "bSortable": true}, { "bSortable": true}, { "bSortable": true}, { "bSortable": true},{ "bSortable": true}, { "bSortable": true}, { "bSortable": true}, { "bSortable": true}, { "bSortable": true}],
+            bJQueryUI: true,
+            bProcessing: true,
+            bServerSide: true,
+            sDom: 'T<"clear">lfrtip',            
+            sAjaxSource: $('#data_table_productos_general').data('source')
+        }).columnFilter({ aoColumns: [{type: "text" }, {type: "text" },  null,  {type: "text"}, {type: "text"}, {type: "text"},  {type: "text"} , {type: "text"}, {type: "text"}]});
+        $('#data_table_productos_general input').attr("placeholder", "Buscar");
+
+
+        // Datatable que maneja Eliminar productos
+        $("#data_table_transferir_productos").dataTable({
+            sPaginationType: "full_numbers",
+            aaSorting: [[ 1, "asc" ]],
+            aoColumns: [ { "bSortable": false}, { "bSortable": true}, { "bSortable": true}, { "bSortable": true}, { "bSortable": true}, { "bSortable": true},{ "bSortable": true}, { "bSortable": true}, { "bSortable": true}, { "bSortable": true}, { "bSortable": true}],
+            bJQueryUI: true,
+            bProcessing: true,
+            bServerSide: true,
+            sDom: 'T<"clear">lfrtip',            
+            sAjaxSource: $('#data_table_transferir_productos').data('source')
+        }).columnFilter({ aoColumns: [null, {type: "text" }, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},  {type: "text"} , {type: "text"}, {type: "text"}]});
+        
+        $('#data_table_transferir_productos input').attr("placeholder", "Buscar");
+
 
         // formulario eliminar producto
 
@@ -105,7 +133,7 @@ $(document).ready(function(){
 
         
         // Efectos del boton importar
-        $('.regresar_editar_empresa, .guardar_producto,  .exportar_productos_eliminar,  .boton_importar, .eliminar_productos, .exportar_productos').hover(
+        $('.regresar_editar_empresa, .guardar_producto,  .exportar_productos_eliminar,  .boton_importar, .eliminar_productos, .exportar_productos, .boton_transferir_productos').hover(
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');}
         );
@@ -269,9 +297,24 @@ $(document).ready(function(){
           
         });
 
+        // Validacion del formualrio trasnferir productos
+        $('#formulario_transferir_productos').submit(function( event ) { 
 
+             if ($(".transferir_producto_seleccionado:checked").length == 0)
+            {
+                
+                alert("Estimado Usuario, no ha seleccionado ningún producto  para ser transferido. Por favor verifique.");
+                return false;
+            }
 
+            if ($(".transferir_gtin_a_empresa:checked").length == 0)
+            {
+                
+                alert("Estimado Usuario, no ha seleccionado ningúna a la que le serán transferidos los productos seleccionados. Por favor verifique.");
+                return false;
+            }
 
+        });
         
 
 });
