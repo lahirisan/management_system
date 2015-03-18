@@ -1,0 +1,24 @@
+%br
+%br
+%label.contexto 2. Seleccione Empresa a Transferir GTIN
+%br
+%hr.contexto{:size => "1"}
+%br
+
+%table#data_table_empresas_transferir.display{:"data-source" => "/empresas.json?transferir=true"}
+    %thead
+        %tr
+            %th Selección
+            %th Prefijo
+            %th Nombre Empresa
+            %th RIF
+            %th Estatus
+            %th Sub Estatus
+            %th Empresa Detalle
+            
+            
+    %tbody
+    %tfoot
+        =render 'footer_empresa_transferir_gtin'
+%br/
+%br/

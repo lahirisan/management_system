@@ -94,6 +94,10 @@
 						%span.ui-icon.ui-icon-person
 						&nbsp;Usuarios
 				
+				
+				=link_to(( content_tag(:span, '',:class => 'ui-icon.ui-icon-transfer-e-w')+'Listado GTIN 8').html_safe, productos_path, {:class => "ui-state-default ui-corner-all botones_menu", :title => "Listado General de Productos GTIN8"})
+
+				
 
 			- if params[:controller] == 'productos'
 
@@ -110,10 +114,10 @@
 						%span.ui-icon.ui-icon-circle-close
 						&nbsp;Eliminar Productos
 
-				%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?transferencia=true", :title => "Transferir Productos a otro PREFIJO", :class => "ui-state-default ui-corner-all botones_menu"}
-					%span.ui-icon.ui-icon-transfer-w
-					&nbsp;Transferir Productos
+				
 
+				=link_to(( content_tag(:span, '',:class => 'ui-icon.ui-icon-transfer-e-w')+'Transferir Productos').html_safe, "#{productos_path}?transferencia=true", {:class => "ui-state-default ui-corner-all botones_menu", :title => "Listado General de Productos GTIN8"})
+			
 			- if params[:controller] == 'glns' 
 
 				- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar GLN') and params[:empresa_retirada].nil? and params[:insolvente].nil? or (UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Generar Código'))
@@ -152,6 +156,7 @@
 					%span.ui-icon.ui-icon-circle-plus
 					&nbsp;Registrar Usuario
 
+			
 			
 				
 		= yield

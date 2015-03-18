@@ -1,0 +1,49 @@
+%section.contexto
+    %label.contexto
+        =@navegabilidad 
+    %hr.contexto{:size => "1"}
+
+%section#areaTrabajo.areaTrabajo
+    %br
+    %label.contexto 1. Seleccione GTIN
+        
+    %hr.contexto{:size => "1"}
+    %br
+
+    %p#notice= notice
+    =form_tag "/productos/update_multiple", :method => "put", :id => "formulario_transferir_productos" do  
+                    
+        %table#data_table_transferir_productos.display{:"data-source" => "/productos.json?transferir=true"}
+            %thead
+                %tr
+                    %th
+                    %th Empresa
+                    %th Prefijo
+                    %th Tipo GTIN    
+                    %th GTIN
+                    %th Descripción
+                    %th Marca
+                    %th Estatus
+                    %th Código Prod
+                    %th Fecha Creación
+                    %th Fecha Modificación
+                   
+            %tbody
+            %tfoot
+                =render 'footer_transferir_productos'
+        
+        %br/
+        %br/
+        #datos_productos_eliminar_productos
+        =hidden_field_tag "transferir"
+
+        =render 'tabla_empresa_transferencia'
+
+        %button#submit.ui-state-default.ui-corner-all.boton_transferir_productos{:type => "submit", :title => "Transferir Productos Seleccionados"}
+            %span.ui-icon.ui-icon-circle-minus
+            Transferir
+        %a.ui-state-default.ui-corner-all.regresar{:href => "/empresas", :title => "Regresar al listado de productos para esta Empresa"}
+            %span.ui-icon.ui-icon-arrowreturnthick-1-w
+            Regresar
+        
+        
