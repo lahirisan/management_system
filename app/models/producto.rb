@@ -90,21 +90,28 @@ class Producto < ActiveRecord::Base
 
     if tipo_gtin.tipo == "GTIN-8"            
      
-      ultimo_gtin_asignado = Producto.find(:first, :conditions => ["producto.id_tipo_gtin = ?", tipo_gtin], :order => "producto.codigo_prod desc")
+      if (codigo_producto.nil?)
 
-      secuencia = ultimo_gtin_asignado.gtin[3..6]  # N-1 digitos primeros digitos del último gtin8 asignado
-      secuencia = (secuencia.to_i + 1) 
+        ultimo_gtin_asignado = Producto.find(:first, :conditions => ["producto.id_tipo_gtin = ?", tipo_gtin], :order => "producto.codigo_prod desc")
 
-      secuencia_siguiente = completar_secuencia(secuencia, tipo_gtin.tipo) # Se completa con ceros a la izquierda si la secuecnia es menor 5 digitos
-      
-      secuencia_completa = "759" + secuencia_siguiente.to_s 
-      digito_verificacion = calcular_digito_verificacion(secuencia_completa.to_i, "GTIN-8")
-      gtin_generado =  secuencia_completa.to_s + digito_verificacion.to_s # 759 + secuencia + verificacion
-      
+        secuencia = ultimo_gtin_asignado.gtin[3..6]  # N-1 digitos primeros digitos del último gtin8 asignado
+        secuencia = (secuencia.to_i + 1) 
+
+        secuencia_siguiente = completar_secuencia(secuencia, tipo_gtin.tipo) # Se completa con ceros a la izquierda si la secuecnia es menor 5 digitos
+        secuencia_completa = "759" + secuencia_siguiente.to_s 
+
+      else
+        secuencia_completa = "759" + codigo_producto.to_s
+        
+      end
+
+        digito_verificacion = calcular_digito_verificacion(secuencia_completa.to_i, "GTIN-8")
+        gtin_generado =  secuencia_completa.to_s + digito_verificacion.to_s # 759 + secuencia + verificacion
+        
 
     elsif tipo_gtin.tipo == "GTIN-13"
 
-      if (codigo_producto.nil?) #No estan pasando el codigo de producto
+      if (codigo_producto.nil?) #No estan pasando el codigo de producto tipo de creacion automatica
 
         producto =  Producto.find(:first, :conditions => ["id_tipo_gtin = ? and prefijo = ?", tipo_gtin, prefijo], :order => "codigo_prod desc")
 
