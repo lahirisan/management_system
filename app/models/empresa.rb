@@ -48,36 +48,20 @@
 
   end
 
-  def self.retirar_empresas(parametros)
+  def self.retirar_empresas(empresa, motivo_retiro)
     
-    #En el parametro activar empresa estan cada uno de los ID de las empresas que se van a retirar. A su vez ese es el nombre del input asociado a la empresa y tiene el valor de los campos sub-estatus y motivo-retiro
-    # OJO: Esto se puede optimizar actualizando masivamente // Refrencia RailCast 198
-  
-      for retirar_empresas in (0..parametros[:retirar_empresas].size-1)
-       
-        empresa_seleccionada = parametros[:retirar_empresas][retirar_empresas]
-        retirar_datos = parametros[:"#{empresa_seleccionada}"]
+      
+        empresa = Empresa.find(:first, :conditions => ["prefijo = ?", empresa]) # La clave primaria es es prefijo
         
-        empresa = Empresa.find(:first, :conditions => ["prefijo = ?", retirar_datos.split('_')[0]]) # La clave primaria es es prefijo
-        
-        # # El estatus de retirada Se cambia el estatus de la empresa
-        estatus_retirada = Estatus.find(:first, :conditions => ["descripcion like ? and alcance like ?", 'Retirada', 'Empresa'])
-        empresa.id_estatus = estatus_retirada.id
+        empresa.id_estatus = 2 # id de estatus de Empresa retirada
         empresa.fecha_retiro = Time.now
-        empresa.id_motivo_retiro = retirar_datos.split('_')[1]
+        empresa.id_motivo_retiro = motivo_retiro
         empresa.save
 
-        # Se registra la persona que retiro la empresa
-        #Auditoria.registrar_evento(session[:usuario],"empresa", "Retirar", Time.now,  "EMPRESA RETIRADA. PREFIJO:#{empresa.prefijo}")
-        
-        # Se retiran todo los productos de la empresa
-        #Producto.retirar_productos(empresa.prefijo)
+        # Se retiran sus productos
+        Producto.where("prefijo = #{empresa.prefijo}").update_all("id_estatus = 4" )
 
-        # Retirar GLN ojo REVISAR
-        #Gln.retirar(empresa.prefijo)
-
-
-      end
+      
   end
 
   def self.eliminar_empresas(parametros)

@@ -59,6 +59,9 @@ color: #212121;}
 .etiqueta_regresar_empresas_exportar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;cursor: pointer;margin-left: 20px;}
 .etiqueta_regresar_empresas_exportar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 
+.boton_importar {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;cursor: pointer;margin-left: 20px;}
+.boton_importar span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+
 .boton_usuario  {margin-top:50px;}
 
 label.contexto {font-size: 20px;}

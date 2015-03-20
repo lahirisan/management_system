@@ -29,9 +29,16 @@
               =f.hidden_field :id_tipo_gtin, :value => "#{@producto.id_tipo_gtin}"
               =text_field_tag "tipo_gtin", "#{@producto.tipo_gtin.tipo}", :class => "campo_readonly", :readonly => :true
         %tr
-          %td.texto_manual_automatico
-          %td.radio_manual_automatico
-      
+          %td
+            Tipo de Creación
+          %td
+            Manual
+            =radio_button_tag 'tipo_creacion', 'manual'
+            Automático
+            =radio_button_tag 'tipo_creacion', 'automatica'
+          %td
+            
+            
         %tr
           %td
             Descripción
@@ -39,19 +46,19 @@
 
             -if @producto.new_record?
               
-              =params[:descripcion] ? f.text_field(:descripcion, :value => @producto_.descripcion)   : f.text_field(:descripcion, :autocomplete => "off")
+              =params[:descripcion] ? f.text_field(:descripcion, :value => @producto_.descripcion, :size => 60)   : f.text_field(:descripcion, :autocomplete => "off", :size => 60)
             -else
               
-              =params[:descripcion] ? f.text_field(:descripcion, :value => @producto_.descripcion) : f.text_field(:descripcion, :autocomplete => "off")
+              =params[:descripcion] ? f.text_field(:descripcion, :value => @producto_.descripcion, :size => 60) : f.text_field(:descripcion, :autocomplete => "off", :size => 60)
             
         %tr
           %td
             Marca
           %td
             -if @producto.new_record?
-              =params[:marca] ? f.text_field(:marca, :value => params[:marca]): f.text_field(:marca, :autocomplete => "off")
+              =params[:marca] ? f.text_field(:marca, :value => params[:marca], :size => 60): f.text_field(:marca, :autocomplete => "off",  :size => 60)
             -else
-              =params[:marca] ? f.text_field(:marca, :value => params[:marca]): f.text_field(:marca, :autocomplete => "off")
+              =params[:marca] ? f.text_field(:marca, :value => params[:marca], :size => 60): f.text_field(:marca, :autocomplete => "off", :size => 60)
         
         %tr
           %td.codigo_producto

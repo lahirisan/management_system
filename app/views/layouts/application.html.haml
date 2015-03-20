@@ -115,8 +115,9 @@
 						&nbsp;Eliminar Productos
 
 				
-
-				=link_to(( content_tag(:span, '',:class => 'ui-icon.ui-icon-transfer-e-w')+'Transferir Productos').html_safe, "#{productos_path}?transferencia=true", {:class => "ui-state-default ui-corner-all botones_menu", :title => "Listado General de Productos GTIN8"})
+				-if params[:empresa_id].present?
+				
+					=link_to(( content_tag(:span, '',:class => 'ui-icon.ui-icon-transfer-e-w')+'Transferir Productos').html_safe, "#{productos_path}?transferencia=true", {:class => "ui-state-default ui-corner-all botones_menu", :title => "Listado General de Productos GTIN8"})
 			
 			- if params[:controller] == 'glns' 
 
