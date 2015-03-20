@@ -261,8 +261,16 @@ class EmpresasController < ApplicationController
     
     if params[:retiro]
       
-      Empresa.retirar_empresas(params) 
-      params[:retirar_empresas].collect{|empresa_retirar| @empresa = Empresa.find(empresa_retirar); Auditoria.registrar_evento(session[:usuario],"empresa", "Retirar", Time.now, "Empresa:#{@empresa.nombre_empresa} PREFIJO:#{@empresa.prefijo}") }
+      
+      for empresa in (0..params[:retirar_empresas].size-1)
+        empresa_seleccionada =  params[:retirar_empresas][empresa] ### Ojo con esto mejorarlo, este formato es muy sensible a fallas
+        
+        Empresa.retirar_empresas(params[:retirar_empresas][empresa], params[:"#{empresa_seleccionada}"].split('_')[1].to_i) # Se pasa el prefijo de la  empresa a retirar
+        Auditoria.registrar_evento(session[:usuario],"empresa", "Retirar", Time.now, "#{params[:retirar_empresas][empresa]}")
+
+      end 
+
+    
 
     end
 
