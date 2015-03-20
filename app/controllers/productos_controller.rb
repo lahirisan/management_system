@@ -155,17 +155,13 @@ class ProductosController < ApplicationController
   # POST /productos.json
   def create
 
-
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]])
-
-    @gtin = params[:gtin]  if params[:gtin] != ''
     
+    @gtin = params[:gtin]  if params[:gtin] != ''
 
-    params[:producto][:gtin] = Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin], params[:producto][:codigo_prod])
-
+    params[:producto][:gtin] = Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin], params[:producto][:codigo_prod]) 
     params[:producto][:fecha_creacion] = Time.now
-    estatus = Estatus.find(:first, :conditions => ["(descripcion = ?) and (alcance = ?)", "Activo", "Producto"])
-    params[:producto][:id_estatus] = estatus.id
+    params[:producto][:id_estatus] = 3
     
     params[:producto][:codigo_prod] = params[:producto][:gtin][7..11] if params[:producto][:id_tipo_gtin] == '3' and (@empresa.prefijo.to_s.size == 7  or @empresa.prefijo.to_s.size == 5)
     params[:producto][:codigo_prod] = params[:producto][:gtin][9..11] if params[:producto][:id_tipo_gtin] == '3' and @empresa.prefijo.to_s.size == 9 and @empresa.prefijo.to_s[3..5] == "400"

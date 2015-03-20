@@ -170,34 +170,21 @@ $(document).ready(function(){
         
         $("#producto_id_tipo_gtin" ).live('change', function() {
 
-            if ($(this).val() == 3) // GTIN 13
-            { 
-                $('td.texto_manual_automatico').html("Tipo de Creación");  
-                $('td.radio_manual_automatico').html('Automática<input id="tipo_creacion_automatica" name="tipo_creacion" type="radio" value="automatica" checked>Manual<input id="tipo_creacion_manual" name="tipo_creacion" type="radio" value="manual">');  
+            $("input[name='tipo_creacion']" ).live('change', function() {
 
-                $("input[name='tipo_creacion']" ).live('change', function() {
+                if ($(this).val() == 'manual')
+                {
+                    $('td.codigo_producto').html('Código producto');
+                    $('td.valor_codigo_producto').html('<input id="producto_codigo_prod" name="producto[codigo_prod]" type="text" placeholder="12345">');
 
-                    if ($(this).val() == 'manual')
-                    {
-                        $('td.codigo_producto').html('Código producto');
-                        $('td.valor_codigo_producto').html('<input id="producto_codigo_prod" name="producto[codigo_prod]" type="text" placeholder="12345">');
+                }
+                else
+                {
+                 $('td.codigo_producto').html('');
+                 $('td.valor_codigo_producto').html('');                       
+                }
 
-                    }
-                    else
-                    {
-                     $('td.codigo_producto').html('');
-                     $('td.valor_codigo_producto').html('');                       
-                    }
-
-                });
-            }
-            else
-            {
-                $('td.texto_manual_automatico').html("");  
-                $('td.radio_manual_automatico').html('');
-                $('td.codigo_producto').html('');
-                $('td.valor_codigo_producto').html('');           
-            }
+            });
 
         });
 
@@ -259,8 +246,20 @@ $(document).ready(function(){
                 }
 
             }
-    
 
+            // validacion formato de codigo prodcuto para tipo gtin8 manual
+            
+            if (($("input[type='radio'][name='tipo_creacion']:checked").val() == 'manual') && ($('#producto_id_tipo_gtin').val() == 1)) 
+            {   
+                var reg = /^[0-9]{4}$/;
+                var cod_producto = $('#producto_codigo_prod').val();
+                if ( !reg.test(cod_producto) )
+                {
+                    alert('Estimado usuario, el código producto debe ser un valor de 4 dígitos numéricos para la creación de Tipo GTIN 8 Manual. Por favor verifique.');
+                    return false;
+                }
+
+            }
                     
         });
         
