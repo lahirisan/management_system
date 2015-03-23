@@ -33,7 +33,7 @@
       %td
         Estatus
       %td
-        = @estatus
+        = @gln.try(:estatus).try(:descripcion)
     %tr
       %td
         Fecha Asignación

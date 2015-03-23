@@ -1,4 +1,4 @@
- class Empresa < ActiveRecord::Base
+  class Empresa < ActiveRecord::Base
   self.table_name = "empresa"  # El nombre de la tabla que se esta mapeando
   set_primary_key "prefijo" # Se establece la clave primaria
   
@@ -57,10 +57,12 @@
         empresa.fecha_retiro = Time.now
         empresa.id_motivo_retiro = motivo_retiro
         empresa.save
-
+        
         # Se retiran sus productos
         Producto.where("prefijo = #{empresa.prefijo}").update_all("id_estatus = 4" )
 
+        # Se retiran sus GLN
+        Gln.where("prefijo = #{empresa.prefijo}").update_all("id_estatus = 12" )
       
   end
 
@@ -86,19 +88,18 @@
   def self.reactivar_empresas_retiradas(parametros)
 
     
-    estatus_empresa = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activa', 'Empresa'])
-    estatus_producto = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ?", 'Activo', 'Producto'])
-    estatus_gln = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", 'Activo', 'GLN'])
-
     empresas = Empresa.find(parametros[:reactivar_empresas])
-    empresas.collect{|empresa| empresa.id_estatus = estatus_empresa.id; empresa.fecha_reactivacion = Time.now; empresa.save}
+    
+    empresas.each{|empresa| 
+      empresa.id_estatus = 1;  # Estatus empresa activa segun tabla ESTATUS
+      empresa.fecha_reactivacion = Time.now; 
+      empresa.save;
+      Producto.where("prefijo = #{empresa.prefijo}").update_all("id_estatus = 3" ); # ESTATUS PRODUCTO ACTIVO SEGUN TABLA
+      Gln.where("prefijo = #{empresa.prefijo}").update_all("id_estatus = 9" ) # Estatus GLN ACTIVO
+    }
 
-    #productos = Producto.find(:all, :conditions => ["prefijo in (?)", parametros[:reactivar_empresas]])
-    #productos.collect{|producto| producto.id_estatus = estatus_producto.id; producto.save}
-
-    #glns = Gln.find(:all, :conditions => ["prefijo in (?)", parametros[:reactivar_empresas]])
-    #glns.collect{|gln| gln.id_estatus = estatus_gln.id; gln.save}
-
+    
+    
      
   end
 
@@ -150,7 +151,7 @@
   def self.registrar_eliminada(empresa)
 
 
-     estatus_empresa = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ? ", "Eliminada", 'Empresa'])
+    estatus_empresa = Estatus.find(:first, :conditions => ["descripcion like ? and alcance = ? ", "Eliminada", 'Empresa'])
         
 
     empresa_eliminada =  EmpresaEliminada.new  # Se crear el registro de la empresa_eliminada
@@ -185,9 +186,9 @@
 
        empresa_solvente = Empresa.find(spreadsheet.cell(fila,1))
      
-         raise "No se encontro el prefijo #{spreadsheet.cell(fila,1)}".to_yaml if empresa_solvente.nil?
-         empresa_solvente.id_subestatus = 1
-         empresa_solvente.save
+       raise "No se encontro el prefijo #{spreadsheet.cell(fila,1)}".to_yaml if empresa_solvente.nil?
+       empresa_solvente.id_subestatus = 1
+       empresa_solvente.save
      
 
     end
