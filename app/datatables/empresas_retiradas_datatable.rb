@@ -20,10 +20,12 @@ private
   
   def data
     
-    fecha_activacion = empresa.fecha_activacion ? empresa.fecha_activacion.strftime("%Y-%m-%d") : ""
+
 
     empresas.map do |empresa|
       
+      fecha_activacion = empresa.fecha_activacion ? empresa.fecha_activacion.strftime("%Y-%m-%d") : ""
+
       [ 
         empresa.prefijo,
         empresa.nombre_empresa,
