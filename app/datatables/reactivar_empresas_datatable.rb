@@ -27,7 +27,6 @@ private
         check_box_tag("reactivar_empresas[]", "#{empresa.id}", false, :class=>"reactivar_empresa"),
         empresa.prefijo,
         empresa.nombre_empresa,
-        empresa.fecha_activacion.strftime("%Y-%m-%d"),
         (empresa.fecha_activacion ? empresa.fecha_activacion.strftime("%Y-%m-%d") : ''),
         empresa.ciudad.nombre,
         empresa.rif,

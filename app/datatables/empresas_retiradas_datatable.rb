@@ -27,7 +27,7 @@ private
       [ 
         empresa.prefijo,
         empresa.nombre_empresa,
-        (empresa.fecha_activacion ? empresa.fecha_activacion.strftime("%Y-%m-%d") : ""),
+        ((empresa.fecha_activacion) ? empresa.fecha_activacion.strftime("%Y-%m-%d") : ""),
         empresa.ciudad.nombre,
         empresa.rif,
         (empresa.try(:fecha_retiro).nil? ? '' : empresa.fecha_retiro.strftime("%Y-%m-%d")),
