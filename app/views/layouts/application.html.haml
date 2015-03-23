@@ -105,7 +105,8 @@
 			- if params[:controller] == 'productos'
 
 				
-				- if ((UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Producto') and params[:empresa_retirada].nil? and params[:insolvente].nil?) or (UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Generar Código'))) and params[:id_empresa] 
+
+				- if (UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Producto') and params[:empresa_retirada].nil? and params[:insolvente].nil? and params[:empresa_id]) or (UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Generar Código')  and params[:empresa_retirada].nil? and params[:empresa_id])
 					
 					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos/new", :title => "Crear producto", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-circle-plus
