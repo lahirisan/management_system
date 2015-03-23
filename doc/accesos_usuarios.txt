@@ -1,0 +1,26 @@
+Nombre      Usuario      Clave
+Claudio     chernandez   ch2323
+Yuly 	    yfreitas     yf5243
+Yilibeth	yabad        ya7676
+Carolina	cgimenez     cg8765
+Katherine	kfiguera	 kf7345
+Maria T     mtorrelba    mt8976
+Alicia		aduben       ad6969
+Susana      sbarreto     sb6531
+Ricardo		rcalderon    rc0001
+Jose		jgonzalez    jg8773
+Pilar		prodriguez   pr8886
+Yanett      ymadriz		 ym4872 
+Agustina	abaduy       ab6932
+Ibelisse    imejias      im9393
+Wallis		wrodriguez   wr7777
+JL Mejia    jmejia       jm6359
+Denisse		dcubillan	 dc6169
+Johanna B   jbellorin	 jb6541
+gtecnico    gtecnico     gt5677
+
+
+
+
+
+
