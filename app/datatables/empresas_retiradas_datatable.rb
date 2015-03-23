@@ -19,13 +19,15 @@ class EmpresasRetiradasDatatable < AjaxDatatablesRails
 private
   
   def data
+    
+    fecha_activacion = empresa.fecha_activacion ? empresa.fecha_activacion.strftime("%Y-%m-%d") : ""
 
     empresas.map do |empresa|
       
       [ 
         empresa.prefijo,
         empresa.nombre_empresa,
-        empresa.fecha_activacion.strftime("%Y-%m-%d"),
+        fecha_activacion,
         empresa.ciudad.nombre,
         empresa.rif,
         (empresa.try(:fecha_retiro).nil? ? '' : empresa.fecha_retiro.strftime("%Y-%m-%d")),
