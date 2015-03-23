@@ -24,13 +24,11 @@ private
     productos.map do |producto|
       
       if params[:empresa_retirada] == 'true'
-        estatus = "Retirado"
+        
         boton_gtin_14 = ""
         boton_editar = ""
       
       elsif params[:insolvente] == 'true'
-        
-        estatus = producto.try(:estatus).try(:descripcion)
         
         if (UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Generar Código'))
           boton_gtin_14 = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"GTIN14").html_safe, "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{producto.descripcion}&marca=#{producto.marca.gsub(/‘/, '%27')}&gpc=#{producto.gpc}",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Generar GTIN-14"})
@@ -40,12 +38,10 @@ private
           
         boton_editar = ""
 
-      else
-
-        estatus = producto.try(:estatus).try(:descripcion)
+      else # Empresa ACTIVA
+        
         
         if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3)
-          
           
           base = (producto.id_tipo_gtin == 1) ? 4 : 6  # Para mostrar seleccioando la base del producto cunado se crear GTIN 14
           
@@ -53,9 +49,24 @@ private
 
           descripcion_codificada = producto.descripcion.gsub(/%/, '')
           marca_codificada = producto.marca.gsub(/%/, '')
- 
+        end
+
+        if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Producto')
+          
+          if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3)
+            base = (producto.id_tipo_gtin == 1) ? 4 : 6  # Para mostrar seleccioando la base del producto cunado se crear GTIN 14
+          end
+
           boton_gtin_14 = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"GTIN14").html_safe, "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{descripcion_codificada}&marca=#{marca_codificada}&gpc=#{producto.gpc}",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Generar GTIN-14"})
+
+        else
+          boton_gtin_14 = ""
+        end
+
+        if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Producto')
           boton_editar = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"Editar").html_safe, "/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar Producto"})
+        else
+          boton_editar = ""
         end
 
       end
@@ -65,79 +76,19 @@ private
       fecha_modificacion = ""
       fecha_modificacion =  producto.fecha_ultima_modificacion.strftime("%Y-%m-%d") if (producto.fecha_ultima_modificacion)
       
-      if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Producto') # SI tiene el pricilegio se le muestra el boton de generar GTIN 14
+      [ 
+       producto.try(:tipo_gtin).try(:tipo),
+       producto.gtin,
+       producto.descripcion,
+       producto.marca,
+       producto.try(:estatus).try(:descripcion),
+       producto.codigo_prod,
+       fecha,
+       fecha_modificacion,
+       boton_gtin_14,
+       boton_editar
+      ]
 
-        if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3)
-         base = (producto.id_tipo_gtin == 1) ? 4 : 6  # Para mostrar seleccioando la base del producto cunado se crear GTIN 14
-         
-          [ 
-           producto.try(:tipo_gtin).try(:tipo),
-           producto.gtin,
-           producto.descripcion,
-           producto.marca,
-           estatus,
-           producto.codigo_prod,
-           fecha,
-           fecha_modificacion,
-           boton_gtin_14,
-           boton_editar
-
-          ]
-
-        else
-
-          [ 
-
-           producto.try(:tipo_gtin).try(:tipo),
-           producto.gtin,
-           producto.descripcion,
-           producto.marca,
-           estatus,
-           producto.codigo_prod,
-           fecha,
-           fecha_modificacion,
-           "",
-           boton_editar
-          ]
-
-       end
-
-      else # NO tiene el privilegio de crear producto no se le muestra el boton para generar GTIN 14
-
-         if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3)
-         base = (producto.id_tipo_gtin == 1) ? 4 : 6  # Para mostrar seleccioando la base del producto cunado se crear GTIN 14
-         
-          [ 
-           producto.try(:tipo_gtin).try(:tipo),
-           producto.gtin,
-           producto.descripcion,
-           producto.marca,
-           estatus,
-           producto.codigo_prod,
-           fecha,
-           fecha_modificacion
-           
-          ]
-
-        else
-
-          [ 
-
-           producto.try(:tipo_gtin).try(:tipo),
-           producto.gtin,
-           producto.descripcion,
-           producto.marca,
-           estatus,
-           producto.codigo_prod,
-           fecha,
-           fecha_modificacion
-         
-          ]
-
-       end
-
-      end
-      
     end
 
   end

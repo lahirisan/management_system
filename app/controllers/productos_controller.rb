@@ -68,6 +68,7 @@ class ProductosController < ApplicationController
                     
                     else
 
+                      
                       if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Producto')
 
                         render json: ProductosDatatable.new(view_context) 
