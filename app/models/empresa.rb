@@ -400,7 +400,7 @@
   
   eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", empresa.prefijo])
   Empresa.registrar_historico_eliminada(eliminada) if eliminada # Se esta utilizando un prefijo de empresa eliminada
-  Gln.generar_legal(empresa.prefijo.to_s) 
+  Gln.generar_legal(empresa.prefijo.to_s) if empresa_registrada.id_tipo_usuario == 1 # SOlo LAs empresas de Tipo Usuario registran GLN
 
  end
 
