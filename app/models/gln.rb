@@ -48,17 +48,12 @@ class Gln < ActiveRecord::Base
   digito_verificacion = Producto.calcular_digito_verificacion(gln_generado.to_i,"GTIN-13")
   gln = gln_generado + digito_verificacion.to_s
 
-
-  tipo_gln = TipoGln.find(:first, :conditions => ["nombre = ?", "Legal"])
-  estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?","Activo", "GLN"])
-  
-  
   gln_legal = Gln.new
   gln_legal.gln = gln
-  gln_legal.id_tipo_gln = tipo_gln.id
+  gln_legal.id_tipo_gln = 1 # GLN LEgal segun tabla tipo_gln
   gln_legal.codigo_localizacion = "90001"
   gln_legal.descripcion = "GLN Legal"
-  gln_legal.id_estatus = estatus.id
+  gln_legal.id_estatus = 9 # Estatus GLN Activo segun tabla Estatus
   gln_legal.fecha_asignacion = Time.now
   gln_legal.prefijo = prefijo_empresa
   gln_legal.save

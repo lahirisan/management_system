@@ -187,16 +187,10 @@ class EmpresasController < ApplicationController
     end
   end
 
-  # GET /empresas/new
-  # GET /empresas/new.json
-  def new
-
-
-     # la creacion de empresa es por empresa_registrada_controller
-  end
-
+ 
   # GET /empresas/1/edit
   def edit
+    
     @opciones = ['J', 'G', 'E', 'V']
     @empresa = Empresa.find(params[:id])
     
