@@ -11,6 +11,7 @@ class EmpresasController < ApplicationController
 
     respond_to do |format|
       format.html{
+
                   
                   if params[:activacion]
                     render :template =>'/empresas/activacion.html.haml' 

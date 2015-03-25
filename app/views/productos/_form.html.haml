@@ -28,15 +28,19 @@
             -else
               =f.hidden_field :id_tipo_gtin, :value => "#{@producto.id_tipo_gtin}"
               =text_field_tag "tipo_gtin", "#{@producto.tipo_gtin.tipo}", :class => "campo_readonly", :readonly => :true
-        %tr
-          %td
-            Tipo de Creación
-          %td
-            Manual
-            =radio_button_tag 'tipo_creacion', 'manual'
-            Automático
-            =radio_button_tag 'tipo_creacion', 'automatica'
-          %td
+        
+
+        
+        - if params[:generar_gtin_14].nil? and params[:action] == 'new'
+          %tr
+            %td
+              Tipo de Creación
+            %td
+              Manual
+              =radio_button_tag 'tipo_creacion', 'manual'
+              Automático
+              =radio_button_tag 'tipo_creacion', 'automatica'
+            %td
             
             
         %tr
