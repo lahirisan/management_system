@@ -23,7 +23,10 @@
 					=session[:perfil]
 			%br
 			%label.rol
-				=session[:gerencia]
+				-if session[:gerencia] == "Presidencia Ejecutiva - Gerencia General"
+					="Presidencia Ejecutiva - Gerencia Gral."
+				-else
+					=session[:gerencia]
 			%br
 			%label.rol
 				=session[:cargo]
@@ -112,11 +115,15 @@
 						%span.ui-icon.ui-icon-circle-plus
 						&nbsp;Registrar Producto
 
-				- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Eliminar Producto') and params[:empresa_retirada].nil?  and params[:insolvente].nil?
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Eliminar Producto') and params[:empresa_retirada].nil?  and params[:insolvente].nil? and params[:empresa_id]
 					
 					%a.opcion{:href => "/empresas/#{request.fullpath.split('/')[2]}/productos?eliminar=true", :title => "ELiminar Productos", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-circle-close
 						&nbsp;Eliminar Productos
+
+				- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia],'Transferir GTIN-8') and params[:empresa_id].nil?
+				
+					=link_to(( content_tag(:span, '',:class => 'ui-icon.ui-icon-transfer-e-w')+'Transferir GTIN-8').html_safe, "#{productos_path}?transferencia=true", {:class => "ui-state-default ui-corner-all botones_menu boton_transferir_productos", :title => "Transferencia de Productos GTIN-8"})
 				
 			
 			- if params[:controller] == 'glns' 

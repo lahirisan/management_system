@@ -454,13 +454,12 @@ class Producto < ActiveRecord::Base
 
   def self.transferir_gtin(productos, empresa)
 
-    ## Busqueda en batches esat optimizada no carga registro a registro en memoria sino por bloques de 1000
-    #http://www.webascender.com/Blog/ID/553/Rails-Tips-for-Speeding-up-ActiveRecord-Queries#.VQiP9tSSzaV
+    Producto.where("gtin in (?)", productos.collect{|producto| producto}).update_all("prefijo = #{empresa[0]}")
     
-    Producto.where("gtin in (?)", productos.collect{|producto| producto}).find_each{|producto| producto.prefijo = empresa[0].to_i; producto.save}
-
-
-
+    # Se transfiere los GTIN-14 asociados
+    productos_ = Producto.find(productos)
+    productos_.each{|producto| Producto.where("prefijo = producto.prefijo and codigo_prod = #{producto.codigo_prod} and id_tipo_gtin = 4").update_all("prefijo = #{empresa[0]}")}
+    
   end
 
 
