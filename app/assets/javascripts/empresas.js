@@ -380,6 +380,7 @@
 
         });
 
+        
         // Botones  exportar  al listado de retirar Empresa
 
         $('body').on('click', '.retirar_empresa_exportar', function() {
@@ -459,6 +460,7 @@
         });
 
 
+      
 
 
         function isValidEmailAddress(emailAddress) {
@@ -474,11 +476,13 @@
         
        
         
-        $('input').keydown(function(evt) {
+        $('input').keypress(function(event) { 
            
              if (($(this).attr('class') != 'login') && ($(this).attr('class') != 'email') && ($(this).attr('class') != 'clave'))
             
-                $(this).css("text-transform", "uppercase");
+               $(this).css("text-transform", "uppercase");
+            
+
         
          });
 
@@ -551,9 +555,13 @@
 
         });
 
+
+         $('body').on('click', '.codificable', function() {
+           
+           alert('Estimado Usuario, la Empresa que ha seleccionada presenta estatus DEUDOR. Tenga en cuenta esta información si va generar códigos para Productos ó GLN.');
+
+        });
        
 
-       
-
-    })   
+    });   
 
