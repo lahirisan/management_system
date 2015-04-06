@@ -17,18 +17,11 @@ class EmpresasEliminadasDatatable < AjaxDatatablesRails
   end
 
 private
- # link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa, :eliminados => true),{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
- #        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe,empresa_productos_path(empresa, :eliminados => true, :empresas_eliminadas => true),{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),
- #        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe, "/empresas/#{empresa.prefijo}/empresa_servicios?eliminados=true",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios asociados a la empresa #{empresa.nombre_empresa}"}),
- #        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa, :eliminados => true),{:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"}),
+ 
   def data
 
     empresas.map do |empresa|
       
-      fecha = ""
-      #fecha_eliminacion = empresa.try(:empresa_elim_detalle).try(:fecha_eliminacion) 
-      #fecha_eliminacion = (fecha_eliminacion) ? fecha_eliminacion.strftime("%Y-%m-%d") : ""
-
         [ 
         empresa.prefijo,
         empresa.nombre_empresa,
@@ -43,8 +36,8 @@ private
         empresa.contacto_tlf1,
         empresa.contacto_email1,
         empresa.motivo_retiro.try(:descripcion),
-        empresa.fecha_retiro,
-        empresa.fecha_eliminacion
+        (empresa.fecha_retiro) ? empresa.fecha_retiro.strftime("%Y-%m-%d") : "",
+        (empresa.fecha_eliminacion) ? empresa.fecha_eliminacion.strftime("%Y-%m-%d") : ""
         
       ]
   

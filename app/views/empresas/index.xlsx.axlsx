@@ -1,3 +1,4 @@
+
 if params[:prefijo].present? # Filtro de busqueda prefijo
   @empresas = @empresas.where("prefijo like :search", search: "%#{params[:prefijo]}%")
 end
@@ -11,6 +12,8 @@ end
 if params[:ciudad].present?
   @empresas = @empresas.where("ciudad.nombre like :search", search: "%#{params[:ciudad]}%")
 end
+
+
 if params[:rif].present?
   @empresas = @empresas.where("empresa.rif like :search", search: "%#{params[:rif]}%")
 end
@@ -34,41 +37,52 @@ if params[:sub_estatus].present?
 
 end
 
-xlsx_package = Axlsx::Package.new 
-wb = xlsx_package.workbook
 
-wb.add_worksheet(name: "GS1") do |sheet|
-	wb.styles do |s|
-		
-		black_cell = s.add_style :i => true, :bg_color => "F8F8F8", :fg_color => "00", :sz => 12, :alignment => { :horizontal=> :center }
-		black_cell2 = s.add_style   :border => { :style => :thin, :color => "00" }, :i => true,:fg_color => "00", :sz => 8, :alignment => { :horizontal=> :left }
-		tomas = s.add_style  :sz => 12, :alignment => { :horizontal=> :center }
 
-			sheet.add_row ['Prefijo', 'Nombre Empresa', 'Dirección Fiscal', 'Fecha Inscripción', 'Fecha Activación', 'Fecha Reactivación', 'RIF', 'Tipo Usuario', 'Estatus', 'Sub Estatus',  'Ventas Brutas Anuales', 'Aporte Mantenimiento',  'Categoria', 'Division', 'Grupo', 'Clase', 'Rep Legal', 'Correo 1', 'Correo 2', 'Teléfono 1', 'Teléfono 2', 'Teléfono 3', 'Fax', 'Teléfono1 EAN', 'Teléfono2 EAN', 'Teléfono3 EAN', 'Fax EAN', 'Correo1 EAN', 'Correo2 EAN', 'Teléfono1 Sincronet', 'Teléfono2 Sincronet', 'Teléfono3 Sincronet', 'Fax Sincronet', 'Correo1 Sincronet', 'Correo2 Sincronet', 'Teléfono1 RRHH', 'Teléfono2 RRHH', 'Teléfono3 RRHH', 'Fax RRHH', 'Correo1 RRHH', 'Correo2 RRHH', 'Teléfono1 Mercadeo' , 'Teléfono2 Mercadeo', 'Teléfono3 Mercadeo', 'Fax Mercadeo', 'Correo1 Mercadeo', 'Correo2 Mercadeo'], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
-			@empresas.each do |empresa|
-				
-      			fecha_activacion =   (empresa.fecha_activacion) ?  empresa.fecha_activacion.strftime("%Y-%m-%d") :  ""
-      			fecha_inscripcion =  (empresa.fecha_inscripcion) ? empresa.fecha_inscripcion.strftime("%Y-%m-%d") : ""
-      			fecha_reactivacion = (empresa.fecha_reactivacion) ? empresa.fecha_reactivacion.strftime("%Y-%m-%d"): ""
-      			rif = (empresa.rif_completo) ? empresa.rif_completo :  empresa.rif
+	xlsx_package = Axlsx::Package.new 
+	wb = xlsx_package.workbook
 
-				if empresa.solv == 2
-					solvencia =  "SOLVENTE"
-				else
-					solvencia = "DEUDOR"
-				end
-				
-				if empresa.id_tipo_usuario == '1'
-					empresa_tipo_usuario = "USUARIO"
-				elsif empresa.id_tipo_usuario == '2'
-					empresa_tipo_usuario = "NO USUARIO"
-				else
-					empresa_tipo_usuario = ""
-				end
-			 
-				sheet.add_row [empresa.prefijo,empresa.try(:nombre_empresa),empresa.try(:direccion_empresa), fecha_inscripcion, fecha_activacion, fecha_reactivacion, rif, empresa_tipo_usuario, empresa.try(:estatus_), solvencia,  empresa.try(:ventas_brutas_anuales), empresa.try(:aporte_mantenimiento).to_f, empresa.try(:division), empresa.try(:categoria), empresa.try(:grupo), empresa.try(:clase),  empresa.try(:rep_legal), empresa.try(:contacto_email1), empresa.try(:contacto_email2), Empresa.telefono1(empresa), Empresa.telefono2(empresa), Empresa.telefono3(empresa), Empresa.fax(empresa), Empresa.telefono1_ean(empresa), Empresa.telefono2_ean(empresa), Empresa.telefono3_ean(empresa), Empresa.fax_ean(empresa), empresa.try(:email1_ean), empresa.try(:email2_ean), Empresa.telefono1_edi(empresa), Empresa.telefono2_edi(empresa), Empresa.telefono3_edi(empresa), Empresa.fax_edi(empresa), empresa.try(:email1_edi), empresa.try(:email2_edi), Empresa.telefono1_recursos(empresa), Empresa.telefono2_recursos(empresa), Empresa.telefono3_recursos(empresa), Empresa.fax_recursos(empresa), empresa.try(:email1_recursos), empresa.try(:email2_recursos), Empresa.telefono1_mercadeo(empresa), Empresa.telefono2_mercadeo(empresa), Empresa.telefono3_mercadeo(empresa), Empresa.fax_mercadeo(empresa), empresa.try(:email1_mercadeo), empresa.try(:email2_mercadeo)],  :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]
-				# sheet.column_widths 13,80,20,140,40,20,20,25,50,50,50, 50, 20, 20,20,20, 40,40,40,40, 30,30,30,30,30,30,30,30 # Ancho de las columnas
+	wb.add_worksheet(name: "GS1") do |sheet|
+		wb.styles do |s|
+			
+			black_cell = s.add_style :i => true, :bg_color => "F8F8F8", :fg_color => "00", :sz => 12, :alignment => { :horizontal=> :center }
+			black_cell2 = s.add_style   :border => { :style => :thin, :color => "00" }, :i => true,:fg_color => "00", :sz => 8, :alignment => { :horizontal=> :left }
+			tomas = s.add_style  :sz => 12, :alignment => { :horizontal=> :center }
 
-			end
-	end 
-end
+				sheet.add_row ['Prefijo', 'Nombre Empresa', 'Dirección Fiscal', 'Fecha Inscripción', 'Fecha Activación', 'Fecha Reactivación', 'RIF', 'Tipo Usuario', 'Estatus', 'Sub Estatus', 'Ciudad',  'Ventas Brutas Anuales', 'Aporte Mantenimiento',  'Categoria', 'Division', 'Grupo', 'Clase', 'Rep Legal', 'Correo 1', 'Correo 2', 'Teléfono 1', 'Teléfono 2', 'Teléfono 3', 'Fax', 'Teléfono1 EAN', 'Teléfono2 EAN', 'Teléfono3 EAN', 'Fax EAN', 'Correo1 EAN', 'Correo2 EAN', 'Teléfono1 Sincronet', 'Teléfono2 Sincronet', 'Teléfono3 Sincronet', 'Fax Sincronet', 'Correo1 Sincronet', 'Correo2 Sincronet', 'Teléfono1 RRHH', 'Teléfono2 RRHH', 'Teléfono3 RRHH', 'Fax RRHH', 'Correo1 RRHH', 'Correo2 RRHH', 'Teléfono1 Mercadeo' , 'Teléfono2 Mercadeo', 'Teléfono3 Mercadeo', 'Fax Mercadeo', 'Correo1 Mercadeo', 'Correo2 Mercadeo'], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
+				@empresas.each do |empresa|
+					
+	      			fecha_activacion =   (empresa.fecha_activacion) ?  empresa.fecha_activacion.strftime("%Y-%m-%d") :  ""
+	      			fecha_inscripcion =  (empresa.fecha_inscripcion) ? empresa.fecha_inscripcion.strftime("%Y-%m-%d") : ""
+	      			fecha_reactivacion = (empresa.fecha_reactivacion) ? empresa.fecha_reactivacion.strftime("%Y-%m-%d"): ""
+	      			rif = (empresa.rif_completo) ? empresa.rif_completo :  empresa.rif
+
+					if empresa.solv == 2
+						solvencia =  "SOLVENTE"
+					else
+						solvencia = "DEUDOR"
+					end
+
+					
+					if empresa.id_tipo_usuario == '1'
+
+					 tipo_usuario_empresa = "USUARIO"
+					elsif empresa.id_tipo_usuario == '2'
+						tipo_usuario_empresa = "NO USUARIO"
+					else
+						tipo_usuario_empresa = ""
+					end
+
+
+				 
+					sheet.add_row [empresa.prefijo,empresa.try(:nombre_empresa),empresa.try(:direccion_empresa), fecha_inscripcion, fecha_activacion, fecha_reactivacion, rif, tipo_usuario_empresa, empresa.try(:estatus_), solvencia, empresa.ciudad_, empresa.try(:ventas_brutas_anuales), empresa.try(:aporte_mantenimiento).to_f, empresa.try(:division), empresa.try(:categoria), empresa.try(:grupo), empresa.try(:clase),  empresa.try(:rep_legal), empresa.try(:contacto_email1), empresa.try(:contacto_email2), Empresa.telefono1(empresa), Empresa.telefono2(empresa), Empresa.telefono3(empresa), Empresa.fax(empresa), Empresa.telefono1_ean(empresa), Empresa.telefono2_ean(empresa), Empresa.telefono3_ean(empresa), Empresa.fax_ean(empresa), empresa.try(:email1_ean), empresa.try(:email2_ean), Empresa.telefono1_edi(empresa), Empresa.telefono2_edi(empresa), Empresa.telefono3_edi(empresa), Empresa.fax_edi(empresa), empresa.try(:email1_edi), empresa.try(:email2_edi), Empresa.telefono1_recursos(empresa), Empresa.telefono2_recursos(empresa), Empresa.telefono3_recursos(empresa), Empresa.fax_recursos(empresa), empresa.try(:email1_recursos), empresa.try(:email2_recursos), Empresa.telefono1_mercadeo(empresa), Empresa.telefono2_mercadeo(empresa), Empresa.telefono3_mercadeo(empresa), Empresa.fax_mercadeo(empresa), empresa.try(:email1_mercadeo), empresa.try(:email2_mercadeo)],  :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]
+				# 	#sheet.column_widths 13,80,20,140,40,20,20,25,50,50,50, 50, 20, 20,20,20, 40,40,40,40, 30,30,30,30,30,30,30,30 # Ancho de las columnas
+
+				 end
+		end
+
+
+	end
+
+
+
