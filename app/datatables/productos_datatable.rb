@@ -1,6 +1,6 @@
 #encoding: UTF-8
-class ProductosDatatable < AjaxDatatablesRails
-  delegate :params, :h, :link_to,  to: :@view
+class ProductosDatatable
+  delegate :params, :h, :link_to, :content_tag, to: :@view
 
    def initialize(view)
     
@@ -30,7 +30,8 @@ private
       
       elsif params[:insolvente] == 'true'
         
-        if (UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Generar Código'))
+        
+        if (UsuariosAlcance.verificar_alcance(params[:perfil], params[:gerencia], 'Generar Código'))
           boton_gtin_14 = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"GTIN14").html_safe, "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{producto.descripcion}&marca=#{producto.marca.gsub(/‘/, '%27')}&gpc=#{producto.gpc}",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Generar GTIN-14"})
         else
           boton_gtin_14 = ""
@@ -39,9 +40,9 @@ private
         boton_editar = ""
 
       else # Empresa ACTIVA
-        
        
-        if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Registrar Producto')
+
+        if UsuariosAlcance.verificar_alcance(params[:perfil], params[:gerencia], 'Registrar Producto')
           
           if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3) ## Solo se muestra el boton Generar GTIN14 si el producto es tipoGTIN 8 o tipoGTIN13
             base = (producto.id_tipo_gtin == 1) ? 4 : 6  # Para mostrar seleccioando la base del producto cunado se crear GTIN 14
@@ -60,7 +61,7 @@ private
           boton_gtin_14 = ""
         end
 
-        if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Producto')
+        if UsuariosAlcance.verificar_alcance(params[:perfil], params[:gerencia], 'Modificar Producto')
           boton_editar = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"Editar").html_safe, "/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar Producto"})
         else
           boton_editar = ""

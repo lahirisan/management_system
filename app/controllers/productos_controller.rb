@@ -33,11 +33,11 @@ class ProductosController < ApplicationController
 
                       # Las empresas retirada no pueden generar GTIN14 ni editar productos
                       if params[:empresa_retirada]
-                        @ruta = "/empresas/#{params[:empresa_id]}/productos.json?empresa_retirada=true"
+                        @ruta = "/empresas/#{params[:empresa_id]}/productos.json?empresa_retirada=true&perfil=#{session[:perfil]}&gerencia=#{session[:gerencia]}"
                       elsif params[:insolvente]
-                        @ruta = "/empresas/#{params[:empresa_id]}/productos.json?insolvente=true"
+                        @ruta = "/empresas/#{params[:empresa_id]}/productos.json?insolvente=true&perfil=#{session[:perfil]}&gerencia=#{session[:gerencia]}"
                       else
-                        @ruta = "/empresas/#{params[:empresa_id]}/productos.json" 
+                        @ruta = "/empresas/#{params[:empresa_id]}/productos.json?&perfil=#{session[:perfil]}&gerencia=#{session[:gerencia]}" 
                       end
                       
                       render :template =>'/productos/index.html.haml'
@@ -60,11 +60,8 @@ class ProductosController < ApplicationController
                       render json: ProductosGtin8Datatable.new(view_context)
                     
                     elsif params[:transferir]
-
-                      
                       
                       render json: ProductosTransferirDatatable.new(view_context)
-                      
                     
                     else
 
@@ -194,7 +191,7 @@ class ProductosController < ApplicationController
     
 
     @producto = Producto.find(:first, :conditions => ["gtin like ?", params[:id]])
-    params[:producto][:fecha_ultima_modificacion] = Time.now
+    params[:producto][:fecha_ultima_modificacion] = Time.now if 
 
     respond_to do |format|
       if @producto.update_attributes(params[:producto])
@@ -209,12 +206,10 @@ class ProductosController < ApplicationController
 
     if params[:transferir] # Esta opcion se utiliza para transferir gtin de una a empresa a otra. es uin campo iculto dentro del formulario transferir_gtin8  en productos
 
-
       Producto.transferir_gtin(params[:transferir_gtin8], params[:empresa_transferir_gtin])
-
-    else
-
-
+    
+    elsif params[:eliminar]
+     
       productos = Producto.eliminar(params)
       string_gtin = ""
 

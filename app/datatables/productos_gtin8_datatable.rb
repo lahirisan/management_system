@@ -1,5 +1,5 @@
 #encoding: UTF-8
-class ProductosGtin8Datatable < AjaxDatatablesRails
+class ProductosGtin8Datatable 
   delegate :params, :h, :link_to,  to: :@view
 
    def initialize(view)
@@ -23,10 +23,8 @@ private
 
     productos.map do |producto|
      
-      fecha = ""
-      fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
-      fecha_modificacion = ""
-      fecha_modificacion =  producto.fecha_ultima_modificacion.strftime("%Y-%m-%d") if (producto.fecha_ultima_modificacion)
+      
+      
       
       [ 
        producto.empresa.nombre_empresa,
@@ -37,8 +35,8 @@ private
        producto.marca,
        producto.try(:estatus).try(:descripcion  ),
        producto.codigo_prod,
-       fecha,
-       fecha_modificacion,
+       (producto.fecha_creacion) ? producto.fecha_creacion.strftime("%Y-%m-%d") : "",
+       (producto.fecha_ultima_modificacion) ?  producto.fecha_ultima_modificacion.strftime("%Y-%m-%d") : ""
       
 
       ]

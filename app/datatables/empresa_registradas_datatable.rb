@@ -1,6 +1,6 @@
 #encoding: UTF-8
-class EmpresaRegistradasDatatable < AjaxDatatablesRails
-  delegate :params, :h, :link_to,  to: :@view
+class EmpresaRegistradasDatatable 
+  delegate :params, :h, :link_to, :content_tag, to: :@view
 
    def initialize(view)
     @view = view
@@ -52,7 +52,9 @@ private
 
   def fetch_empresas
 
+
     if params[:activar_empresa] 
+      
       empresas = EmpresaRegistrada.where("rif IS NOT NULL and sub_estatus.descripcion = 'SOLVENTE'").includes(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).order("#{sort_column} #{sort_direction}") 
     else
       empresas = EmpresaRegistrada.where("rif IS NOT NULL").includes(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).order("#{sort_column} #{sort_direction}") 

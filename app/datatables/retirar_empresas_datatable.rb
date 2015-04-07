@@ -1,5 +1,5 @@
-class RetirarEmpresasDatatable < AjaxDatatablesRails
-  delegate :params, :h,  :link_to, :check_box_tag, :try, :select_tag, :options_from_collection_for_select,  to: :@view
+class RetirarEmpresasDatatable 
+  delegate :params, :h,  :link_to, :check_box_tag, :content_tag, :empresa_path, :select_tag, :options_from_collection_for_select,   to: :@view
 
    def initialize(view)
     @view = view
@@ -22,45 +22,22 @@ private
 
     empresas.map do |empresa|
       
-      fecha = ""
-      fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") if (empresa.fecha_activacion)
-
-      if empresa.solv == 2
         [ 
           check_box_tag("retirar_empresas[]", "#{empresa.id}", false, :class=>"retirar_empresa"),
           empresa.prefijo,
           empresa.nombre_empresa,
-          fecha,
+          (empresa.fecha_activacion) ? empresa.fecha_activacion.strftime("%Y-%m-%d") : "",
           empresa.ciudad_,
           empresa.rif,
           empresa.estatus_.upcase,
-          "SOLVENTE",
+          (empresa.solv == 2) ? "SOLVENTE" : "DEUDOR",
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa, :retirar => true), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, "/empresas/#{empresa.prefijo}/productos", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe,  "/empresas/#{empresa.prefijo}/empresa_servicios",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios asociados a la empresa #{empresa.nombre_empresa}"}),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, "/empresas/#{empresa.prefijo}/glns",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociado a la empresa #{empresa.nombre_empresa}"}),
           select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"), :id => "#{empresa.prefijo}motivo_ret")
         ]
-
-      else
-
-        [ 
-          check_box_tag("retirar_empresas[]", "#{empresa.id}", false, :class=>"retirar_empresa"),
-          empresa.prefijo,
-          empresa.nombre_empresa,
-          fecha,
-          empresa.ciudad_,
-          empresa.rif,
-          empresa.estatus_.upcase,
-          "DEUDOR",
-          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa, :retirar => true), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
-          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, "/empresas/#{empresa.prefijo}/productos", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),
-          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe,  "/empresas/#{empresa.prefijo}/empresa_servicios",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios asociados a la empresa #{empresa.nombre_empresa}"}),
-          link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, "/empresas/#{empresa.prefijo}/glns",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociado a la empresa #{empresa.nombre_empresa}"}),
-          select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"), :id => "#{empresa.prefijo}motivo_ret")
-        ]
-      end
-  
+      
     end
 
   end

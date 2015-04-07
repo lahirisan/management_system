@@ -1,5 +1,5 @@
 #encoding: UTF-8
-class ProductosTransferirDatatable < AjaxDatatablesRails
+class ProductosTransferirDatatable 
   delegate :params, :h, :check_box_tag,  :link_to,  to: :@view
 
    def initialize(view)
@@ -22,11 +22,6 @@ private
   def data
 
     productos.map do |producto|
-     
-      fecha = ""
-      fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
-      fecha_modificacion = ""
-      fecha_modificacion =  producto.fecha_ultima_modificacion.strftime("%Y-%m-%d") if (producto.fecha_ultima_modificacion)
       
       [ 
        check_box_tag("transferir_gtin8[]", "#{producto.gtin.strip}", false, :class => "transferir_producto_seleccionado"),
@@ -38,8 +33,8 @@ private
        producto.marca,
        producto.try(:estatus).try(:descripcion),
        producto.codigo_prod,
-       fecha,
-       fecha_modificacion,
+       (producto.fecha_creacion) ? producto.fecha_creacion.strftime("%Y-%m-%d") : "",
+       (producto.fecha_ultima_modificacion) ? producto.fecha_ultima_modificacion.strftime("%Y-%m-%d") : "",
       
 
       ]

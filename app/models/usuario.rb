@@ -11,7 +11,8 @@ class Usuario < ActiveRecord::Base
   belongs_to :gerencia, :foreign_key => "id_gerencia"
 
   def self.authenticate(usuario, password)
-    user = find_by_username(usuario)
+    
+    user = Usuario.find_by(username: usuario)
     
     if user && user.password == BCrypt::Engine.hash_secret(password, user.password_salt)
       user

@@ -1,5 +1,5 @@
-class EliminarEmpresasDatatable < AjaxDatatablesRails
-  delegate :params, :h,  :link_to, :check_box_tag, :try, :select_tag, :options_from_collection_for_select,  to: :@view
+class EliminarEmpresasDatatable 
+  delegate :params, :h,  :link_to, :check_box_tag, :content_tag, :empresa_path, :empresa_productos_path, :empresa_glns_path,   to: :@view
 
    def initialize(view)
     @view = view
@@ -22,18 +22,14 @@ private
 
     empresas.map do |empresa|
       
-      fecha = ""
-      fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
-      fecha_retiro = empresa.try(:fecha_retiro).nil? ? '' : empresa.fecha_retiro.strftime("%Y-%m-%d")
-
         [ 
         check_box_tag("eliminar_empresas[]", "#{empresa.id}", false, :class => "eliminar_empresa"),
         empresa.prefijo,
         empresa.nombre_empresa,
-        fecha,
+        (empresa.fecha_inscripcion) ? empresa.fecha_inscripcion.strftime("%Y-%m-%d") : "",
         empresa.ciudad.nombre,
         empresa.rif,
-        fecha_retiro,
+        (empresa.fecha_retiro) ? empresa.fecha_retiro.strftime("%Y-%m-%d") : "",
         empresa.try(:motivo_retiro).try(:descripcion),
         link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa, :retirar => true),{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
         link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, empresa_productos_path(empresa, :empresa_retirada => "true"),{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),

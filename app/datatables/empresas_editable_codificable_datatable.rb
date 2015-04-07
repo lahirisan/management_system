@@ -1,6 +1,6 @@
 #encoding: UTF-8
-class EmpresasEditableCodificableDatatable < AjaxDatatablesRails
-  delegate :params, :h, :link_to,  to: :@view
+class EmpresasEditableCodificableDatatable 
+  delegate :params, :h, :link_to, :content_tag, :empresa_productos_path, :empresa_glns_path, :empresa_path, :edit_empresa_path, :empresa_etiqueta_path,  to: :@view
 
    def initialize(view)
     @view = view

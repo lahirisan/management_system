@@ -16,7 +16,7 @@ class GlnsController < ApplicationController
           @empresas_retiradas = params[:retirados].nil? ? false : true
           @navegabilidad = "#{@empresa.prefijo} > "+@empresa.nombre_empresa + " > GLN > Listado"
           # para mostrar el estatus de los GLN como retirados si la empresa esta retirada
-          @ruta = (params[:empresa_retirada]) ? "/empresas/#{params[:empresa_id]}/glns.json?empresa_retirada=true" : "/empresas/#{params[:empresa_id]}/glns.json"  
+          @ruta = (params[:empresa_retirada]) ? "/empresas/#{params[:empresa_id]}/glns.json?empresa_retirada=true&perfil=#{session[:perfil]}&gerencia=#{session[:gerencia]}" : "/empresas/#{params[:empresa_id]}/glns.json?perfil=#{session[:perfil]}&gerencia=#{session[:gerencia]}"  
           render :template => '/glns/index.html.haml'
         end
       }

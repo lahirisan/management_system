@@ -1,5 +1,5 @@
-class EmpresasEliminadasDatatable < AjaxDatatablesRails
-  delegate :params, :h,  :link_to, :check_box_tag, :try, :select_tag, :options_from_collection_for_select,  to: :@view
+class EmpresasEliminadasDatatable
+  delegate :params, :h,  :link_to, :check_box_tag,  to: :@view
 
    def initialize(view)
     @view = view
