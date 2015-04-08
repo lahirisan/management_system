@@ -1,20 +1,15 @@
 %section.contexto
   %label.contexto.titulo_contrato
-    -if params[:activar_empresa].nil?
-      =@empresa_registrada.new_record? ? "Registrar Empresa" : "#{@empresa_registrada.nombre_empresa} > Editar Empresa"
-    -else
-      ="#{@empresa_registrada.nombre_empresa} > Activar / Reasignar Prefijo"
+    ="#{@empresa_registrada.nombre_empresa} > Activarasdasd / Reasignar Prefijo"
   
   %br
   %br
   %p.warning=flash[:warning]
-
   
   %section.formulario
   
-  
     %br
-    = form_for(@empresa_registrada, {:url => "/empresa_registradas/update_multiple", :html => {:id => "formulario_crear_empresa"}}) do |f|
+    = form_for(@empresa_registrada, {:html => {:id => "formulario_crear_empresa"}}) do |f|
 
       -if @empresa_registrada.errors.any? 
         #error_explanation
