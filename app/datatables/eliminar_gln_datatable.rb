@@ -1,6 +1,6 @@
 # encoding: UTF-8
-class EliminarGlnDatatable < AjaxDatatablesRails
-  delegate :params, :h, :link_to,  to: :@view
+class EliminarGlnDatatable 
+  delegate :params, :h, :link_to, :content_tag, :check_box_tag,  to: :@view
 
    def initialize(view)
     @view = view

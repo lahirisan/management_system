@@ -6,7 +6,7 @@
     
     /=render 'botones_exportar'
 
-    =form_tag "empresa_registradas/update_multiple", :method => "put", :id => "activar_solvencia" do
+    =form_tag "empresa_registradas/update_multiple", :method => "patch", :id => "activar_solvencia" do
         %table#data_table_empresa_registradas_activar_solvencia.display{:"data-source" => "/empresa_registradas.json?activar_solvencia=true"}
             %thead
                 %tr 

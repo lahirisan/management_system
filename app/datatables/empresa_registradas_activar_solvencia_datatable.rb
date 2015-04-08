@@ -1,6 +1,6 @@
 #encoding: UTF-8
-class EmpresaRegistradasActivarSolvenciaDatatable < AjaxDatatablesRails
-  delegate :params, :h, :link_to,  to: :@view
+class EmpresaRegistradasActivarSolvenciaDatatable 
+  delegate :params, :h, :link_to, :content_tag, :check_box_tag,  to: :@view
 
    def initialize(view)
     @view = view
@@ -22,14 +22,11 @@ private
 
     empresas.map do |empresa|
       
-      fecha = ""
-      fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
-      
       [ 
         check_box_tag("activar_solvencias[]", "#{empresa.id}", false, :class => "activar_solvencia"),
         empresa.rif_completo,
         empresa.nombre_empresa,
-        fecha,
+        (empresa.fecha_inscripcion) ?  empresa.fecha_inscripcion.strftime("%Y-%m-%d") : "",
         empresa.try(:ciudad).try(:nombre),
         empresa.try(:sub_estatus).try(:descripcion),
         empresa.ventas_brutas_anuales,

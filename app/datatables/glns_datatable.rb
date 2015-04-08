@@ -1,5 +1,5 @@
-class GlnsDatatable < AjaxDatatablesRails
-  delegate :params, :h, :link_to,  to: :@view
+class GlnsDatatable 
+  delegate :params, :h, :link_to, :content_tag,   to: :@view
 
    def initialize(view)
     @view = view
@@ -22,7 +22,7 @@ private
 
     glns.map do |empresa_gln|
           
-      if (empresa_gln.try(:tipo_gln).try(:nombre) == 'Legal') or UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar GLN').nil? # GLN legal no se edita , sino tiene el priviligeo no se edita GLN
+      if (empresa_gln.try(:tipo_gln).try(:nombre) == 'Legal') or UsuariosAlcance.verificar_alcance(params[:perfil], params[:gerencia], 'Modificar GLN').nil? # GLN legal no se edita , sino tiene el priviligeo no se edita GLN
         boton_editar = ""
       else
         boton_editar = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,"/empresas/#{params[:empresa_id]}/glns/#{empresa_gln.gln}/edit",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar datos GLN #{empresa_gln.try(:gln)}"})
@@ -52,13 +52,8 @@ private
 
   def fetch_glns
 
-    
     glns = Gln.where("gln.prefijo = ?", params[:empresa_id]).includes(:tipo_gln ,  :estatus, :empresa).order("#{sort_column} #{sort_direction}") 
-
-    
-    
     glns = glns.page(page).per_page(per_page)
-
     
     if params[:sSearch].present? # Filtro de busqueda general
       glns = glns.where("gln like :search or tipo_gln.nombre like :search or gln.codigo_localizacion like :search or gln.descripcion like :search or estatus.descripcion like :search or gln.fecha_asignacion like :search or estados.nombre like :search or municipio.nombre like :search or ciudad.nombre like :search ", search: "%#{params[:sSearch]}%")

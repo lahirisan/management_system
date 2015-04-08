@@ -1,4 +1,4 @@
-class ProductosNotEditableDatatable < AjaxDatatablesRails
+class ProductosNotEditableDatatable 
   delegate :params, :h, :link_to,  to: :@view
 
    def initialize(view)
@@ -21,22 +21,6 @@ private
 
     productos.map do |producto|
       
-      if params[:empresa_retirada] == 'true'
-        estatus = "Retirado"
-      
-      elsif params[:insolvente] == 'true'
-        estatus = producto.try(:estatus).try(:descripcion)
-        
-      else
-
-        estatus = producto.try(:estatus).try(:descripcion)
-
-      end
-
-      fecha = ""
-      fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
-      fecha_modificacion = ""
-      fecha_modificacion =  producto.fecha_ultima_modificacion.strftime("%Y-%m-%d") if (producto.fecha_ultima_modificacion)
       
         [ 
           
@@ -44,10 +28,10 @@ private
           producto.gtin,
           producto.descripcion,
           producto.marca,
-          estatus,
+          producto.try(:estatus).try(:descripcion),
           producto.codigo_prod,
-          fecha,
-          fecha_modificacion
+          (producto.fecha_creacion) ? producto.fecha_creacion.strftime("%Y-%m-%d") : "",
+          (producto.fecha_ultima_modificacion) ?  producto.fecha_ultima_modificacion.strftime("%Y-%m-%d") : ""
         ]
       
     end

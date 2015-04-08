@@ -1,4 +1,4 @@
-class EmpresasSubEstatusDatatable < AjaxDatatablesRails
+class EmpresasSubEstatusDatatable 
   delegate :params, :h, :link_to,  to: :@view
 
    def initialize(view)
@@ -20,16 +20,12 @@ private
   def data
 
     empresas.map do |empresa|
-
       
-      fecha = ""
-      fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
-
         [ 
           check_box_tag("sub_estatus_empresas[]", "#{empresa.prefijo}", false, :class=>"retirar_empresa"),
           empresa.prefijo,
           empresa.nombre_empresa,
-          fecha,
+          (empresa.fecha_inscripcion) ? empresa.fecha_inscripcion.strftime("%Y-%m-%d") : "",
           empresa.ciudad.nombre,
           empresa.rif,
           empresa.estatus.descripcion.upcase,

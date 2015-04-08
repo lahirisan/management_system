@@ -5,7 +5,7 @@
 
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
-    =form_tag "#{empresa_productos_path}/update_multiple", :method => "put", :id => "formulario_eliminar_productos" do
+    =form_tag "#{update_multiple_empresa_productos_path}", :method => "patch", :id => "formulario_eliminar_productos" do
        
         %table.margen_inferior{:border => 1}
             %tr

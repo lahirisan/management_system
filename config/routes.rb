@@ -4,10 +4,13 @@ GS1::Application.routes.draw do
   get "cargo/index"
   get "perfil/index"
   get "logout" => "sessions#destroy", :as => "logout"
+  get "generar_excel/show"
+
+  #match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
 
   resources :empresa_registradas do
     collection do
-      put 'update_multiple', :action => 'update_multiple', :as => 'update_multiple' # La ruta update_multiple para empresas
+      patch 'update_multiple', :action => 'update_multiple', :as => 'update_multiple' # La ruta update_multiple para empresas
     end
   end
 
@@ -18,7 +21,7 @@ GS1::Application.routes.draw do
   resources :productos do #/empresas/1/productos
 
       collection do
-        put 'update_multiple', :action => 'update_multiple', :as => 'update_multiple'  # la ruta update_multiple para productos
+        patch 'update_multiple', :action => 'update_multiple', :as => 'update_multiple'  # la ruta update_multiple para productos
         post 'import', :action => 'import', :as => 'import'  # Ruta para importar archivos
       end
     end
@@ -37,6 +40,7 @@ GS1::Application.routes.draw do
   resources :empresas do  
 
     resources :empresa_servicios
+    
     resources :etiquetas do
       collection do
         get 'exportar', :action => 'exportar', :as => 'exportar' 
@@ -46,7 +50,7 @@ GS1::Application.routes.draw do
     resources :productos do #/empresas/1/productos
 
       collection do
-        put 'update_multiple', :action => 'update_multiple', :as => 'update_multiple'  # la ruta update_multiple para productos
+        patch 'update_multiple', :action => 'update_multiple', :as => 'update_multiple'  # la ruta update_multiple para productos
         post 'import', :action => 'import', :as => 'import'  # Ruta para importar archivos
         
       end
@@ -59,11 +63,12 @@ GS1::Application.routes.draw do
 
     end
 
-    resources :datos_contactos   #/empresas/1/datos_contactos
+      collection do
+        patch 'update_multiple', :action => 'update_multiple', :as => 'update_multiple'  # la ruta update_multiple para productos
+        
+      end
+
     
-    collection do
-      put 'update_multiple', :action => 'update_multiple', :as => 'update_multiple' # La ruta update_multiple para empresas
-    end
   end
   
  

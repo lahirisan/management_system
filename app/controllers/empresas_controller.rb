@@ -44,6 +44,8 @@ class EmpresasController < ApplicationController
       
       format.json { 
 
+              
+
                     if (params[:activacion] == 'true')
                       render json: (ActivacionEmpresasDatatable.new(view_context))
                     elsif (params[:retirar] == 'true')

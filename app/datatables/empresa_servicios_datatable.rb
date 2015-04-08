@@ -1,5 +1,5 @@
-class EmpresaServiciosDatatable < AjaxDatatablesRails
-  delegate :params, :h, :link_to,  to: :@view
+class EmpresaServiciosDatatable 
+  delegate :params, :h, :link_to, :content_tag,  to: :@view
 
    def initialize(view)
     @view = view

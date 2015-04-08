@@ -1,5 +1,5 @@
-class EmpresasTransferirGtinDatatable < AjaxDatatablesRails
-  delegate :params, :h,  :link_to, :check_box_tag, :try, :select_tag,  to: :@view
+class EmpresasTransferirGtinDatatable 
+  delegate :params, :h,  :link_to, :check_box_tag, :content_tag,  :empresa_path,  to: :@view
 
    def initialize(view)
     @view = view
@@ -22,15 +22,13 @@ private
 
     empresas.map do |empresa|
       
-      estatus_administrativo = (empresa.solv == 2) ? "SOLVENTE" : "DEUDOR" # SE VERIFICA EL ESTATUS ADMINISTRATIVO DE LA EMPRESA
-
       [ 
         check_box_tag("empresa_transferir_gtin[]", "#{empresa.prefijo}", false, :class => "transferir_gtin_a_empresa"),
         empresa.prefijo,
         empresa.nombre_empresa,
         empresa.rif_completo,
         empresa.estatus_.upcase,
-        estatus_administrativo,
+        (empresa.solv == 2) ? "SOLVENTE" : "DEUDOR" ,
         link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa, :retirar => true),{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"})
       ]
   

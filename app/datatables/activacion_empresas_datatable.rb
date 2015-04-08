@@ -1,5 +1,5 @@
 # encoding: UTF-8
-class ActivacionEmpresasDatatable < AjaxDatatablesRails
+class ActivacionEmpresasDatatable 
   delegate :params, :h, :link_to, :check_box_tag,   to: :@view
 
    def initialize(view)
@@ -27,6 +27,7 @@ private
       fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
 
       if session[:gerencia] == 'Estandares y Consultoría' or session[:perfil] == 'Administrador' or session[:perfil] == 'Super Usuario'
+        raise "uno".to_yaml
         [ 
         check_box_tag("activar_empresas[]", "#{empresa.id}", false, :class => "activar_empresa"),
         "",
@@ -42,6 +43,7 @@ private
        
         ]
       else
+        raise "dos".to_yaml
 
         [ 
         check_box_tag("activar_empresas[]", "#{empresa.id}", false, :class => "activar_empresa"),

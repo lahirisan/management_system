@@ -1,5 +1,5 @@
- class EliminarProductosDatatable < AjaxDatatablesRails
-  delegate :params, :h, :link_to,  to: :@view
+ class EliminarProductosDatatable 
+  delegate :params, :h, :link_to, :check_box_tag,  to: :@view
 
    def initialize(view)
     @view = view
@@ -21,17 +21,17 @@ private
 
     productos.map do |producto|
       
-        fecha = ""
-        fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
-        [ 
+        
+        
+      [ 
         check_box_tag("eliminar_productos[]", "#{producto.gtin}", false, :class=>"eliminar_producto"),
         producto.try(:tipo_gtin).try(:tipo),
         producto.gtin,
         producto.descripcion,
         producto.marca,
-        'RETIRADO',
+        producto.try(:estatus).try(:nombre),
         producto.codigo_prod,
-        fecha
+        (producto.fecha_creacion) ? producto.fecha_creacion.strftime("%Y-%m-%d") : ""
         
       ]
 

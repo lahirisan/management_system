@@ -11,7 +11,7 @@ class EmpresaRegistrada < ActiveRecord::Base
   belongs_to :tipo_usuario_empresa, :foreign_key => "id_tipo_usuario"
 
   validates :id_tipo_usuario, :nombre_empresa, :fecha_inscripcion,  :id_estado, :id_ciudad, :direccion_empresa, :contacto_tlf1, :contacto_email1,  :rif, :id_clasificacion, :rep_legal, :cargo_rep_legal, :rep_ean, :rep_ean_cargo, :id_estado_ean, :id_ciudad_ean, :id_municipio_ean, :cod_tlf1_ean, :telefono1_ean,   :email1_ean,  :cod_contacto_tlf1,  :ventas_brutas_anuales, :aporte_mantenimiento_bs, :cod_postal_ean,  :presence => {:message => "No puede estar en blanco"}
-  validates :rif, format: { with: /^([0-9]{5,8})-([0-9]{1})$/, :message => "Verifique el RIF siga el formato 12345678-9"} # Validacion al crear
+  validates :rif, format: { with: /^([0-9]{5,8})-([0-9]{1})$/, :multiline => true,  :message => "Verifique el RIF siga el formato 12345678-9"} # Validacion al crear
   validates :rif, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado. Por favor verifique."}, :on => :create
   
 end

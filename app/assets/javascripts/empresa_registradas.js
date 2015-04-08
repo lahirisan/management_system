@@ -479,6 +479,7 @@ $( document ).ready(function() {
                     alert('Estimado usuario, debe seleccionar el Tipo de RIF para poder continuar (J,G,E,V)');
                     return false;
                 }
+           
         });
 
         $('#repetir_correspondencia').click(function(w){
