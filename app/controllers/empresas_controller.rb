@@ -191,7 +191,7 @@ class EmpresasController < ApplicationController
           else
             pdf = CartaAfiliacionPdf.new(@empresa,@gln_legal)
           end
-          send_data pdf.render
+          send_data pdf.render, filename: "#{@empresa.nombre_empresa}", type: "application/pdf", disposition: "inline"
       }
 
     end
