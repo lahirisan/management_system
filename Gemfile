@@ -42,8 +42,10 @@ gem 'jquery-rails'
 # gema para manejar el Excel
 gem 'axlsx_rails'
 
+
 gem 'prawn'
-gem "prawnto_2", :require => "prawnto"
+gem 'prawn-table'
+
 
 gem "roo" # Gema para importar archivos Excel
 

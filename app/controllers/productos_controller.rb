@@ -75,24 +75,15 @@ class ProductosController < ApplicationController
                     end
                   }
       format.pdf  {
-                   
-                    if params[:eliminar]
-                      @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
-                      render '/productos/eliminar_productos.pdf.prawn'
-                    else
-                      
-                      @productos = Producto.where("prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes(:estatus, :tipo_gtin).order("producto.fecha_creacion") 
-                      render '/productos/index.pdf.prawn'
-                    end
+                    
+                    pdf = ProductosPdf.new(@empresa,params[:tipo_gtin], params[:gtin], params[:descripcion], params[:marca], params[:codigo_producto], params[:fecha_creacion], params[:fecha_modificacion])
+                    send_data pdf.render, filename: "#{@empresa.nombre_empresa}_productos", type: "application/pdf", disposition: "inline"
       }
       format.xlsx{
                  
                   if params[:eliminar]
                     @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
                     render '/productos/eliminar_productos.xlsx.axlsx'
-                  elsif params[:eliminados]
-                    @productos = ProductoEliminado.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?", params[:empresa_id], 'Eliminado', 'Producto').includes(:estatus, :tipo_gtin, {:producto_elim_detalle => :sub_estatus}, {:producto_elim_detalle => :motivo_retiro}, {:productos_empresa => :empresa})
-                    render '/productos/productos_eliminados.xlsx.axlsx'
                   else
                     @productos = Producto.where("prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes(:estatus, :tipo_gtin).order("producto.fecha_creacion") 
                     render '/productos/index.xlsx.axlsx'
