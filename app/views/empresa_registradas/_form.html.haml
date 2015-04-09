@@ -14,7 +14,7 @@
   
   
     %br
-    = form_for(@empresa_registrada, {:url => "/empresa_registradas/update_multiple", :html => {:id => "formulario_crear_empresa"}}) do |f|
+    = form_for(@empresa_registrada, {:html => {:id => "formulario_crear_empresa"}}) do |f|
 
       -if @empresa_registrada.errors.any? 
         #error_explanation
