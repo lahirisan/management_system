@@ -11,6 +11,7 @@ GS1::Application.routes.draw do
   resources :empresa_registradas do
     collection do
       patch 'update_multiple', :action => 'update_multiple', :as => 'update_multiple' # La ruta update_multiple para empresas
+      patch 'update', :action => 'update', :as => 'update' # La ruta update
     end
   end
 

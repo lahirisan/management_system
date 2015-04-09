@@ -85,13 +85,6 @@ class EmpresaRegistradasController < ApplicationController
 
 
         end
-
-        if params[:activar_empresa]
-
-          render :template => '/empresa_registradas/_form_activar.html.haml'
-        else
-          render :template => '/empresa_registradas/_form.html.haml'
-        end
         
       }
 
@@ -194,7 +187,7 @@ class EmpresaRegistradasController < ApplicationController
         # Se registra el evento de quien creo la empresa
         Auditoria.registrar_evento(session[:usuario],"empresa_registradas", "Crear", Time.now, "Empresa:#{@empresa_registrada.nombre_empresa} RIF:#{@empresa_registrada.rif}")
 
-        format.html { redirect_to "/empresa_registradas", notice: "Empresa:#{@empresa_registrada.nombre_empresa} RIF:#{@empresa_registrada.rif} registrada satisfactoriamente." }
+        format.html { redirect_to "/empresa_registradas", notice: "Empresa:#{@empresa_registrada.nombre_empresa} RIF:#{@empresa_registrada.rif_completo} registrada satisfactoriamente." }
       else
         format.html { render action: "new" }
       end

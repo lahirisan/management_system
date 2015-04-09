@@ -41,7 +41,7 @@ insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente y Mercadeo', 'Modificar Etiqueta', 'Comercial', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente y Mercadeo', 'Exportar Etiqueta', 'Comercial', getdate(), getdate())
 
-
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Ventas / Rel. Inst. / At. Cliente', 'Registrar Empresa', 'Comercial', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Ventas / Rel. Inst. / At. Cliente', 'Empresas No Activas', 'Comercial', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Ventas / Rel. Inst. / At. Cliente', 'Modificar Empresa', 'Comercial', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Ventas / Rel. Inst. / At. Cliente', 'Exportar Empresa', 'Comercial', getdate(), getdate())
