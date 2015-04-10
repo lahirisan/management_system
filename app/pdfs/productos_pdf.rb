@@ -1,7 +1,7 @@
  #encoding: UTF-8
 class ProductosPdf < Prawn::Document	
 	
-	def initialize(empresa, tipo_gtin, gtin, descripcion,marca,codigo_producto,fecha_creacion,fecha_modificacion)
+	def initialize(empresa, tipo_gtin, gtin, descripcion,marca)
 		
 		super(:top_margin => 10, :page_layout => :portrait)
 
@@ -14,15 +14,12 @@ class ProductosPdf < Prawn::Document
 		productos = productos.where("producto.gtin like :search", search: "%#{gtin}%" ) if [:gtin] != ''
 		productos = productos.where("producto.descripcion like :search", search: "%#{descripcion}%" ) if descripcion != ''
 		productos = productos.where("producto.marca like :search", search: "%#{marca}%" ) if marca != ''
-		productos = productos.where("producto.codigo_prod like :search", search: "%#{codigo_producto}%" ) if codigo_producto != ''
-		productos = productos.where("CONVERT(varchar(255),  producto.fecha_creacion ,126) like '%#{fecha_creacion}%'") if fecha_creacion != ''
-		productos = productos.where("CONVERT(varchar(255),  producto.fecha_ultima_modificacion ,126) like '%#{fecha_modificacion}%'") if fecha_modificacion != ''
-	
 		
-		productos_arreglo = [["MARCA", "DESCRIPCION", "GTIN", "TIPO GTIN", "CODIGO", "FECHA CREACION", "ESTATUS"]]
+		
+		productos_arreglo = [["MARCA", "DESCRIPCION", "GTIN", "TIPO GTIN"]]
 
 		productos.each do |producto| 
-		  productos_arreglo << [ producto.marca, producto.descripcion, producto.gtin, producto.try(:tipo_gtin).try(:tipo), producto.codigo_prod, ((producto.fecha_creacion) ? producto.fecha_creacion.strftime("%Y-%m-%d") : ""), producto.try(:estatus).try(:descripcion)]
+		  productos_arreglo << [ producto.marca, producto.descripcion, producto.gtin, producto.try(:tipo_gtin).try(:tipo)]
 		end
 
 		text ""

@@ -77,7 +77,7 @@ class ProductosController < ApplicationController
                   }
       format.pdf  {
                     
-                    pdf = ProductosPdf.new(@empresa,params[:tipo_gtin], params[:gtin], params[:descripcion], params[:marca], params[:codigo_producto], params[:fecha_creacion], params[:fecha_modificacion])
+                    pdf = ProductosPdf.new(@empresa,params[:tipo_gtin], params[:gtin], params[:descripcion], params[:marca])
                     send_data pdf.render, filename: "#{@empresa.nombre_empresa}_productos.pdf", type: "application/pdf", disposition: "inline"
       }
       format.xlsx{
