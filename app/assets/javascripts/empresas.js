@@ -474,18 +474,6 @@
         };
 
         
-       
-        
-        $('input').keypress(function(event) { 
-           
-             if (($(this).attr('class') != 'login') && ($(this).attr('class') != 'email') && ($(this).attr('class') != 'clave'))
-            
-               $(this).css("text-transform", "uppercase");
-            
-
-        
-         });
-
         // Dialogo importar productos oculto por defecto
         $('#ventana_generar_carta_masivamente').dialog({
           autoOpen: false,

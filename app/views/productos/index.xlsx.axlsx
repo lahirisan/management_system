@@ -14,6 +14,17 @@ if params[:marca] != ''
   @productos = @productos.where("producto.marca like :search", search: "%#{params[:marca]}%" )
 end
 
+
+if params[:codigo_producto] != ''
+    @productos = @productos.where("producto.codigo_prod like :search", search: "%#{params[:codigo_producto]}%" )
+end
+
+
+if params[:fecha_creacion] != ''
+  	@productos = @productos.where("CONVERT(varchar(255),  producto.fecha_creacion ,126) like :search", search: "%#{params[:fecha_creacion]}%")
+end
+
+
 xlsx_package = Axlsx::Package.new 
 wb = xlsx_package.workbook
 

@@ -1,19 +1,21 @@
  #encoding: UTF-8
 class ProductosPdf < Prawn::Document	
 	
-	def initialize(empresa, tipo_gtin, gtin, descripcion,marca)
+	def initialize(empresa, tipo_gtin, gtin, descripcion,marca,codigo, fecha_creacion)
 		
 		super(:top_margin => 10, :page_layout => :portrait)
 
 		font("Helvetica", :size => 10)
 		  
  		
- 		productos = Producto.where("prefijo = ? ",empresa).includes(:estatus, :tipo_gtin).order("producto.fecha_creacion")   
+ 		productos = Producto.where("prefijo = ? ",empresa).includes(:estatus, :tipo_gtin).order("producto.fecha_creacion desc")   
 		
 		productos = productos.where("tipo_gtin.tipo like :search", search: "%#{tipo_gtin}%") if tipo_gtin != ''
 		productos = productos.where("producto.gtin like :search", search: "%#{gtin}%" ) if [:gtin] != ''
 		productos = productos.where("producto.descripcion like :search", search: "%#{descripcion}%" ) if descripcion != ''
 		productos = productos.where("producto.marca like :search", search: "%#{marca}%" ) if marca != ''
+		productos = productos.where("producto.codigo_prod like :search", search: "%#{codigo}%" ) if codigo != ''
+		productos = productos.where("producto.fecha_creacion like :search", search: "%#{fecha_creacion}%" ) if fecha_creacion != ''
 		
 		
 		productos_arreglo = [["MARCA", "DESCRIPCION", "GTIN", "TIPO GTIN"]]
