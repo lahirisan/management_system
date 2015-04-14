@@ -103,6 +103,7 @@
 				- if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia],'Listado GTIN-8')
 				
 					=link_to(( content_tag(:span, '',:class => 'ui-icon.ui-icon-transfer-e-w')+'Listado GTIN-8').html_safe, productos_path, {:class => "ui-state-default ui-corner-all botones_menu", :title => "Listado General de Productos GTIN8"})
+
 				
 
 			- if params[:controller] == 'productos'
