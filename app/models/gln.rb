@@ -40,9 +40,6 @@ class Gln < ActiveRecord::Base
 
   # OJO falta validar los casos cuando la empresa es de 9 digitos y de 6 digitos
 
-  empresa = Empresa.find(:first, :conditions => ["prefijo = ?", prefijo_empresa])
-  
-
   gln_generado = "759" + prefijo_empresa[3..6] + "90001" 
 
   digito_verificacion = Producto.calcular_digito_verificacion(gln_generado.to_i,"GTIN-13")
@@ -56,9 +53,7 @@ class Gln < ActiveRecord::Base
   gln_legal.id_estatus = 9 # Estatus GLN Activo segun tabla Estatus
   gln_legal.fecha_asignacion = Time.now
   gln_legal.prefijo = prefijo_empresa
-  gln_legal.save
-
-  raise gln_legal.errors.to_yaml if gln_legal.errors.any?
+  gln_legal.save!
 
  end
  

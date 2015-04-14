@@ -44,7 +44,6 @@ private
 
       else # Empresa ACTIVA
        
-        
 
         if UsuariosAlcance.verificar_alcance(@perfil, @gerencia, 'Registrar Producto')
           
@@ -66,6 +65,7 @@ private
         end
 
         if UsuariosAlcance.verificar_alcance(@perfil, @gerencia, 'Modificar Producto')
+
           boton_editar = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"Editar").html_safe, "/empresas/#{params[:empresa_id]}/productos/#{producto.gtin}/edit",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar Producto"})
         else
           boton_editar = ""
@@ -103,7 +103,6 @@ private
   def fetch_productos
     
     productos = Producto.where("prefijo = ?", params[:empresa_id]).includes(:estatus, :tipo_gtin).order("#{sort_column} #{sort_direction}") 
-    
     productos = productos.page(page).per_page(per_page)
 
 
@@ -135,6 +134,7 @@ private
     if params[:sSearch_6].present?
       
       productos = productos.where("CONVERT(varchar(255),  producto.fecha_creacion ,126) like :search6", search6: "%#{params[:sSearch_6]}%")
+
       
     end
 
@@ -145,7 +145,6 @@ private
     end
 
 
-
     productos
   end
 
@@ -154,8 +153,6 @@ private
   end
 
   def per_page
-
-
     params[:iDisplayLength].to_i > 0 ? params[:iDisplayLength].to_i : 100
   end
 
@@ -163,6 +160,7 @@ private
 
      columns = %w[tipo_gtin.tipo producto.gtin producto.descripcion producto.marca estatus.descripcion producto.codigo_prod producto.fecha_creacion producto.fecha_ultima_modificacion nil nil]
      columns[params[:iSortCol_0].to_i]
+
   end
 
   def sort_direction

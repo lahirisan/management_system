@@ -118,8 +118,14 @@
 	
 	def self.busqueda_exhaustiva_prefijo
 
+		
+		
 		prefijos_asignados = Empresa.find(:all, :conditions => ["prefijo >= 7590000 and prefijo <= 75999999"])
 		prefijos_disponible = Empresa.find(:first, :conditions => ["prefijo >= ? and prefijo <= ? and prefijo not in (?)", 7599000, 7599999, prefijos_asignados.collect{|empresa| empresa.prefijo}], :order => "empresa.prefijo asc")
+
+		
+		#Empresa.where(["prefijo >= 7590000 and prefijo <= 75999999 and "]).last.to_yaml
+		#prefijos_disponible = Empresa.find(:first, :conditions => ["prefijo >= ? and prefijo <= ? and prefijo not in (?)", 7599000, 7599999, prefijos_asignados.collect{|empresa| empresa.prefijo}], :order => "empresa.prefijo asc")
 
 		return (prefijos_disponible.prefijo)
 
@@ -392,12 +398,12 @@
 	empresa.save
  
 	empresa_registrada.destroy
-
-
 	
 	eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", empresa.prefijo])
 	Empresa.registrar_historico_eliminada(eliminada) if eliminada # Se esta utilizando un prefijo de empresa eliminada
-	Gln.generar_legal(empresa.prefijo.to_s) if empresa_registrada.id_tipo_usuario == 1 # SOlo LAs empresas de Tipo Usuario registran GLN
+	
+
+	Gln.generar_legal(empresa.prefijo.to_s) if empresa.id_tipo_usuario == '1' # SOlo LAs empresas de Tipo Usuario registran GLN
 
  end
 
