@@ -30,10 +30,14 @@ class EmpresasController < ApplicationController
                   else
                     
                     # Se verifica si tiene el privilegio para  EDITAR EMPRESA
-                    if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Empresa')
+                    if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Empresa') # entra en esta opción tambien si tiene privilegio para asociar prefijos a empresas existentes
+                      
                       @vista_empresa = "/empresas.json?modificar_empresa=true"
+
                     else
+
                       @vista_empresa = "/empresas.json"
+
                     end
                     
                     render :template =>'/empresas/index.html.haml'
@@ -65,21 +69,16 @@ class EmpresasController < ApplicationController
 
                     else
 
-
                       
                       if params[:modificar_empresa] # Si llega el parametro modificar_empresa se muestra la vista de Empresas Activas Editable, no en caso contrario
-                        
-                        
+
                         if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Generar Código')  ## Si tiene el privilegio asociado a su perfil puede generar codigos para PRODUCTOS Y GLN
 
-                          
                           render json: EmpresasEditableCodificableDatatable.new(view_context)
-                          
-                          
-                        else
 
-                          render json: EmpresasEditableDatatable.new(view_context)
+                        else  # Asociar Nuevo Prefijo
 
+                          render json: EmpresasEditableDatatable.new(view_context)  
 
                         end
 
