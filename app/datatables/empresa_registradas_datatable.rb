@@ -2,8 +2,10 @@
 class EmpresaRegistradasDatatable 
   delegate :params, :h, :link_to, :content_tag, to: :@view
 
-   def initialize(view)
+   def initialize(view, perfil, gerencia)
     @view = view
+    @perfil = perfil
+    @gerencia = gerencia
    end
 
   def as_json(options = {})
@@ -22,25 +24,30 @@ private
 
     empresas.map do |empresa|
 
-        if params[:activar_empresa]
-          boton = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Activar').html_safe, "/empresa_registradas/#{empresa.id}/edit?activar_empresa=true", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Activar la empresa #{empresa.nombre_empresa}"}) 
-        else
+      boton = ""
+      if params[:activar_empresa] ## Asignar prefijo a la empresa
+        
+        boton = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Activar').html_safe, "/empresa_registradas/#{empresa.id}/edit?activar_empresa=true", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Activar la empresa #{empresa.nombre_empresa}"})  
+      
+      else # Sino se esta activando la empresa entonces esta editando -si se tiene el privilegio, en caso contrario no se muestra el boton para editar, caso asistente contable de administracion-
+        
+        if UsuariosAlcance.verificar_alcance(@perfil, @gerencia, 'Modificar Empresa Registrada')
           boton = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe, "/empresa_registradas/#{empresa.id}/edit", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar la empresa #{empresa.nombre_empresa}"}) 
         end
 
-        fecha = ""
-        fecha =  empresa.fecha_inscripcion.strftime("%Y-%m-%d") if (empresa.fecha_inscripcion)
-        [ 
-          empresa.rif_completo,
-          empresa.nombre_empresa,
-          fecha,
-          empresa.try(:ciudad).try(:nombre),
-          empresa.try(:sub_estatus).try(:descripcion),
-          empresa.try(:tipo_usuario_empresa).try(:descripcion),
-          empresa.ventas_brutas_anuales,
-          empresa.try(:clasificacion).try(:descripcion),
-          boton
-        ]
+      end
+     
+      [ 
+        empresa.rif_completo,
+        empresa.nombre_empresa,
+        (empresa.fecha_inscripcion)  ? empresa.fecha_inscripcion.strftime("%Y-%m-%d")  : "",
+        empresa.try(:ciudad).try(:nombre),
+        empresa.try(:sub_estatus).try(:descripcion),
+        empresa.try(:tipo_usuario_empresa).try(:descripcion),
+        empresa.ventas_brutas_anuales,
+        empresa.try(:clasificacion).try(:descripcion),
+        boton
+      ]
     
     end
 

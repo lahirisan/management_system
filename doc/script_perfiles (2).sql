@@ -12,7 +12,8 @@ insert into gerencias (nombre) values ('Sistemas');
 delete perfil_usuario_int;
 DBCC CHECKIDENT (perfil_usuario_int, RESEED, 0);	
 
-insert into perfil_usuario_int (descripcion, id_gerencia) VALUES ('Gerente y Mercadeo', 1)
+insert into perfil_usuario_int (descripcion, id_gerencia) VALUES ('Gerente', 1)
+insert into perfil_usuario_int (descripcion, id_gerencia) VALUES ('Mercadeo', 1)
 insert into perfil_usuario_int (descripcion, id_gerencia) VALUES ('Ventas / Rel. Inst. / At. Cliente', 1)
 insert into perfil_usuario_int (descripcion, id_gerencia) VALUES ('Gerente', 2)
 insert into perfil_usuario_int (descripcion, id_gerencia) VALUES ('Estándares y Soluciones Técnicas / Consultorías y Servicios', 2)
@@ -29,19 +30,33 @@ insert into perfil_usuario_int (descripcion, id_gerencia) VALUES ('Administrador
 
 delete usuarios_alcances;
 DBCC CHECKIDENT (usuarios_alcances, RESEED, 0);	
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente y Mercadeo', 'Registrar Empresa', 'Comercial', getdate(), getdate())
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente y Mercadeo', 'Modificar Empresa Registrada', 'Comercial', getdate(), getdate())
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente y Mercadeo', 'Empresas No Activas', 'Comercial', getdate(), getdate())
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente y Mercadeo', 'Modificar Empresa', 'Comercial', getdate(), getdate())
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente y Mercadeo', 'Exportar Empresa', 'Comercial', getdate(), getdate())
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente y Mercadeo', 'Exportar Producto', 'Comercial', getdate(), getdate())	
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente y Mercadeo', 'Exportar GLN', 'Comercial', getdate(), getdate())
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente y Mercadeo', 'Exportar Servicio', 'Comercial', getdate(), getdate())
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente y Mercadeo', 'Ver Etiqueta', 'Comercial', getdate(), getdate())
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente y Mercadeo', 'Modificar Etiqueta', 'Comercial', getdate(), getdate())
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente y Mercadeo', 'Exportar Etiqueta', 'Comercial', getdate(), getdate())
 
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Ventas / Rel. Inst. / At. Cliente', 'Registrar Empresa', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Asociar Nuevo Prefijo', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Registrar Empresa', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Modificar Empresa Registrada', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Empresas No Activas', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Modificar Empresa', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Exportar Empresa', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Exportar Producto', 'Comercial', getdate(), getdate())	
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Exportar GLN', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Exportar Servicio', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Ver Etiqueta', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Modificar Etiqueta', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Exportar Etiqueta', 'Comercial', getdate(), getdate())
+
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Mercadeo', 'Registrar Empresa', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Mercadeo', 'Modificar Empresa Registrada', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Mercadeo', 'Empresas No Activas', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Mercadeo', 'Modificar Empresa', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Mercadeo', 'Exportar Empresa', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Mercadeo', 'Exportar Producto', 'Comercial', getdate(), getdate())	
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Mercadeo', 'Exportar GLN', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Mercadeo', 'Exportar Servicio', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Mercadeo', 'Ver Etiqueta', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Mercadeo', 'Modificar Etiqueta', 'Comercial', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Mercadeo', 'Exportar Etiqueta', 'Comercial', getdate(), getdate())
+
+
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Ventas / Rel. Inst. / At. Cliente', 'Empresas No Activas', 'Comercial', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Ventas / Rel. Inst. / At. Cliente', 'Modificar Empresa', 'Comercial', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Ventas / Rel. Inst. / At. Cliente', 'Exportar Empresa', 'Comercial', getdate(), getdate())
@@ -115,7 +130,6 @@ insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Especialista de E&C', 'Importar Producto', 'Estándares y Consultoría', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Especialista de E&C', 'Transferir GTIN-8', 'Estándares y Consultoría', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Especialista de E&C', 'Listado GTIN-8', 'Estándares y Consultoría', getdate(), getdate())
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Especialista de E&C', 'Generar Código', 'Estándares y Consultoría', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Especialista de E&C', 'Registrar Servicio', 'Estándares y Consultoría', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Especialista de E&C', 'Modificar Servicio', 'Estándares y Consultoría', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Especialista de E&C', 'Exportar Servicio', 'Estándares y Consultoría', getdate(), getdate())
@@ -134,6 +148,7 @@ insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Soporte Técnico', 'Exportar Etiqueta', 'Estándares y Consultoría', getdate(), getdate())
 
 
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Generar Código', 'Administración', getdate(), getdate()) 
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Empresas No Activas', 'Administración', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Modificar Empresa', 'Administración', getdate(), getdate())	
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Exportar Empresa', 'Administración', getdate(), getdate())
@@ -204,7 +219,7 @@ insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Exportar Etiqueta', 'Talento Humano', getdate(), getdate())
 
 
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist', 'Registrar Empresa', 'Sistemas', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist.', 'Registrar Empresa', 'Sistemas', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist.', 'Modificar Empresa Registrada', 'Sistemas', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist.', 'Empresas No Activas', 'Sistemas', getdate(), getdate())	
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist.', 'Modificar Empresa', 'Sistemas', getdate(), getdate())
@@ -220,7 +235,7 @@ insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist.', 'Importar Producto', 'Sistemas', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist.', 'Listado GTIN-8', 'Sistemas', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist.', 'Transferir GTIN-8', 'Sistemas', getdate(), getdate())
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist', 'Generar Código', 'Sistemas', getdate(), getdate())	
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist.', 'Generar Código', 'Sistemas', getdate(), getdate())	
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist.', 'Registrar GLN', 'Sistemas', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist.', 'Modificar GLN', 'Sistemas', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist.', 'Eliminar GLN', 'Sistemas', getdate(), getdate())
@@ -241,28 +256,35 @@ insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at
 
 
 delete usuario_interno;
-DBCC CHECKIDENT (usuario_interno, RESEED, 0);	
-INSERT INTO usuario_interno ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [fecha_creacion], [password_salt]) VALUES ('chernandez', '$2a$10$WSYkMoQhqy4oOPLzuehbTOIgzNxzz.BOMQipPkFHiQHQMgiFWJOAG', 'Claudio Hernández', 'chernandez@gs1ve.org', 1, 1, '2015-01-27 22:20:12.547', '$2a$10$WSYkMoQhqy4oOPLzuehbTO')
-INSERT INTO usuario_interno ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [fecha_creacion], [password_salt]) VALUES ('yfreitas', '$2a$10$a6Z32WrQj90hw.hoWYj/j.DYFhImrkjB9k7GjRbngoblCWUa3oC06', 'Yuly de Freitas', 'yfreitas@gs1org.ve', 1, 1, '2015-01-27 22:20:41.863', '$2a$10$a6Z32WrQj90hw.hoWYj/j.')
-INSERT INTO usuario_interno ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('yabad', '$2a$10$qVvHFTan2IVe/XgNqcDjluPDBa.9NRF71KfsxihMDHEALweCsJBD.', 'Yilibeth Abad','yabad@gs1org.ve', 2, 1, '2015-01-27 22:21:12.327', '$2a$10$qVvHFTan2IVe/XgNqcDjlu')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('cgimenez', '$2a$10$/Wy96z.4zacWYqi4y3pTqO8VsrrupcnmPM72MNwRdkUwBScDq2fru', 'Carolina Giménez', 'cgimenez@gs1ve.org', 4, 2,  '2015-01-27 22:21:44.320', '$2a$10$/Wy96z.4zacWYqi4y3pTqO')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('kfiguera', '$2a$10$z90/9SsupqrWa54ot6kl0u7DwUUW0d5Q9ThoQFiTcXurcTwQVPt6a', 'Katherine Figuera', 'kfiguera@gs1org.ve', 4, 2,  '2015-01-27 22:22:19.930', '$2a$10$z90/9SsupqrWa54ot6kl0u')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('mtorrealba', '$2a$10$VXQtpfU2Rvh5/VtsDoI4NewytK5yuc4Dadne.DcccFZgVUxNJezqG', 'Maria Torrealba', 'mtorrealba@gs1org.ve', 5, 2, '2015-01-27 22:22:49.907', '$2a$10$VXQtpfU2Rvh5/VtsDoI4Ne')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('aduben', '$2a$10$DzjXe7SGOVrHw3AKJmV.SOdn9jcCK6k4rYB0Z0FBmk6ky6.MqWpGK', 'Alicia Duben', 'aduben@gs1org.ve', 4, 2,'2015-01-27 22:23:22.327', '$2a$10$DzjXe7SGOVrHw3AKJmV.SO')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('sbarreto', '$2a$10$Hof4NkBm3/YoMWokZuAL1.GyhJ5yLZOrJFyfp4jfMzrfM4kf/inTW', 'Susana Barreto', 'sbarreto@gs1org.ve', 4, 2, '2015-01-27 22:23:50.837','$2a$10$Hof4NkBm3/YoMWokZuAL1.')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('rcalderon', '$2a$10$zbkmF1JwF9wp9lhd/WkmN.FzDCputV1/dxsTfrXqvJ2b/QF4O8LB6', 'Ricardo Calderón', 'rcalderon@gs1org.ve', 4, 2,  '2015-01-27 22:24:19.700', '$2a$10$zbkmF1JwF9wp9lhd/WkmN.')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('jgonzalez', '$2a$10$aD9rGV7M2gTyFrujzl/LAukYoaM8ObWCpf7MbNslI1UEF2vZepEJW', 'Jose Gonzalez', 'jgonzalez@gs1org.ve', 6, 2, '2015-01-27 22:24:55.807', '$2a$10$aD9rGV7M2gTyFrujzl/LAu')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('prodriguez', '$2a$10$vXCNvfauQcyseOTtEPg5MeunGyNB34XLmzNjfGI5D5FzFc.49tIEW', 'Pilar Rodríguez', 'prodriguez@gs1org.ve', 7, 3, '2015-01-27 22:25:28.140', '$2a$10$vXCNvfauQcyseOTtEPg5Me')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('ymadriz', '$2a$10$zF1FF1t4yx/pDNhfeHFJde4ieyQBfcC8vSCPJe11xN3ORpBdh7FtG', 'Yannet Madriz', 'ymadriz@gs1org.ve', 8, 3,  '2015-01-27 22:26:08.140', '$2a$10$zF1FF1t4yx/pDNhfeHFJde')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('abaduy', '$2a$10$shPLe/pSh.NSyoobN4xVPu9vxp8P3OhUdsnh.4AFIC3Dfy/MYKC2K', 'Agustina Baduy', 'abaduy@gs1org.ve', 8, 3,  '2015-01-27 22:26:42.263', '$2a$10$shPLe/pSh.NSyoobN4xVPu')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('imejias', '$2a$10$hC6l1ygEY4aNSnNnyLvHD.Oknf7SAImJgQ2PfDF.YCMieJ0ZHxzvu', 'Ibelisse Mejias', 'imejias@gs1org.ve', 9, 3,  '2015-01-27 22:27:17.480', '$2a$10$hC6l1ygEY4aNSnNnyLvHD.')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('wrodriguez', '$2a$10$j6wAvwgvoYW6ryaCUu00yunrj75npHe.7ykvfN8TCW9IVHPLzSG9e', 'Wallis Rodriguez', 'wrodriguez@gs1org.ve', 9, 3, '2015-01-27 22:27:56.860', '$2a$10$j6wAvwgvoYW6ryaCUu00yu')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('jmejia', '$2a$10$eIiSb4CTeIy.tbiHRsjHSOXW.DCGPDmcWscFCTqsNNFL6UVk7ldXi', 'Jose Luis Mejia', 'jmejia@gs1org.ve', 10, 4, '2015-01-27 22:28:40.277','$2a$10$eIiSb4CTeIy.tbiHRsjHSO')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('dcubillan', '$2a$10$Jd/VAV/AMiy3KrPaVPOBruf4V3oPPYHXTdmC9EQp1naOvEYnpaLz6', 'Denisse Cubillán', 'dcubillan@gs1org.ve', 11, 4,  '2015-01-27 22:29:13.580','$2a$10$Jd/VAV/AMiy3KrPaVPOBru')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('jbellorin', '$2a$10$h/OVjqdP0uWkFcJvNdj0/uJi82CZg1v0VTpdq0UV1TWY4p5uUj1KW','Johanna Bellorín', 'jbellorin@gs1ve.org', 12, 5,  '2015-01-27 22:29:42.690', '$2a$10$h/OVjqdP0uWkFcJvNdj0/u')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('gtecnico', '$2a$10$u92g/hbRn7Cjk0.Bqh9MV.RL68WIqXkihwYGxaocI7rTUtPhC5SXy', 'Gerente Técnico', 'gtecnico@gs1ve.org', 3, 2,  '2015-01-27 22:30:17.617', '$2a$10$u92g/hbRn7Cjk0.Bqh9MV.')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('admin', '$2a$10$jlnZ7o11D6UoiNaKkRQLIOKaFH5ciKcO.eTX/4DuICr53kM66kdOu', 'Administrador de Sistema', 'administrador@gs1ve.org', 13, 6,  '2015-01-27 22:31:36.713', '$2a$10$jlnZ7o11D6UoiNaKkRQLIO')
-INSERT INTO usuario_interno ( [username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia],  [fecha_creacion], [password_salt]) VALUES ('Kmarrero', '$2a$10$a39v0hmzbOtgctKL67jjn.3Oklr.kkjncy0Zf861p6rhX4hGffIAG', 'Keila Marrero', 'kmarrero@gs1ve.org', 5, 2, '2015-02-02 15:01:15.670', '$2a$10$a39v0hmzbOtgctKL67jjn.')
+DBCC CHECKIDENT (usuario_interno, RESEED, 0);
+
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'chernandez', N'$2a$10$WSYkMoQhqy4oOPLzuehbTOIgzNxzz.BOMQipPkFHiQHQMgiFWJOAG', N'Claudio Hernández', N'chernandez@gs1ve.org', N'1', N'1', null, N'2015-01-27 22:20:12.547', N'$2a$10$WSYkMoQhqy4oOPLzuehbTO')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'yfreitas', N'$2a$10$a6Z32WrQj90hw.hoWYj/j.DYFhImrkjB9k7GjRbngoblCWUa3oC06', N'Yuly de Freitas', N'yfreitas@gs1org.ve', N'2', N'1', null, N'2015-01-27 22:20:41.863', N'$2a$10$a6Z32WrQj90hw.hoWYj/j.')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'yabad', N'$2a$10$qVvHFTan2IVe/XgNqcDjluPDBa.9NRF71KfsxihMDHEALweCsJBD.', N'Yilibeth Abad', N'yabad@gs1org.ve', N'3', N'1', null, N'2015-01-27 22:21:12.327', N'$2a$10$qVvHFTan2IVe/XgNqcDjlu')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'cgimenez', N'$2a$10$/Wy96z.4zacWYqi4y3pTqO8VsrrupcnmPM72MNwRdkUwBScDq2fru', N'Carolina Giménez', N'cgimenez@gs1ve.org', N'5', N'2', null, N'2015-01-27 22:21:44.320', N'$2a$10$/Wy96z.4zacWYqi4y3pTqO')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'kfiguera', N'$2a$10$z90/9SsupqrWa54ot6kl0u7DwUUW0d5Q9ThoQFiTcXurcTwQVPt6a', N'Katherine Figuera', N'kfiguera@gs1org.ve', N'5', N'2', null, N'2015-01-27 22:22:19.930', N'$2a$10$z90/9SsupqrWa54ot6kl0u')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'mtorrealba', N'$2a$10$VXQtpfU2Rvh5/VtsDoI4NewytK5yuc4Dadne.DcccFZgVUxNJezqG', N'Maria Torrealba', N'mtorrealba@gs1org.ve', N'6', N'2', null, N'2015-01-27 22:22:49.907', N'$2a$10$VXQtpfU2Rvh5/VtsDoI4Ne')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'aduben', N'$2a$10$DzjXe7SGOVrHw3AKJmV.SOdn9jcCK6k4rYB0Z0FBmk6ky6.MqWpGK', N'Alicia Duben', N'aduben@gs1org.ve', N'5', N'2', null, N'2015-01-27 22:23:22.327', N'$2a$10$DzjXe7SGOVrHw3AKJmV.SO')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'sbarreto', N'$2a$10$Hof4NkBm3/YoMWokZuAL1.GyhJ5yLZOrJFyfp4jfMzrfM4kf/inTW', N'Susana Barreto', N'sbarreto@gs1org.ve', N'5', N'2', null, N'2015-01-27 22:23:50.837', N'$2a$10$Hof4NkBm3/YoMWokZuAL1.')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'rcalderon', N'$2a$10$zbkmF1JwF9wp9lhd/WkmN.FzDCputV1/dxsTfrXqvJ2b/QF4O8LB6', N'Ricardo Calderón', N'rcalderon@gs1org.ve', N'5', N'2', null, N'2015-01-27 22:24:19.700', N'$2a$10$zbkmF1JwF9wp9lhd/WkmN.')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'jgonzalez', N'$2a$10$aD9rGV7M2gTyFrujzl/LAukYoaM8ObWCpf7MbNslI1UEF2vZepEJW', N'Jose Gonzalez', N'jgonzalez@gs1org.ve', N'7', N'2', null, N'2015-01-27 22:24:55.807', N'$2a$10$aD9rGV7M2gTyFrujzl/LAu')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'prodriguez', N'$2a$10$vXCNvfauQcyseOTtEPg5MeunGyNB34XLmzNjfGI5D5FzFc.49tIEW', N'Pilar Rodríguez', N'prodriguez@gs1org.ve', N'8', N'3', null, N'2015-01-27 22:25:28.140', N'$2a$10$vXCNvfauQcyseOTtEPg5Me')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'ymadriz', N'$2a$10$zF1FF1t4yx/pDNhfeHFJde4ieyQBfcC8vSCPJe11xN3ORpBdh7FtG', N'Yannet Madriz', N'ymadriz@gs1org.ve', N'9', N'3', null, N'2015-01-27 22:26:08.140', N'$2a$10$zF1FF1t4yx/pDNhfeHFJde')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'abaduy', N'$2a$10$ETvU0MMFgBoeR5nsmmjXue3F6Utvd9oxKSj30OL7IWVJ2sMLtwJuW', N'Agustina Baduy', N'abaduy@gs1org.ve', N'10', N'3', null, N'2015-01-27 22:26:42.263', N'$2a$10$ETvU0MMFgBoeR5nsmmjXue')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'imejias', N'$2a$10$hC6l1ygEY4aNSnNnyLvHD.Oknf7SAImJgQ2PfDF.YCMieJ0ZHxzvu', N'Ibelisse Mejias', N'imejias@gs1org.ve', N'10', N'3', null, N'2015-01-27 22:27:17.480', N'$2a$10$hC6l1ygEY4aNSnNnyLvHD.')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'wrodriguez', N'$2a$10$j6wAvwgvoYW6ryaCUu00yunrj75npHe.7ykvfN8TCW9IVHPLzSG9e', N'Wallis Rodriguez', N'wrodriguez@gs1org.ve', N'10', N'3', null, N'2015-01-27 22:27:56.860', N'$2a$10$j6wAvwgvoYW6ryaCUu00yu')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'jmejia', N'$2a$10$eIiSb4CTeIy.tbiHRsjHSOXW.DCGPDmcWscFCTqsNNFL6UVk7ldXi', N'Jose Luis Mejia', N'jmejia@gs1org.ve', N'11', N'4', null, N'2015-01-27 22:28:40.277', N'$2a$10$eIiSb4CTeIy.tbiHRsjHSO')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'dcubillan', N'$2a$10$Jd/VAV/AMiy3KrPaVPOBruf4V3oPPYHXTdmC9EQp1naOvEYnpaLz6', N'Denisse Cubillán', N'dcubillan@gs1org.ve', N'12', N'4', null, N'2015-01-27 22:29:13.580', N'$2a$10$Jd/VAV/AMiy3KrPaVPOBru')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'jbellorin', N'$2a$10$h/OVjqdP0uWkFcJvNdj0/uJi82CZg1v0VTpdq0UV1TWY4p5uUj1KW', N'Johanna Bellorín', N'jbellorin@gs1ve.org', N'13', N'5', null, N'2015-01-27 22:29:42.690', N'$2a$10$h/OVjqdP0uWkFcJvNdj0/u')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'gtecnico', N'$2a$10$9eINMZmfywgFuoR1DqQJOOwmdrztAISzxlgybzZbVdzVBaHkXOQXq', N'Gerente Técnico', N'gtecnico@gs1ve.org', N'4', N'2', null, N'2015-01-27 22:30:17.617', N'$2a$10$9eINMZmfywgFuoR1DqQJOO')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'admin', N'$2a$10$jlnZ7o11D6UoiNaKkRQLIOKaFH5ciKcO.eTX/4DuICr53kM66kdOu', N'Administrador de Sistema', N'administrador@gs1ve.org', N'14', N'6', null, N'2015-01-27 22:31:36.713', N'$2a$10$jlnZ7o11D6UoiNaKkRQLIO')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'Kmarrero', N'$2a$10$a39v0hmzbOtgctKL67jjn.3Oklr.kkjncy0Zf861p6rhX4hGffIAG', N'Keila Marrero', N'kmarrero@gs1ve.org', N'5', N'2', null, N'2015-02-02 15:01:15.670', N'$2a$10$a39v0hmzbOtgctKL67jjn.')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'jmata', N'$2a$10$/VIvH9kZocGovZbCekIzBeZ7XXFSWKx2HHhMavBnuidt3JiAzyDcm', N'Johann Mata', N'jmata@gs1ve.org', N'3', N'3', null, N'2015-04-06 16:37:49.847', N'$2a$10$/VIvH9kZocGovZbCekIzBe')
+INSERT INTO [dbo].[usuario_interno] ([username], [password], [nombre_apellido], [email], [id_perfil], [id_gerencia], [id_cargo], [fecha_creacion], [password_salt]) VALUES (N'hlandaeta', N'$2a$10$dWtl.PQ/uzSXPELOHXdcDOiJgIVuEzbQfgp.xzZCSiYB4f10Ow7pW', N'Hugo Landaeta', N'hlandaeta@gs1org.ve', N'7', N'2', null, N'2015-04-06 16:50:55.887', N'$2a$10$dWtl.PQ/uzSXPELOHXdcDO')
+
+
+
+
 
 
 
