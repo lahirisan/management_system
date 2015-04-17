@@ -33,7 +33,6 @@ private
       elsif params[:insolvente] == 'true'
         
         
-        
         if (UsuariosAlcance.verificar_alcance(@perfil, @gerencia, 'Generar Código'))
           boton_gtin_14 = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"GTIN14").html_safe, "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{producto.descripcion}&marca=#{producto.marca.gsub(/‘/, '%27')}&gpc=#{producto.gpc}",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Generar GTIN-14"})
         else
@@ -43,26 +42,17 @@ private
         boton_editar = ""
 
       else # Empresa ACTIVA
-       
+          
+
+        if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3) ## Solo se muestra el boton Generar GTIN14 si el producto es tipoGTIN 8 o tipoGTIN13
+          base = (producto.id_tipo_gtin == 1) ? 4 : 6  # Para mostrar seleccioando la base del producto cunado se crear GTIN 14
+          
+          ################### ESTOS CARACTERES SE CAMBIAN POR QUE GENERAR BAD URI EXCEPTION #################
+
+          descripcion_codificada = producto.descripcion.gsub(/%/, '')
+          marca_codificada = producto.marca.gsub(/%/, '')
+          boton_gtin_14 = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"GTIN14").html_safe, "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{descripcion_codificada}&marca=#{marca_codificada}&gpc=#{producto.gpc}&generar_gtin_14=true",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Generar GTIN-14"})
         
-
-        if UsuariosAlcance.verificar_alcance(@perfil, @gerencia, 'Registrar Producto')
-          
-          if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3) ## Solo se muestra el boton Generar GTIN14 si el producto es tipoGTIN 8 o tipoGTIN13
-            base = (producto.id_tipo_gtin == 1) ? 4 : 6  # Para mostrar seleccioando la base del producto cunado se crear GTIN 14
-            
-            ################### ESTOS CARACTERES SE CAMBIAN POR QUE GENERAR BAD URI EXCEPTION #################
-
-            descripcion_codificada = producto.descripcion.gsub(/%/, '')
-            marca_codificada = producto.marca.gsub(/%/, '')
-            boton_gtin_14 = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+"GTIN14").html_safe, "/empresas/#{params[:empresa_id]}/productos/new?gtin=#{producto.gtin}&base=#{base}&descripcion=#{descripcion_codificada}&marca=#{marca_codificada}&gpc=#{producto.gpc}&generar_gtin_14=true",{:class => "ui-state-default ui-corner-all botones_servicio", :title => "Generar GTIN-14"})
-          
-          end
-
-          
-
-        else
-          boton_gtin_14 = ""
         end
 
         if UsuariosAlcance.verificar_alcance(@perfil, @gerencia, 'Modificar Producto')
@@ -72,11 +62,7 @@ private
         end
 
       end
-
-      fecha = ""
-      fecha =  producto.fecha_creacion.strftime("%Y-%m-%d") if (producto.fecha_creacion)
-      fecha_modificacion = ""
-      fecha_modificacion =  producto.fecha_ultima_modificacion.strftime("%Y-%m-%d") if (producto.fecha_ultima_modificacion)
+      
       
       [ 
        producto.try(:tipo_gtin).try(:tipo),
@@ -85,8 +71,8 @@ private
        producto.marca,
        producto.try(:estatus).try(:descripcion),
        producto.codigo_prod,
-       fecha,
-       fecha_modificacion,
+       (producto.fecha_creacion) ? producto.fecha_creacion.strftime("%Y-%m-%d") : "",
+       (producto.fecha_ultima_modificacion) ? producto.fecha_ultima_modificacion.strftime("%Y-%m-%d") : "",
        boton_gtin_14,
        boton_editar
       ]
