@@ -6,8 +6,7 @@ development:
  password: Gs1vzla
  port: 1433
  pool: 5
- timeout: 5000
-
+ timeout: 5000 
 production:
  adapter: sqlserver
  database: GS1_New
