@@ -40,7 +40,7 @@ class ProductosController < ApplicationController
 
                         @ruta = "/empresas/#{params[:empresa_id]}/productos.json" 
                       end
-                      
+
                       render :template =>'/productos/index.html.haml'
                     end
                   }
@@ -77,7 +77,7 @@ class ProductosController < ApplicationController
                   }
       format.pdf  {
                     
-                    pdf = ProductosPdf.new(@empresa,params[:tipo_gtin], params[:gtin], params[:descripcion], params[:marca])
+                    pdf = ProductosPdf.new(@empresa,params[:tipo_gtin], params[:gtin], params[:descripcion], params[:marca], params[:codigo_producto], params[:fecha_creacion], params[:fecha_modificacion])
                     send_data pdf.render, filename: "#{@empresa.nombre_empresa}_productos.pdf", type: "application/pdf", disposition: "inline"
       }
       format.xlsx{
