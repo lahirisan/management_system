@@ -34,7 +34,7 @@ class EmpresaRegistradasController < ApplicationController
           render json: (EmpresaRegistradasActivarSolvenciaDatatable.new(view_context)) 
         else
           
-          render json: (EmpresaRegistradasDatatable.new(view_context)) 
+          render json: (EmpresaRegistradasDatatable.new(view_context, session[:perfil], session[:gerencia])) 
         end
 
       }
@@ -230,7 +230,7 @@ class EmpresaRegistradasController < ApplicationController
         else
          
           Auditoria.registrar_evento(session[:usuario],"empresa_registradas", "Editar", Time.now, params[:empresa_registrada])
-          format.html { redirect_to "/empresa_registradas", notice: "Los datos de la Empresa:#{@empresa_registrada.nombre_empresa} RIF:#{@empresa_registrada.rif} fueron actualizados satisfactoriamente."  and return}
+          format.html { redirect_to "/empresa_registradas", notice: "Los datos de la Empresa:#{@empresa_registrada.nombre_empresa} RIF:#{@empresa_registrada.rif_completo} fueron actualizados satisfactoriamente."  and return}
 
         end
     

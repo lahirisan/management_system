@@ -9,7 +9,7 @@
   %br
   
   %section.formulario
-    = form_for(@empresa, :html => {:id => "formulario_crear_empresa"}) do |f|
+    = form_for(@empresa) do |f|
 
       -if @empresa.errors.any? 
         #error_explanation
@@ -41,10 +41,14 @@
              
               -else
                 %li=msg + '.'
+
+      
         
       %br
       %table
-        /=render 'asociar_prefijo'
+        -if params[:asociar_prefijo]
+          =hidden_field_tag "asociar_prefijo", true 
+
         %tr
           %td
             AFILIACION EN TIPO
@@ -84,7 +88,11 @@
             DIRECCION FISCAL
           %td
           %td         
+<<<<<<< HEAD
             =f.text_field :direccion_empresa, {:size => "110"}
+=======
+            =f.text_field :direccion_empresa, {:size => "100"}
+>>>>>>> generar_prefijos_empresas_existentes
             
         %tr
           %td
@@ -161,7 +169,7 @@
           %td
             RIF
           %td
-            =f.select "tipo_rif", @opciones.map{|opcion|[opcion,opcion]}, {:prompt => "--", :select => @empresa_registrada }
+            =f.select "tipo_rif", ['J', 'G', 'E', 'V'].map{|opcion|[opcion,opcion]}, {:prompt => "--", :select => @empresa_registrada }
           %td
             = f.text_field :rif, :placeholder => "J-12548785-4"    
      

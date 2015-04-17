@@ -14,7 +14,6 @@
 	belongs_to :tipo_usuario, :foreign_key => "id_tipo_usuario"
 	belongs_to :motivo_retiro, :foreign_key => "id_motivo_retiro"
 
-	
 	has_many :producto, :foreign_key => "prefijo", :dependent => :destroy# Define una asociaicion 1 a N con productos_empresa
 	has_many :empresa_servicio, :foreign_key => "prefijo", :dependent => :destroy
 	
@@ -22,8 +21,7 @@
 	has_many :gln, :foreign_key => "prefijo" , :dependent => :destroy# Define una asociaicion 1 a N con productos_empresa
 	
 	belongs_to :tipo_usuario_empresa, :foreign_key => "id_tipo_usuario"
-	
-	
+	validates :rif_completo, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado en el listado de las Nuevas Empresas. Por favor verifique."} , unless: "no_rif_validation == true"
 
 	def self.to_csv # Se genera el CSV de Empresas
 
@@ -222,9 +220,6 @@
 
  def self.activar(empresa_registrada)
 
-
-	estatus = Estatus.find(:first, :conditions => ["descripcion = ? and alcance = ?", "Activa", "Empresa"])
-
 	empresa = Empresa.new
 	empresa.prefijo = empresa_registrada.prefijo
 	empresa.nombre_empresa = empresa_registrada.nombre_empresa
@@ -235,7 +230,7 @@
 	empresa.rif = empresa_registrada.rif
 	empresa.tipo_rif = empresa_registrada.tipo_rif
 	empresa.rif_completo = empresa_registrada.rif_completo
-	empresa.id_estatus = estatus.id
+	empresa.id_estatus = 1 # empresas activa
 	empresa.id_tipo_usuario = empresa_registrada.id_tipo_usuario
 	empresa.nombre_comercial = empresa_registrada.nombre_comercial
 	empresa.id_clasificacion = empresa_registrada.id_clasificacion
@@ -393,10 +388,8 @@
 	empresa.telefono2_mercadeo = empresa_registrada.telefono2_mercadeo
 	empresa.id_municipio_mercadeo = empresa_registrada.id_municipio_mercadeo
 	empresa.id_ciudad_mercadeo = empresa_registrada.id_ciudad_mercadeo
-
-
+	empresa.no_rif_validation = true if empresa_registrada.no_rif_validation == true
 	empresa.save
- 
 	empresa_registrada.destroy
 	
 	eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", empresa.prefijo])
