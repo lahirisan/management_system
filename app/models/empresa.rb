@@ -122,7 +122,7 @@
 		#prefijos_disponible = Empresa.find(:first, :conditions => ["prefijo >= ? and prefijo <= ? and prefijo not in (?)", 7599000, 7599999, prefijos_asignados.collect{|empresa| empresa.prefijo}], :order => "empresa.prefijo asc")
 
 		prefijos_disponibles = Empresa.where(["prefijo < 7599000"]).select("prefijo").last
-		return (prefijos_disponible.prefijo + 1)
+		return (prefijos_disponibles.prefijo + 1)
 
 	end
 
