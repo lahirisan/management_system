@@ -41,21 +41,10 @@
              
               -else
                 %li=msg + '.'
-              
-      -if (session[:gerencia] == 'Estandares y Consultoría' and session[:perfil] == 'Super Usuario') or session[:perfil] == 'Administrador'
-        
-        
-        %table
-          %tr
-            %td.prefijo
-              Prefijo Asignado
-            %td.prefijo
-              =f.text_field :prefijo, :readonly => :true, :class => "campo_readonly"
-            %td
-        
         
       %br
       %table
+        /=render 'asociar_prefijo'
         %tr
           %td
             AFILIACION EN TIPO
@@ -95,7 +84,7 @@
             DIRECCION FISCAL
           %td
           %td         
-            =f.text_field :direccion_empresa, {:size => "120"}
+            =f.text_field :direccion_empresa, {:size => "110"}
             
         %tr
           %td
