@@ -15,7 +15,11 @@
                 %th Tipo Usuario
                 %th Ventas Brutas Anuales
                 %th Clasificación
-                %th Editar Empresa 
+                -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Empresa Registrada')
+                    %th Editar Empresa 
+                -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Activar Empresa')
+                    %th Activar Empresa 
+                
                
                
         %tbody

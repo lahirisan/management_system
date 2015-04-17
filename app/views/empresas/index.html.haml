@@ -25,6 +25,8 @@
                 %th GLN
                 %th Etiquetas
                 %th Carta Unica de Afiliación
+                - if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Asociar Nuevo Prefijo')
+                    %th Asociar Nuevo Prefijo
                
         %tbody
         %tfoot

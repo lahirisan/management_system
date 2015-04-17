@@ -67,7 +67,7 @@ class EmpresasController < ApplicationController
 
 
                       
-                      if params[:modificar_empresa] # Si llega el parametro modificar_empresa se muestra la vista de Empresas Activas Editable, no en caso contrario
+                      if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Empresa')  # Privilegio Modificar Empresa
                         
                         if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Generar Código')  ## Si tiene el privilegio asociado a su perfil puede generar codigos para PRODUCTOS Y GLN
 
@@ -79,6 +79,7 @@ class EmpresasController < ApplicationController
                         end
 
                       else
+
                         render json: EmpresasDatatable.new(view_context)
                         
                       end
@@ -201,7 +202,6 @@ class EmpresasController < ApplicationController
   # GET /empresas/1/edit
   def edit
     
-    @opciones = ['J', 'G', 'E', 'V']
     @empresa = Empresa.find(params[:id])
     
     
@@ -232,31 +232,41 @@ class EmpresasController < ApplicationController
   def update
 
     @empresa = Empresa.find(params[:id])
-    @opciones = ['J', 'G', 'E', 'V']
-
+    
     params[:empresa][:rif_completo] = params[:empresa][:tipo_rif] + "-" + params[:empresa][:rif]
 
     respond_to do |format|
        
-      if @empresa.update_attributes(params[:empresa])
+      if params[:asociar_prefijo] # Opcion para asignar nuevos prefijos a las empresas
 
-        Auditoria.registrar_evento(session[:usuario],"empresa", "Editar", Time.now, "Empresa:#{@empresa.nombre_empresa} PREFIJO:#{@empresa.prefijo}")
-
+        EmpresaRegistrada.asociar_prefijo(params[:empresa], @empresa.fecha_inscripcion)
+        Auditoria.registrar_evento(session[:usuario],"Nueva Empresa", "Asociar Nuevo Prefijo", Time.now, "EMPRESA:#{params[:empresa][:nombre_empresa]} RIF:#{params[:empresa][:tipo_rif]}-#{params[:empresa][:rif]}")
+        
         format.html { 
-          
-          redirect_to '/empresas', notice: "EMPRESA #{@empresa.nombre_empresa} PREFIJO:#{@empresa.prefijo}  ACTUALIZADA SATISFACTORIAMENTE." 
-          
+          redirect_to '/empresa_registradas', notice: "SE REGISTRO EMPRESA #{params[:empresa][:nombre_empresa]} RIF:#{params[:empresa][:tipo_rif]}-#{params[:empresa][:rif]}"
         }
 
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @empresa.errors, status: :unprocessable_entity }
+      else # Se esta editando la empresa
+        
+        if @empresa.update_attributes(params[:empresa])
+
+          Auditoria.registrar_evento(session[:usuario],"empresa", "Editar", Time.now, "Empresa:#{@empresa.nombre_empresa} PREFIJO:#{@empresa.prefijo}")
+
+          format.html { 
+          
+            redirect_to '/empresas', notice: "EMPRESA #{@empresa.nombre_empresa} PREFIJO:#{@empresa.prefijo}  ACTUALIZADA SATISFACTORIAMENTE." 
+          }
+
+          format.json { head :no_content }
+        else
+          format.html { render action: "edit" }
+          format.json { render json: @empresa.errors, status: :unprocessable_entity }
+        end
+
       end
 
-
-
     end
+
   end
 
   def update_multiple
