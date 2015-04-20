@@ -147,7 +147,7 @@ class EmpresaRegistrada < ActiveRecord::Base
     empresa.fecha_inscripcion = fecha_inscripcion
     empresa.id_subestatus = 2 # Se le asigna sub Estatus NO solvente
     empresa.no_rif_validation = true # Esta bandera indica que NO  valide la condicion de RIF unico
-    empresa.save
+    empresa.save!
 
   end
 
