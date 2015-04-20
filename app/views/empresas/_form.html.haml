@@ -46,7 +46,7 @@
         
       %br
       %table
-        -if params[:asociar_prefijo]
+        -if params[:asociar_prefijo] == 'true'
           =hidden_field_tag "asociar_prefijo", 'true' 
 
         %tr
