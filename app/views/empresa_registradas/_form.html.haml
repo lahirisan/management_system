@@ -239,7 +239,6 @@
             =f.text_field(:aporte_mantenimiento_bs)
 
       %br
-
       %br
 
       %label.contexto.codificacion_gs1
@@ -555,105 +554,11 @@
               =f.text_field :rep_recursos_cargo
           %tr
             %td
-              =f.select(:tipo_galpon_edificio_quinta_seminarios, options_for_select(['Galpón', 'Edificio', 'Quinta'], @empresa_registrada.tipo_galpon_edificio_quinta_seminarios), :prompt => "Galpón/Edificio/Quinta")
-            %td
-            %td
-              =f.text_field :galpon_edificio_quinta_seminarios
-          
-          %tr
-            %td
-              =f.select(:tipo_piso_numero_seminarios, options_for_select(['Número', 'Piso'], @empresa_registrada.tipo_piso_numero_seminarios), :prompt => "Número/Piso")
-            %td
-            %td
-              =f.text_field :piso_numero_seminarios
-
-          %tr
-            %td
-              =f.select(:tipo_oficina_apartamento_seminarios, options_for_select(['Apartamento', 'Oficina'], @empresa_registrada.tipo_oficina_apartamento_seminarios), :prompt => "Apartamento/Oficina")
-            %td
-            %td
-              =f.text_field :oficina_apartamento_seminarios
-          %tr
-            %td
-              =f.select(:tipo_avenida_calle_seminarios, options_for_select(['Avenida', 'Calle'], @empresa_registrada.tipo_avenida_calle_seminarios), :prompt => "Avenida/Calle")
-            %td
-            %td
-              =f.text_field :avenida_calle_seminarios
-
-          %tr
-            %td
-              =f.select(:tipo_urbanizacion_barrio_sector_seminarios, options_for_select(['Urbanizacion', 'Barrio', 'Sector', 'Terraza'], @empresa_registrada.tipo_avenida_calle_seminarios), :prompt => "Urbanizacion/Barrio/Sector/Terraza")
-            %td
-            %td
-              =f.text_field :urbanizacion_barrio_sector_seminarios
-
-          %tr
-            %td
-              ESTADO
-            %td
-            %td
-              
-              =f.collection_select :id_estado_recursos, Estado.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
-                
-          %tr
-            %td
-              CIUDAD
-            %td
-            %td
-              = f.collection_select :id_ciudad_recursos, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
-              
-          %tr
-            %td
-              MUNICIPIO
-            %td
-            %td
-              = f.collection_select :id_municipio_recursos, Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
-              
-          %tr
-            %td
-              PARROQUIA
-            %td
-            %td
-              =f.text_field :parroquia_recursos
-              
-          %tr
-            %td
-              Punto Referencia
-            %td
-            %td
-              =f.text_field :punto_ref_recursos
-          %tr
-            %td
-              Código Postal
-            %td
-            %td
-              = f.text_field :codigo_postal_recursos
-
-          %tr
-            %td
               Teléfono 1 (58)
             %td
               =f.text_field :cod_tlf1_seminarios, :placeholder => "212", :size => "3"
             %td
               =f.text_field :telefono1_recursos, :class => "formato_telefono"
-
-          %tr
-            %td
-              Teléfono 2 (58)
-            %td
-              =f.text_field :cod_tlf2_seminarios, :placeholder => "212", :size => "3"
-            
-            %td
-              =f.text_field :telefono2_recursos, :class => "formato_telefono"
-
-          %tr
-            %td
-              Teléfono 3 (58)
-            %td
-              =f.text_field :cod_tlf3_seminarios, :placeholder => "212", :size => "3"  
-            %td
-              =f.text_field :telefono3_recursos, :class => "formato_telefono"
-              
           %tr
             %td
               Fax (58)
@@ -667,13 +572,7 @@
             %td
             %td
               =f.text_field :email1_recursos, :class => "email"
-          %tr
-            %td
-              E-mail 2
-            %td
-            %td
-              =f.text_field :email2_recursos, :class => "email"
-
+          
       %br
       %label.contexto
         d. DIRECCION PARA ENVIO DE INVITACIONES A EVENTOS ESPECIALES (MERCADEO)
@@ -694,101 +593,11 @@
               =f.text_field :rep_mercadeo_cargo
           %tr
             %td
-              =f.select(:tipo_galpon_edificio_quinta_mercadeo, options_for_select(['Galpón', 'Edificio', 'Quinta'], @empresa_registrada.tipo_galpon_edificio_quinta_mercadeo), :prompt => "Galpón/Edificio/Quinta")
-            %td
-            %td
-              =f.text_field :galpon_edificio_quinta_mercadeo
-          
-          %tr
-            %td
-              =f.select(:tipo_piso_numero_mercadeo, options_for_select(['Número', 'Piso'], @empresa_registrada.tipo_piso_numero_mercadeo), :prompt => "Número/Piso")
-            %td
-            %td
-              =f.text_field :piso_numero_mercadeo
-
-          %tr
-            %td
-              =f.select(:tipo_oficina_apartamento_mercadeo, options_for_select(['Apartamento', 'Oficina'], @empresa_registrada.tipo_oficina_apartamento_mercadeo), :prompt => "Apartamento/Oficina")
-            %td
-            %td
-              =f.text_field :oficina_apartamento_mercadeo
-          %tr
-            %td
-              =f.select(:tipo_avenida_calle_mercadeo, options_for_select(['Avenida', 'Calle'], @empresa_registrada.tipo_avenida_calle_mercadeo), :prompt => "Avenida/Calle")
-            %td
-            %td
-              =f.text_field :avenida_calle_mercadeo
-
-          %tr
-            %td
-              =f.select(:tipo_urbanizacion_barrio_sector_mercadeo, options_for_select(['Urbanizacion', 'Barrio', 'Sector', 'Terraza'], @empresa_registrada.tipo_avenida_calle_mercadeo), :prompt => "Urbanizacion/Barrio/Sector/Terraza")
-            %td
-            %td
-              =f.text_field :urbanizacion_barrio_sector_mercadeo
-
-          %tr
-            %td
-              ESTADO
-            %td
-            %td
-              
-              =f.collection_select :id_estado_mercadeo, Estado.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
-                
-          %tr
-            %td
-              CIUDAD
-            %td
-            %td
-              = f.collection_select :id_ciudad_mercadeo, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
-              
-          %tr
-            %td
-              MUNICIPIO
-            %td
-            %td
-              = f.collection_select :id_municipio_mercadeo, Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, :prompt => "-Seleccione-"
-              
-          %tr
-            %td
-              PARROQUIA
-            %td
-            %td
-              =f.text_field :parroquia_mercadeo
-              
-          %tr
-            %td
-              Punto Referencia
-            %td
-            %td
-              =f.text_field :punto_ref_mercadeo
-          %tr
-            %td
-              Código Postal
-            %td
-            %td
-              = f.text_field :codigo_postal_mercadeo
-          %tr
-            %td
               Teléfono 1 (58)
             %td
               =f.text_field :cod_tlf1_mercadeo, :placeholder => "212", :size => "3"
             %td
               =f.text_field :telefono1_mercadeo, :class => "formato_telefono"
-          %tr
-            %td
-              Teléfono 2 (58)
-            %td
-              =f.text_field :cod_tlf2_mercadeo, :placeholder => "212", :size => "3"
-            %td
-              =f.text_field :telefono2_mercadeo, :class => "formato_telefono"
-          %tr
-            %td
-              Teléfono 3 (58)
-            %td
-              =f.text_field :cod_tlf3_mercadeo, :placeholder => "212", :size => "3"
-            %td
-              =f.text_field :telefono3_mercadeo, :class => "formato_telefono"
-              
           %tr
             %td
               Fax (58)
@@ -803,13 +612,6 @@
             %td 
             %td
               =f.text_field :email1_mercadeo, :class => "email"
-          %tr
-            %td
-              E-mail 2
-            %td
-            %td
-              =f.text_field :email2_mercadeo, :class => "email"
-
 
       %label.contexto
         =@empresa_registrada.new_record? ? "Ramo de desempeño de la empresa" : @empresa_registrada.nombre_empresa + " > Ramo de desempeño de la empresa"
