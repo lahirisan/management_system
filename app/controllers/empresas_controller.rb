@@ -244,8 +244,7 @@ class EmpresasController < ApplicationController
 
     respond_to do |format|
        
-      raise params[:asociar_prefijo].to_yaml 
-      if params[:asociar_prefijo] # Opcion para asignar nuevos prefijos a las empresas
+      if params[:asociar_prefijo] == 'true'# Opcion para asignar nuevos prefijos a las empresas
 
         EmpresaRegistrada.asociar_prefijo(params[:empresa], @empresa.fecha_inscripcion)
         Auditoria.registrar_evento(session[:usuario],"Nueva Empresa", "Asociar Nuevo Prefijo", Time.now, "EMPRESA:#{params[:empresa][:nombre_empresa]} RIF:#{params[:empresa][:tipo_rif]}-#{params[:empresa][:rif]}")
