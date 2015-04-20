@@ -6,7 +6,7 @@
     
     = render 'boton_reactivar_empresa'
     
-    =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_reactivar" do
+    =form_tag update_multiple_empresas_path, :method => "patch", :id => "formulario_reactivar" do
         
         %table#data_table_reactivar_empresas.display{:"data-source" => "/empresas.json?reactivar=true"}
             %thead
