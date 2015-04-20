@@ -244,6 +244,7 @@ class EmpresasController < ApplicationController
 
     respond_to do |format|
        
+      raise params[:asociar_prefijo].to_yaml 
       if params[:asociar_prefijo] # Opcion para asignar nuevos prefijos a las empresas
 
         EmpresaRegistrada.asociar_prefijo(params[:empresa], @empresa.fecha_inscripcion)
