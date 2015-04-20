@@ -209,7 +209,7 @@ class EmpresasController < ApplicationController
   def edit
     
     @empresa = Empresa.find(params[:id])
-    @nuevo_prefijo_asociado = Empresa.busqueda_exhaustiva_prefijo if params[:asociar_prefijo]
+    @nuevo_prefijo_asociado = Empresa.busqueda_exhaustiva_prefijo if params[:asociar_prefijo] == 'true'
     
     
   end
@@ -245,7 +245,7 @@ class EmpresasController < ApplicationController
     respond_to do |format|
        
       if params[:asociar_prefijo] == 'true'# Opcion para asignar nuevos prefijos a las empresas
-
+          raise "uno".to_yaml
         EmpresaRegistrada.asociar_prefijo(params[:empresa], @empresa.fecha_inscripcion)
         Auditoria.registrar_evento(session[:usuario],"Nueva Empresa", "Asociar Nuevo Prefijo", Time.now, "EMPRESA:#{params[:empresa][:nombre_empresa]} RIF:#{params[:empresa][:tipo_rif]}-#{params[:empresa][:rif]}")
         
@@ -254,7 +254,7 @@ class EmpresasController < ApplicationController
         }
 
       else # Se esta editando la empresa
-        
+        raise "dos".to_yaml
         if @empresa.update_attributes(params[:empresa])
 
           Auditoria.registrar_evento(session[:usuario],"empresa", "Editar", Time.now, "Empresa:#{@empresa.nombre_empresa} PREFIJO:#{@empresa.prefijo}")
