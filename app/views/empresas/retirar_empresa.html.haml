@@ -4,7 +4,7 @@
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
 
-    =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retirar_empresa" do
+    =form_tag update_multiple_empresas_path, :method => "patch", :id => "formulario_retirar_empresa" do
         
         = render 'retiro_masivo'
        
