@@ -209,7 +209,7 @@ class EmpresasController < ApplicationController
   def edit
     
     @empresa = Empresa.find(params[:id])
-    @nuevo_prefijo_asociado = Empresa.busqueda_exhaustiva_prefijo if params[:asociar_prefijo]
+    @nuevo_prefijo_asociado = Empresa.busqueda_exhaustiva_prefijo if params[:asociar_prefijo] == 'true'
     
     
   end
@@ -244,8 +244,8 @@ class EmpresasController < ApplicationController
 
     respond_to do |format|
        
-      if params[:asociar_prefijo] # Opcion para asignar nuevos prefijos a las empresas
-
+      if params[:asociar_prefijo] == 'true'# Opcion para asignar nuevos prefijos a las empresas
+        Empresa.update(@empresa.prefijo, :no_rif_validation => true) # La empresa a la que se le esta asociando un nuevo prefijo puede tener rif_repetidos
         EmpresaRegistrada.asociar_prefijo(params[:empresa], @empresa.fecha_inscripcion)
         Auditoria.registrar_evento(session[:usuario],"Nueva Empresa", "Asociar Nuevo Prefijo", Time.now, "EMPRESA:#{params[:empresa][:nombre_empresa]} RIF:#{params[:empresa][:tipo_rif]}-#{params[:empresa][:rif]}")
         
