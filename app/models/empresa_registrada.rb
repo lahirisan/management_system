@@ -10,7 +10,7 @@ class EmpresaRegistrada < ActiveRecord::Base
   belongs_to :clasificacion, :foreign_key => "id_clasificacion"
   belongs_to :tipo_usuario_empresa, :foreign_key => "id_tipo_usuario"
 
-  validates :id_tipo_usuario, :nombre_empresa, :fecha_inscripcion,  :id_estado, :id_ciudad, :direccion_empresa, :contacto_tlf1, :contacto_email1,  :rif, :id_clasificacion, :rep_legal, :cargo_rep_legal, :rep_ean, :rep_ean_cargo, :id_estado_ean, :id_ciudad_ean, :id_municipio_ean, :cod_tlf1_ean, :telefono1_ean,   :email1_ean,  :cod_contacto_tlf1,  :ventas_brutas_anuales, :aporte_mantenimiento_bs, :cod_postal_ean,  :presence => {:message => "No puede estar en blanco"}
+  validates :id_tipo_usuario, :nombre_empresa, :fecha_inscripcion,  :id_estado, :id_ciudad, :direccion_empresa, :cod_contacto_tlf1,:contacto_tlf1, :cod_contacto_tlf2, :contacto_tlf2, :cod_contacto_tlf3, :contacto_tlf3, :cod_contacto_fax, :contacto_fax, :cod_tlf2_ean, :telefono2_ean, :cod_tlf3_ean, :telefono3_ean, :cod_fax_ean, :fax_ean,  :contacto_email1,  :rif, :id_clasificacion, :rep_legal, :cargo_rep_legal, :rep_ean, :rep_ean_cargo, :id_estado_ean, :id_ciudad_ean, :id_municipio_ean, :cod_tlf1_ean, :telefono1_ean,   :email1_ean,    :ventas_brutas_anuales, :aporte_mantenimiento_bs, :cod_postal_ean,  :presence => {:message => "No puede estar en blanco"}
   validates :rif, format: { with: /^([0-9]{5,8})-([0-9]{1})$/, :multiline => true,  :message => "Verifique el RIF siga el formato 12345678-9"} # Validacion al crear
   validates :rif_completo, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado en el listado de las Nuevas Empresas. Por favor verifique."}, unless: "no_rif_validation == true"
   

@@ -549,6 +549,74 @@
            alert('Estimado Usuario, la Empresa que ha seleccionada presenta estatus DEUDOR. Tenga en cuenta esta información si va generar códigos para Productos ó GLN.');
 
         });
+
+
+        $('#repetir_correspondencia_empresas_activas').click(function(w){
+
+            $('#empresa_rep_edi').val($('#empresa_rep_ean').val());
+            $('#empresa_rep_recursos').val($('#empresa_rep_ean').val());
+            $('#empresa_rep_mercadeo').val($('#empresa_rep_ean').val());
+
+            $('#empresa_rep_edi_cargo').val($('#empresa_rep_ean_cargo').val());
+            $('#empresa_rep_recursos_cargo').val($('#empresa_rep_ean_cargo').val());
+            $('#empresa_rep_mercadeo_cargo').val($('#empresa_rep_ean_cargo').val());
+
+            $('#empresa_tipo_galpon_edificio_quinta_sincronet').val($('#empresa_tipo_galpon_edificio_quinta').val());
+            $('#empresa_galpon_edificio_quinta_sincronet').val($('#empresa_galpon_edificio_quinta').val());
+            $('#empresa_tipo_piso_numero_sincronet').val($('#empresa_tipo_piso_numero').val());
+            $('#empresa_piso_numero_sincronet').val($('#empresa_piso_numero').val());
+            $('#empresa_tipo_oficina_apartamento_sincronet').val($('#empresa_tipo_oficina_apartamento').val());
+            $('#empresa_oficina_apartamento_sincronet').val($('#empresa_oficina_apartamento').val());
+            $('#empresa_tipo_avenida_calle_sincronet').val($('#empresa_tipo_avenida_calle').val());
+            $('#empresa_avenida_calle_sincronet').val($('#empresa_avenida_calle').val());
+            $('#empresa_tipo_urbanizacion_barrio_sector_sincronet').val($('#empresa_tipo_urbanizacion_barrio_sector').val());
+            
+            $('#empresa_urbanizacion_barrio_sector_sincronet').val($('#empresa_urbanizacion_barrio_sector').val());
+            
+            $('#empresa_id_estado_edi').val($('#empresa_id_estado_ean').val());
+            
+            $('#empresa_id_ciudad_edi').val($('#empresa_id_ciudad_ean').val());
+            
+            $('#empresa_id_municipio_edi').val($('#empresa_id_municipio_ean').val());
+            
+            $('#empresa_parroquia_edi').val($('#empresa_parroquia_ean').val());
+            
+
+            $('#empresa_punto_ref_edi').val($('#empresa_punto_ref_ean').val());
+            
+            $('#empresa_codigo_postal_edi').val($('#empresa_cod_postal_ean').val());
+            
+            $('#empresa_cod_tlf1_sincronet').val($('#empresa_cod_tlf1_ean').val());
+            $('#empresa_cod_tlf1_seminarios').val($('#empresa_cod_tlf1_ean').val());
+            $('#empresa_cod_tlf1_mercadeo').val($('#empresa_cod_tlf1_ean').val());
+
+            $('#empresa_telefono1_edi').val($('#empresa_telefono1_ean').val());
+            $('#empresa_telefono1_recursos').val($('#empresa_telefono1_ean').val());
+            $('#empresa_telefono1_mercadeo').val($('#empresa_telefono1_ean').val());
+
+            $('#empresa_cod_tlf2_sincronet').val($('#empresa_cod_tlf2_ean').val());
+            
+            $('#empresa_telefono2_edi').val($('#empresa_telefono2_ean').val());
+            
+            $('#empresa_cod_tlf3_sincronet').val($('#empresa_cod_tlf3_ean').val());
+            
+            $('#empresa_telefono3_edi').val($('#empresa_telefono3_ean').val());
+            
+            $('#empresa_cod_fax_sincronet').val($('#empresa_cod_fax_ean').val());
+            $('#empresa_fax_edi').val($('#empresa_fax_ean').val());
+
+            $('#empresa_cod_fax_seminarios').val($('#empresa_cod_fax_ean').val());
+            $('#empresa_fax_recursos').val($('#empresa_fax_ean').val());
+
+            $('#empresa_cod_fax_mercadeo').val($('#empresa_cod_fax_ean').val());
+            $('#empresa_fax_mercadeo').val($('#empresa_fax_ean').val());
+            
+            $('#empresa_email1_edi').val($('#empresa_email1_ean').val());
+            $('#empresa_email1_recursos').val($('#empresa_email1_ean').val());
+            $('#empresa_email1_mercadeo').val($('#empresa_email1_ean').val());
+
+            
+        });
        
 
     });   

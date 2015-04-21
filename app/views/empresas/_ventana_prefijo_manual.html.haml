@@ -51,14 +51,15 @@
     
   %tbody
     - @prefijos_disponibles.each do |empresa|
-      -fecha = empresa.try(:fecha_eliminacion) 
-      -fecha = fecha.strftime("%Y-%m-%d") if fecha
+      
+      
 
       %tr
         %td= empresa.prefijo
         %td= empresa.nombre_empresa
         %td= empresa.try(:estatus).try(:descripcion)
-        %td= fecha
+        %td= (empresa.fecha_eliminacion) ? empresa.fecha_eliminacion.strftime("%Y-%m-%d") : ""
+
         %td{:id => "#{empresa.prefijo}_categoria"}
           = empresa.try(:categoria)
         %td{:id => "#{empresa.prefijo}_division"}

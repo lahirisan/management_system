@@ -108,12 +108,7 @@
       %td
         %b
           =@empresa.try(:contacto_email1)
-    %tr
-      %td
-        Correo2
-      %td
-        %b
-          =@empresa.try(:contacto_email2)
+    
     %tr
       %td
         Fecha Registro Mercantil
@@ -131,7 +126,7 @@
         Estatus
       %td
         %b
-          =@empresa.try(:estatus).try(:descripcion)
+          =@empresa.try(:estatus).try(:descripcion).upcase
     
       
     %tr
@@ -286,12 +281,7 @@
       %td
         %b
           =@empresa.try(:email1_ean)
-    %tr
-      %td
-        Email 2
-      %td
-        %b
-          =@empresa.try(:email2_ean)
+   
 
   %br
   %br
@@ -382,12 +372,7 @@
       %td
         %b
           =@empresa.try(:email1_edi)
-    %tr
-      %td
-        Email 2
-      %td
-        %b
-          =@empresa.try(:email2_edi)
+   
   %br
   %br
   %br
@@ -409,61 +394,15 @@
         %b
           =@empresa.try(:rep_recursos_cargo)
     
-    %tr
-      %td
-        Estado
-      %td
-        %b
-          =@estado_recursos.try(:nombre)
-    %tr
-      %td
-        Ciudad
-      %td
-        %b
-          =@ciudad_recursos.try(:nombre)
-    %tr
-      %td
-        Municipio
-      %td
-        %b
-          =@municipio_recursos.try(:nombre)
-    %tr
-      %td
-        Parroquia
-      %td
-        %b
-          =@empresa.try(:parroquia_recursos)
-
-    %tr
-      %td
-        Código Postal
-      %td
-        %b
-          =@empresa.try(:codigo_postal_recursos)
-    %tr
-      %td
-        Punto Referencia
-      %td
-        %b
-          =@empresa.try(:punto_ref_recursos)
+   
     %tr
       %td
         Teléfono 1
       %td
         %b
           =@telefono1_recursos
-    %tr
-      %td
-        Teléfono 2
-      %td
-        %b
-          =@telefono2_recursos
-    %tr
-      %td
-        Teléfono 3
-      %td
-        %b
-          =@telefono3_recursos
+    
+    
     %tr
       %td
         Fax
@@ -477,12 +416,7 @@
       %td
         %b
           =@empresa.try(:email1_recursos)
-    %tr
-      %td
-        Email 2
-      %td
-        %b
-          =@empresa.try(:email2_recursos)
+    
 
   %br
   %br
@@ -504,61 +438,14 @@
       %td
         %b
           =@empresa.try(:rep_mercadeo_cargo)
-    %tr
-      %td
-        Estado
-      %td
-        %b
-          =@estado_mercadeo.try(:nombre)
-    %tr
-      %td
-        Ciudad
-      %td
-        %b
-          =@ciudad_mercadeo.try(:nombre)
-    %tr
-      %td
-        Municipio
-      %td
-        %b
-          =@municipio_mercadeo.try(:nombre)
-    %tr
-      %td
-        Parroquia
-      %td
-        %b
-          =@empresa.try(:parroquia_mercadeo)
-
-    %tr
-      %td
-        Código Postal
-      %td
-        %b
-          =@empresa.try(:codigo_postal_mercadeo)
-    %tr
-      %td
-        Punto Referencia
-      %td
-        %b
-          =@empresa.try(:punto_ref_mercadeo)
+    
     %tr
       %td
         Teléfono 1
       %td
         %b
           =@telefono1_mercadeo
-    %tr
-      %td
-        Teléfono 2
-      %td
-        %b
-          =@telefono2_mercadeo
-    %tr
-      %td
-        Teléfono 3
-      %td
-        %b
-          =@telefono3_mercadeo
+   
     %tr
       %td
         Fax
@@ -572,12 +459,7 @@
       %td
         %b
           =@empresa.try(:email1_mercadeo)
-    %tr
-      %td
-        Email 2
-      %td
-        %b
-          =@empresa.try(:email2_mercadeo)
+   
   %br
   %br
   %br
