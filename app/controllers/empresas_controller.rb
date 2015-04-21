@@ -255,7 +255,72 @@ class EmpresasController < ApplicationController
 
       else # Se esta editando la empresa
         
+        ############################ LOS DATOS SE CAMBIA A MAYUSCULA    ##########################################
+
+        params[:empresa][:nombre_empresa] = params[:empresa][:nombre_empresa].upcase if params[:empresa][:nombre_empresa]
+        params[:empresa][:nombre_comercial] =  params[:empresa][:nombre_comercial].upcase if params[:empresa][:nombre_comercial]
+        params[:empresa][:direccion_empresa] = params[:empresa][:direccion_empresa].upcase if params[:empresa][:direccion_empresa]
+        params[:empresa][:circunscripcion_judicial] = params[:empresa][:circunscripcion_judicial].upcase if params[:empresa][:circunscripcion_judicial]
+        params[:empresa][:rep_legal] = params[:empresa][:rep_legal].upcase if params[:empresa][:rep_legal]
+        params[:empresa][:cargo_rep_legal] = params[:empresa][:cargo_rep_legal].upcase if params[:empresa][:cargo_rep_legal]
+        params[:empresa][:nacionalidad_responsable_legal] = params[:empresa][:nacionalidad_responsable_legal].upcase if params[:empresa][:nacionalidad_responsable_legal]
+        params[:empresa][:domicilio_responsable_legal] = params[:empresa][:domicilio_responsable_legal].upcase if params[:empresa][:domicilio_responsable_legal]
+
+
+        # DATOS EAN SE LLEVAN A MAYUSCULAS
+
+        params[:empresa][:rep_ean] = params[:empresa][:rep_ean].upcase if params[:empresa][:rep_ean]
+        params[:empresa][:rep_ean_cargo] = params[:empresa][:rep_ean_cargo].upcase if params[:empresa][:rep_ean_cargo]
+        params[:empresa][:galpon_edificio_quinta] = params[:empresa][:galpon_edificio_quinta].upcase if params[:empresa][:galpon_edificio_quinta]
+        params[:empresa][:oficina_apartamento] = params[:empresa][:oficina_apartamento].upcase if params[:empresa][:oficina_apartamento]
+        params[:empresa][:avenida_calle] = params[:empresa][:avenida_calle].upcase if params[:empresa][:avenida_calle]
+        params[:empresa][:urbanizacion_barrio_sector] = params[:empresa][:urbanizacion_barrio_sector].upcase if params[:empresa][:urbanizacion_barrio_sector]
+        params[:empresa][:parroquia_ean] = params[:empresa][:parroquia_ean].upcase if params[:empresa][:parroquia_ean]
+        params[:empresa][:punto_ref_ean] = params[:empresa][:punto_ref_ean].upcase if params[:empresa][:punto_ref_ean]
+
+
+        # DATOS CORREO ELECTRONICO Y SINCRONET SE LLEVAN A MAYUSCULAS
+
+        params[:empresa][:rep_edi] = params[:empresa][:rep_edi].upcase if params[:empresa][:rep_edi]
+        params[:empresa][:rep_edi_cargo] = params[:empresa][:rep_edi_cargo].upcase if params[:empresa][:rep_edi_cargo]
+        params[:empresa][:galpon_edificio_quinta_sincronet] = params[:empresa][:galpon_edificio_quinta_sincronet].upcase if params[:empresa][:galpon_edificio_quinta_sincronet]
+        params[:empresa][:piso_numero_sincronet] =  params[:empresa][:piso_numero_sincronet].upcase if params[:empresa][:piso_numero_sincronet]
+        params[:empresa][:oficina_apartamento_sincronet] = params[:empresa][:oficina_apartamento_sincronet].upcase if params[:empresa][:oficina_apartamento_sincronet]
+        params[:empresa][:avenida_calle_sincronet] = params[:empresa][:avenida_calle_sincronet].upcase if params[:empresa][:avenida_calle_sincronet]
+        params[:empresa][:urbanizacion_barrio_sector_sincronet] = params[:empresa][:urbanizacion_barrio_sector_sincronet].upcase if params[:empresa][:urbanizacion_barrio_sector_sincronet]
+        params[:empresa][:parroquia_edi] = params[:empresa][:parroquia_edi].upcase if params[:empresa][:parroquia_edi]
+        params[:empresa][:punto_ref_edi] = params[:empresa][:punto_ref_edi].upcase if params[:empresa][:punto_ref_edi]
+
+        
+        # DATOS RECURSOS SE LLEVAN A MAYUSCULA    
+        
+        params[:empresa][:rep_recursos] = params[:empresa][:rep_recursos].upcase if params[:empresa][:rep_recursos]
+        params[:empresa][:rep_recursos_cargo] = params[:empresa][:rep_recursos_cargo].upcase if params[:empresa][:rep_recursos_cargo]
+
+        # DATOS MERCADEO SE LLEVAN A MAYUSCULA
+
+        params[:empresa][:rep_mercadeo] = params[:empresa][:rep_mercadeo].upcase if params[:empresa][:rep_mercadeo]
+        params[:empresa][:rep_mercadeo_cargo] = params[:empresa][:rep_mercadeo_cargo].upcase if params[:empresa][:rep_mercadeo_cargo]
+        
+        # Se obtienen los numeros completos
+
+        params[:empresa][:contacto_tlf1_completo] =  "("+ params[:empresa][:cod_contacto_tlf1] + ")" +" "+ params[:empresa][:contacto_tlf1] if params[:empresa][:cod_contacto_tlf1] != ""
+        params[:empresa][:contacto_tlf2_completo] = "("+ params[:empresa][:cod_contacto_tlf2] + ")"+ " " + params[:empresa][:contacto_tlf2] if params[:empresa][:cod_contacto_tlf2] != ""
+        params[:empresa][:contacto_tlf3_completo] ="("+ params[:empresa][:cod_contacto_tlf3] + ")" +" "+ params[:empresa][:contacto_tlf3] if params[:empresa][:cod_contacto_tlf3] != ""
+        params[:empresa][:contacto_fax_completo] = "("+params[:empresa][:cod_contacto_fax] + ")" +" "+ params[:empresa][:contacto_fax] if params[:empresa][:cod_contacto_fax] != ""
+        params[:empresa][:direccion_ean] = params[:empresa][:tipo_urbanizacion_barrio_sector] + " " + params[:empresa][:urbanizacion_barrio_sector] + " " + params[:empresa][:tipo_avenida_calle]  + " " + params[:empresa][:avenida_calle] + " " + params[:empresa][:tipo_galpon_edificio_quinta] + " " + params[:empresa][:galpon_edificio_quinta] + " " + params[:empresa][:tipo_piso_numero] + " " + params[:empresa][:piso_numero]  + " " + params[:empresa][:tipo_oficina_apartamento] + " " + params[:empresa][:oficina_apartamento] 
+        params[:empresa][:telefono1_ean_completo] = "("+ params[:empresa][:cod_tlf1_ean] + ")" +" "+ params[:empresa][:telefono1_ean] if params[:empresa][:cod_tlf1_ean] != ""
+        params[:empresa][:telefono2_ean_completo] = "("+ params[:empresa][:cod_tlf2_ean] + ")" +" "+ params[:empresa][:telefono2_ean] if params[:empresa][:cod_tlf2_ean] != ""
+        params[:empresa][:telefono3_ean_completo] = "("+ params[:empresa][:cod_tlf3_ean] + ")" +" "+ params[:empresa][:telefono3_ean] if params[:empresa][:cod_tlf3_ean] != ""
+        params[:empresa][:fax_ean_completo] = "("+ params[:empresa][:cod_fax_ean] + ")" +" "+ params[:empresa][:fax_ean]              if params[:empresa][:cod_fax_ean] != ""  
+
+        # SE OBTIENE EL RIF COMPLETO
+
+        params[:empresa][:rif_completo] = params[:empresa][:tipo_rif] + "-" + params[:empresa][:rif]
+
+
         if @empresa.update_attributes(params[:empresa])
+
 
           Auditoria.registrar_evento(session[:usuario],"empresa", "Editar", Time.now, "Empresa:#{@empresa.nombre_empresa} PREFIJO:#{@empresa.prefijo}")
 

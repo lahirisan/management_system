@@ -21,6 +21,9 @@
 	has_many :gln, :foreign_key => "prefijo" , :dependent => :destroy# Define una asociaicion 1 a N con productos_empresa
 	
 	belongs_to :tipo_usuario_empresa, :foreign_key => "id_tipo_usuario"
+	
+	validates :tipo_rif, :rif, :ventas_brutas_anuales, :aporte_mantenimiento_bs, :id_tipo_usuario, :id_clasificacion, :presence => {:message => "No puede estar en blanco"}
+
 	validates :rif_completo, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado en el listado de las Empresas. Por favor verifique."}, unless: "no_rif_validation == true"
 
 	
