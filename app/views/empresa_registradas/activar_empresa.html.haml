@@ -1,0 +1,630 @@
+%section.contexto
+  %label.contexto.titulo_contrato
+
+    ="#{@empresa_registrada.nombre_empresa} > Activar / Reasignar Prefijo"
+  %br
+  %br
+  %p.warning=flash[:warning]
+
+  
+  %section.formulario
+  
+  
+    %br
+    = form_for(@empresa_registrada, {:html => {:id => "formulario_crear_empresa"}}) do |f|
+
+      -if @empresa_registrada.errors.any? 
+        #error_explanation
+          %h2= pluralize(@empresa_registrada.errors.count, "errore")
+          %ul
+            // Customización de los mensajes de error para el formulario empresa
+            -@empresa_registrada.errors.full_messages.each do |msg|
+              -if msg == 'Id tipo usuario No puede estar en blanco'
+                %li='Debe seleccionar un tipo de usuario.'
+              -elsif msg == 'Id estado No puede estar en blanco'
+                %li='Debe selecionar un Estado.'
+              -elsif msg == 'Id ciudad No puede estar en blanco'
+                %li='Debe selecionar una Ciudad.'
+              -elsif msg == 'Id clasificación no puede estar en blanco'
+                %li='Debe seleccionar una clasificación.'
+              -elsif msg == 'Direccion empresa No puede estar en blanco'
+                %li='Debe ingresar la Dirección Fiscal.'
+              -elsif msg == 'Contacto tlf1 No puede estar en blanco'
+                %li='Debe ingresar al menos el Teléfono 1.'
+              -elsif msg == 'Contacto email1 No puede estar en blanco'
+                %li='Debe ingresar un E-mail.'
+              -elsif msg == 'Rif No puede estar en blanco'
+                %li='Campo RIF no puede estar en blanco.'
+              -elsif msg == 'Rep legal No puede estar en blanco'
+                %li='NOMBRE RESPONSABLE LEGAL no puede estar en blanco.'
+              -elsif msg == 'Cargo rep legal No puede estar en blanco'
+                %li='CARGO Rep. Legal no puede estar en blanco.'
+              
+             
+              -else
+                %li=msg + '.'
+
+      %table
+        %tr
+          %td.prefijo
+            Prefijo Asignado
+          %td.prefijo
+           
+            =f.text_field :prefijo, :value => "#{@prefijo}"
+            
+          %td
+            =link_to "Reasignar Prefijo", "#", :id => "boton_abrir_ventana_prefijo_manual"
+      =hidden_field_tag "activar", "true"
+      
+      %br
+      %br
+      %br
+
+      %table
+        %tr
+          %td
+            AFILIACION EN TIPO
+          %td
+          %td
+            =f.collection_select :id_tipo_usuario, TipoUsuarioEmpresa.all, :id_tipo_usu_empresa, :descripcion, {}, {:disabled => 'disabled'}
+      
+        %tr
+          %td
+            NOMBRE DE LA EMPRESA
+          %td
+          %td
+            =f.text_field :nombre_empresa, {:size => "100", :disabled => :true} 
+        %tr
+          %td
+            Nombre Comercial
+          %td
+          %td
+            =f.text_field :nombre_comercial, {:size => "100" , :disabled => :true}
+        %tr
+          %td
+            Estado
+          %td
+          %td
+            = f.collection_select :id_estado, Estado.find(:all, :order => "nombre ASC"), :id, :nombre,{}, {:disabled => 'disabled'}
+        %tr
+          %td
+            Ciudad
+          %td
+          %td
+            = f.collection_select :id_ciudad, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, {},{:disabled => 'disabled'}
+        %tr
+          %td
+            DIRECCION FISCAL
+          %td
+          %td         
+            =f.text_field :direccion_empresa, {:size => "105", :disabled => :true}
+            
+        %tr
+          %td
+            Teléfono 1 (58)
+          %td
+            =f.text_field :cod_contacto_tlf1, {:size => "3", :disabled => :true}
+          %td
+            =f.text_field :contacto_tlf1,  { :disabled => :true}
+          %td
+            
+        %tr
+          %td
+            Teléfono 2 (58)
+          %td
+            
+            =f.text_field :cod_contacto_tlf2, { :size => "3", :disabled => :true}
+          %td
+            =f.text_field "contacto_tlf2",  { :disabled => :true}
+        %tr
+          %td
+            Teléfono 3 (58)
+          %td
+            
+            =f.text_field :cod_contacto_tlf3, { :size => "3", :disabled => :true}
+          %td
+            =f.text_field "contacto_tlf3",  { :disabled => :true}
+        %tr
+          %td
+            FAX (58)
+          %td
+            
+            =f.text_field :cod_contacto_fax, {:size => "3", :disabled => :true}
+          %td
+            =f.text_field "contacto_fax",  { :disabled => :true}
+        %tr
+          %td
+            E-mail
+          %td
+          %td
+            =f.text_field "contacto_email1",  {:class => "email", :disabled => :true }
+
+        %tr
+          %td
+            Circunscripción Judicial del Registro Mercantil
+          %td
+          %td
+            =f.text_field :circunscripcion_judicial, { :disabled => :true}
+        %tr
+          %td
+            
+          %td
+          %td
+            
+        %tr
+          %td
+            Nº
+          %td
+          %td
+            =f.text_field :numero_registro_mercantil, { :disabled => :true}
+        %tr
+          %td
+            Tomo Nº
+          %td
+          %td
+            =f.text_field :tomo_registro_mercantil, { :disabled => :true}
+        %tr
+          %td
+            RIF
+          %td
+            =f.select "tipo_rif", ['J', 'G', 'E', 'V'].map{|opcion|[opcion,opcion]},{}, {:prompt => "--", :select => @empresa_registrada , :disabled => 'disabled'}
+          %td
+            = f.text_field :rif,  { :disabled => :true}
+        
+     
+        %tr
+          %td
+            NOMBRE RESPONSABLE LEGAL
+          %td
+          %td
+            =f.text_field :rep_legal , { :disabled => :true}
+        %tr
+          %td
+            CARGO
+          %td
+          %td
+            =f.text_field :cargo_rep_legal, { :disabled => :true}
+        %tr
+          %td
+            Nacionalidad
+          %td
+          %td
+            =f.text_field :nacionalidad_responsable_legal, { :disabled => :true}
+        %tr
+          %td
+            Cédula Representante Legal
+          %td
+            
+          %td
+            =f.text_field :cedula_responsable_legal, { :disabled => :true}
+
+
+        %tr
+          %td
+            Domiciliado en
+          %td
+          %td
+            =f.text_field :domicilio_responsable_legal, { :disabled => :true}
+    
+        %tr
+          %td
+            VENTAS BRUTAS ANUALES
+          %td
+          %td
+            =f.select(:ventas_brutas_anuales, options_for_select(['0 a 100.000', 'De 100.001,00 a 2.000.000,00', 'De 2.000.001,00 a 6.500.000,00', 'De 6.500.001,00 a 8.000.000,00', 'De 8.000.0001,00 o más'], @empresa_registrada.ventas_brutas_anuales), {}, {:prompt => "- Seleccione -", :disabled => :true})
+        %tr
+          %td
+            Aporte Mantenimiento
+          %td
+          %td
+            =f.text_field :aporte_mantenimiento_bs, { :disabled => :true}
+
+      %br
+      %br
+
+      %label.contexto.codificacion_gs1
+
+        a. DIRECCION PARA ENVIO DE CORRESPONDENCIA DE CODIFICACION GS1
+
+      %hr.contexto{:size => "1"}
+
+      %table
+        %tr
+          %td
+            NOMBRE PERSONA CONTACTO
+          %td
+          %td
+
+            =f.text_field :rep_ean, { :disabled => :true}
+          
+        %tr
+          %td
+            CARGO
+          %td
+          %td
+            =f.text_field :rep_ean_cargo, {:disabled => :true}
+            
+        %tr
+          %td
+            =f.select(:tipo_galpon_edificio_quinta, options_for_select(['GALPON', 'EDIFICIO', 'QUINTA'], @empresa_registrada.tipo_galpon_edificio_quinta), {}, {:prompt => "GALPON/EDIFICIO/QUINTA", :disabled => 'disabled'})
+          %td
+          %td
+            =f.text_field :galpon_edificio_quinta, {:disabled => :true}
+        
+        %tr
+          %td
+            =f.select(:tipo_piso_numero, options_for_select(['NUMERO', 'PISO'], @empresa_registrada.tipo_piso_numero), {}, {:prompt => "NUMERO/PISO", :disabled => 'disabled'})
+          %td
+          %td
+            =f.text_field :piso_numero, {:disabled => :true}
+
+        %tr
+          %td
+            =f.select(:tipo_oficina_apartamento, options_for_select(['APARTAMENTO', 'OFICINA'], @empresa_registrada.tipo_oficina_apartamento), {}, {:prompt => "APARTAMENTO/OFICINA", :disabled => 'disabled'})
+          %td
+          %td
+            =f.text_field :oficina_apartamento, {:disabled => :true}
+        %tr
+          %td
+            =f.select(:tipo_avenida_calle, options_for_select(['AVENIDA', 'CALLE'], @empresa_registrada.tipo_avenida_calle), {}, {:prompt => "AVENIDA/CALLE", :disabled => 'disabled'})
+          %td
+          %td
+            =f.text_field :avenida_calle, {:disabled => :true}
+
+        %tr
+          %td
+            =f.select(:tipo_urbanizacion_barrio_sector, options_for_select(['URBANIZACION', 'BARRIO', 'SECTOR', 'TERRAZA'], @empresa_registrada.tipo_avenida_calle),{}, {:prompt => "URBANIZACION/BARRIO/SECTOR/TERRAZA", :disabled => 'disabled'})
+          %td
+          %td
+            =f.text_field :urbanizacion_barrio_sector, {:disabled => :true}
+            
+        %tr
+          %td
+            ESTADO
+          %td
+          %td
+            =f.collection_select :id_estado_ean, Estado.find(:all, :order => "nombre ASC"), :id, :nombre, {}, {:prompt => "-Seleccione-", :disabled => 'disabled'}
+            
+        %tr
+          %td
+            CIUDAD
+          %td
+          %td
+            
+            =f.collection_select :id_ciudad_ean, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, {}, {:prompt => "-Seleccione-", :disabled => 'disabled'}
+            
+            
+        %tr
+          %td
+            MUNICIPIO
+          %td
+          %td
+            
+            =f.collection_select :id_municipio_ean, Municipio.find(:all, :order => "nombre ASC"), :id, :nombre,{}, {:prompt => "-Seleccione-", :disabled => 'disabled'}
+            
+        %tr
+          %td
+            PARROQUIA
+          %td
+          %td
+            
+            =f.text_field :parroquia_ean,  {:disabled => :true}
+            
+        %tr
+          %td
+            Punto Referencia
+          %td
+          %td
+            
+            =f.text_field :punto_ref_ean, {:disabled => :true}
+        %tr
+          %td
+            Código Postal
+          %td
+          %td
+            
+            =f.text_field :cod_postal_ean, {:disabled => :true}
+        %tr
+          %td
+            Teléfono 1 (58)
+          %td
+            =f.text_field :cod_tlf1_ean, { :size => "3", :disabled => :true}
+          %td
+            
+            =f.text_field :telefono1_ean, {:class => "formato_telefono", :disabled => :true}
+
+        %tr
+          %td
+            Teléfono 2 (58)
+          %td
+            =f.text_field :cod_tlf2_ean, {:size => "3", :disabled => :true}
+          %td
+            
+            =f.text_field :telefono2_ean, {:class => "formato_telefono",:disabled => :true}
+
+        %tr
+          %td
+            Teléfono 3 (58)
+          %td
+            =f.text_field :cod_tlf3_ean, { :size => "3", :disabled => :true}
+          %td
+            
+            =f.text_field :telefono3_ean, {:class => "formato_telefono", :disabled => :true}
+        %tr
+          %td
+            Fax (58)
+          %td
+            =f.text_field :cod_fax_ean, { :size => "3", :disabled => :true}
+          %td
+            
+            =f.text_field :fax_ean, {:class => "formato_telefono", :disabled => :true}
+        %tr
+          %td
+            E-mail 1
+          %td
+          %td
+            
+            =f.text_field :email1_ean, { :class => "email", :disabled => :true}
+          
+      
+      %br
+      %label.contexto
+        b. DIRECCION PARA ENVIO DE CORRESPONDENCIA DE COMERCIO ELECTRONICO Y SINCRONET
+      %hr.contexto{:size => "1"}
+
+        %table
+          %tr
+            %td
+              NOMBRE PERSONA CONTACTO
+            %td
+            %td
+              =f.text_field :rep_edi, {:disabled => :true}
+          %tr
+            %td
+              CARGO
+            %td
+            %td
+              =f.text_field :rep_edi_cargo, {:disabled => :true}
+          
+          %tr
+            %td
+              =f.select(:tipo_galpon_edificio_quinta_sincronet, options_for_select(['GALPON', 'EDIFICIO', 'QUINTA'], @empresa_registrada.tipo_galpon_edificio_quinta_sincronet), {},{:prompt => "GALPON/EDIFICIO/QUINTA", :disabled => 'disabled'})
+            %td
+            %td
+              =f.text_field :galpon_edificio_quinta_sincronet, {:disabled => :true}
+          
+          %tr
+            %td
+              =f.select(:tipo_piso_numero_sincronet, options_for_select(['NUMERO', 'PISO'], @empresa_registrada.tipo_piso_numero_sincronet), {}, {:prompt => "NUMERO/PISO", :disabled => 'disabled'})
+            %td
+            %td
+              =f.text_field :piso_numero_sincronet, {:disabled => :true}
+
+          %tr
+            %td
+              =f.select(:tipo_oficina_apartamento_sincronet, options_for_select(['APARTAMENTO', 'OFICINA'], @empresa_registrada.tipo_oficina_apartamento_sincronet), {}, {:prompt => "APARTAMENTO/OFICINA", :disabled => 'disabled'})
+            %td
+            %td
+              =f.text_field :oficina_apartamento_sincronet, {:disabled => :true}
+          %tr
+            %td
+              =f.select(:tipo_avenida_calle_sincronet, options_for_select(['AVENIDA', 'CALLE'], @empresa_registrada.tipo_avenida_calle_sincronet), {},{:prompt => "AVENIDA/CALLE", :disabled => 'disabled'})
+            %td
+            %td
+              =f.text_field :avenida_calle_sincronet, {:disabled => :true}
+
+          %tr
+            %td
+              =f.select(:tipo_urbanizacion_barrio_sector_sincronet, options_for_select(['URBANIZACION', 'BARRIO', 'SECTOR', 'TERRAZA'], @empresa_registrada.tipo_avenida_calle_sincronet), {},{:prompt => "URBANIZACION/BARRIO/SECTOR/TERRAZA", :disabled => 'disabled'})
+            %td
+            %td
+              =f.text_field :urbanizacion_barrio_sector_sincronet, {:disabled => :true}
+             
+          %tr
+            %td
+              ESTADO
+            %td
+            %td
+              
+              =f.collection_select :id_estado_edi, Estado.find(:all, :order => "nombre ASC"), :id, :nombre, {},{ :prompt => "-Seleccione-", :disabled => 'disabled'}
+                
+          %tr
+            %td
+              CIUDAD
+            %td
+            %td
+              = f.collection_select :id_ciudad_edi, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre,  {}, {:prompt => "-Seleccione-", :disabled => 'disabled'}
+              
+          %tr
+            %td
+              MUNICIPIO
+            %td
+            %td
+              = f.collection_select :id_municipio_edi, Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, {}, {:prompt => "-Seleccione-", :disabled => 'disabled'}
+              
+          %tr
+            %td
+              PARROQUIA
+            %td
+            %td
+              =f.text_field :parroquia_edi, {:disabled => :true}
+              
+          %tr
+            %td
+              Punto Referencia
+            %td
+            %td
+              =f.text_field :punto_ref_edi, {:disabled => :true}
+          %tr
+            %td
+              Código Postal
+            %td
+            %td
+              = f.text_field :codigo_postal_edi, {:disabled => :true}
+
+          %tr
+            %td
+              Teléfono 1 (58)
+            %td
+              =f.text_field :cod_tlf1_sincronet, { :size => "3", :disabled => :true}
+            %td
+              =f.text_field :telefono1_edi, {:disabled => :true}
+          %tr
+            %td
+              Teléfono 2 (58)
+            %td
+              =f.text_field :cod_tlf2_sincronet, {:size => "3", :disabled => :true}
+            %td
+              =f.text_field :telefono2_edi, {:disabled => :true}
+          %tr
+            %td
+              Teléfono 3 (58)
+            %td
+              =f.text_field :cod_tlf3_sincronet, { :size => "3", :disabled => :true}
+            %td
+              =f.text_field :telefono3_edi, {:disabled => :true}
+          %tr
+            %td
+              Fax (58)
+            %td
+              =f.text_field :cod_fax_sincronet, { :size => "3", :disabled => :true}
+            %td
+              =f.text_field :fax_edi, {:disabled => :true}
+          %tr
+            %td
+              E-mail 1
+            %td
+            %td
+              =f.text_field :email1_edi, {:class => "email", :disabled => :true}
+         
+      
+      %br/
+
+      %br
+      %label.contexto
+        c. DIRECCION PARA ENVIO DE INFORMACION SOBRE SEMINARIOS Y CURSOS (RECURSOS HUMANOS)
+      %hr.contexto{:size => "1"}
+
+        %table
+          %tr
+            %td
+              NOMBRE PERSONA CONTACTO
+            %td
+            %td
+              =f.text_field :rep_recursos, {:disabled => :true}
+          %tr
+            %td
+              CARGO
+            %td
+            %td
+              =f.text_field :rep_recursos_cargo, {:disabled => :true}
+          %tr
+            %td
+              Teléfono 1 (58)
+            %td
+              =f.text_field :cod_tlf1_seminarios, {:size => "3", :disabled => :true}
+            %td
+              =f.text_field :telefono1_recursos, {:class => "formato_telefono", :disabled => :true}
+          %tr
+            %td
+              Fax (58)
+            %td
+              =f.text_field :cod_fax_seminarios, { :size => "3", :disabled => :true}
+            %td
+              =f.text_field :fax_recursos, {:class => "formato_telefono", :disabled => :true}
+          %tr
+            %td
+              E-mail 1
+            %td
+            %td
+              =f.text_field :email1_recursos, {:class => "email", :disabled => :true}
+          
+      %br
+      %label.contexto
+        d. DIRECCION PARA ENVIO DE INVITACIONES A EVENTOS ESPECIALES (MERCADEO)
+      %hr.contexto{:size => "1"}
+
+        %table
+          %tr
+            %td
+              NOMBRE PERSONA CONTACTO
+            %td
+            %td
+              =f.text_field :rep_mercadeo, {:disabled => :true}
+          %tr
+            %td
+              CARGO
+            %td
+            %td
+              =f.text_field :rep_mercadeo_cargo, {:disabled => :true}
+          %tr
+            %td
+              Teléfono 1 (58)
+            %td
+              =f.text_field :cod_tlf1_mercadeo, { :size => "3", :disabled => :true}
+            %td
+              =f.text_field :telefono1_mercadeo, {:class => "formato_telefono", :disabled => :true}
+          %tr
+            %td
+              Fax (58)
+            %td
+              =f.text_field :cod_fax_mercadeo, { :size => "3", :disabled => :true}
+            %td
+              =f.text_field :fax_mercadeo, {:class => "formato_telefono", :disabled => :true}
+              
+          %tr
+            %td
+              E-mail 1
+            %td 
+            %td
+              =f.text_field :email1_mercadeo, {:class => "email", :disabled => :true}
+
+      %label.contexto
+        =@empresa_registrada.nombre_empresa + " > Ramo de desempeño de la empresa"
+      %hr.contexto{:size => "1"}
+
+      %table
+        %tr
+          %td
+            Clasificación
+          %td
+            -if @empresa_registrada.new_record? or @clasificacion_empresa.nil?
+              =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"})
+            -else
+              =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion,  { :selected => @clasificacion_empresa.id,:style => "width:600px;"})
+            
+        %tr
+          %td
+            Categoría 
+          %td
+            = f.text_field :categoria, :readonly => :true, :class => 'campo_readonly'
+        %tr
+          %td
+            División
+          %td
+            = f.text_field :division , :readonly => :true, :class => 'campo_readonly'
+        %tr
+          %td
+            Grupo
+          %td
+            = f.text_field :grupo , :readonly => :true, :class => 'campo_readonly'
+        %tr
+          %td
+            Clase
+          %td
+            = f.text_field :clase, :readonly => :true, :class => 'campo_readonly'
+
+      =hidden_field_tag "activacion", true
+      
+      %button#submit.ui-state-default.ui-corner-all.crear_empresa{:type => "submit"}
+        %span.ui-icon.ui-icon-circle-plus
+        Guardar
+ 
+      %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresa_registradas", :title => "Regresar al listado de nuevas empresas"}
+        %span.ui-icon.ui-icon-arrowreturnthick-1-w
+        Regresar
+        
+
+    #asignar_prefijo_manual
+      -if params[:activar_empresa]
+        =render 'ventana_prefijo_manual'

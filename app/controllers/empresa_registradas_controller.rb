@@ -83,8 +83,13 @@ class EmpresaRegistradasController < ApplicationController
 
           flash[:warning] = "La Aplicación detectó que el prefijo disponible en Sistema de Gestión #{@prefijo} se encuentra asignado en la Base de Datos del Sistema Administrativo. De continuar se producirá un error. Se sugiere que asigne el prefijo manual, y verifique que no se encuentre ya asignado en Sistema Administrativo." if !(@prefijo_asignado_administrativo.empty?)
 
+          # Este template no permite la edicion de la empresa. Respetando el alcance del usuario segun privilegio
+          render :template => '/empresa_registradas/activar_empresa.html.haml'
+
 
         end
+
+
         
       }
 
@@ -96,72 +101,58 @@ class EmpresaRegistradasController < ApplicationController
   # POST /empresa_registradas.json
   def create
 
-
-    
     params[:empresa_registrada][:id_estatus] = 5 # NO VALIDADA (SIN PREFIJO)
     params[:empresa_registrada][:id_subestatus] = 2 # NO SOLVENTE
     params[:empresa_registrada][:fecha_inscripcion] = Time.now
     
+    # DATOS BASICOS EMPRESA SE LLEVAN A MAYUSCULAS
+
     params[:empresa_registrada][:nombre_empresa] = params[:empresa_registrada][:nombre_empresa].upcase if params[:empresa_registrada][:nombre_empresa]
-    params[:empresa_registrada][:nombre_comercial] =  params[:empresa_registrada][:nombre_comercial] if params[:empresa_registrada][:nombre_comercial]
-    params[:empresa_registrada][:nombre_comercial] = params[:empresa_registrada][:nombre_empresa].upcase if params[:empresa_registrada][:nombre_comercial].blank? 
-    params[:empresa_registrada][:direccion_fiscal] = params[:empresa_registrada][:direccion_fiscal].upcase if params[:empresa_registrada][:direccion_fiscal]
+    params[:empresa_registrada][:nombre_comercial] =  params[:empresa_registrada][:nombre_comercial].upcase if params[:empresa_registrada][:nombre_comercial]
+    params[:empresa_registrada][:direccion_empresa] = params[:empresa_registrada][:direccion_empresa].upcase if params[:empresa_registrada][:direccion_empresa]
     params[:empresa_registrada][:circunscripcion_judicial] = params[:empresa_registrada][:circunscripcion_judicial].upcase if params[:empresa_registrada][:circunscripcion_judicial]
     params[:empresa_registrada][:rep_legal] = params[:empresa_registrada][:rep_legal].upcase if params[:empresa_registrada][:rep_legal]
     params[:empresa_registrada][:cargo_rep_legal] = params[:empresa_registrada][:cargo_rep_legal].upcase if params[:empresa_registrada][:cargo_rep_legal]
     params[:empresa_registrada][:nacionalidad_responsable_legal] = params[:empresa_registrada][:nacionalidad_responsable_legal].upcase if params[:empresa_registrada][:nacionalidad_responsable_legal]
     params[:empresa_registrada][:domicilio_responsable_legal] = params[:empresa_registrada][:domicilio_responsable_legal].upcase if params[:empresa_registrada][:domicilio_responsable_legal]
+
+
+    # DATOS EAN SE LLEVAN A MAYUSCULAS
+
     params[:empresa_registrada][:rep_ean] = params[:empresa_registrada][:rep_ean].upcase if params[:empresa_registrada][:rep_ean]
     params[:empresa_registrada][:rep_ean_cargo] = params[:empresa_registrada][:rep_ean_cargo].upcase if params[:empresa_registrada][:rep_ean_cargo]
-    params[:empresa_registrada][:tipo_galpon_edificio_quinta] = params[:empresa_registrada][:tipo_galpon_edificio_quinta].upcase if params[:empresa_registrada][:tipo_galpon_edificio_quinta]
     params[:empresa_registrada][:galpon_edificio_quinta] = params[:empresa_registrada][:galpon_edificio_quinta].upcase if params[:empresa_registrada][:galpon_edificio_quinta]
-    params[:empresa_registrada][:tipo_piso_numero] = params[:empresa_registrada][:tipo_piso_numero].upcase if params[:empresa_registrada][:tipo_piso_numero]
-    params[:empresa_registrada][:tipo_oficina_apartamento] = params[:empresa_registrada][:tipo_oficina_apartamento].upcase if params[:empresa_registrada][:tipo_oficina_apartamento]
     params[:empresa_registrada][:oficina_apartamento] = params[:empresa_registrada][:oficina_apartamento].upcase if params[:empresa_registrada][:oficina_apartamento]
-    params[:empresa_registrada][:tipo_avenida_calle]  = params[:empresa_registrada][:tipo_avenida_calle].upcase if params[:empresa_registrada][:tipo_avenida_calle]
     params[:empresa_registrada][:avenida_calle] = params[:empresa_registrada][:avenida_calle].upcase if params[:empresa_registrada][:avenida_calle]
-    params[:empresa_registrada][:tipo_urbanizacion_barrio_sector] = params[:empresa_registrada][:tipo_urbanizacion_barrio_sector].upcase if params[:empresa_registrada][:tipo_urbanizacion_barrio_sector]
-    params[:empresa_registrada][:urbanizacion_barrio_sector] = params[:empresa_registrada][:urbanizacion_barrio_sector].upcase if params[:empresa_registrada][:urbanizacion_barrio_sector]+
+    params[:empresa_registrada][:urbanizacion_barrio_sector] = params[:empresa_registrada][:urbanizacion_barrio_sector].upcase if params[:empresa_registrada][:urbanizacion_barrio_sector]
     params[:empresa_registrada][:parroquia_ean] = params[:empresa_registrada][:parroquia_ean].upcase if params[:empresa_registrada][:parroquia_ean]
     params[:empresa_registrada][:punto_ref_ean] = params[:empresa_registrada][:punto_ref_ean].upcase if params[:empresa_registrada][:punto_ref_ean]
+
+
+    # DATOS CORREO ELECTRONICO Y SINCRONET SE LLEVAN A MAYUSCULAS
+
     params[:empresa_registrada][:rep_edi] = params[:empresa_registrada][:rep_edi].upcase if params[:empresa_registrada][:rep_edi]
     params[:empresa_registrada][:rep_edi_cargo] = params[:empresa_registrada][:rep_edi_cargo].upcase if params[:empresa_registrada][:rep_edi_cargo]
-    params[:empresa_registrada][:tipo_galpon_edificio_quinta_sincronet] = params[:empresa_registrada][:tipo_galpon_edificio_quinta_sincronet].upcase if params[:empresa_registrada][:tipo_galpon_edificio_quinta_sincronet]
     params[:empresa_registrada][:galpon_edificio_quinta_sincronet] = params[:empresa_registrada][:galpon_edificio_quinta_sincronet].upcase if params[:empresa_registrada][:galpon_edificio_quinta_sincronet]
-    params[:empresa_registrada][:tipo_piso_numero_sincronet] = params[:empresa_registrada][:tipo_piso_numero_sincronet].upcase  if params[:empresa_registrada][:tipo_piso_numero_sincronet]
     params[:empresa_registrada][:piso_numero_sincronet] =  params[:empresa_registrada][:piso_numero_sincronet].upcase if params[:empresa_registrada][:piso_numero_sincronet]
-
-
-
-
-
-
-
-    params[:empresa_registrada][:cod_contacto_tlf3] = params[:empresa_registrada][:cod_contacto_tlf1] if params[:empresa_registrada][:cod_contacto_tlf3].blank?
-    params[:empresa_registrada][:contacto_tlf3] = params[:empresa_registrada][:contacto_tlf1] if params[:empresa_registrada][:contacto_tlf3].blank?
-    params[:empresa_registrada][:cod_contacto_fax] = params[:empresa_registrada][:cod_contacto_tlf1] if params[:empresa_registrada][:cod_contacto_fax].blank?
-    params[:empresa_registrada][:contacto_fax] = params[:empresa_registrada][:contacto_tlf1] if params[:empresa_registrada][:contacto_fax].blank?
-    params[:empresa_registrada][:cod_contacto_tlf2] = params[:empresa_registrada][:cod_contacto_tlf1] if params[:empresa_registrada][:cod_contacto_tlf2].blank?
-    params[:empresa_registrada][:contacto_tlf2] = params[:empresa_registrada][:contacto_tlf1] if params[:empresa_registrada][:contacto_tlf2].blank?
-
-
-    params[:empresa_registrada][:cod_tlf2_ean] = params[:empresa_registrada][:cod_tlf1_ean] if params[:empresa_registrada][:cod_tlf2_ean].blank?
-    params[:empresa_registrada][:telefono2_ean] = params[:empresa_registrada][:telefono1_ean] if params[:empresa_registrada][:telefono2_ean].blank?
-    params[:empresa_registrada][:cod_tlf3_ean] = params[:empresa_registrada][:cod_tlf1_ean] if params[:empresa_registrada][:cod_tlf3_ean].blank?
-    params[:empresa_registrada][:telefono3_ean] = params[:empresa_registrada][:telefono1_ean] if params[:empresa_registrada][:telefono3_ean].blank?
-    params[:empresa_registrada][:cod_fax_ean] = params[:empresa_registrada][:cod_tlf1_ean] if params[:empresa_registrada][:cod_fax_ean].blank?
-    params[:empresa_registrada][:fax_ean] = params[:empresa_registrada][:telefono1_ean] if params[:empresa_registrada][:fax_ean].blank?
-    
+    params[:empresa_registrada][:oficina_apartamento_sincronet] = params[:empresa_registrada][:oficina_apartamento_sincronet].upcase if params[:empresa_registrada][:oficina_apartamento_sincronet]
+    params[:empresa_registrada][:avenida_calle_sincronet] = params[:empresa_registrada][:avenida_calle_sincronet].upcase if params[:empresa_registrada][:avenida_calle_sincronet]
+    params[:empresa_registrada][:urbanizacion_barrio_sector_sincronet] = params[:empresa_registrada][:urbanizacion_barrio_sector_sincronet].upcase if params[:empresa_registrada][:urbanizacion_barrio_sector_sincronet]
+    params[:empresa_registrada][:parroquia_edi] = params[:empresa_registrada][:parroquia_edi].upcase if params[:empresa_registrada][:parroquia_edi]
+    params[:empresa_registrada][:punto_ref_edi] = params[:empresa_registrada][:punto_ref_edi].upcase if params[:empresa_registrada][:punto_ref_edi]
 
     
-    params[:empresa_registrada][:email2_ean] = params[:empresa_registrada][:email1_ean] if params[:empresa_registrada][:email2_ean].blank?
-    params[:empresa_registrada][:parroquia_ean] = "" if params[:empresa_registrada][:parroquia_ean].blank?
+    # DATOS RECURSOS SE LLEVAN A MAYUSCULA    
+    
+    params[:empresa_registrada][:rep_recursos] = params[:empresa_registrada][:rep_recursos].upcase if params[:empresa_registrada][:rep_recursos]
+    params[:empresa_registrada][:rep_recursos_cargo] = params[:empresa_registrada][:rep_recursos_cargo].upcase if params[:empresa_registrada][:rep_recursos_cargo]
 
-    params[:empresa_registrada][:tipo_galpon_edificio_quinta] = "" if params[:empresa_registrada][:tipo_galpon_edificio_quinta].blank?
-    params[:empresa_registrada][:tipo_piso_numero] = "" if params[:empresa_registrada][:tipo_piso_numero].blank?
-    params[:empresa_registrada][:tipo_oficina_apartamento] = "" if params[:empresa_registrada][:tipo_oficina_apartamento].blank?
-    params[:empresa_registrada][:tipo_avenida_calle] = "" if params[:empresa_registrada][:tipo_avenida_calle].blank?
-    params[:empresa_registrada][:tipo_urbanizacion_barrio_sector] = "" if params[:empresa_registrada][:tipo_urbanizacion_barrio_sector].blank?
+    # DATOS MERCADEO SE LLEVAN A MAYUSCULA
+
+    params[:empresa_registrada][:rep_mercadeo] = params[:empresa_registrada][:rep_mercadeo].upcase if params[:empresa_registrada][:rep_mercadeo]
+    params[:empresa_registrada][:rep_mercadeo_cargo] = params[:empresa_registrada][:rep_mercadeo_cargo].upcase if params[:empresa_registrada][:rep_mercadeo_cargo]
+    
+    # Se obtienen los numeros completos
 
     params[:empresa_registrada][:contacto_tlf1_completo] =  "("+ params[:empresa_registrada][:cod_contacto_tlf1] + ")" +" "+ params[:empresa_registrada][:contacto_tlf1] if params[:empresa_registrada][:cod_contacto_tlf1] != ""
     params[:empresa_registrada][:contacto_tlf2_completo] = "("+ params[:empresa_registrada][:cod_contacto_tlf2] + ")"+ " " + params[:empresa_registrada][:contacto_tlf2] if params[:empresa_registrada][:cod_contacto_tlf2] != ""
@@ -174,12 +165,10 @@ class EmpresaRegistradasController < ApplicationController
     params[:empresa_registrada][:fax_ean_completo] = "("+ params[:empresa_registrada][:cod_fax_ean] + ")" +" "+ params[:empresa_registrada][:fax_ean]              if params[:empresa_registrada][:cod_fax_ean] != ""  
 
 
-
     params[:empresa_registrada][:rif_completo] = params[:empresa_registrada][:tipo_rif] + "-" + params[:empresa_registrada][:rif]
 
     @empresa_registrada = EmpresaRegistrada.new(params[:empresa_registrada])
 
-    @opciones = ['J', 'G', 'E', 'V']
 
     respond_to do |format|
       if @empresa_registrada.save
@@ -200,44 +189,101 @@ class EmpresaRegistradasController < ApplicationController
 
     @empresa_registrada = EmpresaRegistrada.find(params[:id])
 
-    params[:empresa_registrada][:fecha_ultima_modificacion] = Time.now # Se registra la fecha en que se edita la empresa
-    params[:empresa_registrada][:rif_completo] = params[:empresa_registrada][:tipo_rif] + "-" + params[:empresa_registrada][:rif]
-    
-    params[:empresa_registrada][:contacto_tlf1_completo] =  "("+ params[:empresa_registrada][:cod_contacto_tlf1] + ")" +" "+ params[:empresa_registrada][:contacto_tlf1] if params[:empresa_registrada][:cod_contacto_tlf1] != ""
-    params[:empresa_registrada][:contacto_tlf2_completo] = "("+ params[:empresa_registrada][:cod_contacto_tlf2] + ")"+ " " + params[:empresa_registrada][:contacto_tlf2] if params[:empresa_registrada][:cod_contacto_tlf2] != ""
-    params[:empresa_registrada][:contacto_tlf3_completo] ="("+ params[:empresa_registrada][:cod_contacto_tlf3] + ")" +" "+ params[:empresa_registrada][:contacto_tlf3] if params[:empresa_registrada][:cod_contacto_tlf3] != ""
-    params[:empresa_registrada][:contacto_fax_completo] = "("+params[:empresa_registrada][:cod_contacto_fax] + ")" +" "+ params[:empresa_registrada][:contacto_fax] if params[:empresa_registrada][:cod_contacto_fax] != ""
-    params[:empresa_registrada][:direccion_ean] = params[:empresa_registrada][:tipo_urbanizacion_barrio_sector] + " " + params[:empresa_registrada][:urbanizacion_barrio_sector] + " " + params[:empresa_registrada][:tipo_avenida_calle]  + " " + params[:empresa_registrada][:avenida_calle] + " " + params[:empresa_registrada][:tipo_galpon_edificio_quinta] + " " + params[:empresa_registrada][:galpon_edificio_quinta] + " " + params[:empresa_registrada][:tipo_piso_numero] + " " + params[:empresa_registrada][:piso_numero]  + " " + params[:empresa_registrada][:tipo_oficina_apartamento] + " " + params[:empresa_registrada][:oficina_apartamento] 
-    params[:empresa_registrada][:telefono1_ean_completo] = "("+ params[:empresa_registrada][:cod_tlf1_ean] + ")" +" "+ params[:empresa_registrada][:telefono1_ean] if params[:empresa_registrada][:cod_tlf1_ean] != ""
-    params[:empresa_registrada][:telefono2_ean_completo] = "("+ params[:empresa_registrada][:cod_tlf2_ean] + ")" +" "+ params[:empresa_registrada][:telefono2_ean] if params[:empresa_registrada][:cod_tlf2_ean] != ""
-    params[:empresa_registrada][:telefono3_ean_completo] = "("+ params[:empresa_registrada][:cod_tlf3_ean] + ")" +" "+ params[:empresa_registrada][:telefono3_ean] if params[:empresa_registrada][:cod_tlf3_ean] != ""
-    params[:empresa_registrada][:fax_ean_completo] = "("+ params[:empresa_registrada][:cod_fax_ean] + ")" +" "+ params[:empresa_registrada][:fax_ean]              if params[:empresa_registrada][:cod_fax_ean] != ""  
+    if params[:activar].nil?   # El parametro activar indica que no se esta actualñizando datos sino activando empresa
 
-    
+      @empresa_registrada.fecha_ultima_modificacion = Time.now # Se registra la fecha en que se edita la empresa
+      
+      # DATOS BASICOS EMPRESA SE LLEVAN A MAYUSCULAS
 
-    @opciones = ['J', 'G', 'E', 'V']
+      params[:empresa_registrada][:nombre_empresa] = params[:empresa_registrada][:nombre_empresa].upcase if params[:empresa_registrada][:nombre_empresa]
+      params[:empresa_registrada][:nombre_comercial] =  params[:empresa_registrada][:nombre_comercial].upcase if params[:empresa_registrada][:nombre_comercial]
+      params[:empresa_registrada][:direccion_empresa] = params[:empresa_registrada][:direccion_empresa].upcase if params[:empresa_registrada][:direccion_empresa]
+      params[:empresa_registrada][:circunscripcion_judicial] = params[:empresa_registrada][:circunscripcion_judicial].upcase if params[:empresa_registrada][:circunscripcion_judicial]
+      params[:empresa_registrada][:rep_legal] = params[:empresa_registrada][:rep_legal].upcase if params[:empresa_registrada][:rep_legal]
+      params[:empresa_registrada][:cargo_rep_legal] = params[:empresa_registrada][:cargo_rep_legal].upcase if params[:empresa_registrada][:cargo_rep_legal]
+      params[:empresa_registrada][:nacionalidad_responsable_legal] = params[:empresa_registrada][:nacionalidad_responsable_legal].upcase if params[:empresa_registrada][:nacionalidad_responsable_legal]
+      params[:empresa_registrada][:domicilio_responsable_legal] = params[:empresa_registrada][:domicilio_responsable_legal].upcase if params[:empresa_registrada][:domicilio_responsable_legal]
+
+
+      # DATOS EAN SE LLEVAN A MAYUSCULAS
+
+      params[:empresa_registrada][:rep_ean] = params[:empresa_registrada][:rep_ean].upcase if params[:empresa_registrada][:rep_ean]
+      params[:empresa_registrada][:rep_ean_cargo] = params[:empresa_registrada][:rep_ean_cargo].upcase if params[:empresa_registrada][:rep_ean_cargo]
+      params[:empresa_registrada][:galpon_edificio_quinta] = params[:empresa_registrada][:galpon_edificio_quinta].upcase if params[:empresa_registrada][:galpon_edificio_quinta]
+      params[:empresa_registrada][:oficina_apartamento] = params[:empresa_registrada][:oficina_apartamento].upcase if params[:empresa_registrada][:oficina_apartamento]
+      params[:empresa_registrada][:avenida_calle] = params[:empresa_registrada][:avenida_calle].upcase if params[:empresa_registrada][:avenida_calle]
+      params[:empresa_registrada][:urbanizacion_barrio_sector] = params[:empresa_registrada][:urbanizacion_barrio_sector].upcase if params[:empresa_registrada][:urbanizacion_barrio_sector]
+      params[:empresa_registrada][:parroquia_ean] = params[:empresa_registrada][:parroquia_ean].upcase if params[:empresa_registrada][:parroquia_ean]
+      params[:empresa_registrada][:punto_ref_ean] = params[:empresa_registrada][:punto_ref_ean].upcase if params[:empresa_registrada][:punto_ref_ean]
+
+
+      # DATOS CORREO ELECTRONICO Y SINCRONET SE LLEVAN A MAYUSCULAS
+
+      params[:empresa_registrada][:rep_edi] = params[:empresa_registrada][:rep_edi].upcase if params[:empresa_registrada][:rep_edi]
+      params[:empresa_registrada][:rep_edi_cargo] = params[:empresa_registrada][:rep_edi_cargo].upcase if params[:empresa_registrada][:rep_edi_cargo]
+      params[:empresa_registrada][:galpon_edificio_quinta_sincronet] = params[:empresa_registrada][:galpon_edificio_quinta_sincronet].upcase if params[:empresa_registrada][:galpon_edificio_quinta_sincronet]
+      params[:empresa_registrada][:piso_numero_sincronet] =  params[:empresa_registrada][:piso_numero_sincronet].upcase if params[:empresa_registrada][:piso_numero_sincronet]
+      params[:empresa_registrada][:oficina_apartamento_sincronet] = params[:empresa_registrada][:oficina_apartamento_sincronet].upcase if params[:empresa_registrada][:oficina_apartamento_sincronet]
+      params[:empresa_registrada][:avenida_calle_sincronet] = params[:empresa_registrada][:avenida_calle_sincronet].upcase if params[:empresa_registrada][:avenida_calle_sincronet]
+      params[:empresa_registrada][:urbanizacion_barrio_sector_sincronet] = params[:empresa_registrada][:urbanizacion_barrio_sector_sincronet].upcase if params[:empresa_registrada][:urbanizacion_barrio_sector_sincronet]
+      params[:empresa_registrada][:parroquia_edi] = params[:empresa_registrada][:parroquia_edi].upcase if params[:empresa_registrada][:parroquia_edi]
+      params[:empresa_registrada][:punto_ref_edi] = params[:empresa_registrada][:punto_ref_edi].upcase if params[:empresa_registrada][:punto_ref_edi]
+
+      
+      # DATOS RECURSOS SE LLEVAN A MAYUSCULA    
+      
+      params[:empresa_registrada][:rep_recursos] = params[:empresa_registrada][:rep_recursos].upcase if params[:empresa_registrada][:rep_recursos]
+      params[:empresa_registrada][:rep_recursos_cargo] = params[:empresa_registrada][:rep_recursos_cargo].upcase if params[:empresa_registrada][:rep_recursos_cargo]
+
+      # DATOS MERCADEO SE LLEVAN A MAYUSCULA
+
+      params[:empresa_registrada][:rep_mercadeo] = params[:empresa_registrada][:rep_mercadeo].upcase if params[:empresa_registrada][:rep_mercadeo]
+      params[:empresa_registrada][:rep_mercadeo_cargo] = params[:empresa_registrada][:rep_mercadeo_cargo].upcase if params[:empresa_registrada][:rep_mercadeo_cargo]
+      
+      # Se obtienen los numeros completos
+
+      params[:empresa_registrada][:contacto_tlf1_completo] =  "("+ params[:empresa_registrada][:cod_contacto_tlf1] + ")" +" "+ params[:empresa_registrada][:contacto_tlf1] if params[:empresa_registrada][:cod_contacto_tlf1] != ""
+      params[:empresa_registrada][:contacto_tlf2_completo] = "("+ params[:empresa_registrada][:cod_contacto_tlf2] + ")"+ " " + params[:empresa_registrada][:contacto_tlf2] if params[:empresa_registrada][:cod_contacto_tlf2] != ""
+      params[:empresa_registrada][:contacto_tlf3_completo] ="("+ params[:empresa_registrada][:cod_contacto_tlf3] + ")" +" "+ params[:empresa_registrada][:contacto_tlf3] if params[:empresa_registrada][:cod_contacto_tlf3] != ""
+      params[:empresa_registrada][:contacto_fax_completo] = "("+params[:empresa_registrada][:cod_contacto_fax] + ")" +" "+ params[:empresa_registrada][:contacto_fax] if params[:empresa_registrada][:cod_contacto_fax] != ""
+      params[:empresa_registrada][:direccion_ean] = params[:empresa_registrada][:tipo_urbanizacion_barrio_sector] + " " + params[:empresa_registrada][:urbanizacion_barrio_sector] + " " + params[:empresa_registrada][:tipo_avenida_calle]  + " " + params[:empresa_registrada][:avenida_calle] + " " + params[:empresa_registrada][:tipo_galpon_edificio_quinta] + " " + params[:empresa_registrada][:galpon_edificio_quinta] + " " + params[:empresa_registrada][:tipo_piso_numero] + " " + params[:empresa_registrada][:piso_numero]  + " " + params[:empresa_registrada][:tipo_oficina_apartamento] + " " + params[:empresa_registrada][:oficina_apartamento] 
+      params[:empresa_registrada][:telefono1_ean_completo] = "("+ params[:empresa_registrada][:cod_tlf1_ean] + ")" +" "+ params[:empresa_registrada][:telefono1_ean] if params[:empresa_registrada][:cod_tlf1_ean] != ""
+      params[:empresa_registrada][:telefono2_ean_completo] = "("+ params[:empresa_registrada][:cod_tlf2_ean] + ")" +" "+ params[:empresa_registrada][:telefono2_ean] if params[:empresa_registrada][:cod_tlf2_ean] != ""
+      params[:empresa_registrada][:telefono3_ean_completo] = "("+ params[:empresa_registrada][:cod_tlf3_ean] + ")" +" "+ params[:empresa_registrada][:telefono3_ean] if params[:empresa_registrada][:cod_tlf3_ean] != ""
+      params[:empresa_registrada][:fax_ean_completo] = "("+ params[:empresa_registrada][:cod_fax_ean] + ")" +" "+ params[:empresa_registrada][:fax_ean]              if params[:empresa_registrada][:cod_fax_ean] != ""  
+
+      # SE OBTIENE EL RIF COMPLETO
+
+      params[:empresa_registrada][:rif_completo] = params[:empresa_registrada][:tipo_rif] + "-" + params[:empresa_registrada][:rif]
+
+    end
+    
 
     respond_to do |format|
       
-      if @empresa_registrada.update_attributes(params[:empresa_registrada])
-      
-        if params[:activar]
-          
-          Empresa.activar(@empresa_registrada)
-          Auditoria.registrar_evento(session[:usuario],"empresa", "Activar", Time.now,  "EMPRESA ACTIVADA. PREFIJO:#{@empresa_registrada.prefijo}")
-          format.html { redirect_to "/empresa_registradas?activar_empresa=true", notice: "EMPRESA ACTIVADA. PREFIJO #{@empresa_registrada.prefijo} NOMBRE EMPRESA #{@empresa_registrada.nombre_empresa} RIF #{@empresa_registrada.rif_completo}" and return }
+      if params[:activar]  # Si se esta activando la empresa no se aactualiza los datos porque ese usuario no tiene el privilegio
 
-        else
-         
+        Empresa.activar(@empresa_registrada, params[:empresa_registrada][:prefijo])
+        Auditoria.registrar_evento(session[:usuario],"", "Activar", Time.now,  "EMPRESA ACTIVADA. PREFIJO:#{@empresa_registrada.prefijo}")
+        format.html { redirect_to "/empresa_registradas?activar_empresa=true", notice: "EMPRESA ACTIVADA. PREFIJO #{@empresa_registrada.prefijo} NOMBRE EMPRESA #{@empresa_registrada.nombre_empresa} RIF #{@empresa_registrada.rif_completo}" and return }
+
+      else # Se actualizan los datos de la empresa privilegio asociado a Administracion - VEntas
+
+        if @empresa_registrada.update_attributes(params[:empresa_registrada])
+           
           Auditoria.registrar_evento(session[:usuario],"empresa_registradas", "Editar", Time.now, params[:empresa_registrada])
           format.html { redirect_to "/empresa_registradas", notice: "Los datos de la Empresa:#{@empresa_registrada.nombre_empresa} RIF:#{@empresa_registrada.rif_completo} fueron actualizados satisfactoriamente."  and return}
-
+  
+      
+        else
+          format.html { render action: "edit" }
+      
         end
-    
-      else
-        format.html { render action: "edit" }
-    
+
       end
+
+
+
     end
   end
 

@@ -1,10 +1,6 @@
 %section.contexto
   %label.contexto.titulo_contrato
-    -if params[:activar_empresa].nil?
-      =@empresa_registrada.new_record? ? "Registrar Empresa" : "#{@empresa_registrada.nombre_empresa} > Editar Empresa"
-    -else
-      ="#{@empresa_registrada.nombre_empresa} > Activar / Reasignar Prefijo"
-  
+    =@empresa_registrada.new_record? ? "Registrar Empresa" : "#{@empresa_registrada.nombre_empresa} > Editar Empresa"
   %br
   %br
   %p.warning=flash[:warning]
@@ -47,20 +43,6 @@
               -else
                 %li=msg + '.'
       
-      -if params[:activar_empresa]
-
-        %table
-          %tr
-            %td.prefijo
-              Prefijo Asignado
-            %td.prefijo
-             
-              =f.text_field :prefijo, :value => "#{@prefijo}"
-              
-            %td
-              =link_to "Reasignar Prefijo", "#", :id => "boton_abrir_ventana_prefijo_manual"
-        =hidden_field_tag "activar", "true"
-      
         %br
         %br
         %br
@@ -81,13 +63,13 @@
             NOMBRE DE LA EMPRESA
           %td
           %td
-            =f.text_field :nombre_empresa
+            =f.text_field :nombre_empresa, {:size => "100"}
         %tr
           %td
             Nombre Comercial
           %td
           %td
-            =f.text_field :nombre_comercial
+            =f.text_field :nombre_comercial, {:size => "100"}
         %tr
           %td
             Estado
@@ -146,13 +128,6 @@
           %td
           %td
             =f.text_field "contacto_email1",  {:class => "email", :placeholder => "correo@prueba.com"}
-        %tr
-          %td
-            Correo Secundario
-          %td
-          %td
-            =f.text_field "contacto_email2",  {:class => "email", :placeholder => "correo@prueba.com"}
-
 
         %tr
           %td
@@ -186,7 +161,7 @@
           %td
             RIF
           %td
-            =f.select "tipo_rif", @opciones.map{|opcion|[opcion,opcion]}, {:prompt => "--", :select => @empresa_registrada }
+            =f.select "tipo_rif", ['J', 'G', 'E', 'V'].map{|opcion|[opcion,opcion]}, {:prompt => "--", :select => @empresa_registrada }
           %td
             = f.text_field :rif, :placeholder => "12548785-4"    
         
@@ -265,34 +240,34 @@
               
           %tr
             %td
-              =f.select(:tipo_galpon_edificio_quinta, options_for_select(['Galpón', 'Edificio', 'Quinta'], @empresa_registrada.tipo_galpon_edificio_quinta), :prompt => "Galpón/Edificio/Quinta")
+              =f.select(:tipo_galpon_edificio_quinta, options_for_select(['GALPON', 'EDIFICIO', 'QUINTA'], @empresa_registrada.tipo_galpon_edificio_quinta), :prompt => "GALPON/EDIFICIO/QUINTA")
             %td
             %td
               =f.text_field :galpon_edificio_quinta
           
           %tr
             %td
-              =f.select(:tipo_piso_numero, options_for_select(['Número', 'Piso'], @empresa_registrada.tipo_piso_numero), :prompt => "Número/Piso")
+              =f.select(:tipo_piso_numero, options_for_select(['NUMERO', 'PISO'], @empresa_registrada.tipo_piso_numero), :prompt => "NUMERO/PISO")
             %td
             %td
               =f.text_field :piso_numero
 
           %tr
             %td
-              =f.select(:tipo_oficina_apartamento, options_for_select(['Apartamento', 'Oficina'], @empresa_registrada.tipo_oficina_apartamento), :prompt => "Apartamento/Oficina")
+              =f.select(:tipo_oficina_apartamento, options_for_select(['APARTAMENTO', 'OFICINA'], @empresa_registrada.tipo_oficina_apartamento), :prompt => "APARTAMENTO/OFICINA")
             %td
             %td
               =f.text_field :oficina_apartamento
           %tr
             %td
-              =f.select(:tipo_avenida_calle, options_for_select(['Avenida', 'Calle'], @empresa_registrada.tipo_avenida_calle), :prompt => "Avenida/Calle")
+              =f.select(:tipo_avenida_calle, options_for_select(['AVENIDA', 'CALLE'], @empresa_registrada.tipo_avenida_calle), :prompt => "AVENIDA/CALLE")
             %td
             %td
               =f.text_field :avenida_calle
 
           %tr
             %td
-              =f.select(:tipo_urbanizacion_barrio_sector, options_for_select(['Urbanizacion', 'Barrio', 'Sector', 'Terraza'], @empresa_registrada.tipo_avenida_calle), :prompt => "Urbanizacion/Barrio/Sector/Terraza")
+              =f.select(:tipo_urbanizacion_barrio_sector, options_for_select(['URBANIZACION', 'BARRIO', 'SECTOR', 'TERRAZA'], @empresa_registrada.tipo_avenida_calle), :prompt => "URBANIZACION/BARRIO/SECTOR/TERRAZA")
             %td
             %td
               =f.text_field :urbanizacion_barrio_sector
@@ -384,15 +359,7 @@
             %td
               
               =f.text_field :email1_ean,  :class => "email"
-            
-          %tr
-            %td
-              E-mail 2
-            %td
-            %td
-              
-              =f.text_field :email2_ean, :class => "email"
-
+          
       
       %br
       %label.contexto
@@ -415,34 +382,34 @@
           
           %tr
             %td
-              =f.select(:tipo_galpon_edificio_quinta_sincronet, options_for_select(['Galpón', 'Edificio', 'Quinta'], @empresa_registrada.tipo_galpon_edificio_quinta_sincronet), :prompt => "Galpón/Edificio/Quinta")
+              =f.select(:tipo_galpon_edificio_quinta_sincronet, options_for_select(['GALPON', 'EDIFICIO', 'QUINTA'], @empresa_registrada.tipo_galpon_edificio_quinta_sincronet), :prompt => "GALPON/EDIFICIO/QUINTA")
             %td
             %td
               =f.text_field :galpon_edificio_quinta_sincronet
           
           %tr
             %td
-              =f.select(:tipo_piso_numero_sincronet, options_for_select(['Número', 'Piso'], @empresa_registrada.tipo_piso_numero_sincronet), :prompt => "Número/Piso")
+              =f.select(:tipo_piso_numero_sincronet, options_for_select(['NUMERO', 'PISO'], @empresa_registrada.tipo_piso_numero_sincronet), :prompt => "NUMERO/PISO")
             %td
             %td
               =f.text_field :piso_numero_sincronet
 
           %tr
             %td
-              =f.select(:tipo_oficina_apartamento_sincronet, options_for_select(['Apartamento', 'Oficina'], @empresa_registrada.tipo_oficina_apartamento_sincronet), :prompt => "Apartamento/Oficina")
+              =f.select(:tipo_oficina_apartamento_sincronet, options_for_select(['APARTAMENTO', 'OFICINA'], @empresa_registrada.tipo_oficina_apartamento_sincronet), :prompt => "APARTAMENTO/OFICINA")
             %td
             %td
               =f.text_field :oficina_apartamento_sincronet
           %tr
             %td
-              =f.select(:tipo_avenida_calle_sincronet, options_for_select(['Avenida', 'Calle'], @empresa_registrada.tipo_avenida_calle_sincronet), :prompt => "Avenida/Calle")
+              =f.select(:tipo_avenida_calle_sincronet, options_for_select(['AVENIDA', 'CALLE'], @empresa_registrada.tipo_avenida_calle_sincronet), :prompt => "AVENIDA/CALLE")
             %td
             %td
               =f.text_field :avenida_calle_sincronet
 
           %tr
             %td
-              =f.select(:tipo_urbanizacion_barrio_sector_sincronet, options_for_select(['Urbanizacion', 'Barrio', 'Sector', 'Terraza'], @empresa_registrada.tipo_avenida_calle_sincronet), :prompt => "Urbanizacion/Barrio/Sector/Terraza")
+              =f.select(:tipo_urbanizacion_barrio_sector_sincronet, options_for_select(['URBANIZACION', 'BARRIO', 'SECTOR', 'TERRAZA'], @empresa_registrada.tipo_avenida_calle_sincronet), :prompt => "URBANIZACION/BARRIO/SECTOR/TERRAZA")
             %td
             %td
               =f.text_field :urbanizacion_barrio_sector_sincronet
@@ -523,14 +490,7 @@
             %td
             %td
               =f.text_field :email1_edi, :class => "email"
-            
-          %tr
-            %td
-              E-mail 2
-            %td
-            %td
-              =f.text_field :email2_edi, :class => "email"
-            
+         
       
       %br/
 
@@ -648,7 +608,7 @@
           %td
             = f.text_field :clase, :readonly => :true, :class => 'campo_readonly'
 
-      =hidden_field_tag "activacion", true
+      
       
       %button#submit.ui-state-default.ui-corner-all.crear_empresa{:type => "submit"}
         %span.ui-icon.ui-icon-circle-plus
@@ -657,11 +617,7 @@
       %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresa_registradas", :title => "Regresar al listado de nuevas empresas"}
         %span.ui-icon.ui-icon-arrowreturnthick-1-w
         Regresar
-        
-
-    #asignar_prefijo_manual
-      -if params[:activar_empresa]
-        =render 'ventana_prefijo_manual'
+    
       
 
 

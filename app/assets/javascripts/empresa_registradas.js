@@ -475,6 +475,8 @@ $( document ).ready(function() {
            
         });
 
+        // boton que repite la correspondencia
+
         $('#repetir_correspondencia').click(function(w){
 
             $('#empresa_registrada_rep_edi').val($('#empresa_registrada_rep_ean').val());
@@ -486,70 +488,30 @@ $( document ).ready(function() {
             $('#empresa_registrada_rep_mercadeo_cargo').val($('#empresa_registrada_rep_ean_cargo').val());
 
             $('#empresa_registrada_tipo_galpon_edificio_quinta_sincronet').val($('#empresa_registrada_tipo_galpon_edificio_quinta').val());
-            $('#empresa_registrada_tipo_galpon_edificio_quinta_seminarios').val($('#empresa_registrada_tipo_galpon_edificio_quinta').val());
-            $('#empresa_registrada_tipo_galpon_edificio_quinta_mercadeo').val($('#empresa_registrada_tipo_galpon_edificio_quinta').val());
-
             $('#empresa_registrada_galpon_edificio_quinta_sincronet').val($('#empresa_registrada_galpon_edificio_quinta').val());
-            $('#empresa_registrada_galpon_edificio_quinta_seminarios').val($('#empresa_registrada_galpon_edificio_quinta').val());
-            $('#empresa_registrada_galpon_edificio_quinta_mercadeo').val($('#empresa_registrada_galpon_edificio_quinta').val());
-
             $('#empresa_registrada_tipo_piso_numero_sincronet').val($('#empresa_registrada_tipo_piso_numero').val());
-            $('#empresa_registrada_tipo_piso_numero_seminarios').val($('#empresa_registrada_tipo_piso_numero').val());
-            $('#empresa_registrada_tipo_piso_numero_mercadeo').val($('#empresa_registrada_tipo_piso_numero').val());
-
             $('#empresa_registrada_piso_numero_sincronet').val($('#empresa_registrada_piso_numero').val());
-            $('#empresa_registrada_piso_numero_seminarios').val($('#empresa_registrada_piso_numero').val());
-            $('#empresa_registrada_piso_numero_mercadeo').val($('#empresa_registrada_piso_numero').val());
-
             $('#empresa_registrada_tipo_oficina_apartamento_sincronet').val($('#empresa_registrada_tipo_oficina_apartamento').val());
-            $('#empresa_registrada_tipo_oficina_apartamento_seminarios').val($('#empresa_registrada_tipo_oficina_apartamento').val());
-            $('#empresa_registrada_tipo_oficina_apartamento_mercadeo').val($('#empresa_registrada_tipo_oficina_apartamento').val());
-
             $('#empresa_registrada_oficina_apartamento_sincronet').val($('#empresa_registrada_oficina_apartamento').val());
-            $('#empresa_registrada_oficina_apartamento_seminarios').val($('#empresa_registrada_oficina_apartamento').val());
-            $('#empresa_registrada_oficina_apartamento_mercadeo').val($('#empresa_registrada_oficina_apartamento').val());
-
             $('#empresa_registrada_tipo_avenida_calle_sincronet').val($('#empresa_registrada_tipo_avenida_calle').val());
-            $('#empresa_registrada_tipo_avenida_calle_seminarios').val($('#empresa_registrada_tipo_avenida_calle').val());
-            $('#empresa_registrada_tipo_avenida_calle_mercadeo').val($('#empresa_registrada_tipo_avenida_calle').val());
-
             $('#empresa_registrada_avenida_calle_sincronet').val($('#empresa_registrada_avenida_calle').val());
-            $('#empresa_registrada_avenida_calle_seminarios').val($('#empresa_registrada_avenida_calle').val());
-            $('#empresa_registrada_avenida_calle_mercadeo').val($('#empresa_registrada_avenida_calle').val());
-
             $('#empresa_registrada_tipo_urbanizacion_barrio_sector_sincronet').val($('#empresa_registrada_tipo_urbanizacion_barrio_sector').val());
-            $('#empresa_registrada_tipo_urbanizacion_barrio_sector_seminarios').val($('#empresa_registrada_tipo_urbanizacion_barrio_sector').val());
-            $('#empresa_registrada_tipo_urbanizacion_barrio_sector_mercadeo').val($('#empresa_registrada_tipo_urbanizacion_barrio_sector').val());
-
+            
             $('#empresa_registrada_urbanizacion_barrio_sector_sincronet').val($('#empresa_registrada_urbanizacion_barrio_sector').val());
-            $('#empresa_registrada_urbanizacion_barrio_sector_seminarios').val($('#empresa_registrada_urbanizacion_barrio_sector').val());
-            $('#empresa_registrada_urbanizacion_barrio_sector_mercadeo').val($('#empresa_registrada_urbanizacion_barrio_sector').val());
-
+            
             $('#empresa_registrada_id_estado_edi').val($('#empresa_registrada_id_estado_ean').val());
-            $('#empresa_registrada_id_estado_recursos').val($('#empresa_registrada_id_estado_ean').val());
-            $('#empresa_registrada_id_estado_mercadeo').val($('#empresa_registrada_id_estado_ean').val());
-
+            
             $('#empresa_registrada_id_ciudad_edi').val($('#empresa_registrada_id_ciudad_ean').val());
-            $('#empresa_registrada_id_ciudad_recursos').val($('#empresa_registrada_id_ciudad_ean').val());
-            $('#empresa_registrada_id_ciudad_mercadeo').val($('#empresa_registrada_id_ciudad_ean').val());
-
+            
             $('#empresa_registrada_id_municipio_edi').val($('#empresa_registrada_id_municipio_ean').val());
-            $('#empresa_registrada_id_municipio_recursos').val($('#empresa_registrada_id_municipio_ean').val());
-            $('#empresa_registrada_id_municipio_mercadeo').val($('#empresa_registrada_id_municipio_ean').val());
-
+            
             $('#empresa_registrada_parroquia_edi').val($('#empresa_registrada_parroquia_ean').val());
-            $('#empresa_registrada_parroquia_recursos').val($('#empresa_registrada_parroquia_ean').val());
-            $('#empresa_registrada_parroquia_mercadeo').val($('#empresa_registrada_parroquia_ean').val());
-
+            
 
             $('#empresa_registrada_punto_ref_edi').val($('#empresa_registrada_punto_ref_ean').val());
-            $('#empresa_registrada_punto_ref_recursos').val($('#empresa_registrada_punto_ref_ean').val());
-            $('#empresa_registrada_punto_ref_mercadeo').val($('#empresa_registrada_punto_ref_ean').val());
-
+            
             $('#empresa_registrada_codigo_postal_edi').val($('#empresa_registrada_cod_postal_ean').val());
-            $('#empresa_registrada_codigo_postal_recursos').val($('#empresa_registrada_cod_postal_ean').val());
-            $('#empresa_registrada_codigo_postal_mercadeo').val($('#empresa_registrada_cod_postal_ean').val());
-
+            
             $('#empresa_registrada_cod_tlf1_sincronet').val($('#empresa_registrada_cod_tlf1_ean').val());
             $('#empresa_registrada_cod_tlf1_seminarios').val($('#empresa_registrada_cod_tlf1_ean').val());
             $('#empresa_registrada_cod_tlf1_mercadeo').val($('#empresa_registrada_cod_tlf1_ean').val());
@@ -559,38 +521,27 @@ $( document ).ready(function() {
             $('#empresa_registrada_telefono1_mercadeo').val($('#empresa_registrada_telefono1_ean').val());
 
             $('#empresa_registrada_cod_tlf2_sincronet').val($('#empresa_registrada_cod_tlf2_ean').val());
-            $('#empresa_registrada_cod_tlf2_seminarios').val($('#empresa_registrada_cod_tlf2_ean').val());
-            $('#empresa_registrada_cod_tlf2_mercadeo').val($('#empresa_registrada_cod_tlf2_ean').val());
-
+            
             $('#empresa_registrada_telefono2_edi').val($('#empresa_registrada_telefono2_ean').val());
-            $('#empresa_registrada_telefono2_recursos').val($('#empresa_registrada_telefono2_ean').val());
-            $('#empresa_registrada_telefono2_mercadeo').val($('#empresa_registrada_telefono2_ean').val());
-
+            
             $('#empresa_registrada_cod_tlf3_sincronet').val($('#empresa_registrada_cod_tlf3_ean').val());
-            $('#empresa_registrada_cod_tlf3_seminarios').val($('#empresa_registrada_cod_tlf3_ean').val());
-            $('#empresa_registrada_cod_tlf3_mercadeo').val($('#empresa_registrada_cod_tlf3_ean').val());
-
+            
             $('#empresa_registrada_telefono3_edi').val($('#empresa_registrada_telefono3_ean').val());
-            $('#empresa_registrada_telefono3_recursos').val($('#empresa_registrada_telefono3_ean').val());
-            $('#empresa_registrada_telefono3_mercadeo').val($('#empresa_registrada_telefono3_ean').val());
-
+            
             $('#empresa_registrada_cod_fax_sincronet').val($('#empresa_registrada_cod_fax_ean').val());
-            $('#empresa_registrada_cod_fax_seminarios').val($('#empresa_registrada_cod_fax_ean').val());
-            $('#empresa_registrada_cod_fax_mercadeo').val($('#empresa_registrada_cod_fax_ean').val());
-
             $('#empresa_registrada_fax_edi').val($('#empresa_registrada_fax_ean').val());
-            $('#empresa_registrada_fax_recursos').val($('#empresa_registrada_fax_ean').val());
-            $('#empresa_registrada_fax_mercadeo').val($('#empresa_registrada_fax_ean').val());
 
+            $('#empresa_registrada_cod_fax_seminarios').val($('#empresa_registrada_cod_fax_ean').val());
+            $('#empresa_registrada_fax_recursos').val($('#empresa_registrada_fax_ean').val());
+
+            $('#empresa_registrada_cod_fax_mercadeo').val($('#empresa_registrada_cod_fax_ean').val());
+            $('#empresa_registrada_fax_mercadeo').val($('#empresa_registrada_fax_ean').val());
+            
             $('#empresa_registrada_email1_edi').val($('#empresa_registrada_email1_ean').val());
             $('#empresa_registrada_email1_recursos').val($('#empresa_registrada_email1_ean').val());
             $('#empresa_registrada_email1_mercadeo').val($('#empresa_registrada_email1_ean').val());
 
-            $('#empresa_registrada_email2_edi').val($('#empresa_registrada_email2_ean').val());
-            $('#empresa_registrada_email2_recursos').val($('#empresa_registrada_email2_ean').val());
-            $('#empresa_registrada_email2_mercadeo').val($('#empresa_registrada_email2_ean').val());
-
-
+            
         });
 
 

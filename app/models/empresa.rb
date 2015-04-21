@@ -23,19 +23,7 @@
 	belongs_to :tipo_usuario_empresa, :foreign_key => "id_tipo_usuario"
 	validates :rif_completo, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado en el listado de las Empresas. Por favor verifique."}, unless: "no_rif_validation == true"
 
-	def self.to_csv # Se genera el CSV de Empresas
-
-		CSV.generate do |csv|
-			csv << ['prefijo', 'Nombre Empresa', 'Fecha Inscripcion', 'Direccion Empresa', 'Estado', 'Ciudad', 'RIF', 'Estatus', 'Nombre Comercial', 'Clasificacion', 'Categoria', 'Division', 'Grupo', 'Clase', 'Rep Legal', 'Cargo Rep Legal']
-			all.each do |empresa|
-				contacto =  DatosContacto.find(:first, :conditions => ["prefijo = ? and tipo = ?", empresa.prefijo, 'principal'])
-				fecha_inscripcion =  empresa.fecha_inscripcion.nil? ? '' : empresa.fecha_inscripcion.strftime("%Y-%m-%d") 
-				csv << [empresa.prefijo, empresa.nombre_empresa, fecha_inscripcion,  empresa.direccion_empresa, empresa.try(:estado).try(:nombre), empresa.try(:ciudad).try(:nombre), empresa.rif, empresa.estatus.descripcion, empresa.nombre_comercial, empresa.try(:clasificacion).try(:descripcion), empresa.try(:clasificacion).try(:categoria), empresa.try(:clasificacion).try(:division), empresa.try(:clasificacion).try(:grupo), empresa.try(:clasificacion).try(:clase), contacto.try(:nombre_contacto), contacto.try(:cargo_contacto)]
-
-			end
-		end 
-	end
-
+	
  
 	def self.cambiar_sub_estatus(parametros)
 		
@@ -43,21 +31,15 @@
 
 	end
 
-	def self.retirar_empresas(empresa, motivo_retiro)
+	def self.retirar_empresas(prefijo, motivo_retiro)
 		
-			
-				empresa = Empresa.find(:first, :conditions => ["prefijo = ?", empresa]) # La clave primaria es es prefijo
-				
-				empresa.id_estatus = 2 # id de estatus de Empresa retirada
-				empresa.fecha_retiro = Time.now
-				empresa.id_motivo_retiro = motivo_retiro
-				empresa.save
-				
-				# Se retiran sus productos
-				Producto.where("prefijo = #{empresa.prefijo}").update_all("id_estatus = 4" )
+		Empresa.find_by(prefijo: prefijo).update_columns(:id_estatus => 2, :fecha_retiro => Time.now, :id_motivo_retiro => motivo_retiro)
+		
+		# Se retiran sus productos
+		Producto.where("prefijo = #{prefijo}").update_all("id_estatus = 4" )
 
-				# Se retiran sus GLN
-				Gln.where("prefijo = #{empresa.prefijo}").update_all("id_estatus = 12" )
+		# Se retiran sus GLN
+		Gln.where("prefijo = #{prefijo}").update_all("id_estatus = 12" )
 			
 	end
 
@@ -215,12 +197,12 @@
  end
 
 
- def self.activar(empresa_registrada)
+ def self.activar(empresa_registrada, prefijo)
 
 	empresa = Empresa.new
-	empresa.prefijo = empresa_registrada.prefijo
+	empresa.prefijo = prefijo
 	empresa.nombre_empresa = empresa_registrada.nombre_empresa
-	empresa.fecha_inscripcion = empresa_registrada.fecha_inscripcion
+	empresa.fecha_inscripcion = Time.now
 	empresa.direccion_empresa = empresa_registrada.direccion_empresa
 	empresa.id_estado = empresa_registrada.id_estado
 	empresa.id_ciudad = empresa_registrada.id_ciudad
@@ -229,73 +211,58 @@
 	empresa.rif_completo = empresa_registrada.rif_completo
 	empresa.id_estatus = 1 # empresas activa
 	empresa.id_tipo_usuario = empresa_registrada.id_tipo_usuario
-	empresa.nombre_comercial = empresa_registrada.nombre_comercial
+	empresa.nombre_comercial = (empresa_registrada.nombre_comercial) ? empresa_registrada.nombre_comercial :  ""
 	empresa.id_clasificacion = empresa_registrada.id_clasificacion
 	empresa.categoria = empresa_registrada.categoria
 	empresa.division = empresa_registrada.division
 	empresa.grupo = empresa_registrada.grupo
 	empresa.clase = empresa_registrada.clase
+
 	empresa.rep_legal = empresa_registrada.rep_legal
 	empresa.cargo_rep_legal = empresa_registrada.cargo_rep_legal
+
 	empresa.circunscripcion_judicial = empresa_registrada.circunscripcion_judicial
-	empresa.numero_registro_mercantil = empresa_registrada.numero_registro_mercantil
-	empresa.tomo_registro_mercantil = empresa_registrada.tomo_registro_mercantil
-	empresa.nacionalidad_responsable_legal = empresa_registrada.nacionalidad_responsable_legal
-	empresa.domicilio_responsable_legal = empresa_registrada.domicilio_responsable_legal
-	empresa.cedula_responsable_legal = empresa_registrada.cedula_responsable_legal
+	empresa.numero_registro_mercantil = (empresa_registrada.numero_registro_mercantil) ? empresa_registrada.numero_registro_mercantil : ""
+	empresa.tomo_registro_mercantil = (empresa_registrada.tomo_registro_mercantil) ?  empresa_registrada.tomo_registro_mercantil : ""
+	empresa.nacionalidad_responsable_legal = (empresa_registrada.nacionalidad_responsable_legal) ? empresa_registrada.nacionalidad_responsable_legal : ""
+	empresa.domicilio_responsable_legal = (empresa_registrada.domicilio_responsable_legal) ? empresa_registrada.domicilio_responsable_legal : ""
+	empresa.cedula_responsable_legal = (empresa_registrada.cedula_responsable_legal) ? empresa_registrada.cedula_responsable_legal : ""
 	empresa.ventas_brutas_anuales = empresa_registrada.ventas_brutas_anuales
 	empresa.aporte_mantenimiento_bs = empresa_registrada.aporte_mantenimiento_bs
-	empresa.fecha_registro_mercantil = empresa_registrada.fecha_registro_mercantil
+	empresa.fecha_registro_mercantil = (empresa_registrada.fecha_registro_mercantil) ? empresa_registrada.fecha_registro_mercantil : ""
 	empresa.id_parroquia_empresa = empresa_registrada.id_parroquia_empresa
-	empresa.parroquia_empresa = empresa_registrada.parroquia_empresa
+	empresa.parroquia_empresa = (empresa_registrada.parroquia_empresa) ? empresa_registrada.parroquia_empresa  : ""
+	
+	empresa.cod_contacto_tlf1 = empresa_registrada.cod_contacto_tlf1
+	empresa.cod_contacto_tlf2 = empresa_registrada.cod_contacto_tlf2
+	empresa.cod_contacto_tlf3 = empresa_registrada.cod_contacto_tlf3
+	empresa.cod_contacto_fax = empresa_registrada.cod_contacto_fax
+	
+	empresa.contacto_tlf1 = empresa_registrada.contacto_tlf1
 	empresa.contacto_tlf2 = empresa_registrada.contacto_tlf2
-	empresa.contacto_tlf3 = empresa_registrada.contacto_tlf3
+	empresa.contacto_tlf3 = empresa_registrada.contacto_tlf3	
 	empresa.contacto_fax = empresa_registrada.contacto_fax
 	empresa.contacto_email1 = empresa_registrada.contacto_email1
-	empresa.contacto_email2 = empresa_registrada.contacto_email2
-	empresa.fecha_ultima_modificacion = empresa_registrada.fecha_ultima_modificacion
+
+
+	
+	empresa.fecha_ultima_modificacion = (empresa_registrada.fecha_ultima_modificacion) ?  empresa_registrada.fecha_ultima_modificacion : ""
+
+	empresa.contacto_tlf1_completo = empresa_registrada.cod_contacto_tlf1 + " " + empresa_registrada.contacto_tlf1
+	empresa.contacto_tlf2_completo = empresa_registrada.cod_contacto_tlf2 +  " " + empresa_registrada.contacto_tlf2
+	empresa.contacto_tlf3_completo = empresa_registrada.cod_contacto_tlf3 + " " + empresa_registrada.contacto_tlf3
+	empresa.contacto_fax_completo = empresa_registrada.cod_contacto_fax + " " + empresa_registrada.contacto_fax
+	
+	# DATOS EAN
+
+	empresa.rep_ean = empresa_registrada.rep_ean
 	empresa.rep_ean_cargo = empresa_registrada.rep_ean_cargo
 	empresa.punto_ref_ean = empresa_registrada.punto_ref_ean
 	empresa.id_estado_ean = empresa_registrada.id_estado_ean
 	empresa.id_ciudad_ean = empresa_registrada.id_ciudad_ean
-	empresa.id_parroquia_ean = empresa_registrada.id_parroquia_ean
-	empresa.parroquia_ean = empresa_registrada.parroquia_ean
-	empresa.cod_postal_ean = empresa_registrada.cod_postal_ean
-	empresa.telefono1_ean = empresa_registrada.telefono1_ean
-	empresa.telefono2_ean = empresa_registrada.telefono2_ean
-	empresa.telefono3_ean = empresa_registrada.telefono3_ean
-	empresa.fax_ean = empresa_registrada.fax_ean
-	empresa.email1_ean = empresa_registrada.email1_ean
-	empresa.email2_ean = empresa_registrada.email2_ean
-	empresa.rep_edi = empresa_registrada.rep_edi
-	empresa.rep_edi_cargo = empresa_registrada.rep_edi_cargo
-	empresa.id_ciudad_edi = empresa_registrada.id_ciudad_edi
-	empresa.punto_ref_edi = empresa_registrada.punto_ref_edi
-	empresa.codigo_postal_edi = empresa_registrada.codigo_postal_edi
-	empresa.telefono1_edi = empresa_registrada.telefono1_edi
-	empresa.telefono2_edi = empresa_registrada.telefono2_edi
-	empresa.telefono3_edi = empresa_registrada.telefono3_edi
-	empresa.fax_edi = empresa_registrada.fax_edi
-	empresa.email1_edi = empresa_registrada.email1_edi
 	empresa.id_municipio_ean = empresa_registrada.id_municipio_ean
-	empresa.id_municipio_edi = empresa_registrada.id_municipio_edi
-	empresa.id_parroquia_edi = empresa_registrada.id_parroquia_edi
-	empresa.rep_mercadeo = empresa_registrada.rep_mercadeo
-	empresa.rep_mercadeo_cargo = empresa_registrada.rep_mercadeo_cargo
-	empresa.telefono1_mercadeo = empresa_registrada.telefono1_mercadeo
-	empresa.fax_mercadeo = empresa_registrada.fax_mercadeo
-	empresa.rep_recursos = empresa_registrada.rep_recursos
-	empresa.rep_recursos_cargo = empresa_registrada.rep_recursos_cargo
-	empresa.telefono1_recursos = empresa_registrada.telefono1_recursos
-	empresa.fax_recursos = empresa_registrada.fax_recursos
-	empresa.contacto_tlf1 = empresa_registrada.contacto_tlf1
-	empresa.rep_ean = empresa_registrada.rep_ean
-	empresa.parroquia_edi = empresa_registrada.parroquia_edi
-	empresa.id_estado_edi = empresa_registrada.id_estado_edi
-	empresa.direccion_ean = empresa_registrada.direccion_ean
-	empresa.direccion_edi = empresa_registrada.direccion_edi
-	empresa.id_subestatus = empresa_registrada.id_subestatus
-	empresa.fecha_activacion = Time.now
+	empresa.id_parroquia_ean = empresa_registrada.id_parroquia_ean
+
 	empresa.tipo_galpon_edificio_quinta = empresa_registrada.tipo_galpon_edificio_quinta
 	empresa.galpon_edificio_quinta = empresa_registrada.galpon_edificio_quinta
 	empresa.tipo_oficina_apartamento = empresa_registrada.tipo_oficina_apartamento
@@ -306,6 +273,46 @@
 	empresa.urbanizacion_barrio_sector = empresa_registrada.urbanizacion_barrio_sector
 	empresa.tipo_piso_numero = empresa_registrada.tipo_piso_numero
 	empresa.piso_numero = empresa_registrada.piso_numero
+	
+
+	empresa.parroquia_ean = (empresa_registrada.parroquia_ean) ? empresa_registrada.parroquia_ean : ""
+	empresa.cod_postal_ean = empresa_registrada.cod_postal_ean
+	empresa.direccion_ean = empresa_registrada.direccion_ean
+
+	empresa.cod_tlf1_ean = empresa_registrada.cod_tlf1_ean
+	empresa.cod_tlf2_ean = empresa_registrada.cod_tlf2_ean
+	empresa.cod_tlf3_ean = empresa_registrada.cod_tlf3_ean
+	empresa.cod_fax_ean = empresa_registrada.cod_fax_ean
+	
+	empresa.telefono1_ean = empresa_registrada.telefono1_ean
+	empresa.telefono2_ean = empresa_registrada.telefono2_ean
+	empresa.telefono3_ean = empresa_registrada.telefono3_ean
+	empresa.fax_ean = empresa_registrada.fax_ean
+
+	empresa.email1_ean = empresa_registrada.email1_ean
+	empresa.email2_ean = empresa_registrada.email1_ean # Este campo se elimina de la planilla, por lo que se manda el email1_ean  ya que es requerido en el administrativo
+
+	empresa.fax_ean_completo = empresa_registrada.cod_fax_ean + " " + empresa_registrada.fax_ean
+	empresa.telefono3_ean_completo = empresa_registrada.cod_tlf3_ean + " " + empresa_registrada.telefono3_ean
+	empresa.telefono2_ean_completo = empresa_registrada.cod_tlf2_ean + " " + empresa_registrada.telefono2_ean
+	empresa.telefono1_ean_completo = empresa_registrada.cod_tlf1_ean  + " " + empresa_registrada.telefono1_ean
+
+	
+
+	# DATOS EDI
+
+	empresa.rep_edi = empresa_registrada.rep_edi
+	empresa.rep_edi_cargo = empresa_registrada.rep_edi_cargo
+	
+	empresa.parroquia_edi = empresa_registrada.parroquia_edi
+	empresa.id_estado_edi = empresa_registrada.id_estado_edi
+	empresa.id_ciudad_edi = empresa_registrada.id_ciudad_edi
+	
+	empresa.email1_edi = empresa_registrada.email1_edi
+
+	
+	empresa.id_municipio_edi = empresa_registrada.id_municipio_edi
+	empresa.id_parroquia_edi = empresa_registrada.id_parroquia_edi
 	empresa.tipo_galpon_edificio_quinta_sincronet = empresa_registrada.tipo_galpon_edificio_quinta_sincronet
 	empresa.galpon_edificio_quinta_sincronet = empresa_registrada.galpon_edificio_quinta_sincronet
 	empresa.tipo_oficina_apartamento_sincronet = empresa_registrada.tipo_oficina_apartamento_sincronet
@@ -316,75 +323,54 @@
 	empresa.urbanizacion_barrio_sector_sincronet = empresa_registrada.urbanizacion_barrio_sector_sincronet
 	empresa.tipo_piso_numero_sincronet = empresa_registrada.tipo_piso_numero_sincronet
 	empresa.piso_numero_sincronet = empresa_registrada.piso_numero_sincronet
-	empresa.tipo_galpon_edificio_quinta_seminarios = empresa_registrada.tipo_galpon_edificio_quinta_seminarios
-	empresa.galpon_edificio_quinta_seminarios = empresa_registrada.galpon_edificio_quinta_seminarios
-	empresa.tipo_oficina_apartamento_seminarios = empresa_registrada.tipo_oficina_apartamento_seminarios
-	empresa.oficina_apartamento_seminarios = empresa_registrada.oficina_apartamento_seminarios
-	empresa.tipo_avenida_calle_seminarios = empresa_registrada.tipo_avenida_calle_seminarios
-	empresa.avenida_calle_seminarios = empresa_registrada.avenida_calle_seminarios
-	empresa.tipo_urbanizacion_barrio_sector_seminarios = empresa_registrada.tipo_urbanizacion_barrio_sector_seminarios
-	empresa.urbanizacion_barrio_sector_seminarios = empresa_registrada.urbanizacion_barrio_sector_seminarios
-	empresa.tipo_piso_numero_seminarios = empresa_registrada.tipo_piso_numero_seminarios
-	empresa.piso_numero_seminarios = empresa_registrada.piso_numero_seminarios
-	empresa.tipo_galpon_edificio_quinta_mercadeo = empresa_registrada.tipo_galpon_edificio_quinta_mercadeo
-	empresa.galpon_edificio_quinta_mercadeo = empresa_registrada.galpon_edificio_quinta_mercadeo
-	empresa.tipo_oficina_apartamento_mercadeo = empresa_registrada.tipo_oficina_apartamento_mercadeo
-	empresa.oficina_apartamento_mercadeo = empresa_registrada.oficina_apartamento_mercadeo
-	empresa.tipo_avenida_calle_mercadeo = empresa_registrada.tipo_avenida_calle_mercadeo
-	empresa.avenida_calle_mercadeo = empresa_registrada.avenida_calle_mercadeo
-	empresa.tipo_urbanizacion_barrio_sector_mercadeo = empresa_registrada.tipo_urbanizacion_barrio_sector_mercadeo
-	empresa.urbanizacion_barrio_sector_mercadeo = empresa_registrada.urbanizacion_barrio_sector_mercadeo
-	empresa.tipo_piso_numero_mercadeo = empresa_registrada.tipo_piso_numero_mercadeo
-	empresa.piso_numero_mercadeo = empresa_registrada.piso_numero_mercadeo
-	empresa.id_estado_mercadeo = empresa_registrada.id_estado_mercadeo
-	empresa.parroquia_mercadeo = empresa_registrada.parroquia_mercadeo
-	empresa.punto_ref_mercadeo = empresa_registrada.punto_ref_mercadeo
-	empresa.telefono3_mercadeo = empresa_registrada.telefono3_mercadeo
-	empresa.email2_edi = empresa_registrada.email2_edi
-	empresa.email2_recursos = empresa_registrada.email2_recursos
-	empresa.email2_mercadeo = empresa_registrada.email2_mercadeo
-	empresa.email1_recursos = empresa_registrada.email1_recursos
-	empresa.email1_mercadeo = empresa_registrada.email1_mercadeo
-	empresa.telefono3_recursos = empresa_registrada.telefono3_recursos
-	empresa.id_estado_recursos = empresa_registrada.id_estado_recursos
-	empresa.punto_ref_recursos = empresa_registrada.punto_ref_recursos
-	empresa.cod_contacto_tlf1 = empresa_registrada.cod_contacto_tlf1
-	empresa.cod_contacto_tlf2 = empresa_registrada.cod_contacto_tlf2
-	empresa.cod_contacto_tlf3 = empresa_registrada.cod_contacto_tlf3
-	empresa.cod_contacto_fax = empresa_registrada.cod_contacto_fax
-	empresa.cod_tlf1_ean = empresa_registrada.cod_tlf1_ean
-	empresa.cod_tlf2_ean = empresa_registrada.cod_tlf2_ean
-	empresa.cod_tlf3_ean = empresa_registrada.cod_tlf3_ean
-	empresa.cod_fax_ean = empresa_registrada.cod_fax_ean
+	
+	empresa.direccion_edi = empresa_registrada.direccion_edi
+
+
 	empresa.cod_tlf1_sincronet = empresa_registrada.cod_tlf1_sincronet
 	empresa.cod_tlf2_sincronet = empresa_registrada.cod_tlf2_sincronet
 	empresa.cod_tlf3_sincronet = empresa_registrada.cod_tlf3_sincronet
 	empresa.cod_fax_sincronet = empresa_registrada.cod_fax_sincronet
-	empresa.cod_tlf1_seminarios = empresa_registrada.cod_tlf1_seminarios
-	empresa.cod_tlf2_seminarios = empresa_registrada.cod_tlf2_seminarios
-	empresa.cod_tlf3_seminarios = empresa_registrada.cod_tlf3_seminarios
-	empresa.cod_fax_seminarios = empresa_registrada.cod_fax_seminarios
+	
+	empresa.telefono1_edi = empresa_registrada.telefono1_edi
+	empresa.telefono2_edi = empresa_registrada.telefono2_edi
+	empresa.telefono3_edi = empresa_registrada.telefono3_edi
+	empresa.fax_edi = empresa_registrada.fax_edi
+	empresa.punto_ref_edi = empresa_registrada.punto_ref_edi
+	empresa.codigo_postal_edi = empresa_registrada.codigo_postal_edi
+	
+
+
+	# Datos MERCADEO
+	
+	empresa.rep_mercadeo = empresa_registrada.rep_mercadeo
+	empresa.rep_mercadeo_cargo = empresa_registrada.rep_mercadeo_cargo
+	
 	empresa.cod_tlf1_mercadeo = empresa_registrada.cod_tlf1_mercadeo
-	empresa.cod_tlf2_mercadeo = empresa_registrada.cod_tlf2_mercadeo
-	empresa.cod_tlf3_mercadeo = empresa_registrada.cod_tlf3_mercadeo
 	empresa.cod_fax_mercadeo = empresa_registrada.cod_fax_mercadeo
-	empresa.fax_ean_completo = empresa_registrada.fax_ean_completo
-	empresa.telefono3_ean_completo = empresa_registrada.telefono3_ean_completo
-	empresa.telefono2_ean_completo = empresa_registrada.telefono2_ean_completo
-	empresa.telefono1_ean_completo = empresa_registrada.telefono1_ean_completo
-	empresa.contacto_fax_completo = empresa_registrada.contacto_fax_completo
-	empresa.contacto_tlf3_completo = empresa_registrada.contacto_tlf3_completo
-	empresa.contacto_tlf2_completo = empresa_registrada.contacto_tlf2_completo
-	empresa.contacto_tlf1_completo = empresa_registrada.contacto_tlf1_completo
-	empresa.id_ciudad_recursos = empresa_registrada.id_ciudad_recursos
-	empresa.id_municipio_recursos = empresa_registrada.id_municipio_recursos
-	empresa.parroquia_recursos = empresa_registrada.parroquia_recursos
-	empresa.codigo_postal_recursos = empresa_registrada.codigo_postal_recursos
-	empresa.telefono2_recursos = empresa_registrada.telefono2_recursos
-	empresa.codigo_postal_mercadeo = empresa_registrada.codigo_postal_mercadeo
-	empresa.telefono2_mercadeo = empresa_registrada.telefono2_mercadeo
-	empresa.id_municipio_mercadeo = empresa_registrada.id_municipio_mercadeo
-	empresa.id_ciudad_mercadeo = empresa_registrada.id_ciudad_mercadeo
+	empresa.telefono1_mercadeo = empresa_registrada.telefono1_mercadeo
+	empresa.fax_mercadeo = empresa_registrada.fax_mercadeo
+	empresa.email1_mercadeo = empresa_registrada.email1_mercadeo
+
+	# DATOS RRHH
+
+
+	empresa.rep_recursos = empresa_registrada.rep_recursos
+	empresa.rep_recursos_cargo = empresa_registrada.rep_recursos_cargo
+
+	empresa.cod_tlf1_seminarios = empresa_registrada.cod_tlf1_seminarios
+	empresa.cod_fax_seminarios = empresa_registrada.cod_fax_seminarios
+	empresa.telefono1_recursos = empresa_registrada.telefono1_recursos
+	empresa.fax_recursos = empresa_registrada.fax_recursos
+	empresa.email1_recursos = empresa_registrada.email1_recursos
+
+	
+	
+	empresa.id_subestatus = empresa_registrada.id_subestatus
+	empresa.fecha_activacion = Time.now
+
+	
+
 	empresa.no_rif_validation = true if empresa_registrada.no_rif_validation == true
 	empresa.save
 	empresa_registrada.destroy
@@ -392,7 +378,6 @@
 	eliminada = EmpresaEliminada.find(:first, :conditions => ["prefijo = ?", empresa.prefijo])
 	Empresa.registrar_historico_eliminada(eliminada) if eliminada # Se esta utilizando un prefijo de empresa eliminada
 	
-
 	Gln.generar_legal(empresa.prefijo.to_s) if empresa.id_tipo_usuario == '1' # SOlo LAs empresas de Tipo Usuario registran GLN
 
  end
