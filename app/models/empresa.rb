@@ -237,24 +237,22 @@
 	empresa.parroquia_empresa = (empresa_registrada.parroquia_empresa) ? empresa_registrada.parroquia_empresa  : ""
 	
 	empresa.cod_contacto_tlf1 = empresa_registrada.cod_contacto_tlf1
-	empresa.cod_contacto_tlf2 = empresa_registrada.cod_contacto_tlf2
-	empresa.cod_contacto_tlf3 = empresa_registrada.cod_contacto_tlf3
-	empresa.cod_contacto_fax = empresa_registrada.cod_contacto_fax
+	empresa.cod_contacto_tlf2 = empresa_registrada.cod_contacto_tlf2.blank?  ?  empresa_registrada.cod_contacto_tlf1 : empresa_registrada.cod_contacto_tlf2
+	empresa.cod_contacto_tlf3 = empresa_registrada.cod_contacto_tlf3.blank? ? empresa_registrada.cod_contacto_tlf1 : empresa_registrada.cod_contacto_tlf3
+	empresa.cod_contacto_fax = empresa_registrada.cod_contacto_fax.blank?  ?  empresa_registrada.cod_contacto_tlf1 : empresa_registrada.cod_contacto_fax
 	
 	empresa.contacto_tlf1 = empresa_registrada.contacto_tlf1
-	empresa.contacto_tlf2 = empresa_registrada.contacto_tlf2
-	empresa.contacto_tlf3 = empresa_registrada.contacto_tlf3	
-	empresa.contacto_fax = empresa_registrada.contacto_fax
+	empresa.contacto_tlf2 = empresa_registrada.contacto_tlf2.blank? ? empresa_registrada.contacto_tlf1 : empresa_registrada.contacto_tlf2
+	empresa.contacto_tlf3 = empresa_registrada.contacto_tlf3.blank?	?  empresa_registrada.contacto_tlf1 : empresa_registrada.contacto_tlf3
+	empresa.contacto_fax = empresa_registrada.contacto_fax.blank? ? empresa_registrada.contacto_tlf1 : empresa_registrada.contacto_fax
 	empresa.contacto_email1 = empresa_registrada.contacto_email1
 
-
-	
 	empresa.fecha_ultima_modificacion = (empresa_registrada.fecha_ultima_modificacion) ?  empresa_registrada.fecha_ultima_modificacion : ""
 
-	empresa.contacto_tlf1_completo = empresa_registrada.cod_contacto_tlf1 + " " + empresa_registrada.contacto_tlf1
-	empresa.contacto_tlf2_completo = empresa_registrada.cod_contacto_tlf2 +  " " + empresa_registrada.contacto_tlf2
-	empresa.contacto_tlf3_completo = empresa_registrada.cod_contacto_tlf3 + " " + empresa_registrada.contacto_tlf3
-	empresa.contacto_fax_completo = empresa_registrada.cod_contacto_fax + " " + empresa_registrada.contacto_fax
+	empresa.contacto_tlf1_completo = empresa.cod_contacto_tlf1 + " " + empresa.contacto_tlf1
+	empresa.contacto_tlf2_completo = empresa.cod_contacto_tlf2 +  " " + empresa.contacto_tlf2
+	empresa.contacto_tlf3_completo = empresa.cod_contacto_tlf3 + " " + empresa.contacto_tlf3
+	empresa.contacto_fax_completo = empresa.cod_contacto_fax + " " + empresa.contacto_fax
 	
 	# DATOS EAN
 
@@ -283,24 +281,22 @@
 	empresa.direccion_ean = empresa_registrada.direccion_ean
 
 	empresa.cod_tlf1_ean = empresa_registrada.cod_tlf1_ean
-	empresa.cod_tlf2_ean = empresa_registrada.cod_tlf2_ean
-	empresa.cod_tlf3_ean = empresa_registrada.cod_tlf3_ean
-	empresa.cod_fax_ean = empresa_registrada.cod_fax_ean
+	empresa.cod_tlf2_ean = empresa_registrada.cod_tlf2_ean.blank? ? empresa_registrada.cod_tlf1_ean : empresa_registrada.cod_tlf2_ean
+	empresa.cod_tlf3_ean = empresa_registrada.cod_tlf3_ean.blank? ? empresa_registrada.cod_tlf1_ean : empresa_registrada.cod_tlf3_ean
+	empresa.cod_fax_ean = empresa_registrada.cod_fax_ean.blank? ? empresa_registrada.cod_tlf1_ean : empresa_registrada.cod_fax_ean
 	
 	empresa.telefono1_ean = empresa_registrada.telefono1_ean
-	empresa.telefono2_ean = empresa_registrada.telefono2_ean
-	empresa.telefono3_ean = empresa_registrada.telefono3_ean
-	empresa.fax_ean = empresa_registrada.fax_ean
+	empresa.telefono2_ean = empresa_registrada.telefono2_ean.blank? ? empresa_registrada.telefono1_ean : empresa_registrada.telefono2_ean
+	empresa.telefono3_ean = empresa_registrada.telefono3_ean.blank? ? empresa_registrada.telefono1_ean : empresa_registrada.telefono3_ean
+	empresa.fax_ean = empresa_registrada.fax_ean.blank? ? empresa_registrada.telefono1_ean : empresa_registrada.fax_ean
 
 	empresa.email1_ean = empresa_registrada.email1_ean
 	empresa.email2_ean = empresa_registrada.email1_ean # Este campo se elimina de la planilla, por lo que se manda el email1_ean  ya que es requerido en el administrativo
 
-	empresa.fax_ean_completo = empresa_registrada.cod_fax_ean + " " + empresa_registrada.fax_ean
-	empresa.telefono3_ean_completo = empresa_registrada.cod_tlf3_ean + " " + empresa_registrada.telefono3_ean
-	empresa.telefono2_ean_completo = empresa_registrada.cod_tlf2_ean + " " + empresa_registrada.telefono2_ean
-	empresa.telefono1_ean_completo = empresa_registrada.cod_tlf1_ean  + " " + empresa_registrada.telefono1_ean
-
-	
+	empresa.fax_ean_completo = empresa.cod_fax_ean + " " + empresa.fax_ean
+	empresa.telefono3_ean_completo = empresa.cod_tlf3_ean + " " + empresa.telefono3_ean
+	empresa.telefono2_ean_completo = empresa.cod_tlf2_ean + " " + empresa.telefono2_ean
+	empresa.telefono1_ean_completo = empresa.cod_tlf1_ean  + " " + empresa.telefono1_ean
 
 	# DATOS EDI
 
