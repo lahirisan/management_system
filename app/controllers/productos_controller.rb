@@ -185,16 +185,17 @@ class ProductosController < ApplicationController
     
 
     @producto = Producto.find(:first, :conditions => ["gtin like ?", params[:id]])
-    params[:producto][:fecha_ultima_modificacion] = Time.now if 
+    params[:producto][:fecha_ultima_modificacion] = Time.now 
 
     respond_to do |format|
       if @producto.update_attributes(params[:producto])
-        format.html { redirect_to empresa_productos_path, notice: "EL GTIN #{@producto.gtin} fue actualizado." }
+        format.html { redirect_to empresa_productos_path, notice: "GTIN #{@producto.gtin} ACTUALIZADO." }
       else
         format.html { render action: "edit" }
       end
     end
   end
+
 
   def update_multiple
 
