@@ -11,7 +11,7 @@
     %br
 
     %p#notice= notice
-    =form_tag "/productos/update_multiple", :method => "put", :id => "formulario_transferir_productos" do  
+    =form_tag "/productos/update_multiple", :method => "patch", :id => "formulario_transferir_productos" do  
                     
         %table#data_table_transferir_productos.display{:"data-source" => "/productos.json?transferir=true"}
             %thead

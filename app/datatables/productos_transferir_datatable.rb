@@ -50,7 +50,7 @@ private
 
   def fetch_productos
     
-    productos = Producto.where("id_tipo_gtin = 1").includes(:estatus, :tipo_gtin, :empresa).order("#{sort_column} #{sort_direction}") 
+    productos = Producto.where("id_tipo_gtin in (1,4)").includes(:estatus, :tipo_gtin, :empresa).order("#{sort_column} #{sort_direction}") 
     productos = productos.page(page).per_page(per_page)
 
     productos = productos.where("empresa.nombre_empresa like :search or  empresa.prefijo  like :search or  tipo_gtin.tipo like :search or producto.gtin like :search or producto.descripcion like :search or producto.marca like :search or estatus.descripcion like :search or  producto.codigo_prod like :search or CONVERT(varchar(255),  producto.fecha_creacion ,126) like :search or CONVERT(varchar(255),  producto.fecha_ultima_modificacion ,126) like :search", search: "%#{params[:sSearch]}%") if params[:sSearch].present? # Filtro de busqueda general
