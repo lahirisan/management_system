@@ -24,7 +24,7 @@
 	
 	validates :tipo_rif, :rif,  :id_tipo_usuario, :id_clasificacion, :presence => {:message => "No puede estar en blanco"}
 
-	validates :rif_completo, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado en el listado de las Empresas. Por favor verifique."}, unless: "no_rif_validation == true"
+	validates :rif_completo, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado en el listado de las Empresas. Por favor verifique."}, on: :create, unless: "no_rif_validation == true"
 
 	
  
