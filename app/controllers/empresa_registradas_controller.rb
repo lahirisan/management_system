@@ -10,6 +10,10 @@ class EmpresaRegistradasController < ApplicationController
       
       format.html {
 
+        
+        #Se elimina los filtros del Datatable si la llamada es desde el menu Principal
+        cookies[:SpryMedia_DataTables_data_table_empresa_registradas_empresa_registradas] = nil  if params[:eliminar_cookie]
+
         if params[:activar_solvencia] 
 
           render :template =>'/empresa_registradas/activar_solvencia.html.haml'
@@ -17,6 +21,8 @@ class EmpresaRegistradasController < ApplicationController
         else
           
           if params[:activar_empresa]
+
+            
             @ruta = "/empresa_registradas.json?activar_empresa=true"
           else
               @ruta = "/empresa_registradas.json"
@@ -29,11 +35,12 @@ class EmpresaRegistradasController < ApplicationController
 
       format.json {
         
+        
         if params[:activar_solvencia]
 
           render json: (EmpresaRegistradasActivarSolvenciaDatatable.new(view_context)) 
         else
-          
+
           render json: (EmpresaRegistradasDatatable.new(view_context, session[:perfil], session[:gerencia])) 
         end
 
@@ -45,7 +52,36 @@ class EmpresaRegistradasController < ApplicationController
   # GET /empresa_registradas/1
   # GET /empresa_registradas/1.json
   def show
+
     @empresa_registrada = EmpresaRegistrada.find(params[:id])
+    @telefono1 = Empresa.telefono1(@empresa_registrada)
+    @telefono2 = Empresa.telefono2(@empresa_registrada)
+    @telefono3 = Empresa.telefono3(@empresa_registrada)
+    @fax = Empresa.fax(@empresa_registrada)
+    
+    
+    @estado_ean = Estado.find(@empresa_registrada.id_estado_ean) if (@empresa_registrada.id_estado_ean) and (@empresa_registrada.id_estado_ean >= 1 and @empresa_registrada.id_estado_ean <= 25)
+    @ciudad_ean = Ciudad.find(@empresa_registrada.id_ciudad_ean) if (@empresa_registrada.id_ciudad_ean) and (@empresa_registrada.id_ciudad_ean >= 1 and   @empresa_registrada.id_ciudad_ean <= 601)
+    @municipio_ean = Municipio.find(@empresa_registrada.id_municipio_ean) if (@empresa_registrada.id_municipio_ean) and (@empresa_registrada.id_municipio_ean >= 1 and @empresa_registrada.id_municipio_ean <= 365)
+    @telefono1_ean = Empresa.telefono1_ean(@empresa_registrada)
+    @telefono2_ean = Empresa.telefono2_ean(@empresa_registrada)
+    @telefono3_ean = Empresa.telefono3_ean(@empresa_registrada)
+    @fax_ean = Empresa.fax_ean(@empresa_registrada)
+
+    @estado_edi = Estado.find(@empresa_registrada.id_estado_edi) if (@empresa_registrada.id_estado_edi) and (@empresa_registrada.id_estado_edi >= 1 and @empresa_registrada.id_estado_edi <= 25)
+    @ciudad_edi = Ciudad.find(@empresa_registrada.id_ciudad_edi) if (@empresa_registrada.id_ciudad_edi) and (@empresa_registrada.id_ciudad_edi >= 1 and   @empresa_registrada.id_ciudad_edi <= 601)
+    @municipio_edi = Municipio.find(@empresa_registrada.id_municipio_edi) if (@empresa_registrada.id_municipio_edi) and  (@empresa_registrada.id_municipio_edi >= 1 and @empresa_registrada.id_municipio_edi <= 365)
+    @telefono1_edi = Empresa.telefono1_edi(@empresa_registrada)
+    @telefono2_edi = Empresa.telefono2_edi(@empresa_registrada)
+    @telefono3_edi = Empresa.telefono3_edi(@empresa_registrada)
+    @fax_edi = Empresa.fax_edi(@empresa_registrada)
+
+   
+    @telefono1_recursos = Empresa.telefono1_recursos(@empresa_registrada)
+    @fax_recursos = Empresa.fax_recursos(@empresa_registrada)
+    
+    @telefono1_mercadeo = Empresa.telefono1_mercadeo(@empresa_registrada)
+    @fax_mercadeo = Empresa.fax_mercadeo(@empresa_registrada)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -323,3 +359,4 @@ class EmpresaRegistradasController < ApplicationController
     end
   end
 end
+
