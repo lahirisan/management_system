@@ -15,9 +15,10 @@
                 %th Tipo Usuario
                 %th Ventas Brutas Anuales
                 %th Clasificación
-                -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Empresa Registrada')
+                %th Detalle
+                -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Empresa Registrada') and params[:activar_empresa].nil?
                     %th Editar Empresa 
-                -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Activar Empresa')
+                -if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Activar Empresa') and params[:activar_empresa]
                     %th Activar Empresa 
                 
                

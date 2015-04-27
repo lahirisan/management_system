@@ -561,7 +561,5 @@ $( document ).ready(function() {
           
         });
 
-     
-
 	
 });

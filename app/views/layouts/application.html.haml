@@ -57,7 +57,7 @@
 						&nbsp;Activar / Reasignar Prefijo
 
 
-				-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Validar Empresa') 
+				-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Validar Solvencia') 
 
 					%a.opcion{:href => "/empresa_registradas?activar_solvencia=true", :title => "Opción para validar la Solvencia de las empresas", :class => "ui-state-default ui-corner-all botones_menu"}
 						%span.ui-icon.ui-icon-print
@@ -169,4 +169,3 @@
 			
 				
 		= yield
-		
