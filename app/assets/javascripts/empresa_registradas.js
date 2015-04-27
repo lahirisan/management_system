@@ -560,7 +560,6 @@ $( document ).ready(function() {
           $('.activar_empresa').dialog('open');
           
         });
-     
 
 	
 });

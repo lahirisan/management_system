@@ -346,7 +346,6 @@ class EmpresaRegistradasController < ApplicationController
     end
   end
 
-
   # DELETE /empresa_registradas/1
   # DELETE /empresa_registradas/1.json
   def destroy
