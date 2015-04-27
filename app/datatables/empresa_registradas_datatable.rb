@@ -25,6 +25,7 @@ private
     empresas.map do |empresa|
 
       boton = ""
+      
       if params[:activar_empresa] ## Asignar prefijo a la empresa
         
         boton = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Activar').html_safe, "/empresa_registradas/#{empresa.id}/edit?activar_empresa=true", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Activar la empresa #{empresa.nombre_empresa}"})  
@@ -46,7 +47,8 @@ private
         empresa.try(:tipo_usuario_empresa).try(:descripcion),
         empresa.ventas_brutas_anuales,
         empresa.try(:clasificacion).try(:descripcion),
-        boton
+        link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresa_registradas/#{empresa.id}", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
+        boton 
       ]
     
     end
