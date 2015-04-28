@@ -6,12 +6,13 @@ class ProductosController < ApplicationController
   # GET /productos.json
   def index
 
-    @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:empresa_id]]) if params[:empresa_id]
+    @empresa = Empresa.find_by_prefijo(params[:empresa_id]) if params[:empresa_id]
 
     respond_to do |format|
       format.html { 
+                     
+                    cookies.clear
 
-                    
                     if params[:eliminar]  
                       @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Productos > Eliminar Productos"
                       render :template =>'/productos/eliminar_productos.html.haml'
@@ -47,6 +48,8 @@ class ProductosController < ApplicationController
       format.json { 
                     
                     
+
+                    
                     if params[:gtin]
                       gtin = params[:gtin]
                       digito_verificacion = Producto.calcular_digito_verificacion(params[:gtin].to_i,"GTIN-13")
@@ -74,6 +77,9 @@ class ProductosController < ApplicationController
                         render json: ProductosNotEditableDatatable.new(view_context) 
                       end
                     end
+
+
+                   
                   }
       format.pdf  {
 

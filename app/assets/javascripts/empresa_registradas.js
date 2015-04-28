@@ -3,6 +3,7 @@ $( document ).ready(function() {
 	// Datatable que maneja el listado de empresas
 
     $("#data_table_empresa_registradas").dataTable({
+        bStateSave: true,
         sPaginationType: "full_numbers",
         bJQueryUI: true,
         aaSorting: [[ 2, "desc" ]],
@@ -239,14 +240,11 @@ $( document ).ready(function() {
 
         });
 
-        // Datepicker de la fecha
-
-        if (window.location.pathname.split('/')[3] != 'edit')
-        {
-            // Datepicker los ultimos 100 anhos
-            $("#empresa_registrada_fecha_registro_mercantil").datepicker({yearRange: "-100:+0",
-                changeYear: true});
-        }
+        
+        // Datepicker los ultimos 100 anhos
+        $("#empresa_registrada_fecha_registro_mercantil").datepicker({yearRange: "-100:+0",
+            changeYear: true});
+        
 
         
 

@@ -3,7 +3,10 @@
     =@empresa_registrada.new_record? ? "Registrar Empresa" : "#{@empresa_registrada.nombre_empresa} > Editar Empresa"
   %br
   %br
-  %p.warning=flash[:warning]
+  %br
+  =render '/empresas/regresar'
+  %br
+  %br
 
   
   %section.formulario
@@ -136,13 +139,12 @@
             =f.text_field :circunscripcion_judicial
         %tr
           %td
-            -if @empresa_registrada.new_record?
-              ="Fecha de inscripción en Registro Mercantil"
+            
+            ="Fecha de inscripción en Registro Mercantil"
           %td
           %td
-            -if @empresa_registrada.new_record?
-
-              =f.text_field(:fecha_registro_mercantil) 
+            
+            =f.text_field(:fecha_registro_mercantil) 
 
         %tr
           %td
