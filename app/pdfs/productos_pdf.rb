@@ -1,6 +1,4 @@
-
-
-Prawn::Font::AFM.hide_m17n_warning= true
+#encoding: UTF-8
 
 class ProductosPdf < Prawn::Document	
 	
@@ -10,6 +8,7 @@ class ProductosPdf < Prawn::Document
 		
 		super(:top_margin => 10, :page_layout => :portrait)
 
+		Prawn::Font::AFM.hide_m17n_warning= true
 		font_size 10
 		  
  		
