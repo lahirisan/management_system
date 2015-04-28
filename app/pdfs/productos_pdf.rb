@@ -1,4 +1,7 @@
  #encoding: UTF-8
+
+Prawn::Font::AFM.hide_m17n_warning= true
+
 class ProductosPdf < Prawn::Document	
 	
 

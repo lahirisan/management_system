@@ -25,9 +25,11 @@
 	%th.ui-state-default{:colspan => "1", :rowspan => "1"}
 		%span.filter_column.filter_text
 			%input.search_init.text_filter{:type => "text"}/
-	-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Empresa Registrada')
+	%th
+
+	-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Empresa Registrada') and params[:activar_empresa].nil?
 		%th
-	-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Activar Empresa')
+	-if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Activar Empresa') and params[:activar_empresa]
 		%th
 		
 	

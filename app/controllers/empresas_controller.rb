@@ -9,10 +9,15 @@ class EmpresasController < ApplicationController
 
     # OJO: La llamada JSON y los parametro se establecen en el datatable desde el template.html.haml
 
+   
+
     respond_to do |format|
       format.html{
 
-                  
+
+                   cookies.clear
+                   
+
                   if params[:activacion]
                     render :template =>'/empresas/activacion.html.haml' 
                   elsif params[:retirar]
@@ -29,6 +34,7 @@ class EmpresasController < ApplicationController
 
                   else
                     
+
                     # Se verifica si tiene el privilegio para  EDITAR EMPRESA
                     if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Modificar Empresa') # entra en esta opción tambien si tiene privilegio para asociar prefijos a empresas existentes
                       
@@ -48,7 +54,8 @@ class EmpresasController < ApplicationController
       
       format.json { 
 
-              
+                   
+
 
                     if (params[:activacion] == 'true')
                       render json: (ActivacionEmpresasDatatable.new(view_context))
@@ -397,6 +404,11 @@ class EmpresasController < ApplicationController
       format.html { redirect_to empresas_url }
       format.json { head :no_content }
     end
+  end
+
+  def delete(name, options = {})
+    options.stringify_keys!
+    set_cookie(options.merge("name" => name.to_s, "value" => "", "expires" => Time.at(0)))
   end
 
 
