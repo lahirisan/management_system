@@ -1,4 +1,4 @@
-#encoding: UTF-8
+ #encoding: UTF-8
 class ProductosPdf < Prawn::Document	
 	
 
@@ -6,8 +6,8 @@ class ProductosPdf < Prawn::Document
 
 		
 		super(:top_margin => 10, :page_layout => :portrait)
-		
-		font('Times-Roman', 10) 
+
+		font("Times-Roman", :size => 10)
 		  
  		
  		productos = Producto.where("prefijo = ? ",empresa).includes(:estatus, :tipo_gtin).order("producto.fecha_creacion desc")   
