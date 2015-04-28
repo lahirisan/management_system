@@ -11,6 +11,8 @@ class ProductosController < ApplicationController
     respond_to do |format|
       format.html { 
                      
+                    cookies.clear
+
                     if params[:eliminar]  
                       @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Productos > Eliminar Productos"
                       render :template =>'/productos/eliminar_productos.html.haml'
@@ -46,7 +48,6 @@ class ProductosController < ApplicationController
       format.json { 
                     
                     
-
 
                     
                     if params[:gtin]

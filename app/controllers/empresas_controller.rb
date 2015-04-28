@@ -12,7 +12,8 @@ class EmpresasController < ApplicationController
     respond_to do |format|
       format.html{
 
-                  
+                   cookies.clear
+                   
                   if params[:activacion]
                     render :template =>'/empresas/activacion.html.haml' 
                   elsif params[:retirar]
@@ -48,7 +49,8 @@ class EmpresasController < ApplicationController
       
       format.json { 
 
-              
+                   
+
 
                     if (params[:activacion] == 'true')
                       render json: (ActivacionEmpresasDatatable.new(view_context))
