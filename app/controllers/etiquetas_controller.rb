@@ -6,7 +6,7 @@ class EtiquetasController < ApplicationController
 
     @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:id]])
     @estado_ean = Estado.find(@empresa.id_estado_ean)
-    @ciudad_ean = Ciudad.find(@empresa.id_ciudad_ean)
+    @ciudad_ean = Ciudad.find(@empresa.id_ciudad_ean) 
 
     @municipio_ean = Municipio.find(@empresa.id_municipio_ean)
 

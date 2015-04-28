@@ -2,6 +2,7 @@
         
         // Datatable que maneja el listado de empresas
         $("#data_table_empresas").dataTable({
+            bStateSave: true,
             sPaginationType: "full_numbers",
             aaSorting: [[ 2, "desc" ]],
             bJQueryUI: true,
@@ -12,6 +13,23 @@
         }).columnFilter({ aoColumns: [{ type: "text"}, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, null, {type: "text"}]});
 
         $('#data_table_empresas input').attr("placeholder", "Buscar");
+
+/*
+        function createCookie(name,value,days) {
+        
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime()+(days*24*60*60*1000));
+                var expires = "; expires="+date.toGMTString();
+            }
+
+                else var expires = "";
+                document.cookie = name+"="+value+expires+"; path=/";
+        }
+
+        createCookie("SpryMedia_DataTables_data_table_productos_productos", "", -1);
+
+        */
 
         // Datatable que maneja el listado de empresas
         $("#data_table_empresas_transferir").dataTable({
@@ -44,6 +62,7 @@
         
         // Datatable que maneja el listado para retirar empresas
         $("#data_table_empresas_retirar").dataTable({
+            bStateSave: true,
             sPaginationType: "full_numbers",
             aaSorting: [[ 2, "desc" ]],
             bJQueryUI: true,
@@ -57,6 +76,7 @@
 
         // Datatable que maneja el listado para empresas retiradas
         $("#data_table_empresas_retiradas").dataTable({
+            bStateSave: true,
             sPaginationType: "full_numbers",
             aoColumns: [ null,  null, null,  null, null, null, null ,{ "bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false }],
             aaSorting: [[ 5, "desc" ]],
@@ -72,6 +92,7 @@
 
         // Listado de la empresas que se van a reactivar
         $("#data_table_reactivar_empresas").dataTable({
+            bStateSave: true,
             sPaginationType: "full_numbers",
             aoColumns: [ { "bSortable": false },  null, null,  null, null, null, null ,{ "bSortable": false },{"bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false }],
             aaSorting: [[ 6, "desc" ]],
@@ -86,6 +107,7 @@
 
         // Datatable que maneja el listado para empresas eliminar
         $("#data_table_empresas_eliminar").dataTable({
+            bStateSave: true,
             sPaginationType: "full_numbers",
             aaSorting: [[ 5, "desc" ]],
             bJQueryUI: true,
@@ -99,6 +121,7 @@
 
         // Datatable que maneja el listado para empresas eliminar
         $("#data_table_empresas_eliminadas").dataTable({
+            
             sPaginationType: "full_numbers",
             aaSorting: [[ 5, "desc" ]],
             bJQueryUI: true,
@@ -617,7 +640,8 @@
 
             
         });
-       
+
+        
 
     });   
 
