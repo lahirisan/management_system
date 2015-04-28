@@ -103,7 +103,7 @@ class EmpresaRegistradasController < ApplicationController
   def edit
 
     @empresa_registrada = EmpresaRegistrada.find(params[:id])
-    @clasificacion = Clasificacion.where("categoria = '#{@empresa.categoria}' and division = #{@empresa.division} and grupo = #{@empresa.grupo} and clase = #{@empresa.clase}").first
+    @clasificacion = Clasificacion.where("categoria = '#{@empresa_registrada.categoria}' and division = #{@empresa_registrada.division} and grupo = #{@empresa_registrada.grupo} and clase = #{@empresa_registrada.clase}").first
          
     respond_to do |format|
 
