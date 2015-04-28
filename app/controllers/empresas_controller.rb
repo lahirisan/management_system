@@ -14,15 +14,10 @@ class EmpresasController < ApplicationController
     respond_to do |format|
       format.html{
 
-                  #elimina cualquier parametro pasado a los filtros de Datatable
-                  
-                  cookies[:SpryMedia_DataTables_data_table_empresas_eliminar_empresas] = nil if params[:eliminar_cookie]
-                  cookies[:SpryMedia_DataTables_data_table_reactivar_empresas_empresas]  = nil if params[:eliminar_cookie]
-                  cookies[:SpryMedia_DataTables_data_table_empresas_retiradas_empresas] = nil  if params[:eliminar_cookie]
-                  cookies[:SpryMedia_DataTables_data_table_empresas_retirar_empresas] = nil if params[:eliminar_cookie]
-                  cookies[:SpryMedia_DataTables_data_table_empresas_empresas] = nil  if params[:eliminar_cookie]
-                  
-                  
+
+                   cookies.clear
+                   
+
                   if params[:activacion]
                     render :template =>'/empresas/activacion.html.haml' 
                   elsif params[:retirar]
@@ -59,7 +54,8 @@ class EmpresasController < ApplicationController
       
       format.json { 
 
-              
+                   
+
 
                     if (params[:activacion] == 'true')
                       render json: (ActivacionEmpresasDatatable.new(view_context))
