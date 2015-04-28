@@ -10,7 +10,7 @@ class ProductosPdf < Prawn::Document
 		
 		super(:top_margin => 10, :page_layout => :portrait)
 
-		font("Helvetica", :size => 10)
+		font_size 10
 		  
  		
  		productos = Producto.where("prefijo = ? ",empresa).includes(:estatus, :tipo_gtin).order("producto.fecha_creacion desc")   
