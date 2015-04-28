@@ -152,14 +152,14 @@ insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Empresas No Activas', 'Administración', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Modificar Empresa', 'Administración', getdate(), getdate())	
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Exportar Empresa', 'Administración', getdate(), getdate())
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Validar Empresa', 'Administración', getdate(), getdate())		
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Validar Solvencia', 'Administración', getdate(), getdate())		
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Ver Etiqueta', 'Administración', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Modificar Etiqueta', 'Administración', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Exportar Etiqueta', 'Administración', getdate(), getdate())
 
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Asistente Contable', 'Empresas No Activas', 'Administración', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Asistente Contable', 'Exportar Empresa', 'Administración', getdate(), getdate())
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Asistente Contable', 'Validar Empresa', 'Administración', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Asistente Contable', 'Validar Solvencia', 'Administración', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Asistente Contable', 'Ver Etiqueta', 'Administración', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Asistente Contable', 'Modificar Etiqueta', 'Administración', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Asistente Contable', 'Exportar Etiqueta', 'Administración', getdate(), getdate())
@@ -179,7 +179,7 @@ insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Presidente y Gerente', 'Retirar Empresa', 'Presidencia Ejecutiva - Gerencia General', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Presidente y Gerente', 'Eliminar Empresa', 'Presidencia Ejecutiva - Gerencia General', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Presidente y Gerente', 'Exportar Empresa', 'Presidencia Ejecutiva - Gerencia General', getdate(), getdate())
-insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Presidente y Gerente', 'Validar Empresa', 'Presidencia Ejecutiva - Gerencia General', getdate(), getdate())
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Presidente y Gerente', 'Validar Solvencia', 'Presidencia Ejecutiva - Gerencia General', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Presidente y Gerente', 'Activar Empresa', 'Presidencia Ejecutiva - Gerencia General', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Presidente y Gerente', 'Reactivar Empresa', 'Presidencia Ejecutiva - Gerencia General', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Presidente y Gerente', 'Registrar Producto', 'Presidencia Ejecutiva - Gerencia General', getdate(), getdate())
@@ -219,6 +219,7 @@ insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Gerente', 'Exportar Etiqueta', 'Talento Humano', getdate(), getdate())
 
 
+insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist.', 'Validar Solvencia', 'Sistemas', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist.', 'Registrar Empresa', 'Sistemas', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist.', 'Modificar Empresa Registrada', 'Sistemas', getdate(), getdate())
 insert into usuarios_alcances (perfil, alcance, gerencia, created_at, updated_at) VALUES ('Administrador Sist.', 'Empresas No Activas', 'Sistemas', getdate(), getdate())	

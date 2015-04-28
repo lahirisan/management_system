@@ -1,13 +1,14 @@
 %section.contexto
   %label.contexto.titulo_contrato
-    -if params[:activacion]
-      =@empresa.new_record? ? "Registrar Empresa" : "#{@empresa.nombre_empresa} > Editar Empresa"
-    -else
-      =@empresa.new_record? ? "Registrar Empresa" : "#{@empresa.nombre_empresa} > Editar Empresa"
-  
+    
+    =@empresa.new_record? ? "Registrar Empresa" : "#{@empresa.nombre_empresa} > Editar Empresa"
   %br
   %br
-  
+  %br
+  =render 'regresar'
+  %br
+  %br
+
   %section.formulario
     = form_for(@empresa) do |f|
 
@@ -542,7 +543,6 @@
             %td
             %td
               =f.text_field :email1_recursos, :class => "email"
-          
 
       %br
       %label.contexto
@@ -629,16 +629,8 @@
       %button#submit.ui-state-default.ui-corner-all.crear_empresa{:type => "submit"}
         %span.ui-icon.ui-icon-circle-plus
         Guardar
-
-      -if params[:activacion]
-        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas?activacion=true", :title => "Regresar al listado general de empresas NO VALIDADAS"}
-          %span.ui-icon.ui-icon-arrowreturnthick-1-w
-          Regresar
-
-      -else
-        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
-          %span.ui-icon.ui-icon-arrowreturnthick-1-w
-          Regresar
+      
+      =render 'regresar'
         
 
     

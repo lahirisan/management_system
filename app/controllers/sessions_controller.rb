@@ -6,7 +6,6 @@ class SessionsController < ApplicationController
 	def create
 	  
 	  user = Usuario.authenticate(params[:usuario], params[:clave])
-
 	  
 	  if user
 	    session[:user_id] = user.id
@@ -14,6 +13,8 @@ class SessionsController < ApplicationController
 	    session[:perfil] = user.try(:perfil).try(:descripcion)
 	    session[:cargo] = user.try(:cargo).try(:descripcion)
 	    session[:gerencia] = user.try(:gerencia).try(:nombre)
+
+	   
 
 	    
 	    if session[:gerencia] == 'Comercial'
@@ -33,13 +34,13 @@ class SessionsController < ApplicationController
 	  end
 	end
 
+
 	def destroy
+		
 	  reset_session
-	  session[:usuario] = nil
-	  session[:user_id] = nil
-	  session[:perfil] = nil
-	  session[:cargo] = nil
-	  session[:gerencia] = nil
+	  # Elimima cualñquier filtro en los datatable
+	  cookies.clear
+	  
 	  redirect_to root_path
 	end
 

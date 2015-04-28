@@ -2,6 +2,7 @@ $(document).ready(function(){
 
         // Datatable que maneja el listado de productos
         oTable = $("#data_table_productos").dataTable({
+            bStateSave: true,
             sPaginationType: "full_numbers",
             aaSorting: [[ 6, "desc" ]],
             bJQueryUI: true,
@@ -13,9 +14,25 @@ $(document).ready(function(){
        
         oTable.columnFilter({ aoColumns: [{ type: "text"},{ type: "text"}, {type: "text" }, {type: "text"},  null, {type: "text"}, {type: "text"}, {type: "text"}, null]});
 
-       
+        
+        /*
+        function createCookie(name,value,days) {
+        
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime()+(days*24*60*60*1000));
+                var expires = "; expires="+date.toGMTString();
+            }
 
+                else var expires = "";
+                document.cookie = name+"="+value+expires+"; path=/";
+        }
 
+        createCookie("SpryMedia_DataTables_data_table_productos_productos", "", -1);
+
+        */
+
+        //document.cookie = SpryMedia_DataTables_data_table_productos_productos
 
 //         jQuery.fn.dataTableExt.oApi.fnSetFilteringDelay = function ( oSettings, iDelay ) {
 //             var _that = this;
@@ -53,10 +70,14 @@ $(document).ready(function(){
 
 // oTable.fnSetFilteringDelay()
 
+      
+
+
         $('#data_table_productos input').attr("placeholder", "Buscar");
 
         // Datatable que maneja Eliminar productos
         $("#data_table_eliminar_productos").dataTable({
+
             sPaginationType: "full_numbers",
             aaSorting: [[ 7, "desc" ]],
             aoColumns: [{ "bSortable": false }, null,  null, null,  null, { "bSortable": false }, null,null],
@@ -69,7 +90,8 @@ $(document).ready(function(){
 
         $('#data_table_eliminar_productos input').attr("placeholder", "Buscar");
 
-        // Datatable que maneja Eliminar productos
+        // Datatable que maneja Listado GTIN 8
+
         $("#data_table_productos_general").dataTable({
             sPaginationType: "full_numbers",
             aaSorting: [[ 0, "asc" ]],

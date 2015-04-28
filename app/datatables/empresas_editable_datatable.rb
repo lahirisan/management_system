@@ -22,8 +22,7 @@ private
   def data
 
     empresas.map do |empresa|
-
-      fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") 
+        
         
         estatus_administrativo = (empresa.solv == 2) ? "SOLVENTE" : "DEUDOR" # SE VERIFICA EL ESTATUS ADMINISTRATIVO DE LA EMPRESA
 
@@ -38,7 +37,7 @@ private
           [ 
             empresa.prefijo,
             empresa.nombre_empresa,
-            fecha,
+            (empresa.fecha_activacion) ? empresa.fecha_activacion.strftime("%Y-%m-%d") : "",
             empresa.ciudad_,
             empresa.rif_completo,
             empresa.estatus_.upcase,

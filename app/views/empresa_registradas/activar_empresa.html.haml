@@ -1,9 +1,16 @@
 %section.contexto
+  
   %label.contexto.titulo_contrato
+
 
     ="#{@empresa_registrada.nombre_empresa} > Activar / Reasignar Prefijo"
   %br
   %br
+  %br
+  =render  '/empresas/regresar'
+  %br
+  %br
+
   %p.warning=flash[:warning]
 
   
