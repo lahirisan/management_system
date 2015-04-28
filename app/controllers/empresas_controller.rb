@@ -9,14 +9,10 @@ class EmpresasController < ApplicationController
 
     # OJO: La llamada JSON y los parametro se establecen en el datatable desde el template.html.haml
 
-   
-
     respond_to do |format|
       format.html{
 
-
-                   cookies.clear
-                   
+                   cookies.clear if params[:eliminar_cookie]
 
                   if params[:activacion]
                     render :template =>'/empresas/activacion.html.haml' 
@@ -27,7 +23,7 @@ class EmpresasController < ApplicationController
                   elsif params[:eliminadas]
                     render :template =>'/empresas/empresas_eliminadas.html.haml'
                   elsif params[:retiradas]
-                    @empresas_retiradas = Empresa.find(:all, :conditions => ["estatus.descripcion = ? and estatus.alcance = ? ", "Retirada", "Empresa"], :include => [:estatus])
+                    @empresas_retiradas = Empresa.includes(:estatus).where("estatus.descripcion = 'Retirada'").references(:estatus)
                     render :template =>'/empresas/empresas_retiradas.html.haml'
                   elsif params[:reactivar]
                     render :template =>'/empresas/empresas_reactivar.html.haml'
@@ -217,6 +213,8 @@ class EmpresasController < ApplicationController
     
     @empresa = Empresa.find(params[:id])
     @nuevo_prefijo_asociado = Empresa.busqueda_exhaustiva_prefijo if params[:asociar_prefijo] == 'true'
+    @clasificacion = Clasificacion.where("categoria = '#{@empresa.categoria}' and division = #{@empresa.division} and grupo = #{@empresa.grupo} and clase = #{@empresa.clase}").first
+
     
     
   end
@@ -406,10 +404,6 @@ class EmpresasController < ApplicationController
     end
   end
 
-  def delete(name, options = {})
-    options.stringify_keys!
-    set_cookie(options.merge("name" => name.to_s, "value" => "", "expires" => Time.at(0)))
-  end
-
+  
 
 end
