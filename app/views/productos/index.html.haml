@@ -6,8 +6,10 @@
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
     =render "exportar_productos"
+    =render '/empresas/regresar'
     %br/
     %br/  
+
     
     %table#data_table_productos.display{:"data-source" => "#{@ruta}"}
         %thead
@@ -41,6 +43,4 @@
     
         =render "importar_producto"
 
-    %a.ui-state-default.ui-corner-all.regresar_empresas{:href => "/empresas", :title => "Regresar al listado general de empresas"}
-        %span.ui-icon.ui-icon-arrowreturnthick-1-w
-        Regresar
+    =render '/empresas/regresar'

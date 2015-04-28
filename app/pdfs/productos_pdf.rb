@@ -1,7 +1,4 @@
  #encoding: UTF-8
-
-Prawn::Font::AFM.hide_m17n_warning= true
-
 class ProductosPdf < Prawn::Document	
 	
 
@@ -10,7 +7,7 @@ class ProductosPdf < Prawn::Document
 		
 		super(:top_margin => 10, :page_layout => :portrait)
 
-		font("Helvetica", :size => 10)
+		
 		  
  		
  		productos = Producto.where("prefijo = ? ",empresa).includes(:estatus, :tipo_gtin).order("producto.fecha_creacion desc")   
@@ -24,29 +21,31 @@ class ProductosPdf < Prawn::Document
 		productos = productos.where("CONVERT(varchar(255),  producto.fecha_creacion ,126) like :search", search: "%#{fecha_creacion}%") if fecha_creacion != ''
 		productos = productos.where("CONVERT(varchar(255),  producto.fecha_ultima_modificacion ,126) like :search", search: "%#{fecha_modificacion}%") if fecha_modificacion != ''
 		
-		
-		productos_arreglo = [["MARCA", "DESCRIPCION", "GTIN", "TIPO GTIN"]]
+		font("#{Rails.root}/fonts/arial.ttf", :size => 10) do
 
-		productos.each do |producto| 
-		  productos_arreglo << [ producto.marca, producto.descripcion, producto.gtin, producto.try(:tipo_gtin).try(:tipo)]
-		end
+			productos_arreglo = [["MARCA", "DESCRIPCION", "GTIN", "TIPO GTIN"]]
 
-		text ""
-		move_down 10
-		text "Fecha del Reporte:      #{Time.now.strftime("%d/%m/%Y")}", :size => 9, :align => :right
+			productos.each do |producto| 
+			  productos_arreglo << [ producto.marca, producto.descripcion, producto.gtin, producto.try(:tipo_gtin).try(:tipo)]
+			end
 
-
-		move_down 30
-		text ""
-		text "#{empresa.nombre_empresa.strip}", :size => 12, :align => :center
-
-		image "#{Rails.root}/app/assets/images/Gs1Vzla.png", :at => [0, 750], :height => 40
-
-		#number_pages "Pagina <page> de <total>", :size => 9, :at => [480, 720]
-		move_down 10
-		 table(productos_arreglo,  :row_colors => ["FFFFFF", "DDDDDD"], :cell_style => { size: 8, :align => :center }, :header => true, :position => :center)
+			text ""
 			move_down 10
-		 text "Total productos: #{productos.size}", :size => 9, :align => :left
+			text "Fecha del Reporte:      #{Time.now.strftime("%d/%m/%Y")}", :size => 9, :align => :right
+
+
+			move_down 30
+			text ""
+			text "#{empresa.nombre_empresa.strip}", :size => 12, :align => :center
+
+			image "#{Rails.root}/app/assets/images/Gs1Vzla.png", :at => [0, 750], :height => 40
+
+			#number_pages "Pagina <page> de <total>", :size => 9, :at => [480, 720]
+			move_down 10
+			 table(productos_arreglo,  :row_colors => ["FFFFFF", "DDDDDD"], :cell_style => { size: 8, :align => :center }, :header => true, :position => :center)
+				move_down 10
+			 text "Total productos: #{productos.size}", :size => 9, :align => :left
+		end
 		
 	end
 

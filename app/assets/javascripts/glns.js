@@ -2,6 +2,7 @@ $( document ).ready(function() {
 
         // Datatable que maneja el listado de glns
         $("#data_table_glns").dataTable({
+            
             sPaginationType: "full_numbers",
             aaSorting: [[ 5, "desc" ]],
             bJQueryUI: true,
