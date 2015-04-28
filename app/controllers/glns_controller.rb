@@ -8,6 +8,9 @@ class GlnsController < ApplicationController
     
     respond_to do |format|
       format.html {
+        
+        #cookies.clear({domain: request.domain, :path => request.path}) 
+
         if params[:eliminar]
           @navegabilidad = "#{@empresa.prefijo} > "+@empresa.nombre_empresa + " > Eliminar GLN"
           render :template => '/glns/eliminar_gln.html.haml'
@@ -21,8 +24,9 @@ class GlnsController < ApplicationController
         end
       }
 
-      format.json { 
+      format.json {
 
+        
         if params[:eliminar]
           render json: (EliminarGlnDatatable.new(view_context))
        

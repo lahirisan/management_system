@@ -90,7 +90,7 @@ private
 
   def fetch_productos
     
-    productos = Producto.where("prefijo = ?", params[:empresa_id]).includes(:estatus, :tipo_gtin).order("#{sort_column} #{sort_direction}") 
+    productos = Producto.includes(:estatus, :tipo_gtin).where("prefijo" => params[:empresa_id]).order("#{sort_column} #{sort_direction}").load 
     productos = productos.page(page).per_page(per_page)
 
 

@@ -82,9 +82,7 @@
         %span.ui-icon.ui-icon-disk
         Guardar Producto
 
-      %a.ui-state-default.ui-corner-all.regresar{:href => "/empresas/#{params[:empresa_id]}/productos", :title => "Regrar al listado de Productos para esta Empresa"}
-        %span.ui-icon.ui-icon-arrowreturnthick-1-w
-        Regresar
+      =render '/empresas/regresar'
         
         
       
