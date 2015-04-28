@@ -4,9 +4,8 @@
 
 %section#areaTrabajo.areaTrabajo{:style => "font: 82.5% 'Trebuchet MS', sans-serif"}
  
-  %a.ui-state-default.ui-corner-all.regresar{:href => "javascript:window.history.back()", :title => "Regresa a la pantalla anterior"}
-    %span.ui-icon.ui-icon-arrowreturnthick-1-w
-    Regresar
+  = render 'regresar'
+ 
   %br
   %br  
   %br
@@ -114,8 +113,7 @@
         Fecha Registro Mercantil
       %td
         %b
-          =@empresa.try(:fecha_registro_mercantil)
-    %tr
+          =@empresa.try(:fecha_registro_mercantil) ?  @empresa.fecha_registro_mercantil.strftime("%Y-%m-%d") : ""
       %td
         RIF
       %td
@@ -224,13 +222,13 @@
         Ciudad
       %td
         %b
-          =@ciudad_ean.nombre
+          =@ciudad_ean.try(:nombre)
     %tr
       %td
         Municipio
       %td
         %b
-          =@municipio_ean.nombre
+          =@municipio_ean.try(:nombre)
     %tr
       %td
         Parroquia
@@ -459,13 +457,9 @@
       %td
         %b
           =@empresa.try(:email1_mercadeo)
-   
   %br
   %br
   %br
   
-  %a.ui-state-default.ui-corner-all.regresar{:href => "javascript:window.history.back()", :titile => "Regresa a la pantalla anterior"}
-    %span.ui-icon.ui-icon-arrowreturnthick-1-w
-    Regresar
-  
+  =render 'regresar'
 
