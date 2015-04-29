@@ -582,12 +582,12 @@
         %tr
           %td
             Clasificación
-          %td
-            -if @empresa_registrada.new_record? or @clasificacion_empresa.nil?
-              =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"})
+            -if @empresa_registrada.new_record?
+              =f.collection_select(:id_clasificacion, Clasificacion.all, :id, :clasificacion,  { :style => "width:600px;"})
             -else
-              =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion,  { :selected => @clasificacion_empresa.id,:style => "width:600px;"})
+              =f.collection_select(:id_clasificacion, Clasificacion.all, :id, :clasificacion,  { :selected => @clasificacion.id,:style => "width:600px;"})
             
+      %table
         %tr
           %td
             Categoría 

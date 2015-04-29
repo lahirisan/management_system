@@ -103,7 +103,8 @@ class EmpresaRegistradasController < ApplicationController
   def edit
 
     @empresa_registrada = EmpresaRegistrada.find(params[:id])
-    @opciones = ['J', 'G', 'E', 'V']
+    @clasificacion = Clasificacion.where("categoria = '#{@empresa_registrada.categoria}' and division = #{@empresa_registrada.division} and grupo = #{@empresa_registrada.grupo} and clase = #{@empresa_registrada.clase}").first
+         
     respond_to do |format|
 
       format.html{

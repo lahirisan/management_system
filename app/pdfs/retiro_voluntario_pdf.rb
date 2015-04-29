@@ -39,8 +39,7 @@ class RetiroVoluntarioPdf < Prawn::Document
 		draw_text "  +58 (212) 237 95 20", :at => [350,60] 
 		draw_text "F +58 (212) 237 72 50", :at => [350,50]
 		draw_text "E info@gs1ve.org",  :at => [350,40]
-		draw_text "GT / JLM / MFT / 6170914", :size => 8, :at => [10,60]
-
+		
 		start_new_page
 
 		font("Helvetica", :size => 9)

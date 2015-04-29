@@ -50,7 +50,7 @@ private
 
   def fetch_empresas
     
-    empresas = Empresa.includes(:estado, :ciudad, :estatus,  :motivo_retiro).where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("#{sort_column} #{sort_direction}")  
+    empresas = Empresa.includes(:estado, :ciudad, :estatus,  :motivo_retiro).where("estatus.descripcion = 'Retirada'").references(:estado, :ciudad, :estatus,  :motivo_retiro).order("#{sort_column} #{sort_direction}")  
     empresas = empresas.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general

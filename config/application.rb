@@ -60,7 +60,7 @@ module GS1
 
     # Desabilita mensaje de referencias
     
-    config.active_record.disable_implicit_join_references = true
+    #config.active_record.disable_implicit_join_references = true
 
   end
 end
