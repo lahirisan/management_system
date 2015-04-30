@@ -586,6 +586,91 @@
 
  end
 
+ 	# Las definiciones de self.import e import son para utilizar DelayJOb en la importacion de Productos
+ 	# http://railscasts.com/episodes/171-delayed-job-revised
+
+ 	
+
+  def self.importar(ruta, original_filename, tipo_gtin, prefijo, usuario)
+  		
+  		find(prefijo).importar(ruta, original_filename, tipo_gtin, prefijo, usuario)
+  end
+
+ 
+ def importar(ruta, original_filename, tipo_gtin, prefijo, usuario) #Importar Producto GTIN 13, este metodo se coloca aqui para hacer una una instancia de empresa y utilizar DELAY_JOB
+
+    spreadsheet = open_spreadsheet(ruta, original_filename)
+    
+    (2..spreadsheet.last_row).each do |fila|  # EL indice 1 es para indicar los datos de cabecera MARCA, DESCRIPCION, ETC
+      
+      productos_gtin_13_codificados = Producto.find(:all, :conditions => ["tipo_gtin.tipo = ? and prefijo = ?", "GTIN-13", prefijo], :include => [:tipo_gtin]) if prefijo.to_s.size == 5
+
+      if (prefijo.to_s.size == 5)
+
+        break if (productos_gtin_13_codificados.size >= 10)  
+
+      end
+
+      if spreadsheet.empty?(fila,1) # EL codigo de producto no viene en el Excel
+        
+        gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil, nil)
+        
+      else
+
+        gtin = Producto.crear_gtin(tipo_gtin, prefijo, nil, spreadsheet.row(fila)[0].to_i)
+        
+      end
+
+      producto = Producto.new
+      producto.gtin = gtin.to_s
+      producto.descripcion =   spreadsheet.empty?(fila,1) ? spreadsheet.row(fila)[1] :  spreadsheet.row(fila)[2]
+      producto.marca =   spreadsheet.empty?(fila,1) ? spreadsheet.row(fila)[0] :  spreadsheet.row(fila)[1] 
+      producto.id_estatus = 3
+      producto.fecha_creacion = Time.now
+
+      if prefijo.to_s.size == 7 or prefijo.to_s.size == 5
+
+        producto.codigo_prod = producto.gtin[7..11]
+
+      elsif prefijo.to_s.size == 9 and prefijo.to_s[3..5] == "400" # GTIN artesanal
+
+        producto.codigo_prod = producto.gtin[9..11]
+
+      end
+
+      producto.id_tipo_gtin = tipo_gtin.to_i
+      producto.prefijo = prefijo
+      producto.save
+
+      Auditoria.registrar_evento(usuario,"producto", "Importar", Time.now, "GTIN:#{producto.gtin} DESCRIPCION:#{producto.descripcion} TIPO:GTIN-13")
+
+    end
+    
+  end
+  
+  def open_spreadsheet(ruta, original_filename)
+    
+    case File.extname(original_filename)
+      when ".csv" then Roo::Csv.new(ruta, nil, :ignore)
+      when ".xls" then Roo::Excel.new(ruta, nil, :ignore)
+      when ".xlsx" then Roo::Excelx.new(ruta, nil, :ignore)
+      else raise "Solo se permite importar archivo con extension '.xlsx', '.xls' : #{file.original_filename}"
+    end
+  end
+
+
+  def self.actualizar_clasificacion
+
+  	Empresa.where(id_clasificacion: nil).find_each do |empresa| 
+  		
+  		clasificacion = Clasificacion.find_by(categoria: "#{empresa.categoria}", division: empresa.division, grupo: empresa.grupo,  clase: empresa.clase)
+  		empresa.id_clasificacion = clasificacion.id
+  		empresa.save(:validate => false)
+
+  	end 
+
+  end
+
 
 
 end
