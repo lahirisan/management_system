@@ -278,7 +278,22 @@
 
 	empresa.parroquia_ean = (empresa_registrada.parroquia_ean) ? empresa_registrada.parroquia_ean : ""
 	empresa.cod_postal_ean = empresa_registrada.cod_postal_ean
-	empresa.direccion_ean = empresa_registrada.direccion_ean
+	# Se arma la direccion_ean
+	direccion_ean = " "
+	direccion_ean += empresa_registrada.tipo_urbanizacion_barrio_sector if empresa_registrada.tipo_urbanizacion_barrio_sector != ''
+	direccion_ean += " " + empresa_registrada.urbanizacion_barrio_sector if empresa_registrada.urbanizacion_barrio_sector != ''
+	direccion_ean += " " + empresa_registrada.tipo_avenida_calle if empresa_registrada.tipo_avenida_calle != ''
+	direccion_ean += " " + empresa_registrada.avenida_calle if empresa_registrada.avenida_calle != ''
+	direccion_ean += " " + empresa_registrada.tipo_oficina_apartamento if  empresa_registrada.tipo_oficina_apartamento != ''
+	direccion_ean += " " + empresa_registrada.oficina_apartamento if  empresa_registrada.oficina_apartamento != ''
+	direccion_ean += " " + empresa_registrada.tipo_piso_numero if  empresa_registrada.tipo_piso_numero != ''
+	direccion_ean += " " + empresa_registrada.piso_numero if  empresa_registrada.piso_numero != ''
+	direccion_ean += " " + empresa_registrada.tipo_galpon_edificio_quinta if  empresa_registrada.tipo_galpon_edificio_quinta != ''
+	direccion_ean += " " + empresa_registrada.galpon_edificio_quinta if  empresa_registrada.galpon_edificio_quinta != ''
+
+	
+	empresa.direccion_ean = direccion_ean
+
 
 	empresa.cod_tlf1_ean = empresa_registrada.cod_tlf1_ean
 	empresa.cod_tlf2_ean = empresa_registrada.cod_tlf2_ean.blank? ? empresa_registrada.cod_tlf1_ean : empresa_registrada.cod_tlf2_ean
