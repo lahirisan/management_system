@@ -26,13 +26,13 @@ private
       [ 
        check_box_tag("transferir_gtin8[]", "#{producto.gtin.strip}", false, :class => "transferir_producto_seleccionado"),
        producto.try(:empresa).try(:nombre_empresa),
-       producto.empresa.prefijo,
+       producto.try(:empresa).try(:prefijo),
        producto.try(:tipo_gtin).try(:tipo),
-       producto.gtin,
-       producto.descripcion,
-       producto.marca,
+       producto.try(:gtin),
+       producto.try(:descripcion),
+       producto.try(:marca),
        producto.try(:estatus).try(:descripcion),
-       producto.codigo_prod,
+       producto.try(:codigo_prod),
        (producto.fecha_creacion) ? producto.fecha_creacion.strftime("%Y-%m-%d") : "",
        (producto.fecha_ultima_modificacion) ? producto.fecha_ultima_modificacion.strftime("%Y-%m-%d") : "",
       
