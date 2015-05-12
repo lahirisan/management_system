@@ -36,7 +36,7 @@ class EmpresaRegistradasController < ApplicationController
 
           render json: (EmpresaRegistradasActivarSolvenciaDatatable.new(view_context)) 
         else
-
+          
           render json: (EmpresaRegistradasDatatable.new(view_context, session[:perfil], session[:gerencia])) 
         end
 
