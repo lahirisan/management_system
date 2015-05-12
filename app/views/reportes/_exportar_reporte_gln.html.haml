@@ -1,0 +1,8 @@
+%table.margen_superior
+    %tr
+        %td
+            %form{action: "/reportes.xlsx", method: "get"}
+                .parametros
+                %button.ui-state-default.ui-corner-all.exportar_reporte_gln{:type => "submit", :title => "Opción que te permite exportar el listado general de Empresas a formato Excel"}
+                    %span.ui-icon.ui-icon-disk
+                    Exportar Excel

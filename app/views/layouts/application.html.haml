@@ -104,6 +104,12 @@
 				
 					=link_to(( content_tag(:span, '',:class => 'ui-icon.ui-icon-transfer-e-w')+'Listado GTIN-8').html_safe, productos_path, {:class => "ui-state-default ui-corner-all botones_menu", :title => "Listado General de Productos GTIN8"})
 
+				%a.opcion{:href => "/reportes?reporte_empresa=true&eliminar_cookie=true", :title => "Opciones de Reportes", :class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-document
+					&nbsp;Reportes
+
+				
+
 				
 
 			- if params[:controller] == 'productos'
@@ -166,6 +172,26 @@
 					&nbsp;Registrar Usuario
 
 			
+			- if params[:controller] == 'reportes'
+				
+				%a.opcion{:href => "/reportes?reporte_empresa=true", :title => "Listado general de Empresas", :class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-document
+					&nbsp;Listado General de Empresas
+					
+				%a.opcion{:href => "/reportes?reporte_producto=true", :title => "Opción para ver listado completo de Productos", :class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-document
+					&nbsp;Listado General de Producto
+
+				%a.opcion{:href => "/reportes?reporte_gln=true", :title => "Opción para ver listado completo de GLN", :class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-document
+					&nbsp;Listado General GLN
+
+				%a.opcion{:href => "/reportes?reporte_servicio=true", :title => "Opción para ver listado de Servicios asociados a las Empresas", :class => "ui-state-default ui-corner-all botones_menu"}
+					%span.ui-icon.ui-icon-document
+					&nbsp;Listado  Empresas / Servicios
+				
+				
+
 			
 				
 		= yield

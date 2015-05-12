@@ -1,0 +1,36 @@
+#encoding: UTF-8
+@glns = Gln.joins("INNER JOIN [empresa] ON [empresa].[prefijo] = [gln].[prefijo] left JOIN [estados] ON [estados].[id] = [empresa].[id_estado] inner JOIN [ciudad] ON [ciudad].[id] = [empresa].[id_ciudad] inner JOIN [estatus] ON [estatus].[id] = [gln].[id_estatus] INNER JOIN [tipo_gln] ON [tipo_gln].[id] = [gln].[id_tipo_gln]").select("empresa.nombre_empresa as nombre_empresa, empresa.prefijo as prefijo, gln.gln as gln_, tipo_gln.nombre as tipo_gln_, gln.codigo_localizacion as codigo_localizacion, estatus.descripcion as estatus_, estados.nombre as estado_, ciudad.nombre as ciudad_, gln.fecha_asignacion as fecha_asignacion").order("empresa.prefijo")
+@glns = @glns.where("empresa.nombre_empresa like '%#{params[:nombre_empresa]}%'") if params[:nombre_empresa] != ''
+@glns = @glns.where("empresa.prefijo like '%#{params[:prefijo]}%'") if params[:prefijo] != ''
+@glns = @glns.where("gln.gln like '%#{params[:gln]}%'") if params[:gln] != ''
+@glns = @glns.where("tipo_gln.nombre  like '%#{params[:tipo_gln]}%'") if params[:tipo_gln] != ''
+@glns = @glns.where("gln.codigo_localizacion like '%#{params[:codigo_localizacion]}%'") if params[:codigo_localizacion] != ''
+@glns = @glns.where("estatus.descripcion like '%#{params[:estatus]}%'") if params[:estatus] != ''
+@glns = @glns.where("estados.nombre like '%#{params[:estado]}%'") if params[:estado] != ''
+@glns = @glns.where("ciudad.nombre like '%#{params[:ciudad]}%'" ) if params[:ciudad] != ''
+
+
+xlsx_package = Axlsx::Package.new 
+wb = xlsx_package.workbook
+
+
+wb.add_worksheet(name: "GS1") do |sheet|
+  wb.styles do |s|
+    
+    black_cell = s.add_style :i => true, :bg_color => "F8F8F8", :fg_color => "00", :sz => 12, :alignment => { :horizontal=> :center }
+    black_cell2 = s.add_style   :border => { :style => :thin, :color => "00" }, :i => true,:fg_color => "00", :sz => 8, :alignment => { :horizontal=> :left }
+    tomas = s.add_style  :sz => 12, :alignment => { :horizontal=> :center }
+
+      sheet.add_row ["REPORTE GENERAL POR GLN"]
+      sheet.add_row [""]
+      sheet.add_row [""]
+
+      sheet.add_row ["EMPRESA", "PREFIJO", "GLN", "TIPO GLN", "COD LOCALIZACION", "ESTATUS", "ESTADO",  "CIUDAD", "FECHA ASIGNACION"], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
+      @glns.each do |empresa_gln|
+
+        sheet.add_row [empresa_gln.nombre_empresa, empresa_gln.prefijo, empresa_gln.gln_, empresa_gln.tipo_gln_, empresa_gln.codigo_localizacion, empresa_gln.estatus_,  empresa_gln.estado_, empresa_gln.ciudad_,  empresa_gln.fecha_asignacion], :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas]
+
+      end
+      sheet.column_widths 20,15,20,20,25,20,20,20
+  end 
+end
