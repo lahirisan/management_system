@@ -284,7 +284,7 @@ class Producto < ActiveRecord::Base
   def self.import_gtin_14(file, tipo_gtin_, prefijo, usuario) #Importar GTIN 14
 
     tipo_gtin = TipoGtin.find(tipo_gtin_)
-    spreadsheet = open_spreadsheet(file)
+    spreadsheet = Empresa.open_spreadsheet(file)
 
     codigo_invalido = ""
 
@@ -397,6 +397,30 @@ class Producto < ActiveRecord::Base
     productos_.each{|producto| Producto.where("prefijo = producto.prefijo and codigo_prod = #{producto.codigo_prod} and id_tipo_gtin = 4").update_all("prefijo = #{empresa[0]}")}
     
   end
+
+  def self.eliminar_productos_desde_excel # Procedimiento para eliminar Productos
+
+  spreadsheet = Roo::Excelx.new("#{Rails.root}/doc/PRODUCTOS ELIMINAR BASE DE DATOS GS1 LAB VARGAS-GS1_Scannven.xlsx", nil, :ignore)
+
+    raise spreadsheet.cell(2,1).to_yaml
+
+    (1..spreadsheet.last_row).each do |fila|
+
+
+       producto = Producto.find_by(gtin: spreadsheet.cell(fila,3))
+
+       raise producto.to_yaml
+     
+        if empresa
+          empresa.aporte_mantenimiento = (spreadsheet.cell(fila,2))
+          empresa.save
+        end
+     
+
+    end
+
+
+ end
 
 
 end
