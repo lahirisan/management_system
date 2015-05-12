@@ -92,7 +92,7 @@ $(document).ready(function(){
 
         // Datatable que maneja Listado GTIN 8
 
-        $("#data_table_productos_general").dataTable({
+        $("#data_table_productos_gtin_8").dataTable({
             sPaginationType: "full_numbers",
             aaSorting: [[ 0, "asc" ]],
             aoColumns: [{ "bSortable": true}, { "bSortable": true}, { "bSortable": true}, { "bSortable": true}, { "bSortable": true},{ "bSortable": true}, { "bSortable": true}, { "bSortable": true}, { "bSortable": true}, { "bSortable": true}],
@@ -100,8 +100,8 @@ $(document).ready(function(){
             bProcessing: true,
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',            
-            sAjaxSource: $('#data_table_productos_general').data('source')
-        }).columnFilter({ aoColumns: [{type: "text" }, {type: "text" },  null,  {type: "text"}, {type: "text"}, {type: "text"},  {type: "text"} , {type: "text"}, {type: "text"}]});
+            sAjaxSource: $('#data_table_productos_gtin_8').data('source')
+        }).columnFilter({ aoColumns: [{type: "text" }, {type: "text" },  null,  {type: "text"}, {type: "text"}, {type: "text"},  {type: "text"} , {type: "text"}, {type: "text"}, {type: "text"}]});
         $('#data_table_productos_general input').attr("placeholder", "Buscar");
 
 
@@ -155,7 +155,7 @@ $(document).ready(function(){
 
         
         // Efectos del boton importar
-        $('.regresar_editar_empresa, .guardar_producto,  .exportar_productos_eliminar,  .boton_importar, .eliminar_productos, .exportar_productos, .boton_transferir_productos').hover(
+        $('.regresar_editar_empresa, .guardar_producto,  .exportar_productos_eliminar,  .boton_importar, .eliminar_productos, .exportar_productos, .boton_transferir_productos, .exportar_productos_gtin_8').hover(
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');}
         );
@@ -165,17 +165,20 @@ $(document).ready(function(){
           autoOpen: false,
           width: 500
         });
+        
+       
 
-        // Botón para abrir el dialogo
+        // Botón para abrir el dialogo en /productos/index.html
         $('.boton_importar').click(function(w){
 
             w.preventDefault(); // Deshabilita el hipervinculo el boton importar
             $('.importar_producto').dialog('open');
         });
 
-        // validacion importar archivo
-        $('#importar_archivo').submit(function( event ) { 
-             
+        // validacion importar archivo el formulario
+        
+        $('#importar_archivo').submit(function() { 
+            
             if ($('#archivo_excel').val() == '')
             {
                 alert('Estimado usuario, no ha seleccionado nigún archivo excel del cual se importará los datos. Por favor verifique.');
@@ -187,6 +190,10 @@ $(document).ready(function(){
                 alert('Estimado usuario, debe seleccionar el TIPO GTIN asociado a los productos que se van a importar. Por favor verifique');
                 return false;                 
             }
+            
+            $('.importar_producto').dialog('close');
+            $('#loader_importar_producto').css('visibility', 'visible');
+          
         });
 
         
@@ -299,24 +306,26 @@ $(document).ready(function(){
             );
         });
 
-      
-      
-        $(".exportar_productos_eliminar").click(function() {
-
+        $(".exportar_productos_gtin_8").click(function() {
+            
             $('.parametros').html(
-                '<input name="tipo_gtin" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="nombre_empresa" type="hidden" value="'+$('tfoot tr th:nth-child(1) span input').val()+'">'+
+                '<input name="prefijo" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
                 '<input name="gtin" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
                 '<input name="descripcion" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
                 '<input name="marca" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="estatus" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
                 '<input name="codigo_producto" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'+
                 '<input name="fecha_creacion" type="hidden" value="'+$('tfoot tr th:nth-child(9) span input').val()+'">'+
-                '<input name="subestatus" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
-                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(11) span input').val()+'">'+
-                '<input name="eliminar" type="hidden" value="true">'
-            );
+                '<input name="fecha_modificacion" type="hidden" value="'+$('tfoot tr th:nth-child(10) span input').val()+'">'+
+                '<input name="exportar_gtin_8" type="hidden" value="true">'
 
-          
+            );
         });
+
+
+      
+      
 
         // Validacion del formualrio trasnferir productos
         $('#formulario_transferir_productos').submit(function( event ) { 

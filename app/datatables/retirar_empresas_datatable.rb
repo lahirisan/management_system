@@ -26,9 +26,9 @@ private
           check_box_tag("retirar_empresas[]", "#{empresa.id}", false, :class=>"retirar_empresa"),
           empresa.prefijo,
           empresa.nombre_empresa,
-          (empresa.fecha_activacion) ? empresa.fecha_activacion.strftime("%Y-%m-%d") : "",
+          empresa.clasificacion_,
+          empresa.tipo_usuario_,
           empresa.ciudad_,
-          empresa.rif,
           empresa.estatus_.upcase,
           (empresa.solv == 2) ? "SOLVENTE" : "DEUDOR",
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa, :retirar => true), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
@@ -48,9 +48,7 @@ private
 
   def fetch_empresas
     
-    empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("inner join ciudad on empresa.id_ciudad = ciudad.id inner join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo").order("#{sort_column} #{sort_direction}").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, ciudad.nombre as ciudad_, empresa.rif as rif, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv, empresa.fecha_inscripcion as fecha_inscripcion").order("#{sort_column} #{sort_direction}") 
-    #empresas = Empresa.includes(:estado, :ciudad, :estatus).where("estatus.descripcion like ? and alcance like ?", 'Activa', 'Empresa')
-     
+    empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("left join empresa_clasificacion on empresa_clasificacion.id = empresa.id_clasificacion left join ciudad on empresa.id_ciudad = ciudad.id left join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo left join tipo_usuario_empresa on tipo_usuario_empresa.id_tipo_usu_empresa = empresa.id_tipo_usuario").order("#{sort_column} #{sort_direction}").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, ciudad.nombre as ciudad_, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv, empresa_clasificacion.descripcion as clasificacion_, tipo_usuario_empresa.descripcion as tipo_usuario_").order("#{sort_column} #{sort_direction}") 
     empresas = empresas.page(page).per_page(per_page)
     
     if params[:sSearch].present? # Filtro de busqueda general
@@ -109,7 +107,7 @@ private
 
   def sort_column
 
-     columns = %w[empresa.prefijo empresa.nombre_empresa empresa.fecha_activacion ciudad.nombre empresa.rif  estatus.descripcion ]
+     columns = %w[nil empresa.prefijo empresa.nombre_empresa empresa_clasificacion.descripcion tipo_usuario_empresa.descripcion ciudad.nombre estatus.descripcion nil]
      columns[params[:iSortCol_0].to_i]
      
   end

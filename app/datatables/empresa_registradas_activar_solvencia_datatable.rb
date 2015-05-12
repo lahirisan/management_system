@@ -27,8 +27,8 @@ private
         empresa.rif_completo,
         empresa.nombre_empresa,
         (empresa.fecha_inscripcion) ?  empresa.fecha_inscripcion.strftime("%Y-%m-%d") : "",
-        empresa.try(:ciudad).try(:nombre),
-        empresa.try(:sub_estatus).try(:descripcion),
+        empresa.ciudad_,
+        empresa.sub_estatus_,
         empresa.ventas_brutas_anuales,
         link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe, "/empresa_registradas/#{empresa.id}/edit", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Editar la empresa #{empresa.nombre_empresa}"}),
         
@@ -44,7 +44,7 @@ private
 
   def fetch_empresas
    
-    empresas = EmpresaRegistrada.where("rif IS NOT NULL and sub_estatus.descripcion = 'NO SOLVENTE'").includes(:ciudad, :sub_estatus, :estatus).order("#{sort_column} #{sort_direction}") 
+    empresas = EmpresaRegistrada.where("rif IS NOT NULL and sub_estatus.descripcion = 'NO SOLVENTE'").joins(:ciudad, :sub_estatus, :estatus).select("empresas_registradas.id, empresas_registradas.rif_completo, empresas_registradas.nombre_empresa, empresas_registradas.fecha_inscripcion, ciudad.nombre as ciudad_, sub_estatus.descripcion as sub_estatus_, empresas_registradas.ventas_brutas_anuales").order("#{sort_column} #{sort_direction}") 
     empresas = empresas.page(page).per_page(per_page)
     
      if params[:sSearch].present? # Filtro de busqueda general

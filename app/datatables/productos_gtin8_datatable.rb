@@ -27,14 +27,14 @@ private
       
       
       [ 
-       producto.empresa.nombre_empresa,
-       producto.empresa.prefijo,
-       producto.try(:tipo_gtin).try(:tipo),
+       producto.nombre_empresa,
+       producto.prefijo,
+       producto.tipo_gtin_,
        producto.gtin,
        producto.descripcion,
        producto.marca,
-       producto.try(:estatus).try(:descripcion  ),
-       producto.codigo_prod,
+       producto.estatus_,
+       producto.codigo_producto,
        (producto.fecha_creacion) ? producto.fecha_creacion.strftime("%Y-%m-%d") : "",
        (producto.fecha_ultima_modificacion) ?  producto.fecha_ultima_modificacion.strftime("%Y-%m-%d") : ""
       
@@ -52,7 +52,7 @@ private
 
   def fetch_productos
     
-    productos = Producto.where("id_tipo_gtin = 1").includes(:estatus, :tipo_gtin, :empresa).order("#{sort_column} #{sort_direction}") 
+    productos = Producto.where("id_tipo_gtin = 1").joins(:estatus, :tipo_gtin, :empresa).select("empresa.nombre_empresa as nombre_empresa, empresa.prefijo as prefijo, tipo_gtin.tipo as tipo_gtin_, producto.descripcion as descripcion, producto.marca as marca, estatus.descripcion as estatus_, producto.codigo_prod as codigo_producto, producto.fecha_creacion as fecha_creacion, producto.fecha_ultima_modificacion as fecha_ultima_modificacion, producto.gtin as gtin").order("#{sort_column} #{sort_direction}") 
     productos = productos.page(page).per_page(per_page)
 
     productos = productos.where("empresa.nombre_empresa like :search or  empresa.prefijo  like :search or  tipo_gtin.tipo like :search or producto.gtin like :search or producto.descripcion like :search or producto.marca like :search or estatus.descripcion like :search or  producto.codigo_prod like :search or CONVERT(varchar(255),  producto.fecha_creacion ,126) like :search or CONVERT(varchar(255),  producto.fecha_ultima_modificacion ,126) like :search", search: "%#{params[:sSearch]}%") if params[:sSearch].present? # Filtro de busqueda general

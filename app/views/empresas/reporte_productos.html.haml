@@ -1,19 +1,19 @@
 %section.contexto
     %label.contexto 
-        =@navegabilidad
+        = @navegabilidad
     %hr.contexto{:size => "1"}
 
 %section#areaTrabajo.areaTrabajo
-    /%p#notice= notice
-    /=render "exportar_productos"
+    %p#notice= notice
+    =render "exportar_productos"
+    =render '/empresas/regresar'
     %br/
     %br/  
+
     
-    %table#data_table_productos_general.display{:"data-source" => "/productos.json?gtin_8=true"}
+    %table#data_table_productos.display{:"data-source" => "/productos.json?reporte_producto=true"}
         %thead
             %tr
-                %th Empresa
-                %th Prefijo
                 %th Tipo GTIN    
                 %th GTIN
                 %th Descripción
@@ -25,12 +25,10 @@
                 
         %tbody
         %tfoot
-            =render 'footer_listado_general'
             
+            =render 'footer_reporte_producto'
     %br/
     %br/
-    
 
-    %a.ui-state-default.ui-corner-all.regresar_empresas{:href => "/empresas", :title => "Regresar al listado general de empresas"}
-        %span.ui-icon.ui-icon-arrowreturnthick-1-w
-        Regresar
+    =render '/empresas/regresar'
+    

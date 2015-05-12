@@ -1,0 +1,32 @@
+%section.contexto
+  %label.contexto
+    Listado General de Empresas y Servicios Asociados
+  %hr.contexto{:size => "1"}
+
+%section#areaTrabajo.areaTrabajo
+  %p#notice= notice
+  =render 'exportar_reporte_servicios'
+  
+  %table#data_table_reporte_servicios.display{:"data-source" => "/reportes.json?reporte_servicio=true"}
+    %thead
+      %tr
+        %th Empresa
+        %th Prefijo
+        %th Estatus Empresa
+        %th Clasificacion Empresa
+        %th Servicio
+        %th Fecha Contratación
+        %th Fecha Finalización
+        %th Nombre Contacto
+        %th Correo Contacto
+        %th Teléfono Contacto
+        
+    %tbody
+    %tfoot
+      =render 'footer_reporte_servicios'
+  %br
+  %br
+
+  
+  
+ 

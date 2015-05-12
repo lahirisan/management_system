@@ -11,7 +11,7 @@ class ProductosController < ApplicationController
     respond_to do |format|
       format.html { 
                      
-                    cookies.clear
+                    cookies.clear if params[:eliminar_cookie]
 
                     if params[:eliminar]  
                       @navegabilidad = "#{@empresa.prefijo} > " + @empresa.nombre_empresa + " > Productos > Eliminar Productos"
@@ -25,10 +25,10 @@ class ProductosController < ApplicationController
                     elsif params[:empresa_id].nil?
 
                       @navegavilidad = 'Listado General GTIN8'
-                      render :template => '/productos/listado_general.html.haml'
-
+                      render :template => '/productos/productos_gtin_8.html.haml'
 
                     else
+
                       @navegabilidad = "#{@empresa.prefijo} > " +  @empresa.nombre_empresa + " > Productos > Listado"
                       # para mostrar el estatus de los productos como retirados si la empresa esta retirada
 
@@ -45,9 +45,8 @@ class ProductosController < ApplicationController
                       render :template =>'/productos/index.html.haml'
                     end
                   }
+                  
       format.json { 
-                    
-                    
 
                     
                     if params[:gtin]
@@ -66,6 +65,7 @@ class ProductosController < ApplicationController
                     elsif params[:transferir]
                       
                       render json: ProductosTransferirDatatable.new(view_context)
+                   
                     
                     else
 
@@ -89,13 +89,16 @@ class ProductosController < ApplicationController
                     send_data pdf.render, filename: "#{@empresa.nombre_empresa.strip}_productos.pdf", type: "application/pdf", disposition: "inline"
       }
       format.xlsx{
-                 
-                  if params[:eliminar]
-                    @productos = Producto.where("productos_empresa.prefijo = ? and estatus.descripcion like ? and estatus.alcance like ?",params[:empresa_id], 'Retirado', 'Producto').includes({:productos_empresa => :empresa}, :estatus, :tipo_gtin, {:productos_retirados => :sub_estatus}, {:productos_retirados => :motivo_retiro})
-                    render '/productos/eliminar_productos.xlsx.axlsx'
+                  
+                  
+                  if params[:exportar_gtin_8] == 'true'
+                    
+                    render '/productos/productos_gtin_8.xlsx.axlsx'
+
                   else
-                    @productos = Producto.where("prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes(:estatus, :tipo_gtin).order("producto.fecha_creacion desc") 
+                    
                     render '/productos/index.xlsx.axlsx'
+
                   end
       }
       
@@ -223,25 +226,40 @@ class ProductosController < ApplicationController
     end
   end
 
+  
+
+
   def import
-    
-    tipo_gtin = TipoGtin.find(params[:tipo_gtin])
 
-    if (params[:tipo_gtin] == '6') or (params[:tipo_gtin] == '4') # Gtin14 base 8  GTIN14 base 13
-      codigo_invalido = Producto.import_gtin_14(params[:file], params[:tipo_gtin], params[:empresa_id], session[:usuario]) 
-      mensaje = "Los #{tipo_gtin.tipo} base #{tipo_gtin.base} fueron importados." 
-    else
+    respond_to do |format|
+      
+      format.json{
 
-      Producto.import(params[:file], params[:tipo_gtin], params[:empresa_id], session[:usuario])
-      mensaje = "Los #{tipo_gtin.tipo} fueron importados." 
+        tipo_gtin = TipoGtin.find(params[:tipo_gtin])
+
+        if (params[:tipo_gtin] == '6') or (params[:tipo_gtin] == '4') # Gtin14 base 8  GTIN14 base 13
+          codigo_invalido = Producto.import_gtin_14(params[:file], params[:tipo_gtin], params[:empresa_id], session[:usuario]) 
+          mensaje = "Los #{tipo_gtin.tipo} base #{tipo_gtin.base} fueron importados." 
+        else
+
+          # Con este enfoque se le pasa menos parametros a la cola del DelayJob
+      
+          render json: Empresa.delay.importar(params[:file].path, params[:file].original_filename, params[:tipo_gtin], params[:empresa_id], session[:usuario])
+
+        end
+
+        # if (codigo_invalido == "")
+
+        #   redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "No se pudo generar GTIN-14 para los siguientes codigo(s) [#{codigo_invalido}]. Por favor verifique que existan antes de intentar generar su GTIN-14.".upcase 
+        # else
+      
+        #   redirect_to "/empresas/#{params[:empresa_id]}/productos", notice:  "IMPORTANDO PRODUCTOS."  
+        # end
+
+      }
+
     end
 
-    if (codigo_invalido == "")
-
-      redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "No se pudo generar GTIN-14 para los siguientes codigo(s) [#{codigo_invalido}]. Por favor verifique que existan antes de intentar generar su GTIN-14.".upcase 
-    else
-      redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: mensaje.upcase 
-    end
 
   end
 

@@ -1,0 +1,35 @@
+%section.contexto
+    %label.contexto 
+        Listado General de Productos
+    %hr.contexto{:size => "1"}
+
+%section#areaTrabajo.areaTrabajo
+    %p#notice= notice
+    =render "/reportes/reporte_exportar_productos"
+    
+    %br/
+    %br/  
+    
+    %table#data_table_reporte_productos.display{:"data-source" => "/reportes.json?reporte_producto=true"}
+        %thead
+            %tr
+                %th Empresa
+                %th Prefijo
+                %th Tipo GTIN    
+                %th GTIN
+                %th Descripción
+                %th Marca
+                %th Estatus
+                %th Código Prod
+                %th Fecha Creación
+                %th Fecha Modificación
+               
+        %tbody
+        %tfoot
+            
+            =render 'footer_reporte_productos'
+    %br/
+    %br/
+   
+    =render '/empresas/regresar'
+   
