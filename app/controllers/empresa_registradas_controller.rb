@@ -10,10 +10,6 @@ class EmpresaRegistradasController < ApplicationController
       
       format.html {
 
-        
-        #Se elimina los filtros del Datatable si la llamada es desde el menu Principal
-        cookies[:SpryMedia_DataTables_data_table_empresa_registradas_empresa_registradas] = nil  if params[:eliminar_cookie]
-
         if params[:activar_solvencia] 
 
           render :template =>'/empresa_registradas/activar_solvencia.html.haml'

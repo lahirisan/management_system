@@ -66,9 +66,6 @@
         %b
           =@empresa.try(:fecha_reactivacion).strftime("%Y-%m-%d") if (@empresa.fecha_reactivacion)
     
-
-    
-
     %tr
       %td
         Dirección Fiscal
@@ -114,6 +111,7 @@
       %td
         %b
           =@empresa.try(:fecha_registro_mercantil) ?  @empresa.fecha_registro_mercantil.strftime("%Y-%m-%d") : ""
+    %tr
       %td
         RIF
       %td

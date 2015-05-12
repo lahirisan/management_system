@@ -42,11 +42,11 @@ private
         empresa.rif_completo,
         empresa.nombre_empresa,
         (empresa.fecha_inscripcion)  ? empresa.fecha_inscripcion.strftime("%Y-%m-%d")  : "",
-        empresa.try(:ciudad).try(:nombre),
-        empresa.try(:sub_estatus).try(:descripcion),
-        empresa.try(:tipo_usuario_empresa).try(:descripcion),
+        empresa.ciudad_,
+        empresa.sub_estatus_,
+        empresa.tipo_usuario_empresa_,
         empresa.ventas_brutas_anuales,
-        empresa.try(:clasificacion).try(:descripcion),
+        empresa.clasificacion_,
         link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, "/empresa_registradas/#{empresa.id}", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
         boton 
       ]
@@ -64,9 +64,10 @@ private
 
     if params[:activar_empresa] 
       
-      empresas = EmpresaRegistrada.where("rif IS NOT NULL and sub_estatus.descripcion = 'SOLVENTE'").includes(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).order("#{sort_column} #{sort_direction}") 
+      empresas = EmpresaRegistrada.where("rif IS NOT NULL and sub_estatus.descripcion = 'SOLVENTE'").joins(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).select("empresas_registradas.rif_completo, empresas_registradas.nombre_empresa, empresas_registradas.fecha_inscripcion, ciudad.nombre as ciudad_, sub_estatus.descripcion as sub_estatus_, tipo_usuario_empresa.descripcion as tipo_usuario_empresa_, empresas_registradas.ventas_brutas_anuales, empresa_clasificacion.descripcion as clasificacion_").order("#{sort_column} #{sort_direction}") 
     else
-      empresas = EmpresaRegistrada.where("rif IS NOT NULL").includes(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).order("#{sort_column} #{sort_direction}") 
+      empresas = EmpresaRegistrada.where("rif IS NOT NULL").joins(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).select("empresas_registradas.rif_completo, empresas_registradas.nombre_empresa, empresas_registradas.fecha_inscripcion, ciudad.nombre as ciudad_, sub_estatus.descripcion as sub_estatus_, tipo_usuario_empresa.descripcion as tipo_usuario_empresa_, empresas_registradas.ventas_brutas_anuales, empresa_clasificacion.descripcion as clasificacion_").order("#{sort_column} #{sort_direction}") 
+      
     end
 
     empresas = empresas.page(page).per_page(per_page)

@@ -1,0 +1,8 @@
+%table.margen_superior
+	%tr
+		%td
+			%form{action: "/reportes.xlsx", method: "get", target: "_blank"}
+				.parametros
+				%button.ui-state-default.ui-corner-all.exportar_reporte_servicios{:type => "submit", :title => "Exporta el lisatdo de Servicios a formato Excel"}
+					%span.ui-icon.ui-icon-disk
+					Exportar Excel

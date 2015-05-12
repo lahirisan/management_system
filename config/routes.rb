@@ -6,7 +6,9 @@ GS1::Application.routes.draw do
   get "logout" => "sessions#destroy", :as => "logout"
   get "generar_excel/show"
 
-  #match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
+  # herramienta para monitorear DelayJOb
+
+  match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
 
   resources :empresa_registradas do
     collection do
@@ -15,8 +17,8 @@ GS1::Application.routes.draw do
     end
   end
 
-
-
+  resources :reportes
+  
   resources :usuarios 
 
   resources :productos do #/empresas/1/productos

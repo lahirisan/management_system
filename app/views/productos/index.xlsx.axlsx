@@ -1,3 +1,5 @@
+@productos = Producto.where("prefijo = ? and estatus.descripcion = ?", params[:empresa_id], 'Activo').includes(:estatus, :tipo_gtin).order("producto.fecha_creacion desc") 
+
 if params[:tipo_gtin] != ''
   @productos = @productos.where("tipo_gtin.tipo like :search", search: "%#{params[:tipo_gtin]}%" )
 end

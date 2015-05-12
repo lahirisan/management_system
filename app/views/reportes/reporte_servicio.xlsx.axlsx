@@ -1,0 +1,34 @@
+@empresa_servicios = EmpresaServicio.joins(:servicio, {:empresa => :estatus}, {:empresa => :clasificacion} ).select("empresa.nombre_empresa as nombre_empresa, empresa.prefijo as prefijo, estatus.descripcion as estatus_, empresa_clasificacion.descripcion as clasificacion_, servicios.nombre as servicio_, empresa_servicios.fecha_contratacion as fecha_contratacion, empresa_servicios.fecha_finalizacion as fecha_finalizacion, empresa_servicios.nombre_contacto as nombre_contacto, empresa_servicios.email as email, empresa_servicios.telefono as telefono").order("empresa.prefijo") 
+
+@empresa_servicios = @empresa_servicios.where("empresa.nombre_empresa like '%#{params[:nombre_empresa]}%'" ) if params[:nombre_empresa] != ''
+@empresa_servicios = @empresa_servicios.where("empresa.prefijo like '%#{params[:prefijo]}%'" ) if params[:prefijo] != ''
+@empresa_servicios = @empresa_servicios.where("estatus.descripcion like '%#{params[:estatus]}%'" ) if params[:estatus] != ''
+@empresa_servicios = @empresa_servicios.where("empresa_clasificacion.descripcion like '%#{params[:clasificacion]}%'") if params[:clasificacion].present?
+@empresa_servicios = @empresa_servicios.where("servicios.nombre like '%#{params[:servicio]}%'" ) if params[:servicio] != ''
+@empresa_servicios = @empresa_servicios.where("CONVERT(varchar(255),  empresa_servicios.fecha_contratacion ,126) like  '%#{params[:fecha_contratacion]}%'" ) if params[:fecha_contratacion] != ''
+@empresa_servicios = @empresa_servicios.where("CONVERT(varchar(255),  empresa_servicios.fecha_finalizacion ,126) like '%#{params[:fecha_finalizacion]}%'" ) if params[:fecha_finalizacion] != ''
+
+
+xlsx_package = Axlsx::Package.new 
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "GS1") do |sheet|
+	wb.styles do |s|
+		
+		black_cell = s.add_style :i => true, :bg_color => "F8F8F8", :fg_color => "00", :sz => 12, :alignment => { :horizontal=> :center }
+		black_cell2 = s.add_style   :border => { :style => :thin, :color => "00" }, :i => true,:fg_color => "00", :sz => 8, :alignment => { :horizontal=> :left }
+		tomas = s.add_style  :sz => 12, :alignment => { :horizontal=> :center }
+
+			sheet.add_row ['REPORTE EMPRESA SERVICIOS']
+			sheet.add_row ['']
+			sheet.add_row ['']
+			sheet.add_row ['']
+
+			sheet.add_row ["NOMBRE EMPRESA", "PREFIJO", "ESTATUS EMPRESA", "CLASIFICACION EMPRESA", "SERVICIO",  "FECHA CONTRATACION", "FECHA FINALIZACION"], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
+			@empresa_servicios.each do |servicio|
+
+				sheet.add_row [servicio.nombre_empresa, servicio.prefijo, servicio.estatus_, servicio.clasificacion_,  servicio.servicio_, servicio.fecha_contratacion.strftime("%Y-%m-%d"), servicio.fecha_finalizacion.strftime("%Y-%m-%d")], :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]		
+			end
+			
+	end 
+end
