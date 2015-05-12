@@ -25,14 +25,15 @@ private
       
       [ 
        check_box_tag("transferir_gtin8[]", "#{producto.gtin.strip}", false, :class => "transferir_producto_seleccionado"),
-       producto.try(:empresa).try(:nombre_empresa),
-       producto.try(:empresa).try(:prefijo),
-       producto.try(:tipo_gtin).try(:tipo),
-       producto.try(:gtin),
-       producto.try(:descripcion),
-       producto.try(:marca),
-       producto.try(:estatus).try(:descripcion),
-       producto.try(:codigo_prod),
+
+       producto.nombre_empresa,
+       producto.prefijo,
+       producto.tipo_gtin_,
+       producto.gtin,
+       producto.descripcion,
+       producto.marca,
+       producto.estatus_,
+       producto.codigo_producto,
        (producto.fecha_creacion) ? producto.fecha_creacion.strftime("%Y-%m-%d") : "",
        (producto.fecha_ultima_modificacion) ? producto.fecha_ultima_modificacion.strftime("%Y-%m-%d") : "",
       
@@ -50,7 +51,7 @@ private
 
   def fetch_productos
     
-    productos = Producto.where("id_tipo_gtin in (1,4)").includes(:estatus, :tipo_gtin, :empresa).order("#{sort_column} #{sort_direction}") 
+    productos = Producto.where("id_tipo_gtin in (1,4)").joins(:estatus, :tipo_gtin, :empresa).select("empresa.nombre_empresa as nombre_empresa, empresa.prefijo as prefijo, tipo_gtin.tipo as tipo_gtin_, producto.gtin as gtin, producto.descripcion as descripcion, producto.marca as marca, estatus.descripcion as estatus_, producto.codigo_prod as codigo_producto, producto.fecha_creacion as fecha_creacion, producto.fecha_ultima_modificacion as fecha_ultima_modificacion").order("#{sort_column} #{sort_direction}") 
     productos = productos.page(page).per_page(per_page)
 
     productos = productos.where("empresa.nombre_empresa like :search or  empresa.prefijo  like :search or  tipo_gtin.tipo like :search or producto.gtin like :search or producto.descripcion like :search or producto.marca like :search or estatus.descripcion like :search or  producto.codigo_prod like :search or CONVERT(varchar(255),  producto.fecha_creacion ,126) like :search or CONVERT(varchar(255),  producto.fecha_ultima_modificacion ,126) like :search", search: "%#{params[:sSearch]}%") if params[:sSearch].present? # Filtro de busqueda general
