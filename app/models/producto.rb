@@ -289,7 +289,7 @@ class Producto < ActiveRecord::Base
     codigo_invalido = ""
 
     (2..spreadsheet.last_row).each do |fila|
-      
+
       gtin_existente =  verificar_gtin_existente(tipo_gtin.base, prefijo,spreadsheet.row(fila)[0].to_i )
 
       
@@ -417,6 +417,7 @@ class Producto < ActiveRecord::Base
     end
 
     raise no_se_encontro.to_yaml if no_se_encontro.any?
+    
 
  end
 
