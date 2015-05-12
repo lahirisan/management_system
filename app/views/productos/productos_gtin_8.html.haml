@@ -1,0 +1,34 @@
+%section.contexto
+    %label.contexto 
+        Listado Productos GTIN-8
+    %hr.contexto{:size => "1"}
+
+%section#areaTrabajo.areaTrabajo
+    
+    =render "exportar_gtin_8"
+    %br/
+    %br/  
+    
+    %table#data_table_productos_gtin_8.display{:"data-source" => "/productos.json?gtin_8=true"}
+        %thead
+            %tr
+                %th Empresa
+                %th Prefijo
+                %th Tipo GTIN    
+                %th GTIN
+                %th Descripción
+                %th Marca
+                %th Estatus
+                %th Código Prod
+                %th Fecha Creación
+                %th Fecha Modificación
+                
+        %tbody
+        %tfoot
+            =render 'footer_productos_gtin_8'
+            
+    %br/
+    %br/
+    
+
+    

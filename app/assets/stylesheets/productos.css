@@ -21,5 +21,9 @@
 .boton_transferir_productos {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-top:20px;}
 .boton_transferir_productos span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
 
+.exportar_productos_gtin_8 { cursor: pointer; }
+.exportar_productos_gtin_8 {padding: .4em 1em .4em 20px;text-decoration: none;position: relative; font: 100% "Trebuchet MS", sans-serif;margin-top:20px;}
+.exportar_productos_gtin_8 span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+
 
 table.dataTable td {padding: 10px 10px }
