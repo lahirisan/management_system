@@ -222,7 +222,7 @@ class ProductosController < ApplicationController
     respond_to do |format|
 
       format.html { redirect_to "/productos?transferencia=true", notice: "EL(LOS) GTIN FUERON TRANSFERIDOS SATISFACTORIAMENTE AL PREFIJO #{params[:empresa_transferir_gtin]}" } if params[:transferir]
-      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?eliminar=true", notice: "Los GTIN #{productos.collect{|producto| producto.gtin}} fueron eliminados." } if params[:transferir].nil?
+      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?eliminar=true", notice: "Los GTIN #{productos.collect{|producto| producto}} fueron eliminados." } if params[:transferir].nil?
     end
   end
 

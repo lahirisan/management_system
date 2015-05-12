@@ -52,7 +52,7 @@ class Producto < ActiveRecord::Base
     
     #Los productos se agrega a productos eliminados y productos_elim_detalle, se eliminan de productos
 
-    productos_eliminados = ""
+    productos_eliminados = []
     for eliminar_producto in (0..parametros[:eliminar_productos].size-1)
 
       producto_seleccionado = parametros[:eliminar_productos][eliminar_producto]
@@ -62,19 +62,21 @@ class Producto < ActiveRecord::Base
       if producto
         if producto.tipo_gtin.tipo == "GTIN-14" 
           
-          productos = Producto.find(:all,  :conditions => ["prefijo = ? and codigo_prod = ? and id_tipo_gtin = ?",parametros[:empresa_id], producto.codigo_prod, producto.id_tipo_gtin], :select => "producto.*")  
-        
+          producto_eliminar = Producto.find_by(gtin: producto.gtin)  
+          producto_eliminar.destroy
+          productos_eliminados << producto.gtin
         else
           productos = Producto.find(:all, :conditions => ["prefijo = ? and codigo_prod = ?",parametros[:empresa_id], producto.codigo_prod])
+          productos.map{|producto_eliminar| producto_eliminar.destroy; productos_eliminados << producto_eliminar.gtin}
         end
 
         # TODO: La traza de la infromacion del usaurio y los producvtos que esta eliminando
         
-        productos.map{|producto| producto.destroy}
+        
       end
       
     end
-    return productos
+    return productos_eliminados
 
   	
   end
@@ -417,7 +419,7 @@ class Producto < ActiveRecord::Base
     end
 
     raise no_se_encontro.to_yaml if no_se_encontro.any?
-    
+
 
  end
 
