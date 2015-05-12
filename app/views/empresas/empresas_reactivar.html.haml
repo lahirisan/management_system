@@ -4,7 +4,7 @@
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
     
-    = render 'boton_reactivar_empresa'
+    /= render 'boton_reactivar_empresa'
     
     =form_tag update_multiple_empresas_path, :method => "patch", :id => "formulario_reactivar" do
         
@@ -14,16 +14,15 @@
                     %th Selección
                     %th Prefijo
                     %th Nombre Empresa
-                    %th Fecha Activación
+                    %th Clasificación
                     %th Ciudad
-                    %th RIF
+                    %th Tipo Usuario
                     %th Fecha Retiro
                     %th Motivo Retiro
                     %th Empresa Detalle
                     %th Productos
                     %th Servicios
                     %th GLN
-                    %th
 
             %tbody
             %tfoot

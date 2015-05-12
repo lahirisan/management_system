@@ -1,24 +1,14 @@
- if params[:prefijo] != ''
-   @empresas = @empresas.where("empresa.prefijo like :search", search: "%#{params[:prefijo]}%" )
-end
+empresas = Empresa.joins("left join [empresa_clasificacion] ON [empresa_clasificacion].[id] = [empresa].[id_clasificacion] left JOIN [ciudad] ON [ciudad].[id] = [empresa].[id_ciudad] left JOIN [motivo_retiro] ON [motivo_retiro].[id] = [empresa].[id_motivo_retiro] left join tipo_usuario_empresa on tipo_usuario_empresa.id_tipo_usu_empresa = empresa.id_tipo_usuario left join estatus on empresa.id_estatus = estatus.id").select("empresa.prefijo, empresa.nombre_empresa, empresa.fecha_activacion, ciudad.nombre as ciudad_,  empresa.fecha_retiro, motivo_retiro.descripcion as motivo_retiro_,  empresa_clasificacion.descripcion as clasificacion_, tipo_usuario_empresa.descripcion as tipo_usuario_empresa_, empresa.categoria, empresa.division, empresa.grupo, empresa.clase").where("estatus.descripcion like ? and alcance like ?", 'Retirada', 'Empresa').order("empresa.fecha_retiro desc") 
+ 
+empresas = empresas.where("empresa.prefijo like :search or empresa.nombre_empresa like :search or empresa_clasificacion.descripcion like :search or ciudad.nombre like :search or tipo_usuario_empresa.descripcion like :search or empresa.fecha_retiro like :search or motivo_retiro.descripcion like :search ", search: "%#{params[:filtro_general]}%") if params[:filtro_general].present? # Filtro de busqueda general
 
-if params[:nombre_empresa] != ''
-  @empresas = @empresas.where("empresa.nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%" )
-end
-if params[:fecha_inscripcion] != ''
-	@empresas = @empresas.where("CONVERT(varchar(255),  empresa.fecha_activacion ,126) like :search", search: "%#{params[:fecha_inscripcion]}%")
-end
-if (params[:ciudad] != '')
-
-  @empresas = @empresas.where("ciudad.nombre like :search", search: "%#{params[:ciudad]}%" )
-end
-if params[:rif] != ''
-   @empresas = @empresas.where("empresa.rif like :search", search: "%#{params[:rif]}%" )
-end
-if params[:fecha_retiro] != ''
-	@empresas = @empresas.where("CONVERT(varchar(255),  empresa.fecha_retiro ,126) like :search", search: "%#{params[:fecha_retiro]}%")
-end
-
+empresas = empresas.where("empresa.prefijo like '%#{params[:prefijo]}%'" ) if params[:prefijo].present? 
+empresas = empresas.where("empresa.nombre_empresa like '%#{params[:nombre_empresa]}%'" )   if params[:nombre_empresa].present? # Filtro nombre empresa
+empresas = empresas.where("empresa_clasificacion.descripcion like '%#{params[:clasificacion]}%'" ) if params[:clasificacion].present?
+empresas = empresas.where("ciudad.nombre like '%#{params[:ciudad]}%'" ) if params[:ciudad].present?
+empresas = empresas.where("tipo_usuario_empresa.descripcion like '%#{params[:tipo_usuario]}%'" ) if params[:tipo_usuario].present?
+empresas = empresas.where("empresa.fecha_retiro like '%#{params[:fecha_retiro]}%'" ) if params[:fecha_retiro].present?
+empresas = empresas.where("motivo_retiro.descripcion like '%#{params[:motivo_retiro]}%'" ) if params[:motivo_retiro].present?
 
 xlsx_package = Axlsx::Package.new 
 wb = xlsx_package.workbook
@@ -30,22 +20,12 @@ wb.add_worksheet(name: "GS1") do |sheet|
 		black_cell2 = s.add_style   :border => { :style => :thin, :color => "00" }, :i => true,:fg_color => "00", :sz => 8, :alignment => { :horizontal=> :left }
 		tomas = s.add_style  :sz => 12, :alignment => { :horizontal=> :center }
 
-			sheet.add_row ['Prefijo', 'Nombre Empresa', 'RIF', 'Tipo Usuario', 'Ciudad',  'Estatus', 'Fecha Retiro',  'Motivo Retiro', 'Tipo Usuario',   'Categoria', 'División', 'Grupo', 'Clase'], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
-			@empresas.each do |empresa|
+			sheet.add_row ['PREFIJO', 'NOMBRE EMPRESA', 'CLASIFICACION', 'CIUDAD', 'TIPO USUARIO',  'FECHA RETIRO', 'MOTIVO RETIRO',  'CATEGORIA', 'DIVISION',   'GRUPO', 'CLASE'], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
+			sheet.add_row ['']
+
+			empresas.each do |empresa|
 				
-				fecha = ""
-      			fecha =  empresa.fecha_retiro.strftime("%Y-%m-%d") if (empresa.fecha_retiro)
-
-      			if empresa.id_tipo_usuario == '1'
-
-				 	tipo_usuario_empresa = "USUARIO"
-				elsif empresa.id_tipo_usuario == '2'
-					tipo_usuario_empresa = "NO USUARIO"
-				else
-					tipo_usuario_empresa = ""
-				end
-
-				sheet.add_row [empresa.prefijo,empresa.nombre_empresa,empresa.rif,empresa.try(:ciudad).try(:nombre), tipo_usuario_empresa, empresa.try(:estatus).try(:descripcion),fecha, empresa.try(:motivo_retiro).try(:descripcion), empresa.try(:tipo_usuario_empresa).try(:descripcion),  empresa.try(:categoria), empresa.try(:division),empresa.try(:grupo), empresa.try(:clase)], :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]		
+				sheet.add_row [empresa.prefijo,empresa.nombre_empresa,empresa.clasificacion_,empresa.ciudad_, empresa.tipo_usuario_empresa_, empresa.fecha_retiro, empresa.motivo_retiro_,  empresa.categoria, empresa.division,empresa.grupo, empresa.clase], :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]		
 			end
 			sheet.column_widths 13,80,20,100,20,20,30,25,10,10,10, 10
 	end 

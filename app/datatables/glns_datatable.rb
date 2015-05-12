@@ -105,7 +105,7 @@ private
   end
 
   def per_page
-    prueba =params[:iDisplayLength].to_i > 0 ? params[:iDisplayLength].to_i : 100
+    params[:iDisplayLength].to_i > 0 ? params[:iDisplayLength].to_i : 100
   end
 
   def sort_column

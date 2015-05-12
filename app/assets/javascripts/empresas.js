@@ -1,5 +1,5 @@
   $( document ).ready(function() {
-        
+       
         // Datatable que maneja el listado de empresas
         $("#data_table_empresas").dataTable({
             bStateSave: true,
@@ -31,8 +31,11 @@
 
         */
 
+        
+
         // Datatable que maneja el listado de empresas
         $("#data_table_empresas_transferir").dataTable({
+            bStateSave: true,
             sPaginationType: "full_numbers",
             aaSorting: [[ 1, "asc" ]],
             aoColumns: [ { "bSortable": false }, { "bSortable": true }, { "bSortable": true }, { "bSortable": false },{ "bSortable": false },{ "bSortable": true }, { "bSortable": false } ],
@@ -85,7 +88,7 @@
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',
             sAjaxSource: $('#data_table_empresas_retiradas').data('source')
-        }).columnFilter({ aoColumns: [{type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},null,null,null,null]});
+        }).columnFilter({ aoColumns: [{type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},{type: "text"}, null,null,null, null]});
 
         $('#data_table_empresas_retiradas input').attr("placeholder", "Buscar");
 
@@ -94,14 +97,14 @@
         $("#data_table_reactivar_empresas").dataTable({
             bStateSave: true,
             sPaginationType: "full_numbers",
-            aoColumns: [ { "bSortable": false },  null, null,  null, null, null, null ,{ "bSortable": false },{"bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false }],
+            aoColumns: [ { "bSortable": false }, { "bSortable": true }, { "bSortable": true }, { "bSortable": true },{ "bSortable": true },{ "bSortable": true }, { "bSortable": true },{ "bSortable": true },{ "bSortable": false },{ "bSortable": false }, { "bSortable": false },{ "bSortable": false }  ],
             aaSorting: [[ 6, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',
             sAjaxSource: $('#data_table_reactivar_empresas').data('source')
-        }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},{type: "text"},null,null,null]});
+        }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},{type: "text"}, null,null,null, null]});
 
         $('#data_table_reactivar_empresas input').attr("placeholder", "Buscar");
 
@@ -109,13 +112,14 @@
         $("#data_table_empresas_eliminar").dataTable({
             bStateSave: true,
             sPaginationType: "full_numbers",
-            aaSorting: [[ 5, "desc" ]],
+            aoColumns: [ { "bSortable": false }, { "bSortable": true }, { "bSortable": true }, { "bSortable": true },{ "bSortable": true },{ "bSortable": true }, { "bSortable": true },{ "bSortable": true },{ "bSortable": false },{ "bSortable": false }, { "bSortable": false },{ "bSortable": false }  ],
+            aaSorting: [[ 6, "desc" ]],
             bJQueryUI: true,
             bProcessing: true,
             bServerSide: true,
             sDom: 'T<"clear">lfrtip',
             sAjaxSource: $('#data_table_empresas_eliminar').data('source')
-        }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},null, null,null,null, null]});
+        }).columnFilter({ aoColumns: [null, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"},{type: "text"}, null,null,null, null]});
 
         $('#data_table_empresas_eliminar input').attr("placeholder", "Buscar");
 
@@ -392,12 +396,14 @@
         $('body').on('click', '.exportar', function() {
            
             $('.parametros').html(
+                
                 '<input name="prefijo" type="hidden" value="'+$('tfoot tr th:nth-child(1) span input').val()+'">'+
                 '<input name="nombre_empresa" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
                 '<input name="fecha_activacion" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
                 '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
                 '<input name="rif" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
-                '<input name="sub_estatus" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'
+                '<input name="sub_estatus" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
+                '<input name="clasificacion" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'
                 
             );
 
@@ -426,10 +432,11 @@
             $('.parametros').html(
                 '<input name="prefijo" type="hidden" value="'+$('tfoot tr th:nth-child(1) span input').val()+'">'+
                 '<input name="nombre_empresa" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
-                '<input name="fecha_inscripcion" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="clasificacion" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
                 '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
-                '<input name="rif" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="tipo_usuario" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
                 '<input name="fecha_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="motivo_retiro" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
                 '<input name="retiradas" type="hidden" value="true">'
             );
 
@@ -465,6 +472,9 @@
             );
 
         });
+
+
+
 
         $('body').on('click', '.exportar_empresas_no_validadas', function() {
             
