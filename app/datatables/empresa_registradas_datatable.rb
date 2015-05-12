@@ -64,9 +64,9 @@ private
 
     if params[:activar_empresa] 
       
-      empresas = EmpresaRegistrada.where("rif IS NOT NULL and sub_estatus.descripcion = 'SOLVENTE'").joins(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).select("empresas_registradas.rif_completo, empresas_registradas.nombre_empresa, empresas_registradas.fecha_inscripcion, ciudad.nombre as ciudad_, sub_estatus.descripcion as sub_estatus_, tipo_usuario_empresa.descripcion as tipo_usuario_empresa_, empresas_registradas.ventas_brutas_anuales, empresa_clasificacion.descripcion as clasificacion_").order("#{sort_column} #{sort_direction}") 
+      empresas = EmpresaRegistrada.where("rif IS NOT NULL and sub_estatus.descripcion = 'SOLVENTE'").joins(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).select("empresas_registradas.id, empresas_registradas.rif_completo, empresas_registradas.nombre_empresa, empresas_registradas.fecha_inscripcion, ciudad.nombre as ciudad_, sub_estatus.descripcion as sub_estatus_, tipo_usuario_empresa.descripcion as tipo_usuario_empresa_, empresas_registradas.ventas_brutas_anuales, empresa_clasificacion.descripcion as clasificacion_").order("#{sort_column} #{sort_direction}") 
     else
-      empresas = EmpresaRegistrada.where("rif IS NOT NULL").joins(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).select("empresas_registradas.rif_completo, empresas_registradas.nombre_empresa, empresas_registradas.fecha_inscripcion, ciudad.nombre as ciudad_, sub_estatus.descripcion as sub_estatus_, tipo_usuario_empresa.descripcion as tipo_usuario_empresa_, empresas_registradas.ventas_brutas_anuales, empresa_clasificacion.descripcion as clasificacion_").order("#{sort_column} #{sort_direction}") 
+      empresas = EmpresaRegistrada.where("rif IS NOT NULL").joins(:ciudad, :clasificacion, :tipo_usuario_empresa, :sub_estatus).select("empresas_registradas.id, empresas_registradas.rif_completo, empresas_registradas.nombre_empresa, empresas_registradas.fecha_inscripcion, ciudad.nombre as ciudad_, sub_estatus.descripcion as sub_estatus_, tipo_usuario_empresa.descripcion as tipo_usuario_empresa_, empresas_registradas.ventas_brutas_anuales, empresa_clasificacion.descripcion as clasificacion_").order("#{sort_column} #{sort_direction}") 
       
     end
 

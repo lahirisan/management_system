@@ -278,58 +278,7 @@ class Producto < ActiveRecord::Base
 
   end
 
-  def self.import(file, tipo_gtin, prefijo, usuario) #Importar GTIN 13
-
-
-    spreadsheet = open_spreadsheet(file)
-    
-    (2..spreadsheet.last_row).each do |fila|  # EL indice 1 es para indicar los datos de cabecera MARCA, DESCRIPCION, ETC
-      
-      productos_gtin_13_codificados = Producto.find(:all, :conditions => ["tipo_gtin.tipo = ? and prefijo = ?", "GTIN-13", prefijo], :include => [:tipo_gtin]) if prefijo.to_s.size == 5
-
-      if (prefijo.to_s.size == 5)
-
-        break if (productos_gtin_13_codificados.size >= 10)  
-
-      end
-
-      if spreadsheet.empty?(fila,1) # EL codigo de producto no viene en el Excel
-        
-        gtin = Producto.crear_gtin(tipo_gtin,prefijo,nil, nil)
-        
-      else
-
-        gtin = Producto.crear_gtin(tipo_gtin, prefijo, nil, spreadsheet.row(fila)[0].to_i)
-        
-      end
-
-      producto = new
-      producto.gtin = gtin.to_s
-      producto.descripcion =   spreadsheet.empty?(fila,1) ? spreadsheet.row(fila)[1] :  spreadsheet.row(fila)[2]
-      producto.marca =   spreadsheet.empty?(fila,1) ? spreadsheet.row(fila)[0] :  spreadsheet.row(fila)[1] 
-      producto.id_estatus = 3
-      producto.fecha_creacion = Time.now
-
-      if prefijo.to_s.size == 7 or prefijo.to_s.size == 5
-
-        producto.codigo_prod = producto.gtin[7..11]
-
-      elsif prefijo.to_s.size == 9 and prefijo.to_s[3..5] == "400" # GTIN artesanal
-
-        producto.codigo_prod = producto.gtin[9..11]
-
-      end
-
-      producto.id_tipo_gtin = tipo_gtin.to_i
-      producto.prefijo = prefijo
-      producto.save
-
-      Auditoria.registrar_evento(usuario,"producto", "Importar", Time.now, "GTIN:#{producto.gtin} DESCRIPCION:#{producto.descripcion} TIPO:GTIN-13")
-
-    end
-
-
-  end
+  
 
 
   def self.import_gtin_14(file, tipo_gtin_, prefijo, usuario) #Importar GTIN 14
@@ -437,16 +386,7 @@ class Producto < ActiveRecord::Base
   end
 
 
-  def self.open_spreadsheet(file)
-
-    
-    case File.extname(file.original_filename)
-      when ".csv" then Roo::Csv.new(file.path, nil, :ignore)
-      when ".xls" then Roo::Excel.new(file.path, nil, :ignore)
-      when ".xlsx" then Roo::Excelx.new(file.path, nil, :ignore)
-      else raise "Solo se permite importar archivo con extension '.xlsx', '.xls' : #{file.original_filename}"
-    end
-  end
+  
 
   def self.transferir_gtin(productos, empresa)
 
