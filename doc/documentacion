@@ -1,0 +1,22 @@
+Rack application
+http://en.wikipedia.org/wiki/Rack_%28web_server_interface%29
+
+
+Unicorn
+https://blog.engineyard.com/2010/everything-you-need-to-know-about-unicorn/
+https://github.com/lahirisan/unicorn
+
+
+https://github.com/blog/517-unicorn
+
+NGINX Version: 1.1.19
+
+Apache vs NGINX
+https://www.digitalocean.com/community/tutorials/apache-vs-nginx-practical-considerations
+http://www.wikivs.com/wiki/apache_vs_nginx
+
+
+Domunetacion instalacion NGINX
+http://railscasts.com/episodes/293-nginx-unicorn?view=asciicast
+
+
