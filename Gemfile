@@ -52,6 +52,7 @@ gem "roo" # Gema para importar archivos Excel
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', :require => "bcrypt"
 
+gem 'daemons'
 gem 'delayed_job_active_record' ## GEma para menejar procesos en BACKGROUND
 gem "delayed_job_web" # Herramienta Web que permite monitorear la cola de procesoso en BACKGROUND
 
