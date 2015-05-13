@@ -52,7 +52,7 @@ class Producto < ActiveRecord::Base
     
     #Los productos se agrega a productos eliminados y productos_elim_detalle, se eliminan de productos
 
-    productos_eliminados = ""
+    productos_eliminados = []
     for eliminar_producto in (0..parametros[:eliminar_productos].size-1)
 
       producto_seleccionado = parametros[:eliminar_productos][eliminar_producto]
@@ -62,19 +62,21 @@ class Producto < ActiveRecord::Base
       if producto
         if producto.tipo_gtin.tipo == "GTIN-14" 
           
-          productos = Producto.find(:all,  :conditions => ["prefijo = ? and codigo_prod = ? and id_tipo_gtin = ?",parametros[:empresa_id], producto.codigo_prod, producto.id_tipo_gtin], :select => "producto.*")  
-        
+          producto_eliminar = Producto.find_by(gtin: producto.gtin)  
+          producto_eliminar.destroy
+          productos_eliminados << producto.gtin
         else
           productos = Producto.find(:all, :conditions => ["prefijo = ? and codigo_prod = ?",parametros[:empresa_id], producto.codigo_prod])
+          productos.map{|producto_eliminar| producto_eliminar.destroy; productos_eliminados << producto_eliminar.gtin}
         end
 
         # TODO: La traza de la infromacion del usaurio y los producvtos que esta eliminando
         
-        productos.map{|producto| producto.destroy}
+        
       end
       
     end
-    return productos
+    return productos_eliminados
 
   	
   end
@@ -281,10 +283,10 @@ class Producto < ActiveRecord::Base
   
 
 
-  def self.import_gtin_14(file, tipo_gtin_, prefijo, usuario) #Importar GTIN 14
+  def self.import_gtin_14(file, original_file_name, tipo_gtin_, prefijo, usuario) #Importar GTIN 14
 
     tipo_gtin = TipoGtin.find(tipo_gtin_)
-    spreadsheet = open_spreadsheet(file)
+    spreadsheet = Empresa.open_spreadsheet(file, original_file_name)
 
     codigo_invalido = ""
 
@@ -292,6 +294,7 @@ class Producto < ActiveRecord::Base
 
       gtin_existente =  verificar_gtin_existente(tipo_gtin.base, prefijo,spreadsheet.row(fila)[0].to_i )
 
+      
       if (gtin_existente)
 
         gtin = crear_gtin_14(spreadsheet.row(fila)[1].to_i, gtin_existente.gtin, tipo_gtin.base)
@@ -397,6 +400,28 @@ class Producto < ActiveRecord::Base
     productos_.each{|producto| Producto.where("prefijo = producto.prefijo and codigo_prod = #{producto.codigo_prod} and id_tipo_gtin = 4").update_all("prefijo = #{empresa[0]}")}
     
   end
+
+  def self.eliminar_productos_desde_excel # Procedimiento para eliminar Productos
+
+  spreadsheet = Roo::Excelx.new("#{Rails.root}/doc/PRODUCTOS_ELIMINAR.xlsx", nil, :ignore)
+
+    no_se_encontro = []
+
+    (1..spreadsheet.last_row).each do |fila|
+       producto = Producto.find_by(gtin: spreadsheet.cell(fila,3).to_s)
+        
+        if producto.nil?
+          no_se_encontro << spreadsheet.cell(fila,3)
+        else
+          producto.destroy
+        end
+
+    end
+
+    raise no_se_encontro.to_yaml if no_se_encontro.any?
+
+
+ end
 
 
 end

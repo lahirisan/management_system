@@ -222,7 +222,7 @@ class ProductosController < ApplicationController
     respond_to do |format|
 
       format.html { redirect_to "/productos?transferencia=true", notice: "EL(LOS) GTIN FUERON TRANSFERIDOS SATISFACTORIAMENTE AL PREFIJO #{params[:empresa_transferir_gtin]}" } if params[:transferir]
-      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?eliminar=true", notice: "Los GTIN #{productos.collect{|producto| producto.gtin}} fueron eliminados." } if params[:transferir].nil?
+      format.html { redirect_to "/empresas/#{params[:empresa_id]}/productos?eliminar=true", notice: "Los GTIN #{productos.collect{|producto| producto}} fueron eliminados." } if params[:transferir].nil?
     end
   end
 
@@ -239,7 +239,7 @@ class ProductosController < ApplicationController
              tipo_gtin = TipoGtin.find(params[:tipo_gtin])
 
             if (params[:tipo_gtin] == '6') or (params[:tipo_gtin] == '4') # Gtin14 base 8  GTIN14 base 13
-              codigo_invalido = Producto.import_gtin_14(params[:file], params[:tipo_gtin], params[:empresa_id], session[:usuario]) 
+              codigo_invalido = Producto.import_gtin_14(params[:file].path, params[:file].original_filename, params[:tipo_gtin], params[:empresa_id], session[:usuario]) 
               mensaje = "Los #{tipo_gtin.tipo} base #{tipo_gtin.base} fueron importados." 
             else # Importar GTIN-13
 

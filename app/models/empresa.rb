@@ -613,7 +613,9 @@
  
  def importar(ruta, original_filename, tipo_gtin, prefijo, usuario) #Importar Producto GTIN 13, este metodo se coloca aqui para hacer una una instancia de empresa y utilizar DELAY_JOB
 
-    spreadsheet = open_spreadsheet(ruta, original_filename)
+    spreadsheet = Empresa.open_spreadsheet(ruta, original_filename)
+
+    
     
     (2..spreadsheet.last_row).each do |fila|  # EL indice 1 es para indicar los datos de cabecera MARCA, DESCRIPCION, ETC
       
@@ -662,7 +664,7 @@
     
   end
   
-  def open_spreadsheet(ruta, original_filename)
+  def self.open_spreadsheet(ruta, original_filename)
     
     case File.extname(original_filename)
       when ".csv" then Roo::Csv.new(ruta, nil, :ignore)
