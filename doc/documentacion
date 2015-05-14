@@ -1,3 +1,21 @@
+Archivos de Copnfigracion de NGINX
+
+/etc/nginx/sites_enabled/default    # estos 2 archivos deben ser iguales
+/etc/nginx/sites_available/default  # estos 2 archivos deben ser iguales
+
+archivos de configuracion de Unicorn
+ /GS1/config/unicorn.rb  
+
+ archivos de configuracion del script para levantar Unicorn
+ /GS1/config/unicorn_init.sh
+ ./unicorn_init.sh <start|stop|restart|upgrade|force-stop|reopen-logs>
+
+ Script para manejar NGINX
+ sudo service nginx 
+ {start|stop|restart|reload|force-reload|status|configtest}
+
+
+
 Rack application
 http://en.wikipedia.org/wiki/Rack_%28web_server_interface%29
 
@@ -18,5 +36,9 @@ http://www.wikivs.com/wiki/apache_vs_nginx
 
 Domunetacion instalacion NGINX
 http://railscasts.com/episodes/293-nginx-unicorn?view=asciicast
+
+
+# OPTIMIZANDO APLICACIONES EN RAILS 
+https://www.airpair.com/ruby-on-rails/performance
 
 
