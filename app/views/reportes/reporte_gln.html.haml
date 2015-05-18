@@ -5,7 +5,8 @@
 
 %section#areaTrabajo.areaTrabajo
   %p#notice= notice
-  =render 'exportar_reporte_gln'
+  - if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Exportar GLN')
+    =render 'exportar_reporte_gln'
   %br
   %br
   %table#data_table_reporte_glns.display{:"data-source" => "/reportes.json?reporte_gln=true"}

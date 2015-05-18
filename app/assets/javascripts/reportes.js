@@ -72,7 +72,7 @@
         });
 
 
-       oTable1.columnFilter({ aoColumns: [{ type: "text"}, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, null, {type: "text"}, {type: "text"}]});
+       oTable1.columnFilter({ aoColumns: [{ type: "text"}, {type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
        oTable1.fnFilterOnReturn();
 
         

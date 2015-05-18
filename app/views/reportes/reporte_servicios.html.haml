@@ -5,7 +5,8 @@
 
 %section#areaTrabajo.areaTrabajo
   %p#notice= notice
-  =render 'exportar_reporte_servicios'
+  - if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Exportar Servicio')
+    =render 'exportar_reporte_servicios'
   
   %table#data_table_reporte_servicios.display{:"data-source" => "/reportes.json?reporte_servicio=true"}
     %thead
