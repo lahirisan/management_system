@@ -5,7 +5,8 @@
 
 %section#areaTrabajo.areaTrabajo
   %p#notice= notice
-  =render 'exportar_gln'
+  - if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Exportar GLN')
+    =render 'exportar_gln'
   %br
   =render '/empresas/regresar'
   %br

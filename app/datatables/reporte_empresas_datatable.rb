@@ -86,6 +86,10 @@ private
       empresas = empresas.where("empresa.rif_completo like :search4", search4: "%#{params[:sSearch_4]}%" )
     end
 
+    if params[:sSearch_5].present?
+      empresas = empresas.where("estatus.descripcion like :search5", search5: "%#{params[:sSearch_5]}%" )
+    end
+
     if params[:sSearch_6].present?
       
       if params[:sSearch_6].upcase == "D" or params[:sSearch_6].upcase == "DE" or params[:sSearch_6].upcase == "DEU" or params[:sSearch_6].upcase == "DEUD" or params[:sSearch_6].upcase == "DEUDO" or params[:sSearch_6].upcase == "DEUDOR"
