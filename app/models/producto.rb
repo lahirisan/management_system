@@ -393,11 +393,13 @@ class Producto < ActiveRecord::Base
 
   def self.transferir_gtin(productos, empresa)
 
-    Producto.where("gtin in (?)", productos.collect{|producto| producto}).update_all("prefijo = #{empresa[0]}")
+    # Se transfiere los productos y se marca su estatus como activo
+    
+    Producto.where("gtin in (?)", productos.collect{|producto| producto}).update_all("prefijo = #{empresa[0]}, id_estatus = 3")
     
     # Se transfiere los GTIN-14 asociados
-    productos_ = Producto.find(productos)
-    productos_.each{|producto| Producto.where("prefijo = producto.prefijo and codigo_prod = #{producto.codigo_prod} and id_tipo_gtin = 4").update_all("prefijo = #{empresa[0]}")}
+    #productos_ = Producto.find(productos)
+    #productos_.each{|producto| Producto.where("prefijo = producto.prefijo and codigo_prod = #{producto.codigo_prod} and id_tipo_gtin = 4").update_all("prefijo = #{empresa[0]}")}
     
   end
 
