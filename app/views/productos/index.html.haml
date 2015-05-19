@@ -5,7 +5,7 @@
 
 %section#areaTrabajo.areaTrabajo
     %p#notice= notice
-     - if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Exportar Producto')
+    - if UsuariosAlcance.verificar_alcance(session[:perfil], session[:gerencia], 'Exportar Producto')
         =render "exportar_productos"
     =render '/empresas/regresar'
     %br/
