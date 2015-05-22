@@ -45,5 +45,6 @@
         =render "importar_producto"
 
     =render '/empresas/regresar'
-    .gif_loader
-        =image_tag("loader.gif", size: "90", :id => "loader_importar_producto",  :style => "position: fixed;  top: 50%;  left: 50%; visibility: hidden;")
+    -if @delayed_job
+        .gif_loader
+            =image_tag("loader.gif", size: "90", :id => "loader_importar_producto",  :style => "position: fixed;  top: 50%;  left: 50%;")
