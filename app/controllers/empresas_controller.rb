@@ -118,7 +118,7 @@ class EmpresasController < ApplicationController
                   else
 
                     
-                    @empresas = Empresa.where("estatus.descripcion = ?", 'Activa').joins("inner join ciudad on empresa.id_ciudad = ciudad.id left join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo inner join empresa_clasificacion on empresa.id_clasificacion = empresa_clasificacion.id").order("empresa.fecha_activacion desc").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, empresa.rif_completo as rif_completo, empresa.rif as rif, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv, empresa.ventas_brutas_anuales as ventas_brutas_anuales, empresa.aporte_mantenimiento as aporte_mantenimiento, empresa.categoria as categoria, empresa.division as division, empresa.grupo as grupo, empresa.clase as clase, empresa.rep_legal as rep_legal, empresa.email1_ean as email1_ean, empresa.email2_ean as email2_ean, empresa.telefono1_ean as telefono1_ean, empresa.telefono2_ean as telefono2_ean, empresa.telefono3_ean as telefono3_ean, empresa.fax_ean as fax_ean, empresa.fecha_inscripcion as fecha_inscripcion, empresa.fecha_reactivacion as fecha_reactivacion, empresa.direccion_empresa as direccion_empresa, empresa.cod_contacto_tlf1 as cod_contacto_tlf1, empresa.contacto_tlf1 as contacto_tlf1, empresa.cod_contacto_tlf2 as cod_contacto_tlf2, empresa.contacto_tlf2 as contacto_tlf2, empresa.cod_contacto_tlf3 as cod_contacto_tlf3, empresa.contacto_tlf3 as contacto_tlf3, empresa.cod_contacto_fax as cod_contacto_fax, empresa.contacto_fax as contacto_fax, empresa.cod_tlf1_ean as cod_tlf1_ean, empresa.telefono1_ean as telefono1_ean, empresa.cod_tlf2_ean as cod_tlf2_ean, empresa.telefono2_ean as telefono2_ean, empresa.cod_tlf3_ean as cod_tlf3_ean, empresa.telefono3_ean as telefono3_ean, empresa.cod_fax_ean as cod_fax_ean, empresa.fax_ean as fax_ean, empresa.cod_tlf1_sincronet as cod_tlf1_sincronet, empresa.telefono1_edi as telefono1_edi, empresa.cod_tlf2_sincronet as cod_tlf2_sincronet, empresa.telefono2_edi as telefono2_edi, empresa.cod_tlf3_sincronet as cod_tlf3_sincronet, empresa.telefono3_edi as telefono3_edi, empresa.cod_fax_sincronet as cod_fax_sincronet, empresa.fax_edi as fax_edi, empresa.email1_edi as email1_edi, empresa.email2_edi as email2_edi, empresa.cod_tlf1_seminarios as cod_tlf1_seminarios, empresa.telefono1_recursos as telefono1_recursos, empresa.cod_tlf2_seminarios as cod_tlf2_seminarios, empresa.telefono2_recursos as telefono2_recursos, empresa.cod_tlf3_seminarios as cod_tlf3_seminarios, empresa.telefono3_recursos as telefono3_recursos, empresa.cod_fax_seminarios as cod_fax_seminarios, empresa.fax_recursos as fax_recursos, empresa.cod_tlf1_mercadeo as cod_tlf1_mercadeo, empresa.telefono1_mercadeo as telefono1_mercadeo, empresa.cod_tlf2_mercadeo as cod_tlf2_mercadeo, empresa.telefono2_mercadeo as telefono2_mercadeo, empresa.cod_tlf3_mercadeo as cod_tlf3_mercadeo, empresa.telefono3_mercadeo as telefono3_mercadeo, empresa.cod_fax_mercadeo as cod_fax_mercadeo, empresa.fax_mercadeo as fax_mercadeo, empresa.contacto_email1 as contacto_email1, empresa.contacto_email2 as contacto_email2, empresa.email1_recursos as email1_recursos, empresa.email2_recursos as email2_recursos, empresa.email1_mercadeo as email1_mercadeo, empresa.email2_mercadeo as email2_mercadeo, empresa.id_tipo_usuario as id_tipo_usuario, ciudad.nombre as ciudad_, empresa_clasificacion.descripcion as clasificacion_")
+                    
                     render :template => "/empresas/index.xlsx.axlsx"
 
 
@@ -219,14 +219,18 @@ class EmpresasController < ApplicationController
   # POST /empresas
   # POST /empresas.json
   def create
-    prawnto :prawn => { :top_margin => 10, :page_layout => :portrait}
+    #prawnto :prawn => { :top_margin => 10, :page_layout => :portrait}
     respond_to do |format|
        format.pdf {
           if params[:retiro_masivo_cartas]
                     
           @empresas = Empresa.find(params[:retiro_masivo_cartas].split)
+
+          pdf = EmpresasRetiradasPdf.new(@empresas)
+
+          send_data pdf.render, filename: "empresas_retiradas.pdf", type: "application/pdf", disposition: "inline"
           
-          render "/empresas/cartas_retiro_masivo.pdf.prawn"
+          #render "/empresas/cartas_retiro_masivo.pdf.prawn"
 
           end
         }

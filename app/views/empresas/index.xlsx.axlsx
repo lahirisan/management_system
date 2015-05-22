@@ -2,6 +2,7 @@
 
 
 
+
 if params[:prefijo].present? # Filtro de busqueda prefijo
   @empresas = @empresas.where("prefijo like :search", search: "%#{params[:prefijo]}%")
 end

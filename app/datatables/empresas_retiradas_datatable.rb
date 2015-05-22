@@ -58,7 +58,7 @@ private
     empresas = empresas.where("empresa_clasificacion.descripcion like :search2", search2: "%#{params[:sSearch_2]}%" ) if params[:sSearch_2].present?
     empresas = empresas.where("ciudad.nombre like :search3", search3: "%#{params[:sSearch_3]}%" ) if params[:sSearch_3].present?
     empresas = empresas.where("tipo_usuario_empresa.descripcion like :search4", search4: "%#{params[:sSearch_4]}%" ) if params[:sSearch_4].present?
-    empresas = empresas.where("empresa.fecha_retiro like :search5", search5: "%#{params[:sSearch_5]}%" ) if params[:sSearch_5].present?
+    empresas = empresas.where("CONVERT(varchar(255),  empresa.fecha_retiro ,126) like :search5", search5: "%#{params[:sSearch_5]}%")
     empresas = empresas.where("motivo_retiro.descripcion like :search6", search6: "%#{params[:sSearch_6]}%" ) if params[:sSearch_6].present?
     
    
