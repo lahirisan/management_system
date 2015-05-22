@@ -7,7 +7,8 @@ empresas = empresas.where("empresa.nombre_empresa like '%#{params[:nombre_empres
 empresas = empresas.where("empresa_clasificacion.descripcion like '%#{params[:clasificacion]}%'" ) if params[:clasificacion].present?
 empresas = empresas.where("ciudad.nombre like '%#{params[:ciudad]}%'" ) if params[:ciudad].present?
 empresas = empresas.where("tipo_usuario_empresa.descripcion like '%#{params[:tipo_usuario]}%'" ) if params[:tipo_usuario].present?
-empresas = empresas.where("empresa.fecha_retiro like '%#{params[:fecha_retiro]}%'" ) if params[:fecha_retiro].present?
+
+empresas = empresas.where("CONVERT(varchar(255),  empresa.fecha_retiro ,126) like '%#{params[:fecha_retiro]}%'")  if params[:fecha_retiro].present?
 empresas = empresas.where("motivo_retiro.descripcion like '%#{params[:motivo_retiro]}%'" ) if params[:motivo_retiro].present?
 
 xlsx_package = Axlsx::Package.new 
