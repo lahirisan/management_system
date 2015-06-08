@@ -1,0 +1,35 @@
+#encoding: UTF-8
+
+
+
+xlsx_package = Axlsx::Package.new 
+wb = xlsx_package.workbook
+
+
+wb.add_worksheet(name: "M GEPIR") do |sheet|
+  wb.styles do |s|
+    
+      sheet.add_row ["t0212-1", "t0212-2", "t0213-1", "t0213-2", "t0214-1",  "t0214-2",  "t0216",  "t0217",  "t0215",  "t0220",  "t0221",  "t0224",  "t0222",  "t0219",  "t0218",  "Last change"]
+      
+      Empresa.select("empresa.prefijo, empresa.nombre_empresa, empresa.tipo_galpon_edificio_quinta, empresa.galpon_edificio_quinta, empresa.tipo_piso_numero, empresa.piso_numero, empresa.tipo_urbanizacion_barrio_sector, empresa.urbanizacion_barrio_sector, empresa.tipo_avenida_calle, empresa.avenida_calle, municipio.nombre, empresa.cod_postal_ean, ciudad.nombre, empresa.cod_tlf1_ean, empresa.telefono1_ean, empresa.cod_fax_ean, empresa.fax_ean, empresa.email1_ean, empresa.rep_ean, gln.fecha_asignacion, gln.id_tipo_gln, gln.gln as gln_, municipio.nombre as municipio_, ciudad.nombre as ciudad_, empresa.direccion_ean1, empresa.direccion_ean2, empresa.direccion_ean3, empresa.direccion_ean4").where("empresa.prefijo >= 7590000 and empresa.prefijo <= 759999999 and gln.id_tipo_gln = 1").joins("left join gln on empresa.prefijo = gln.prefijo left join municipio on empresa.id_municipio_ean = municipio.id left join ciudad on empresa.id_ciudad_ean = ciudad.id").find_each do |empresa|
+        
+        sheet.add_row [empresa.gln_, "GLN", empresa.nombre_empresa, "",(empresa.tipo_galpon_edificio_quinta + " " + empresa.galpon_edificio_quinta + " " + empresa.tipo_piso_numero  + " " + empresa.piso_numero + " "  +empresa.tipo_avenida_calle + " " + empresa.avenida_calle + " " + empresa.tipo_urbanizacion_barrio_sector + " " + empresa.urbanizacion_barrio_sector)," " ,empresa.municipio_, empresa.cod_postal_ean, empresa.ciudad_, empresa.cod_tlf1_ean + " "+empresa.telefono1_ean, empresa.cod_fax_ean + " " + empresa.fax_ean, " ", empresa.email1_ean, empresa.rep_ean, "VE", empresa.fecha_asignacion]
+        sheet.add_row [empresa.prefijo, empresa.prefijo.to_s.size == 7 ? "GCP-7" : "GCP-9", empresa.nombre_empresa, "",(empresa.tipo_galpon_edificio_quinta + " " + empresa.galpon_edificio_quinta + " " + empresa.tipo_piso_numero  + " " + empresa.piso_numero + " " + empresa.tipo_avenida_calle + " " + empresa.avenida_calle + " " + empresa.tipo_urbanizacion_barrio_sector + " " + empresa.urbanizacion_barrio_sector)," " ,empresa.municipio_, empresa.cod_postal_ean, empresa.ciudad_, empresa.cod_tlf1_ean + " " +empresa.telefono1_ean, empresa.cod_fax_ean + " " + empresa.fax_ean, " ", empresa.email1_ean, empresa.rep_ean, "VE", empresa.fecha_asignacion]
+       
+      end
+
+  end 
+end
+
+wb.add_worksheet(name: "EAN 8") do |sheet|
+  wb.styles do |s|
+    
+      sheet.add_row ["t0212-1", "ean-8"]
+      
+      Producto.select("producto.prefijo, producto.gtin").where("id_tipo_gtin = 1").find_each do |producto|
+        sheet.add_row [producto.prefijo, producto.gtin]
+       
+      end
+
+  end 
+end
