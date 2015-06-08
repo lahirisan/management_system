@@ -292,9 +292,9 @@ class Producto < ActiveRecord::Base
 
     (2..spreadsheet.last_row).each do |fila|
 
+      # Se verifica si el gtin base existe
       gtin_existente =  verificar_gtin_existente(tipo_gtin.base, prefijo,spreadsheet.row(fila)[0].to_i )
 
-      
       if (gtin_existente)
 
         gtin = crear_gtin_14(spreadsheet.row(fila)[1].to_i, gtin_existente.gtin, tipo_gtin.base)
@@ -341,7 +341,7 @@ class Producto < ActiveRecord::Base
   
   def self.verificar_gtin_existente(base, prefijo,codigo_producto)
 
-    
+    #raise (base.to_s + "_" + prefijo.to_s + " " +   codigo_producto.to_s).to_yaml
     if prefijo.to_s.size == 7 or prefijo.to_s.size == 5
       codigo_interno = completar_secuencia(codigo_producto, base) 
     else
@@ -351,19 +351,21 @@ class Producto < ActiveRecord::Base
 
     end
 
+
     if base == "GTIN-13"
 
     gtin_generado =  prefijo.to_s + codigo_interno.to_s
     
     elsif base == "GTIN-8"
-      gtin_8 = "759" + codigo_interno.to_s
+    gtin_generado = "759" + codigo_interno.to_s
       
     end
 
-    digito_verificacion = calcular_digito_verificacion(gtin_generado.to_i, "GTIN-14")
+    digito_verificacion = calcular_digito_verificacion(gtin_generado.to_i, base)
     gtin_generado = gtin_generado + digito_verificacion.to_s
 
     gtin_existente = Producto.find(:first, :conditions => ["prefijo = ? and gtin = ?", prefijo, gtin_generado])
+
     return gtin_existente
   end
 

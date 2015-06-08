@@ -42,6 +42,10 @@ class ProductosController < ApplicationController
                         @ruta = "/empresas/#{params[:empresa_id]}/productos.json" 
                       end
 
+                      if params[:job] ## Muestar el loader gib mientras se esta ejecutando el DelayJOb
+                          @delayed_job = true
+                      end
+
                       render :template =>'/productos/index.html.haml'
                     end
                   }
@@ -102,12 +106,15 @@ class ProductosController < ApplicationController
                   end
       }
       
-    end
+   end
   end
 
   # GET /productos/1
   # GET /productos/1.json
   def show
+
+     
+
     @producto = Producto.find(params[:id])
 
     respond_to do |format|
@@ -226,44 +233,43 @@ class ProductosController < ApplicationController
     end
   end
 
-  
-
 
   def import
 
-   
+        
         respond_to do |format|
-
+         
+        
           format.html{
-             
-             tipo_gtin = TipoGtin.find(params[:tipo_gtin])
+
+            tipo_gtin = TipoGtin.find(params[:tipo_gtin])
 
             if (params[:tipo_gtin] == '6') or (params[:tipo_gtin] == '4') # Gtin14 base 8  GTIN14 base 13
               codigo_invalido = Producto.import_gtin_14(params[:file].path, params[:file].original_filename, params[:tipo_gtin], params[:empresa_id], session[:usuario]) 
               mensaje = "Los #{tipo_gtin.tipo} base #{tipo_gtin.base} fueron importados." 
             else # Importar GTIN-13
-
-              Empresa.importar(params[:file].path, params[:file].original_filename, params[:tipo_gtin], params[:empresa_id], session[:usuario])
               
+              # EL proceso de importar se ejecuta en background
 
+              #Empresa.delay.importar_gtin_13(params[:file].path, params[:file].original_filename, params[:tipo_gtin], params[:empresa_id], session[:usuario])
+              
+              job = Empresa.delay.importar_gtin_13(params[:file].path, params[:file].original_filename, params[:tipo_gtin], params[:empresa_id], session[:usuario])
+              
+             
             end
 
-            if (codigo_invalido == "")
+             if (codigo_invalido == "")
 
-             redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "No se pudo generar GTIN-14 para los siguientes codigo(s) [#{codigo_invalido}]. Por favor verifique que existan antes de intentar generar su GTIN-14.".upcase and return
-            else
-        
-              redirect_to "/empresas/#{params[:empresa_id]}/productos", notice:  "LOS PRODUCTOS FUERON IMPORTADOS"  and return
+               redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "Los Codigos fueron generados satisfactoriamente".upcase 
+             else
+              redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "No se pudo generar GTIN-14 para los siguientes codigo(s) [#{codigo_invalido}]. Por favor verifique que existan antes de intentar generar su GTIN-14.".upcase 
+
+               #redirect_to "/empresas/#{params[:empresa_id]}/productos?job=true&job_id=#{job.id}", notice:  "LOS PRODUCTOS SE ESTAN IMPORTANDO"  
              end
-
+           
+            
           }
-        
-        
-          format.json{
 
-            # Con este enfoque se le pasa menos parametros a la cola del DelayJob
-            render json: Empresa.delay.importar(params[:file].path, params[:file].original_filename, params[:tipo_gtin], params[:empresa_id], session[:usuario])
-          }
 
         end
 
