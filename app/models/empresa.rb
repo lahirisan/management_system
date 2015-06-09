@@ -605,13 +605,14 @@
 
  	
 
-  def self.importar(ruta, original_filename, tipo_gtin, prefijo, usuario)
+  def self.importar_gtin_13(ruta, original_filename, tipo_gtin, prefijo, usuario)
   		
-  		find(prefijo).importar(ruta, original_filename, tipo_gtin, prefijo, usuario)
+  		find(prefijo).importar_importar_gtin_13_proceso(ruta, original_filename, tipo_gtin, prefijo, usuario)
+  		
   end
 
  
- def importar(ruta, original_filename, tipo_gtin, prefijo, usuario) #Importar Producto GTIN 13, este metodo se coloca aqui para hacer una una instancia de empresa y utilizar DELAY_JOB
+ def importar_importar_gtin_13_proceso(ruta, original_filename, tipo_gtin, prefijo, usuario) #Importar Producto GTIN 13, este metodo se coloca aqui para hacer una una instancia de empresa y utilizar DELAY_JOB
 
     spreadsheet = Empresa.open_spreadsheet(ruta, original_filename)
 

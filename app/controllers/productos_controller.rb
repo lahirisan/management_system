@@ -252,9 +252,7 @@ class ProductosController < ApplicationController
               # EL proceso de importar se ejecuta en background
 
               #Empresa.delay.importar_gtin_13(params[:file].path, params[:file].original_filename, params[:tipo_gtin], params[:empresa_id], session[:usuario])
-              
-              job = Empresa.delay.importar_gtin_13(params[:file].path, params[:file].original_filename, params[:tipo_gtin], params[:empresa_id], session[:usuario])
-              
+              Empresa.importar_gtin_13(params[:file].path, params[:file].original_filename, params[:tipo_gtin], params[:empresa_id], session[:usuario])
              
             end
 
