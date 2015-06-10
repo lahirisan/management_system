@@ -63,7 +63,7 @@ class ProductosController < ApplicationController
                       render json: (EliminarProductosDatatable.new(view_context))
                     
                     elsif params[:gtin_8]
-
+                      
                       render json: ProductosGtin8Datatable.new(view_context)
                     
                     elsif params[:transferir]
