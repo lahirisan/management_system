@@ -30,7 +30,7 @@ private
           empresa.tipo_usuario_,
           empresa.ciudad_,
           empresa.estatus_.upcase,
-          (empresa.solv == 2) ? "DEUDOR" : "SOLVENTE",
+          (empresa.solv == 2) ? "SOLVENTE" : "DEUDOR",
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa, :retirar => true), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, "/empresas/#{empresa.prefijo}/productos", {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos asociados a la empresa #{empresa.nombre_empresa}"}),
           link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Servicios').html_safe,  "/empresas/#{empresa.prefijo}/empresa_servicios",  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Servicios asociados a la empresa #{empresa.nombre_empresa}"}),
@@ -80,12 +80,12 @@ private
       
       if params[:sSearch_7].upcase == "D" or params[:sSearch_7].upcase == "DE" or params[:sSearch_7].upcase == "DEU" or params[:sSearch_7].upcase == "DEUD" or params[:sSearch_7].upcase == "DEUDO" or params[:sSearch_7].upcase == "DEUDOR"
         
-        empresas = empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) = 2")
+        empresas = empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) != 2")
 
         
       elsif params[:sSearch_7].upcase == "S" or params[:sSearch_7].upcase == "SO" or params[:sSearch_7].upcase == "SOL" or params[:sSearch_7].upcase == "SOLV" or params[:sSearch_7].upcase == "SOLVE" or params[:sSearch_7].upcase == "SOLVE" or params[:sSearch_7].upcase == "SOLVEN" or params[:sSearch_7].upcase == "SOLVENT" or params[:sSearch_7].upcase == "SOLVENTE" 
 
-        empresas = empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) != 2")
+        empresas = empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) = 2")
 
       else
         
