@@ -585,7 +585,12 @@
             -if @empresa_registrada.new_record?
               =f.collection_select(:id_clasificacion, Clasificacion.all, :id, :clasificacion,  { :style => "width:600px;"})
             -else
-              =f.collection_select(:id_clasificacion, Clasificacion.all, :id, :clasificacion,  { :selected => @clasificacion.id,:style => "width:600px;"})
+              - if @clasificacion 
+
+                =f.collection_select(:id_clasificacion, Clasificacion.all, :id, :clasificacion,  { :selected => @clasificacion.id,:style => "width:600px;" })
+              -else
+                =f.collection_select(:id_clasificacion, Clasificacion.all, :id, :clasificacion,  { :style => "width:600px;" })
+
             
       %table
         %tr
