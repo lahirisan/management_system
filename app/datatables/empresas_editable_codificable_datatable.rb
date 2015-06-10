@@ -24,6 +24,7 @@ private
 
       fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") 
         
+        #empresas.solv son las empresasas solventes, la funcion del sistema administrativo devuelve las empresas insolventes 
         if  (empresa.solv != 2) 
           estatus_administrativo =  "DEUDOR"
           boton_productos = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, empresa_productos_path(empresa.prefijo), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos de la empresa #{empresa.nombre_empresa}"}) 

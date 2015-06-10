@@ -24,6 +24,7 @@ private
     empresas.map do |empresa|
         
         
+        #empresas.solv son las empresasas solventes, la funcion del sistema administrativo devuelve las empresas insolventes 
         estatus_administrativo = (empresa.solv == 2) ? "SOLVENTE" : "DEUDOR" # SE VERIFICA EL ESTATUS ADMINISTRATIVO DE LA EMPRESA
 
         if estatus_administrativo == "SOLVENTE" 
