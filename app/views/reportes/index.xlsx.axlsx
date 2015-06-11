@@ -1,0 +1,101 @@
+@empresas = Empresa.joins("inner join ciudad on empresa.id_ciudad = ciudad.id left join estatus on empresa.id_estatus = estatus.id LEFT OUTER JOIN [BDGS1DTS.MDF].dbo.fnc_CltSlv () ON empresa.prefijo = [BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo inner join empresa_clasificacion on empresa.id_clasificacion = empresa_clasificacion.id").order("empresa.fecha_activacion desc").select("empresa.prefijo as prefijo, empresa.nombre_empresa as nombre_empresa, empresa.fecha_activacion as fecha_activacion, empresa.rif_completo as rif_completo, empresa.rif as rif, estatus.descripcion as estatus_, isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2)  AS solv, empresa.ventas_brutas_anuales as ventas_brutas_anuales, empresa.aporte_mantenimiento as aporte_mantenimiento, empresa.categoria as categoria, empresa.division as division, empresa.grupo as grupo, empresa.clase as clase, empresa.rep_legal as rep_legal, empresa.email1_ean as email1_ean, empresa.email2_ean as email2_ean, empresa.telefono1_ean as telefono1_ean, empresa.telefono2_ean as telefono2_ean, empresa.telefono3_ean as telefono3_ean, empresa.fax_ean as fax_ean, empresa.fecha_inscripcion as fecha_inscripcion, empresa.fecha_reactivacion as fecha_reactivacion, empresa.direccion_empresa as direccion_empresa, empresa.cod_contacto_tlf1 as cod_contacto_tlf1, empresa.contacto_tlf1 as contacto_tlf1, empresa.cod_contacto_tlf2 as cod_contacto_tlf2, empresa.contacto_tlf2 as contacto_tlf2, empresa.cod_contacto_tlf3 as cod_contacto_tlf3, empresa.contacto_tlf3 as contacto_tlf3, empresa.cod_contacto_fax as cod_contacto_fax, empresa.contacto_fax as contacto_fax, empresa.cod_tlf1_ean as cod_tlf1_ean, empresa.telefono1_ean as telefono1_ean, empresa.cod_tlf2_ean as cod_tlf2_ean, empresa.telefono2_ean as telefono2_ean, empresa.cod_tlf3_ean as cod_tlf3_ean, empresa.telefono3_ean as telefono3_ean, empresa.cod_fax_ean as cod_fax_ean, empresa.fax_ean as fax_ean, empresa.cod_tlf1_sincronet as cod_tlf1_sincronet, empresa.telefono1_edi as telefono1_edi, empresa.cod_tlf2_sincronet as cod_tlf2_sincronet, empresa.telefono2_edi as telefono2_edi, empresa.cod_tlf3_sincronet as cod_tlf3_sincronet, empresa.telefono3_edi as telefono3_edi, empresa.cod_fax_sincronet as cod_fax_sincronet, empresa.fax_edi as fax_edi, empresa.email1_edi as email1_edi, empresa.email2_edi as email2_edi, empresa.cod_tlf1_seminarios as cod_tlf1_seminarios, empresa.telefono1_recursos as telefono1_recursos, empresa.cod_tlf2_seminarios as cod_tlf2_seminarios, empresa.telefono2_recursos as telefono2_recursos, empresa.cod_tlf3_seminarios as cod_tlf3_seminarios, empresa.telefono3_recursos as telefono3_recursos, empresa.cod_fax_seminarios as cod_fax_seminarios, empresa.fax_recursos as fax_recursos, empresa.cod_tlf1_mercadeo as cod_tlf1_mercadeo, empresa.telefono1_mercadeo as telefono1_mercadeo, empresa.cod_tlf2_mercadeo as cod_tlf2_mercadeo, empresa.telefono2_mercadeo as telefono2_mercadeo, empresa.cod_tlf3_mercadeo as cod_tlf3_mercadeo, empresa.telefono3_mercadeo as telefono3_mercadeo, empresa.cod_fax_mercadeo as cod_fax_mercadeo, empresa.fax_mercadeo as fax_mercadeo, empresa.contacto_email1 as contacto_email1, empresa.contacto_email2 as contacto_email2, empresa.email1_recursos as email1_recursos, empresa.email2_recursos as email2_recursos, empresa.email1_mercadeo as email1_mercadeo, empresa.email2_mercadeo as email2_mercadeo, empresa.id_tipo_usuario as id_tipo_usuario, ciudad.nombre as ciudad_, empresa_clasificacion.descripcion as clasificacion_")
+
+
+if params[:prefijo].present? # Filtro de busqueda prefijo
+  @empresas = @empresas.where("prefijo like :search", search: "%#{params[:prefijo]}%")
+end
+
+if params[:nombre_empresa].present? # Filtro de busqueda por nombre de la empresa
+  @empresas = @empresas.where("nombre_empresa like :search", search: "%#{params[:nombre_empresa]}%")
+end
+
+if params[:fecha_activacion].present? # Filtro fecha_activacion
+  @empresas = @empresas.where("CONVERT(varchar(255),  empresa.fecha_activacion ,126) like :search", search: "%#{params[:fecha_activacion]}%")
+end 
+
+if params[:ciudad].present?
+  @empresas = @empresas.where("ciudad.nombre like :search", search: "%#{params[:ciudad]}%")
+end
+
+
+if params[:rif].present?
+  @empresas = @empresas.where("empresa.rif like :search", search: "%#{params[:rif]}%")
+end
+
+
+
+if params[:estatus].present?
+  @empresas = @empresas.where("estatus.descripcion like :search", search: "%#{params[:estatus]}%")
+end
+
+if params[:sub_estatus].present?
+  
+  if params[:sub_estatus].upcase == "D" or params[:sub_estatus].upcase == "DE" or params[:sub_estatus].upcase == "DEU" or params[:sub_estatus].upcase == "DEUD" or params[:sub_estatus].upcase == "DEUDO" or params[:sub_estatus].upcase == "DEUDOR"
+    
+    @empresas = @empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) != 2")
+
+    
+  elsif params[:sub_estatus].upcase == "S" or params[:sub_estatus].upcase == "SO" or params[:sub_estatus].upcase == "SOL" or params[:sub_estatus].upcase == "SOLV" or params[:sub_estatus].upcase == "SOLVE" or params[:sub_estatus].upcase == "SOLVE" or params[:sub_estatus].upcase == "SOLVEN" or params[:sub_estatus].upcase == "SOLVENT" or params[:sub_estatus].upcase == "SOLVENTE" 
+
+    @empresas = @empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) = 2")
+
+  else
+    
+    @empresas = @empresas.where("isnull([BDGS1DTS.MDF].dbo.fnc_CltSlv.codigo, 2) like '#{params[:sub_estatus]}'")
+  end 
+
+end
+
+if params[:clasificacion].present?
+  @empresas = @empresas.where("empresa_clasificacion.descripcion like :search", search: "%#{params[:clasificacion]}%")
+end
+
+
+
+	xlsx_package = Axlsx::Package.new 
+	wb = xlsx_package.workbook
+
+	wb.add_worksheet(name: "GS1") do |sheet|
+		wb.styles do |s|
+			
+			black_cell = s.add_style :i => true, :bg_color => "F8F8F8", :fg_color => "00", :sz => 12, :alignment => { :horizontal=> :center }
+			black_cell2 = s.add_style   :border => { :style => :thin, :color => "00" }, :i => true,:fg_color => "00", :sz => 8, :alignment => { :horizontal=> :left }
+			tomas = s.add_style  :sz => 12, :alignment => { :horizontal=> :center }
+
+				sheet.add_row ['Prefijo', 'Nombre Empresa', 'Dirección Fiscal', 'Fecha Inscripción', 'Fecha Activación', 'Fecha Reactivación', 'RIF', 'Tipo Usuario', 'Estatus', 'Sub Estatus', 'Ciudad',  'Ventas Brutas Anuales', 'Aporte Mantenimiento',  'Categoria', 'Division', 'Grupo', 'Clase', 'Rep Legal', 'Correo 1', 'Correo 2', 'Teléfono 1', 'Teléfono 2', 'Teléfono 3', 'Fax', 'Teléfono1 EAN', 'Teléfono2 EAN', 'Teléfono3 EAN', 'Fax EAN', 'Correo1 EAN', 'Correo2 EAN', 'Teléfono1 Sincronet', 'Teléfono2 Sincronet', 'Teléfono3 Sincronet', 'Fax Sincronet', 'Correo1 Sincronet', 'Correo2 Sincronet', 'Teléfono1 RRHH', 'Teléfono2 RRHH', 'Teléfono3 RRHH', 'Fax RRHH', 'Correo1 RRHH', 'Correo2 RRHH', 'Teléfono1 Mercadeo' , 'Teléfono2 Mercadeo', 'Teléfono3 Mercadeo', 'Fax Mercadeo', 'Correo1 Mercadeo', 'Correo2 Mercadeo', 'Clasificación'], :style => [black_cell,black_cell,black_cell,black_cell,black_cell,black_cell,black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell, black_cell]
+				@empresas.each do |empresa|
+					
+	      			fecha_activacion =   (empresa.fecha_activacion) ?  empresa.fecha_activacion.strftime("%Y-%m-%d") :  ""
+	      			fecha_inscripcion =  (empresa.fecha_inscripcion) ? empresa.fecha_inscripcion.strftime("%Y-%m-%d") : ""
+	      			fecha_reactivacion = (empresa.fecha_reactivacion) ? empresa.fecha_reactivacion.strftime("%Y-%m-%d"): ""
+	      			rif = (empresa.rif_completo) ? empresa.rif_completo :  empresa.rif
+
+					if empresa.solv == 2
+						solvencia =  "SOLVENTE"
+					else
+						solvencia = "DEUDOR"
+					end
+
+					
+					if empresa.id_tipo_usuario == '1'
+
+					 tipo_usuario_empresa = "USUARIO"
+					elsif empresa.id_tipo_usuario == '2'
+						tipo_usuario_empresa = "NO USUARIO"
+					else
+						tipo_usuario_empresa = ""
+					end
+
+
+				 
+					sheet.add_row [empresa.prefijo,empresa.try(:nombre_empresa),empresa.try(:direccion_empresa), fecha_inscripcion, fecha_activacion, fecha_reactivacion, rif, tipo_usuario_empresa, empresa.try(:estatus_), solvencia, empresa.ciudad_, empresa.try(:ventas_brutas_anuales), empresa.try(:aporte_mantenimiento).to_f, empresa.try(:division), empresa.try(:categoria), empresa.try(:grupo), empresa.try(:clase),  empresa.try(:rep_legal), empresa.try(:contacto_email1), empresa.try(:contacto_email2), Empresa.telefono1(empresa), Empresa.telefono2(empresa), Empresa.telefono3(empresa), Empresa.fax(empresa), Empresa.telefono1_ean(empresa), Empresa.telefono2_ean(empresa), Empresa.telefono3_ean(empresa), Empresa.fax_ean(empresa), empresa.try(:email1_ean), empresa.try(:email2_ean), Empresa.telefono1_edi(empresa), Empresa.telefono2_edi(empresa), Empresa.telefono3_edi(empresa), Empresa.fax_edi(empresa), empresa.try(:email1_edi), empresa.try(:email2_edi), Empresa.telefono1_recursos(empresa), Empresa.telefono2_recursos(empresa), Empresa.telefono3_recursos(empresa), Empresa.fax_recursos(empresa), empresa.try(:email1_recursos), empresa.try(:email2_recursos), Empresa.telefono1_mercadeo(empresa), Empresa.telefono2_mercadeo(empresa), Empresa.telefono3_mercadeo(empresa), Empresa.fax_mercadeo(empresa), empresa.try(:email1_mercadeo), empresa.try(:email2_mercadeo), empresa.clasificacion_],  :style => [tomas, tomas,tomas,tomas,tomas,tomas,tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas, tomas]
+				
+
+				 end
+		end
+
+
+	end
+
+
+

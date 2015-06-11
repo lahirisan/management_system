@@ -77,6 +77,11 @@ class ReportesController < ApplicationController
 
 			elsif params[:listado_gepir]
 				render :template => "/reportes/listado_gepir.xlsx.axlsx"
+
+			elsif params[:reporte_empresas]
+
+				render :template => "/reportes/reporte_empresas.xlsx.axlsx"
+								
 	      	end
 
 

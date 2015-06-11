@@ -1,0 +1,9 @@
+%table
+    %tr
+        %td
+            %form{action: "/reportes.xlsx?reporte_empresas=true", method: "get"}
+                .parametros
+                %button.ui-state-default.ui-corner-all.exportar_reporte_empresas{:type => "submit", :title => "Opción que te permite exportar el listado general de Empresas a formato Excel"}
+                    %span.ui-icon.ui-icon-disk
+                    Exportar Excel
+       

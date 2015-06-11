@@ -139,7 +139,7 @@
     oTable2.columnFilter({ aoColumns: [{ type: "text"},{ type: "text"}, {type: "text" }, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}]});
     oTable2.fnFilterOnReturn();
 
-      $('.exportar_reporte_servicios, .exportar_reporte_productos, .exportar_reporte_gln').hover(
+      $('.exportar_reporte_servicios, .exportar_reporte_productos, .exportar_reporte_gln, .exportar_reporte_empresas').hover(
           function() { $(this).addClass('ui-state-hover'); },
           function() { $(this).removeClass('ui-state-hover');}
         );
@@ -191,6 +191,23 @@
             '<input name="reporte_servicio" type="hidden" value="true">'
         );
     });
+
+    $('body').on('click', '.exportar_reporte_empresas', function() {
+           
+            $('.parametros').html(
+                
+                '<input name="prefijo" type="hidden" value="'+$('tfoot tr th:nth-child(1) span input').val()+'">'+
+                '<input name="nombre_empresa" type="hidden" value="'+$('tfoot tr th:nth-child(2) span input').val()+'">'+
+                '<input name="fecha_activacion" type="hidden" value="'+$('tfoot tr th:nth-child(3) span input').val()+'">'+
+                '<input name="ciudad" type="hidden" value="'+$('tfoot tr th:nth-child(4) span input').val()+'">'+
+                '<input name="rif" type="hidden" value="'+$('tfoot tr th:nth-child(5) span input').val()+'">'+
+                '<input name="estatus" type="hidden" value="'+$('tfoot tr th:nth-child(6) span input').val()+'">'+
+                '<input name="sub_estatus" type="hidden" value="'+$('tfoot tr th:nth-child(7) span input').val()+'">'+
+                '<input name="clasificacion" type="hidden" value="'+$('tfoot tr th:nth-child(8) span input').val()+'">'
+                
+            );
+
+        });
 
 
 
