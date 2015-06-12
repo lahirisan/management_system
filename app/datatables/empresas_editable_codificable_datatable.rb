@@ -25,13 +25,13 @@ private
       fecha =  empresa.fecha_activacion.strftime("%Y-%m-%d") 
         
         #empresas.solv son las empresasas solventes, la funcion del sistema administrativo devuelve las empresas insolventes 
-        if  (empresa.solv != 2) 
-          estatus_administrativo =  "DEUDOR"
+        if  (empresa.solv == 2) 
+          estatus_administrativo =  "SOLVENTE"
           boton_productos = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, empresa_productos_path(empresa.prefijo), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Productos de la empresa #{empresa.nombre_empresa}"}) 
           boton_gln = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa.prefijo), {:class => "ui-state-default ui-corner-all botones_servicio", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"})
 
         else
-           estatus_administrativo = "SOLVENTE" # SE VERIFICA EL ESTATUS ADMINISTRATIVO DE LA EMPRESA
+           estatus_administrativo = "DEUDOR" # SE VERIFICA EL ESTATUS ADMINISTRATIVO DE LA EMPRESA
            boton_productos = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Productos').html_safe, empresa_productos_path(empresa.prefijo), {:class => "ui-state-default ui-corner-all botones_servicio codificable", :title => "Productos de la empresa #{empresa.nombre_empresa}"}) 
            boton_gln = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'GLN').html_safe, empresa_glns_path(empresa.prefijo), {:class => "ui-state-default ui-corner-all botones_servicio codificable", :title => "GLN asociados a la empresa #{empresa.nombre_empresa}"})
         end
