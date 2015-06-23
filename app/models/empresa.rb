@@ -72,7 +72,7 @@
 		empresas.each{|empresa| 
 			empresa.id_estatus = 1;  # Estatus empresa activa segun tabla ESTATUS
 			empresa.fecha_reactivacion = Time.now; 
-			empresa.save;
+			empresa.save(:validate => false);
 			Producto.where("prefijo = #{empresa.prefijo}").update_all("id_estatus = 3" ); # ESTATUS PRODUCTO ACTIVO SEGUN TABLA
 			Gln.where("prefijo = #{empresa.prefijo}").update_all("id_estatus = 9" ) # Estatus GLN ACTIVO
 		}
