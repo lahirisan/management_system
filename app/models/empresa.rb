@@ -26,7 +26,25 @@
 	validates :rif_completo, :uniqueness => {:message => "La aplicacion detecto que el RIF que esta ingresando ya esta registrado en el listado de las Empresas. Por favor verifique."}, on: :create, unless: "no_rif_validation == true"
 
 	
- 
+ 	# reposte de empresas to CSV, opcion para auditoria en puntos de ventas
+
+	def self.csv_auditoria_service_retail_empresa
+		
+		CSV.generate(:col_sep => ";") do |csv|
+		    
+		    Empresa.select(:rif_completo, :prefijo, :nombre_empresa, :id_estatus, :fecha_reactivacion).find_each do |empresa|
+		      empresa_activa = (empresa.id_estatus == 1) ? "SI" : "NO"
+		      empresa_retirada = (empresa.id_estatus == 2) ? "SI" : "NO" #empresa_retirada = (empresa.id_estatus == 2) ? "SI" : "NO"
+		      empresa_reasignada = empresa.fecha_reactivacion.nil? ? "NO" : "SI" 
+
+		      csv << [empresa.rif_completo, empresa.prefijo, empresa.nombre_empresa, empresa_activa, empresa_retirada, empresa_reasignada]
+
+		    end
+		end
+
+	end
+
+
 	def self.cambiar_sub_estatus(parametros)
 		
 		parametros[:sub_estatus_empresas].collect{|empresa_seleccionada|  empresa = Empresa.find(empresa_seleccionada); empresa.id_subestatus = parametros[:"#{empresa.prefijo}"].to_i; empresa.save}

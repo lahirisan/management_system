@@ -87,8 +87,22 @@ class ReportesController < ApplicationController
 
 	      }
 
-	    end
+	      	# Exportar CSV según formato de auditoria Service Retail
 
+	      	format.csv{
+	      		
+	      		if params[:exportar_csv_auditoria_service_retail_empresas]
+	      			send_data Empresa.csv_auditoria_service_retail_empresa, :filename => "csv_auditoria_service_retail_empresa.csv"
+	      		elsif params[:exportar_csv_auditoria_service_retail_gln]
+	      			send_data Gln.csv_auditoria_service_retail_gln, :filename => "csv_auditoria_service_retail_gln.csv"
+	      		elsif params[:exportar_csv_auditoria_service_retail_productos]
+	      			send_data Producto.csv_auditoria_service_retail_producto, :filename => "csv_auditoria_service_retail_producto.csv"
+
+	      		end
+
+	      	}
+
+	    end
 
 	end
 

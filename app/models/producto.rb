@@ -10,6 +10,27 @@ class Producto < ActiveRecord::Base
   validates :gtin, :uniqueness => {:message => "El codigo de Producto que esta ingresando ya  se encuentra asociado a un GTIN"}
 
 
+  
+  # Exportar CSV formato auditoria Service Retail
+
+
+  def self.csv_auditoria_service_retail_producto
+    
+    CSV.generate(:col_sep => ";") do |csv|
+        
+        Producto.joins(:empresa).select("producto.prefijo, empresa.rif_completo, producto.gtin, producto.descripcion, producto.id_estatus").find_each(batch_size: 50000) do |producto|
+          
+          producto_estatus_activo = (producto.id_estatus == 3) ? "SI" : "NO"
+          producto_estatus_retirado = (producto.id_estatus == 4) ? "SI" : "NO"
+
+          
+          csv << [producto.prefijo, producto.try(:rif_completo), producto.gtin, producto.descripcion, producto_estatus_activo, producto_estatus_retirado]
+
+        end
+    end
+
+  end
+
   def self.retirar(parametros) # Retira productos desde el listado de productos
 
   	# Se busca el estatus retirado

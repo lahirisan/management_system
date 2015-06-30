@@ -1,9 +1,11 @@
 %table
-    %tr
-        %td
-            %form{action: "/reportes.xlsx?reporte_empresas=true", method: "get"}
-                .parametros
-                %button.ui-state-default.ui-corner-all.exportar_reporte_empresas{:type => "submit", :title => "Opción que te permite exportar el listado general de Empresas a formato Excel"}
-                    %span.ui-icon.ui-icon-disk
-                    Exportar Excel
-       
+		%tr
+				%td
+						%form{action: "/reportes.xlsx?reporte_empresas=true", method: "get"}
+								.parametros
+								%button.ui-state-default.ui-corner-all.exportar_reporte_empresas{:type => "submit", :title => "Opción que te permite exportar el listado general de Empresas a formato Excel"}
+										%span.ui-icon.ui-icon-disk
+										Exportar Excel
+				%td
+						=link_to "Exportar CSV", "/reportes.csv?exportar_csv_auditoria_service_retail_empresas=true", {:title => "Formato  CSV auditoría Service Retail"}
+			

@@ -1,8 +1,10 @@
 %table.margen_superior
-    %tr
-        %td
-            %form{action: "/reportes.xlsx", method: "get"}
-                .parametros
-                %button.ui-state-default.ui-corner-all.exportar_reporte_gln{:type => "submit", :title => "Opción que te permite exportar el listado general de Empresas a formato Excel"}
-                    %span.ui-icon.ui-icon-disk
-                    Exportar Excel
+	%tr
+		%td
+			%form{action: "/reportes.xlsx", method: "get"}
+				.parametros
+				%button.ui-state-default.ui-corner-all.exportar_reporte_gln{:type => "submit", :title => "Opción que te permite exportar el listado general de Empresas a formato Excel"}
+					%span.ui-icon.ui-icon-disk
+					Exportar Excel
+		%td
+			=link_to "Exportar CSV", "/reportes.csv?exportar_csv_auditoria_service_retail_gln=true", {:title => "Formato  CSV auditoría Service Retail"}

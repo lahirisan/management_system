@@ -16,6 +16,22 @@ class Gln < ActiveRecord::Base
   #validates :cod_postal, format: { with: /^[1-9]\d*$/, on: :create, :message => "El Formato del Codigo Postal es incorrecto"} # Validacion al crear
 
 
+
+def self.csv_auditoria_service_retail_gln
+    
+    CSV.generate(:col_sep => ";") do |csv|
+        
+        Gln.joins(:empresa).select("empresa.nombre_empresa, gln.descripcion, gln.gln as gln_").where("(empresa.nombre_empresa = 'FARMATODO, C.A.' and gln.id_tipo_gln = 2) or (empresa.nombre_empresa = 'SUPERMERCADOS UNICASA, C.A.' and gln.id_tipo_gln = 2) or (empresa.nombre_empresa = 'EXCELSIOR GAMA SUPERMERCADOS, C.A.' and gln.id_tipo_gln = 2) or (empresa.nombre_empresa = 'CENTRAL MADEIRENSE C.A.' and gln.id_tipo_gln = 2) or (empresa.nombre_empresa like '%AUTOMERCADOS PLAZA%' and gln.id_tipo_gln = 2)").find_each do |empresa_gln|
+          
+          csv << [empresa_gln.nombre_empresa, empresa_gln.descripcion, empresa_gln.gln_, "414"+ empresa_gln.gln_ ]
+
+        end
+    end
+
+end
+
+
+
  def self.eliminar(parametros)
  	
     for eliminar_gln in (0..parametros[:eliminar_glns].size-1)
