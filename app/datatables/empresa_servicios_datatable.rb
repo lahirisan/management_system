@@ -27,7 +27,7 @@ private
           empresa_servicio.empresa.nombre_empresa,
           empresa_servicio.servicio.nombre,
           empresa_servicio.fecha_contratacion.strftime("%Y-%m-%d"),
-          empresa_servicio.fecha_finalizacion.strftime("%Y-%m-%d"),
+          empresa_servicio.fecha_finalizacion ? empresa_servicio.fecha_finalizacion.strftime("%Y-%m-%d") : empresa_servicio.try(:fecha_finalizacion),
           empresa_servicio.nombre_contacto,
           empresa_servicio.cargo_contacto,
           empresa_servicio.telefono,
