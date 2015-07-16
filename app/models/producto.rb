@@ -196,9 +196,9 @@ class Producto < ActiveRecord::Base
        
       end
       
-    elsif tipo_gtin.tipo == "GTIN-14"
+    elsif tipo_gtin.tipo == "GTIN-14"  
 
-      if tipo_gtin.base == "GTIN-13"
+      if tipo_gtin.base == "GTIN-13" # generacion de GTIN-14 en base a GTIN-13
         
         indicador = 1
 
@@ -226,8 +226,30 @@ class Producto < ActiveRecord::Base
         gtin_valido_generado = (numeracion_producto.to_s + "00000" + gtin[0..6]) 
         digito_verificacion = calcular_digito_verificacion(gtin_valido_generado.to_i, "GTIN-14")
         gtin_generado = gtin_valido_generado.to_s + digito_verificacion.to_s 
+
+
+      elsif tipo_gtin.base == "GTIN-12"
+
+        producto_original = Producto.find(gtin)
+        
+        
+        # Se buscan la cantidad de GTIN14 existentes para ese GTIN
+        productos = Producto.where(prefijo: producto_original.prefijo, id_tipo_gtin: tipo_gtin.id, codigo_prod: producto_original.codigo_prod)
+        
+        
+
+        numeracion_producto = productos.nil? ? 1 : (productos.size + 1)
+        gtin_valido_generado = (numeracion_producto.to_s + "0" + gtin[0..10]) 
+        digito_verificacion = calcular_digito_verificacion(gtin_valido_generado.to_i, "GTIN-14")
+        gtin_generado = gtin_valido_generado.to_s + digito_verificacion.to_s
+
+        
         
       end
+        
+      
+
+
       
     end
 
@@ -261,6 +283,7 @@ class Producto < ActiveRecord::Base
   
   def self.completar_secuencia(secuencia, tipo_gtin)
      
+     
 
     if tipo_gtin == "GTIN-8"
       if secuencia.to_s.size == 1
@@ -270,9 +293,9 @@ class Producto < ActiveRecord::Base
       elsif secuencia.to_s.size == 3
         secuencia = "0" + secuencia.to_s
       end
-    elsif tipo_gtin == "GTIN-13"
-     
-      if secuencia.to_s.size == 1
+    elsif (tipo_gtin == "GTIN-13") 
+      
+      if secuencia.to_s.size == 1 
         secuencia = "0000" + secuencia.to_s 
       elsif secuencia.to_s.size == 2
         secuencia = "000" + secuencia.to_s 
@@ -281,7 +304,9 @@ class Producto < ActiveRecord::Base
       elsif secuencia.to_s.size == 4
         secuencia = "0" + secuencia.to_s
       end
+      
     end
+
 
     return secuencia
 
@@ -314,6 +339,7 @@ class Producto < ActiveRecord::Base
     (2..spreadsheet.last_row).each do |fila|
 
       # Se verifica si el gtin base existe
+
       gtin_existente =  verificar_gtin_existente(tipo_gtin.base, prefijo,spreadsheet.row(fila)[0].to_i )
 
       if (gtin_existente)
@@ -327,6 +353,7 @@ class Producto < ActiveRecord::Base
         producto.id_estatus = 3
         producto.fecha_creacion = Time.now 
         
+
         if (tipo_gtin.base == "GTIN-13" and prefijo.to_s.size == 7)
 
           producto.codigo_prod =  producto.gtin[8..12]  
@@ -339,15 +366,25 @@ class Producto < ActiveRecord::Base
 
           producto.codigo_prod = producto.gtin[10..12]
 
+        elsif tipo_gtin.base == "GTIN-12"
+
+          producto.codigo_prod = producto.gtin[8..12]
+
         end
 
         producto.id_tipo_gtin = tipo_gtin_.to_i
         producto.prefijo = prefijo
-        producto.save
+        
+        # SE verifica si el producto existe en cuyo caso se notifica al usuario
+
+        producto_verificado = Producto.find(:first, :conditions => ["prefijo = ? and gtin = ?", prefijo, producto.gtin])
+        codigo_invalido += " "+  producto_verificado.gtin if producto_verificado 
+        producto.save  
 
         Auditoria.registrar_evento(usuario,"producto", "Importar", Time.now, "GTIN:#{producto.gtin} DESCRIPCION:#{producto.descripcion} TIPO:GTIN-14")
         
       else
+        
         
         codigo_invalido += " "+  spreadsheet.row(fila)[0].to_i.to_s
        
@@ -360,11 +397,15 @@ class Producto < ActiveRecord::Base
   end
 
   
-  def self.verificar_gtin_existente(base, prefijo,codigo_producto)
+  def self.verificar_gtin_existente(base, prefijo,codigo_producto) # Si se sta generando GTIN14 base 12 en el parametro codigo_producto va el GTIN12 que se va a transformar en GTIN13
 
-    #raise (base.to_s + "_" + prefijo.to_s + " " +   codigo_producto.to_s).to_yaml
+
+
     if prefijo.to_s.size == 7 or prefijo.to_s.size == 5
+      # Se completa el codigo interno de lo que indica el archivo excel a 5 digitos, el naso de GTIN14 base 12 el codigo interno es el mismo GTIN12 que deberia venir en el EXCEL
+
       codigo_interno = completar_secuencia(codigo_producto, base) 
+
     else
       codigo_producto = "00" + codigo_producto.to_s if codigo_producto.to_s.size == 1
       codigo_producto = "0" + codigo_producto.to_s if codigo_producto.to_s.size == 2
@@ -375,18 +416,26 @@ class Producto < ActiveRecord::Base
 
     if base == "GTIN-13"
 
-    gtin_generado =  prefijo.to_s + codigo_interno.to_s
+      gtin_generado =  prefijo.to_s + codigo_interno.to_s
     
     elsif base == "GTIN-8"
-    gtin_generado = "759" + codigo_interno.to_s
-      
+      gtin_generado = "759" + codigo_interno.to_s
+   
     end
 
-    digito_verificacion = calcular_digito_verificacion(gtin_generado.to_i, base)
-    gtin_generado = gtin_generado + digito_verificacion.to_s
+    if (base == "GTIN-13") or (base == "GTIN-8")
 
+      digito_verificacion = calcular_digito_verificacion(gtin_generado.to_i, base)
+      gtin_generado = gtin_generado + digito_verificacion.to_s
+
+    end
+
+    gtin_generado = codigo_producto.to_s if base == "GTIN-12"
+
+    # Se verifica si existe el GTIN    
     gtin_existente = Producto.find(:first, :conditions => ["prefijo = ? and gtin = ?", prefijo, gtin_generado])
 
+    
     return gtin_existente
   end
 
@@ -394,6 +443,7 @@ class Producto < ActiveRecord::Base
 
   def self.crear_gtin_14(secuencia, gtin, base)
     
+
     if base == "GTIN-13"
 
       gtin_generado = secuencia.to_s + gtin[0..11]
@@ -402,10 +452,16 @@ class Producto < ActiveRecord::Base
       
       gtin_generado = secuencia.to_s + "00000" + gtin[0..6]
 
+    elsif base == "GTIN-12"
+      
+      gtin_generado = secuencia.to_s + "0" + gtin[0..10]
+
     end
+
 
     digito_verificacion = calcular_digito_verificacion(gtin_generado.to_i, "GTIN-14")
     gtin_generado = gtin_generado + digito_verificacion.to_s
+
     
     return gtin_generado
 

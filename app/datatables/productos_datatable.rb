@@ -45,8 +45,21 @@ private
 
           
 
-        if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3) ## Solo se muestra el boton Generar GTIN14 si el producto es tipoGTIN 8 o tipoGTIN13
-          base = (producto.id_tipo_gtin == 1) ? 4 : 6  # Para mostrar seleccioando la base del producto cunado se crear GTIN 14
+        if (producto.id_tipo_gtin == 1) or (producto.id_tipo_gtin == 3) or (producto.id_tipo_gtin == 2) ## Solo se muestra el boton Generar GTIN14 si el producto es tipoGTIN 8 o tipoGTIN13 o tipoGTIN12
+          
+          if (producto.id_tipo_gtin == 1)
+            
+            base = 4  # Segun la tabla tipo_gtin este ID indica GTIN14 base GTIN8
+
+          elsif (producto.id_tipo_gtin == 3)
+            base = 6 # # Segun la tabla tipo_gtin este ID indica GTIN14 base GTIN13
+
+          elsif (producto.id_tipo_gtin == 2)
+
+            base = 5 # # Segun la tabla tipo_gtin este ID indica GTIN14 base GTIN12
+
+          end          
+
           
           ################### ESTOS CARACTERES SE CAMBIAN POR QUE GENERAR BAD URI EXCEPTION #################
 

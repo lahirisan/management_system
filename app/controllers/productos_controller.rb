@@ -167,14 +167,18 @@ class ProductosController < ApplicationController
     
     @gtin = params[:gtin]  if params[:gtin] != ''
 
+
     params[:producto][:gtin] = Producto.crear_gtin(params[:producto][:id_tipo_gtin], params[:empresa_id], params[:gtin], params[:producto][:codigo_prod]) 
     params[:producto][:fecha_creacion] = Time.now
     params[:producto][:id_estatus] = 3
     
+    # Se asigna el codigo de producto
+
     params[:producto][:codigo_prod] = params[:producto][:gtin][7..11] if params[:producto][:id_tipo_gtin] == '3' and (@empresa.prefijo.to_s.size == 7  or @empresa.prefijo.to_s.size == 5)
     params[:producto][:codigo_prod] = params[:producto][:gtin][9..11] if params[:producto][:id_tipo_gtin] == '3' and @empresa.prefijo.to_s.size == 9 and @empresa.prefijo.to_s[3..5] == "400"
     params[:producto][:codigo_prod] = params[:producto][:gtin][3..6] if params[:producto][:id_tipo_gtin] == '1'
     params[:producto][:codigo_prod] = params[:producto][:gtin][9..12] if params[:producto][:id_tipo_gtin] == '4' 
+    params[:producto][:codigo_prod] = params[:producto][:gtin][8..12] if params[:producto][:id_tipo_gtin] == '5'  # GTIN 14 base 12 
     params[:producto][:codigo_prod] = params[:producto][:gtin][8..12] if params[:producto][:id_tipo_gtin] == '6' and (@empresa.prefijo.to_s.size == 7  or @empresa.prefijo.to_s.size == 5)
     params[:producto][:codigo_prod] = params[:producto][:gtin][10..12] if params[:producto][:id_tipo_gtin] == '6' and @empresa.prefijo.to_s.size == 9 and @empresa.prefijo.to_s[3..5] == "400"
 
@@ -244,7 +248,7 @@ class ProductosController < ApplicationController
 
             tipo_gtin = TipoGtin.find(params[:tipo_gtin])
 
-            if (params[:tipo_gtin] == '6') or (params[:tipo_gtin] == '4') # Gtin14 base 8  GTIN14 base 13
+            if (params[:tipo_gtin] == '6') or (params[:tipo_gtin] == '4') or (params[:tipo_gtin] == '5')  # Gtin14 base 8  /  GTIN14 base 13 / GTIN14 base 12
               codigo_invalido = Producto.import_gtin_14(params[:file].path, params[:file].original_filename, params[:tipo_gtin], params[:empresa_id], session[:usuario]) 
               mensaje = "Los #{tipo_gtin.tipo} base #{tipo_gtin.base} fueron importados." 
             else # Importar GTIN-13
@@ -260,7 +264,8 @@ class ProductosController < ApplicationController
 
                redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "Los Codigos fueron generados satisfactoriamente".upcase 
              else
-              redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "No se pudo generar GTIN-14 para los siguientes codigo(s) [#{codigo_invalido}]. Por favor verifique que existan antes de intentar generar su GTIN-14.".upcase 
+              
+              redirect_to "/empresas/#{params[:empresa_id]}/productos", notice: "No se pudo generar GTIN-14 para los siguientes codigo(s) [#{codigo_invalido}].".upcase 
 
                #redirect_to "/empresas/#{params[:empresa_id]}/productos?job=true&job_id=#{job.id}", notice:  "LOS PRODUCTOS SE ESTAN IMPORTANDO"  
              end
