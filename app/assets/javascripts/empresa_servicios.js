@@ -32,8 +32,10 @@ $( document ).ready(function() {
     {
         $("#empresa_servicio_fecha_contratacion").datepicker();
         
-        $("#empresa_servicio_fecha_finalizacion").datepicker();
+        
     }
+
+    $("#empresa_servicio_fecha_finalizacion").datepicker();
 
     // Eliminar servicio masivamente
     $('#eliminar_masivo_servicios').live('change', function() {

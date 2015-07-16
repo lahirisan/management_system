@@ -31,7 +31,7 @@
           %td
             Fecha Culminación
           %td
-            = @empresa_servicio.new_record? ? (f.text_field :fecha_finalizacion) : (f.text_field :fecha_finalizacion , :value => "#{@empresa_servicio.fecha_contratacion.strftime("%Y-%m-%d")}", :class => 'campo_readonly', :readonly => :true)
+            =f.text_field :fecha_finalizacion
         %tr
           %td
             Nombre Contacto

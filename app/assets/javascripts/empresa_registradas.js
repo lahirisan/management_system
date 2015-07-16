@@ -262,6 +262,55 @@ $( document ).ready(function() {
 
         });
 
+        $('#empresa_registrada_rif').focusout( function(data) {
+
+            
+            // OJO Documentar este caso y el caso que permite asinar mas de un prefijo a varias empresas
+
+             $.get("/empresas/0.json?rif=" + $("#empresa_registrada_tipo_rif").val() + "-" + $("#empresa_registrada_rif").val(), function(data){
+
+                if (data.length > 0)  // SI encuentra la EMpresa por su RIF
+                {
+                    
+                        if (data[0].id_estatus == 2)
+                            alert("ADVERTENCIA: Estimado usuario, el Sistema Gestión GS1 detectó que el RIF " + $("#empresa_registrada_tipo_rif").val() + "-" + $("#empresa_registrada_rif").val() +  " se encuentra asociado a la empresa " + data[0].nombre_empresa +  " con prefijo " + data[0].prefijo + " y con estatus RETIRADA, por favor notificar el casdo a ESTANDARES Y CONSULTORIA antes de seguir con el registro de empresa")
+                        else
+                            alert("ADVERTENCIA: Estimado usuario, el Sistema de Gestión GS1 detectó que el RIF " + $("#empresa_registrada_tipo_rif").val() + "-" + $("#empresa_registrada_rif").val() + "  se encuentra asociado a la empresa "+ data[0].nombre_empresa + " con prefijo " + data[0].prefijo + " y con estatus ACTIVA, por favor notificar el caso a ESTANDARES Y CONSULTORIA antes de seguir con el registro de empresa")
+                        
+                }
+
+                        
+             });
+            
+        });
+        
+        $('#empresa_registrada_tipo_rif').focusout( function(data) {
+
+            
+            // OJO Documentar este caso y el caso que permite asinar mas de un prefijo a varias empresas
+
+             $.get("/empresas/0.json?rif=" + $("#empresa_registrada_tipo_rif").val() + "-" + $("#empresa_registrada_rif").val(), function(data){
+
+                if (data.length > 0)  // SI encuentra la EMpresa por su RIF
+                {
+                    
+                        if (data[0].id_estatus == 2)
+                            alert("ADVERTENCIA: Estimado usuario, el Sistema Gestión GS1 detectó que este RIF se encuentra asociado a la empresa " + data[0].nombre_empresa +  " con prefijo " + data[0].prefijo + " y con estatus RETIRADA, por favor notificar el casdo a ESTANDARES Y CONSULTORIA antes de seguir con el registro de empresa")
+                        else
+                            alert("ADVERTENCIA: Estimado usuario, el Sistema de Gestión GS1 detectó que RIF  se encuentra asociado a la empresa "+ data[0].nombre_empresa + " con prefijo " + data[0].prefijo + " y con estatus ACTIVA, por favor notificar el caso a ESTANDARES Y CONSULTORIA antes de seguir con el registro de empresa")
+                        
+                }
+
+                        
+             });
+            
+        });
+
+
+        
+
+
+
 
 
         // validacion de lof formato del telefono
