@@ -110,4 +110,53 @@ end
     
  end
 
+
+ def self.importar_gln ## Procedimiento para importar GLN
+
+  spreadsheet = Roo::Excel.new("#{Rails.root}/doc/importar_gln.xls", nil, :ignore)
+    
+    prefijo =  spreadsheet.sheet('GLN').cell(1,1).to_i  # El prefijo al cual se asignará los GLN
+    
+    (3..spreadsheet.last_row).each do |fila|
+
+       gln = spreadsheet.sheet('GLN').cell(fila,1).to_s
+       tipo_gln = spreadsheet.sheet('GLN').cell(fila,2).to_s
+       tipo_gln = (tipo_gln == 'Operativo') ? '3' : '2'
+       codigo_localizacion = spreadsheet.sheet('GLN').cell(fila,3).to_s
+       descripcion = spreadsheet.sheet('GLN').cell(fila,4).to_s
+       estado = spreadsheet.sheet('GLN').cell(fila,5).to_s
+       municipio = spreadsheet.sheet('GLN').cell(fila,6).to_s
+       ciudad = spreadsheet.sheet('GLN').cell(fila,7).to_s
+       edificio = spreadsheet.sheet('GLN').cell(fila,8).to_s
+       avenida = spreadsheet.sheet('GLN').cell(fila,9).to_s
+       urbanizacion = spreadsheet.sheet('GLN').cell(fila,10).to_s
+       punto_referencia = spreadsheet.sheet('GLN').cell(fila,11).to_s
+       codigo_postal = spreadsheet.sheet('GLN').cell(fila,12).to_s
+
+       nuevo_gln = Gln.new
+       nuevo_gln.gln = gln
+       nuevo_gln.prefijo = prefijo
+       nuevo_gln.id_tipo_gln = tipo_gln
+       nuevo_gln.codigo_localizacion = codigo_localizacion
+       nuevo_gln.descripcion = descripcion
+       nuevo_gln.estado = estado
+       nuevo_gln.municipio = municipio
+       nuevo_gln.ciudad = ciudad
+       nuevo_gln.edificio = edificio
+       nuevo_gln.avenida = avenida
+       nuevo_gln.urbanizacion = urbanizacion
+       nuevo_gln.punto_referencia = punto_referencia
+       nuevo_gln.codigo_postal = codigo_postal
+       nuevo_gln.fecha_asignacion = Time.now
+       nuevo_gln.id_estatus = 9
+       nuevo_gln.save
+       
+
+
+    end
+
+
+ end
+
+
 end
