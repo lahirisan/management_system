@@ -13,13 +13,13 @@ class EtiquetasController < ApplicationController
     @telefono =  Empresa.telefono1_ean(@empresa)
     @telefono += " / #{Empresa.telefono2_ean(@empresa)}" if Empresa.telefono2_ean(@empresa)
 
-    
+
     @navegabilidad = @empresa.try(:prefijo).to_s+" > "+@empresa.try(:nombre_empresa) + " > Etiqueta"
     
     respond_to do |format|
       format.html # show.html.haml
       format.pdf{
-        pdf = EtiquetaPdf.new(@empresa)
+        pdf = EtiquetaPdf.new(@empresa, @telefono)
         send_data pdf.render
       }
 
