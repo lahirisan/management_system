@@ -137,6 +137,9 @@ class EmpresasController < ApplicationController
 
     
     respond_to do |format|
+      
+      @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:id]], :include => [:tipo_usuario_empresa])
+
       format.html {
 
         @empresa = Empresa.find(:first, :conditions => ["prefijo = ?", params[:id]], :include => [:tipo_usuario_empresa])
