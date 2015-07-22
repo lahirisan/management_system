@@ -10,8 +10,8 @@ class EtiquetasController < ApplicationController
 
     @municipio_ean = Municipio.find(@empresa.id_municipio_ean)
 
-    @telefono =  Empresa.telefono1_ean(@empresa.prefijo)
-    @telefono += " / #{Empresa.telefono2_ean(@empresa.prefijo)}" if Empresa.telefono2_ean(@empresa)
+    @telefono =  Empresa.telefono1_ean(@empresa)
+    @telefono += " / #{Empresa.telefono2_ean(@empresa)}" if Empresa.telefono2_ean(@empresa)
 
     
     @navegabilidad = @empresa.try(:prefijo).to_s+" > "+@empresa.try(:nombre_empresa) + " > Etiqueta"
