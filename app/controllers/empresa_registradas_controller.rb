@@ -109,7 +109,8 @@ class EmpresaRegistradasController < ApplicationController
           
           @prefijo = Empresa.generar_prefijo_valido
           @clasificacion_empresa = Clasificacion.find(:first, :conditions => ["categoria = ? and division = ? and grupo = ? and clase = ?", @empresa_registrada.categoria, @empresa_registrada.division, @empresa_registrada.grupo, @empresa_registrada.clase])
-          @prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus], :conditions => ["(categoria = ? or division = ? or grupo = ? or clase = ?) and no_elejible is ? and prefijo >= 7590000 and prefijo <= 7599999", @empresa_registrada.categoria, @empresa_registrada.division, @empresa_registrada.grupo, @empresa_registrada.clase, nil], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion")
+          
+          @prefijos_disponibles = EmpresaEliminada.find(:all, :include => [:estatus], :conditions => ["(categoria = ? or division = ? or grupo = ? or clase = ?) and no_elegible is ? and prefijo >= 7590000 and prefijo <= 7599999", @empresa_registrada.categoria, @empresa_registrada.division, @empresa_registrada.grupo, @empresa_registrada.clase, nil], :select => "empresa.prefijo, empresa.nombre_empresa, clasificacion.descripcion, estatus.descripcion")
 
           # Se busca el prefijo encontrado contra el sistema adminsitrativo para asegurarse que este disponible
           @prefijo_asignado_administrativo = Empresa.find_by_sql " Select * from [BDGS1DTS.MDF].dbo.CC_Clientes where codigo = #{@prefijo}"
