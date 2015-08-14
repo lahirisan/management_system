@@ -44,7 +44,7 @@ private
 
   def fetch_empresas
    
-    empresas = EmpresaRegistrada.where("rif IS NOT NULL and sub_estatus.descripcion = 'NO SOLVENTE'").joins(:ciudad, :sub_estatus, :estatus).select("empresas_registradas.id, empresas_registradas.rif_completo, empresas_registradas.nombre_empresa, empresas_registradas.fecha_inscripcion, ciudad.nombre as ciudad_, sub_estatus.descripcion as sub_estatus_, empresas_registradas.ventas_brutas_anuales").order("#{sort_column} #{sort_direction}") 
+    empresas = EmpresaRegistrada.where("rif IS NOT NULL and sub_estatus.descripcion = 'NO SOLVENTE'").joins(:ciudad, :sub_estatus).select("empresas_registradas.id, empresas_registradas.rif_completo, empresas_registradas.nombre_empresa, empresas_registradas.fecha_inscripcion, ciudad.nombre as ciudad_, sub_estatus.descripcion as sub_estatus_, empresas_registradas.ventas_brutas_anuales").order("#{sort_column} #{sort_direction}") 
     empresas = empresas.page(page).per_page(per_page)
     
      if params[:sSearch].present? # Filtro de busqueda general
