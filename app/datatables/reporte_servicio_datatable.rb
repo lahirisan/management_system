@@ -29,8 +29,8 @@ private
           empresa_servicio.estatus_,
           empresa_servicio.clasificacion_,
           empresa_servicio.servicio_,
-          empresa_servicio.fecha_contratacion.strftime("%Y-%m-%d"),
-          empresa_servicio.fecha_finalizacion.strftime("%Y-%m-%d"),
+          (empresa_servicio.fecha_contratacion) ?  empresa_servicio.fecha_contratacion.strftime("%Y-%m-%d") : "",
+          (empresa_servicio.fecha_finalizacion) ?  empresa_servicio.fecha_finalizacion.strftime("%Y-%m-%d") : "",
           empresa_servicio.nombre_contacto,
           empresa_servicio.email,
           empresa_servicio.telefono
