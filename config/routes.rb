@@ -40,6 +40,49 @@ GS1::Application.routes.draw do
 
   ###########################################################################################
 
+  # Versionamiento de API
+
+  namespace :api do
+    namespace :v1 do
+      resources :empresas do  
+
+        resources :empresa_servicios
+    
+        resources :etiquetas do
+          collection do
+            get 'exportar', :action => 'exportar', :as => 'exportar' 
+          end
+        end
+    
+        resources :productos do #/empresas/1/productos
+
+          collection do
+            patch 'update_multiple', :action => 'update_multiple', :as => 'update_multiple'  # la ruta update_multiple para productos
+            post 'import', :action => 'import', :as => 'import'  # Ruta para importar archivos
+            
+          end
+        end
+
+        resources :glns do
+          collection do
+            delete 'destroy_multiple', :action => 'destroy_multiple', :as => 'destroy_multiple'  # la ruta delete_multiple para gln
+          end
+
+        end
+
+        collection do
+          patch 'update_multiple', :action => 'update_multiple', :as => 'update_multiple'  # la ruta update_multiple para productos
+          
+        end
+
+      end  
+
+    end
+    
+  end
+
+
+
   resources :empresas do  
 
     resources :empresa_servicios
